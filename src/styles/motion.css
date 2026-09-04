@@ -1,0 +1,26 @@
+/*
+ * Shared motion styles — consumed via src/components/motion.ts contract.
+ * Reveal is JS-gated on .anim (added only when reduced-motion is OFF and the
+ * pointer is fine), so no-JS / reduced-motion render fully visible statics.
+ * The global.css prefers-reduced-motion kill-switch also nukes every
+ * animation regardless — this file must respect it, never override it.
+ */
+
+.anim .reveal,
+.anim [data-reveal] {
+  opacity: 0;
+}
+.anim .reveal-in,
+.anim [data-reveal].reveal-in {
+  animation: bxreveal 0.55s ease both;
+}
+@keyframes bxreveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
