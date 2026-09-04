@@ -26,7 +26,7 @@ const slugs = entries.map((e) => docSlug(e.id));
 const idx = slugs.indexOf(slug);
 const prev = idx > 0 ? entries[idx - 1] : null;
 const next = idx >= 0 && idx < entries.length - 1 ? entries[idx + 1] : null;
-const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}` : `/docs/${s}`);
+const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}/` : `/docs/${s}/`);
 ---
 <Base title={title} description={description}>
   <div class="docs-shell">
