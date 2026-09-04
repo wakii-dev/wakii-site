@@ -9,6 +9,11 @@ running app with the **Superpowers panel** open — no configuration along
 the way. Every step below is executed verbatim on a clean checkout before
 it lands in these docs.
 
+> **No installer yet.** Ready-made downloads for macOS and Windows are on
+> the roadmap — for now, building from source (below) is the way in. You
+> can [follow releases on GitHub](https://github.com/wakii/wakii/releases)
+> to hear about installers first.
+
 ## Prerequisites
 
 - **Node.js 24** — [nodejs.org](https://nodejs.org) or your version manager
