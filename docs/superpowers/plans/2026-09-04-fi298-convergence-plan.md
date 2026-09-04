@@ -214,47 +214,47 @@ Và scoped style trong DocsLayout (bxreveal 28px quá mạnh cho prose — overr
 
 **Files:** read-only + evidence `/tmp/story/fi294/sf5-verify/`
 
-- [ ] **Step 1: DOM sim** (contract: no-JS/RM → không `.anim` → opacity 1) — headless probe các pages chính (`/`, `/vi/`, `/skills`, `/roadmap`, docs ×1): remove `.anim` → đo computed opacity của `.reveal`/`[data-reveal]` mẫu. Expected: 1/1.
-- [ ] **Step 2: Emulate RM thật** — CDP `Emulation.setEmulatedMedia prefers-reduced-motion: reduce` (hoặc `--force-prefers-reduced-motion`) → screenshot landing + docs. Expected: không element nào opacity 0, không animation chạy.
-- [ ] **Step 3: Grep audit** — mọi animation mới SF-2/3/4/5 phải nằm sau kill-switch `global.css:65` (`animation: none !important`) hoặc `.anim` gate. Grep `@keyframes` + `animation:` ngoài motion.css/global.css → từng hit phải gated.
+- [x] **Step 1: DOM sim** (contract: no-JS/RM → không `.anim` → opacity 1) — headless probe các pages chính (`/`, `/vi/`, `/skills`, `/roadmap`, docs ×1): remove `.anim` → đo computed opacity của `.reveal`/`[data-reveal]` mẫu. Expected: 1/1.
+- [x] **Step 2: Emulate RM thật** — CDP `Emulation.setEmulatedMedia prefers-reduced-motion: reduce` (hoặc `--force-prefers-reduced-motion`) → screenshot landing + docs. Expected: không element nào opacity 0, không animation chạy.
+- [x] **Step 3: Grep audit** — mọi animation mới SF-2/3/4/5 phải nằm sau kill-switch `global.css:65` (`animation: none !important`) hoặc `.anim` gate. Grep `@keyframes` + `animation:` ngoài motion.css/global.css → từng hit phải gated.
 
 ### Task 10: Perf audit từ baseline SF-1
 
 **Files:** read-only
 
-- [ ] **Step 1: Grep layout-thrash** — mọi animate mới chỉ transform/opacity. Grep `@keyframes` trong `src/` → từng keyframe chỉ chứa `transform`/`opacity` (filter các exception hiện có: `blink` steps opacity — đã có từ trước).
-- [ ] **Step 2: Lighthouse** — PREREQ: `npm run preview` đang chạy @4321 + Chrome đầy đủ available (không dùng playwright headless shell — screenshot fail im lặng theo memory). Đóng tab, best-run 3 lần:
+- [x] **Step 1: Grep layout-thrash** — mọi animate mới chỉ transform/opacity. Grep `@keyframes` trong `src/` → từng keyframe chỉ chứa `transform`/`opacity` (filter các exception hiện có: `blink` steps opacity — đã có từ trước).
+- [x] **Step 2: Lighthouse** — PREREQ: `npm run preview` đang chạy @4321 + Chrome đầy đủ available (không dùng playwright headless shell — screenshot fail im lặng theo memory). Đóng tab, best-run 3 lần:
 
 ```bash
 npx lighthouse http://localhost:4321/ --only-categories=performance --output=json --quiet --chrome-flags="--headless" 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['categories']['performance']['score']*100)"
 ```
 
 Expected: ≥ 99 cả hai (baseline). Dưới → SO SÁH từng metric vs SF-1 notes, xác định regression thật hay environmental noise, không tick cho tới khi giải thích được.
-- [ ] **Step 3: Ghi số vào audit comment cuối run.**
+- [x] **Step 3: Ghi số vào audit comment cuối run.**
 
 ### Task 11: Link integrity + hreflang audit full site
 
 **Files:** read-only + script `/tmp/story/fi294/link-audit.py`
 
-- [ ] **Step 1: Crawl dist** — script python quét mọi `*.html` trong dist, extract mọi internal `<a href>` + canonical + hreflang → resolve: (a) mọi internal link tồn tại file đích (trailing slash `/docs/<slug>/` contract); (b) không link số dòng; (c) cross-links mới: nav Skills/Roadmap, agents-and-kit → `/skills`, philosophy → anchor `/docs/story-workflow/#philosophy` + `/vi/docs/story-workflow/#triết-lý`. Expected: 0 dead.
-- [ ] **Step 2: hreflang/canonical matrix** — 17 pages × (canonical == self [Task 3], hreflang en↔vi đúng cặp, x-default → EN). Expected: sạch toàn matrix.
-- [ ] **Step 3: Flag out-of-scope ghi nhận** (không fix): OG meta site-wide (SF-1 Base contract), nav active-link mechanism — post epic trong audit comment cuối.
+- [x] **Step 1: Crawl dist** — script python quét mọi `*.html` trong dist, extract mọi internal `<a href>` + canonical + hreflang → resolve: (a) mọi internal link tồn tại file đích (trailing slash `/docs/<slug>/` contract); (b) không link số dòng; (c) cross-links mới: nav Skills/Roadmap, agents-and-kit → `/skills`, philosophy → anchor `/docs/story-workflow/#philosophy` + `/vi/docs/story-workflow/#triết-lý`. Expected: 0 dead.
+- [x] **Step 2: hreflang/canonical matrix** — 17 pages × (canonical == self [Task 3], hreflang en↔vi đúng cặp, x-default → EN). Expected: sạch toàn matrix.
+- [x] **Step 3: Flag out-of-scope ghi nhận** (không fix): OG meta site-wide (SF-1 Base contract), nav active-link mechanism — post epic trong audit comment cuối.
 
 ### Task 12: Locale e2e trang mới (browser, 3 tầng)
 
 **Files:** read-only + screenshots `/tmp/story/fi294/sf5-verify/`
 
-- [ ] **Step 1: FLOW** — đi trọn: nav → landing (scroll qua landing deepen: philosophy stagger, workflow gates stagger, FAQ stagger) → `/skills` expand card → nav Roadmap → `/roadmap` lane-read → docs story-workflow anchor philosophy → lang-switch mỗi trang (2 chiều ×: `/skills↔/vi/skills`, `/roadmap↔/vi/roadmap`, docs) → VI fallback không 404.
-- [ ] **Step 2: VISUAL** — screenshot mỗi chặng, so design binding (tokens mint/near-black, bento language).
-- [ ] **Step 3: Responsive 390** — iframe probe (không dùng --window-size bị clamp): mọi pages scrollWidth == 390, footer đã wrap (Task 4).
-- [ ] **Step 4: scroll-behavior smooth embed quirk** — ghi nhận behavior trong embedded browser (known, browser thật OK); quyết: không đổi (kill-switch `html { scroll-behavior: auto }` đã có cho RM) — ghi verdict vào audit.
+- [x] **Step 1: FLOW** — đi trọn: nav → landing (scroll qua landing deepen: philosophy stagger, workflow gates stagger, FAQ stagger) → `/skills` expand card → nav Roadmap → `/roadmap` lane-read → docs story-workflow anchor philosophy → lang-switch mỗi trang (2 chiều ×: `/skills↔/vi/skills`, `/roadmap↔/vi/roadmap`, docs) → VI fallback không 404.
+- [x] **Step 2: VISUAL** — screenshot mỗi chặng, so design binding (tokens mint/near-black, bento language).
+- [x] **Step 3: Responsive 390** — iframe probe (không dùng --window-size bị clamp): mọi pages scrollWidth == 390, footer đã wrap (Task 4).
+- [x] **Step 4: scroll-behavior smooth embed quirk** — ghi nhận behavior trong embedded browser (known, browser thật OK); quyết: không đổi (kill-switch `html { scroll-behavior: auto }` đã có cho RM) — ghi verdict vào audit.
 
 ### Task 13: Release readiness + smoke
 
 **Files:** read-only
 
-- [ ] **Step 1:** `npm run build` xanh — 17 pages.
-- [ ] **Step 2:** Smoke `astro preview` — curl từng route (17) Expected 200, grep content key (`/skills` hero, `/roadmap` lane title, docs anchors).
+- [x] **Step 1:** `npm run build` xanh — 17 pages.
+- [x] **Step 2:** Smoke `astro preview` — curl từng route (17) Expected 200, grep content key (`/skills` hero, `/roadmap` lane title, docs anchors).
 - [ ] **Step 3:** Vercel preview deploy (hook có sẵn — nếu token còn) + smoke preview URL. Không bắt buộc nếu token hết hạn — ghi rõ.
 
 ---
