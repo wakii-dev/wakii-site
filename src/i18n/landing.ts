@@ -73,7 +73,14 @@ export interface LandingStrings {
       lines: { text: string; kind: 'plain' | 'warn' | 'ok' }[];
       foot: string;
     };
-    stats: { v: string; k: string }[];
+    figma: {
+      label: string;
+      meta: string;
+      rows: { k: string; v: string }[];
+      verdict: string;
+      verdictOk: boolean;
+      desc: string;
+    };
   };
   zero: { status: string; title: string; desc: string }[];
   workflow: { kicker: string; title: string; sub: string; stages: string[]; planNote: string; legend: string; note: string };
@@ -207,12 +214,18 @@ export const en: LandingStrings = {
       ],
       foot: 'SF.004 — watchdog auto-complete: stalled work finishes itself. You get coffee.',
     },
-    stats: [
-      { v: '9', k: 'role-gated agents' },
-      { v: '6', k: 'gates before merge' },
-      { v: '1', k: 'PR per story' },
-      { v: '0', k: 'setup steps' },
-    ],
+    figma: {
+      label: 'figma → verify pipeline',
+      meta: 'design → shipped, diffed',
+      rows: [
+        { k: 'capture', v: 'frame + tokens captured, committed to the repo' },
+        { k: 'implement', v: 'tokens-only, component map before code' },
+        { k: 'verify', v: 'screenshot diff vs capture, side by side' },
+      ],
+      verdict: 'visual diff: 0 unexpected deltas',
+      verdictOk: true,
+      desc: 'SF.006 — figma-to-verify: the build is checked against the design, pixel by pixel, before merge.',
+    },
   },
   zero: [
     { status: 'bootstrap 0.0s', title: 'Bundled plugin', desc: 'Superpowers ships inside the app. No marketplace, no version juggling.' },
@@ -349,12 +362,18 @@ export const vi: LandingStrings = {
       ],
       foot: 'SF.004 — watchdog tự hoàn tất: work stalled tự kết thúc. Bạn cứ đi pha cà phê.',
     },
-    stats: [
-      { v: '9', k: 'agents phân vai' },
-      { v: '6', k: 'gates trước merge' },
-      { v: '1', k: 'PR mỗi story' },
-      { v: '0', k: 'bước cài đặt' },
-    ],
+    figma: {
+      label: 'pipeline figma → verify',
+      meta: 'thiết kế → shipped, so từng pixel',
+      rows: [
+        { k: 'capture', v: 'frame + tokens được chụp, commit vào repo' },
+        { k: 'implement', v: 'chỉ dùng tokens, vẽ component map trước khi code' },
+        { k: 'verify', v: 'soi screenshot với capture chuẩn, cạnh nhau' },
+      ],
+      verdict: 'visual diff: 0 sai lệch ngoài dự kiến',
+      verdictOk: true,
+      desc: 'SF.006 — figma-to-verify: bản build được đối chiếu với thiết kế, từng pixel, trước khi merge.',
+    },
   },
   zero: [
     { status: 'bootstrap 0.0s', title: 'Plugin đóng gói sẵn', desc: 'Superpowers nằm sẵn trong app. Không marketplace, không lo version.' },
