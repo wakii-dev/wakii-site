@@ -19,8 +19,8 @@ interface Props {
 const { strings } = Astro.props;
 const t = strings;
 
-const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
-const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
+const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq/';
 const statusLabels: Record<string, string> =
   t.lang === 'vi'
     ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
