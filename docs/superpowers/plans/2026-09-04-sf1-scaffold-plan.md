@@ -25,4 +25,4 @@ layout/structure/behavior. Điểm lệch (bg #0A0E0D vs #070A08, v.v.) → hand
 - [x] 13. Logo: copy wordmark từ orca repo resources/logo.svg → public/, subtitle đổi thành positioning mới, convert <text> → outline path (render đồng nhất cross-OS); dùng trong nav nếu kích thước phù hợp.
 - [x] 14. vercel.json: buildCommand astro build, output dist/, cleanUrls; deploy preview nếu credentials có — không có → note vào FI-290 (deploy proof hoãn, không block).
 - [x] 15. Kit license verify: đọc LICENSE của origin superpowers kit → verdict + bằng chứng (path + snippet) vào docs/superpowers/notes/kit-license.md.
-- [ ] 16. Final build + preview local + browser verify 3 tầng + code-reviewer + merge no-ff + audit comment + story-verify gate + FI-290 Done.
+- [x] 16. Final build + preview local + browser verify 3 tầng + code-reviewer + merge no-ff + audit comment + story-verify gate + FI-290 Done.
