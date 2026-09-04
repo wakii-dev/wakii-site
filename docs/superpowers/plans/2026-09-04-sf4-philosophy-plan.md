@@ -32,11 +32,11 @@
 **Files:**
 - Create: `src/components/landing/Philosophy.astro`
 
-- [ ] **Step 1: Section shell** — `<section class="philosophy" id="philosophy">` + `.wrap` + section-head (kicker/title/sub từ `t.philosophy`), style theo hệ hiện có (padding `var(--section-pad)`, kicker mono lowercase mint, như Workflow.astro).
-- [ ] **Step 2: Pillar cards grid** — grid 4 cột desktop (2 tablet, 1 mobile) × 8 cards từ `t.philosophy.pillars`; mỗi card: số thứ tự mono (01–08) + name (text, font hiện có) + line (dim). Card language reuse bento: `var(--panel)`, `1px solid var(--border)`, `border-radius: var(--radius-cell)`. Không tilt (không phải bento cell).
-- [ ] **Step 3: docLink CTA** — link "đọc đầy đủ" (`t.philosophy.docLink`) → href locale-aware: `t.lang === 'vi' ? '/vi/docs/story-workflow/#triết-lý' : '/docs/story-workflow/#philosophy'`. Pattern `.quick-more`/link mint hiện có.
-- [ ] **Step 4: Reveal** — section-head + cards có class `reveal` (consume `initMotion()` boot sẵn trong Landing.astro — không script mới).
-- [ ] **Step 5: Commit** — `feat(sf-4): Philosophy.astro — 8 pillar cards + doc link anchor (FI-299)`
+- [x] **Step 1: Section shell** — `<section class="philosophy" id="philosophy">` + `.wrap` + section-head (kicker/title/sub từ `t.philosophy`), style theo hệ hiện có (padding `var(--section-pad)`, kicker mono lowercase mint, như Workflow.astro).
+- [x] **Step 2: Pillar cards grid** — grid 4 cột desktop (2 tablet, 1 mobile) × 8 cards từ `t.philosophy.pillars`; mỗi card: số thứ tự mono (01–08) + name (text, font hiện có) + line (dim). Card language reuse bento: `var(--panel)`, `1px solid var(--border)`, `border-radius: var(--radius-cell)`. Không tilt (không phải bento cell).
+- [x] **Step 3: docLink CTA** — link "đọc đầy đủ" (`t.philosophy.docLink`) → href locale-aware: `t.lang === 'vi' ? '/vi/docs/story-workflow/#triết-lý' : '/docs/story-workflow/#philosophy'`. Pattern `.quick-more`/link mint hiện có.
+- [x] **Step 4: Reveal** — section-head + cards có class `reveal` (consume `initMotion()` boot sẵn trong Landing.astro — không script mới).
+- [x] **Step 5: Commit** — `feat(sf-4): Philosophy.astro — 8 pillar cards + doc link anchor (FI-299)`
 
 ### Task 3: Wire Philosophy vào Landing.astro
 
