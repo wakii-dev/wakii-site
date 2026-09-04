@@ -38,7 +38,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       `bx-big` + pill "flagship"); card anatomy `.bx-label`(command ▸ + pill) /
       `.bx-body`(h3 name, desc, bx-how dashed "how it works" + how_*); VI dùng
       desc_vi/how_vi.
-- [ ] 7. install-strip-link-getting-started — terminal mockup id="install": term-bar
+- [x] 7. install-strip-link-getting-started — terminal mockup id="install": term-bar
       3 dots + title `wakii — install`; command dựng từ `REPO_URL` (config.ts),
       format giống landing; link `→ full guide: /docs/getting-started/` (trailing
       slash, KHÔNG `#get-wakii`).

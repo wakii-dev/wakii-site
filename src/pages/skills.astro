@@ -15,6 +15,9 @@ const publicSkills = skills.filter((s) => s.public === true);
 const publicCount = publicSkills.length;
 const categoryCount = new Set(publicSkills.map((s) => s.category)).size;
 
+/** Build-from-source command — same format as the landing quickstart (REPO_URL only, never a literal). */
+const installCmd = `git clone ${REPO_URL} wakii && cd wakii && make`;
+
 const groups = [
   {
     key: 'workflow',
@@ -65,6 +68,23 @@ const spans: Record<string, string> = {
       </div>
     </div>
   </header>
+
+  <section class="install" id="install" data-reveal>
+    <div class="wrap">
+      <div class="terminal">
+        <div class="term-bar">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span class="term-title">wakii — install</span>
+        </div>
+        <div class="term-body">
+          <div class="term-cmd"><span class="ps">$</span>{installCmd}</div>
+          <a class="term-link" href="/docs/getting-started/">→ full guide: /docs/getting-started/</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   {
     groups.map((g) => (
@@ -175,6 +195,69 @@ const spans: Record<string, string> = {
     font-size: 11px;
     color: var(--text-faint);
     margin-top: 2px;
+  }
+
+  /* ---- install strip ---- */
+  .install {
+    padding: 0 0 8px;
+  }
+  .terminal {
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+  .dot-r {
+    background: var(--red);
+  }
+  .dot-y {
+    background: #e0b545;
+  }
+  .dot-g {
+    background: var(--accent);
+  }
+  .term-title {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-left: 6px;
+  }
+  .term-body {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    font-size: 13px;
+  }
+  .term-cmd {
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .ps {
+    color: var(--text-faint);
+    margin-right: 8px;
+  }
+  .term-link {
+    margin-left: auto;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12.5px;
+  }
+  .term-link:hover {
+    text-decoration: underline;
   }
 
   /* ---- category sections ---- */
@@ -361,6 +444,9 @@ const spans: Record<string, string> = {
     }
     .hs {
       min-width: 96px;
+    }
+    .term-link {
+      margin-left: 0;
     }
   }
 </style>
