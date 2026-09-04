@@ -20,6 +20,12 @@ Ngày: 2026-09-04 · Epic: (tạo ở bước 10) · Fork: SAU KHI FI-294 close,
 3. UI: **/download page ×2 locales + landing section upgrade**; Get Wakii giữ làm secondary (developers).
 4. Fork: **sau khi FI-294 close**, từ nhánh đích story 2.
 
+## Decisions duyệt lúc APPROVE (2026-09-04, chat — APPROVE gate)
+
+- **G-C capabilities (duyệt CẢ 3)**: (1) xem phiên agents đang chạy; (2) duyệt gates; (3) gửi task từ mobile. Copy được phép claim đúng 3 cái này, không thêm.
+- **G-A2 kênh phân phối mobile**: **App Store + Google Play** — `MOBILE_STORE_URLS = { ios: <App Store>, android: <Google Play> }`; QR mặc định encode store page tương ứng platform.
+- **G-B roadmap copy (Đề xuất A)**: khi `DOWNLOADS_LIVE=true` → "Downloads cho macOS & Windows" chuyển lên **Now/Shipped**; "Changelog page" giữ **Next**. Flag=false → dòng giữ nguyên vị trí Next với copy mới (draft VI gate convergence).
+
 ## Accuracy gates (spec-critic v2 — resolved P0 clusters)
 
 ### G-A — Desktop binary live gate (flag-gated, 1-line flip)
