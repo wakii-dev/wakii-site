@@ -22,7 +22,7 @@
 - Create: `/tmp/story/fi294/copy-review-sf5.html` (artifact review, không commit)
 - Read-only: `src/data/skills.ts`, `src/data/roadmap.ts`, `src/i18n/landing.ts`
 
-- [ ] **Step 1: Trích xuất copy mới của story 2 ×2 locales** — script node đọc 3 data modules, render HTML bảng cạnh nhau EN | VI cho: skills (13 public: name/desc/how-it-works), roadmap (lanes Now/Next/Later + items), philosophy (8 pillars + sub), workflowDeep (agents block + gates B0-B5), getWakii (steps/req/cta/note), roadmap page h2/sub (VI draft từ SF-3).
+- [ ] **Step 1: Trích xuất copy mới của story 2 ×2 locales** — script node đọc 3 data modules + `src/components/RoadmapPage.astro` (h2/sub VI draft SF-3 sống ở đây, không phải data module), render HTML bảng cạnh nhau EN | VI cho: skills (13 public: name/desc/how-it-works), roadmap (lanes Now/Next/Later + items + page h2/sub), philosophy (8 pillars + sub), workflowDeep (agents block + gates B0-B5), getWakii (steps/req/cta/note). Gate do COORDINATOR giữ (AskUserQuestion) — không giao worker.
 
 - [ ] **Step 2: Post epic comment** `orca linear comment add --id FI-294 --body-file -` — link artifact + hướng dẫn view (`open /tmp/story/fi294/copy-review-sf5.html`), ghi rõ "copy gate binary — cần user confirm trước motion pass".
 
@@ -48,22 +48,27 @@
 
 **Quyết định (b) — self-referencing per locale.** Lý do: Google guidance — canonical không self-referencing có thể khiến hreflang cluster bị bỏ qua; hreflang en/vi/x-default đã đúng 2 chiều nên chỉ cần canonical trỏ own URL. Hreflang giữ nguyên.
 
-- [ ] **Step 1: Sửa canonical line** — giữ `canonicalPath` (dùng cho hreflang EN + x-default), thêm:
+- [ ] **Step 1: REPLACE dòng 39 (không thêm — tránh duplicate canonical):** giữ `canonicalPath` (dùng cho hreflang EN + x-default), đổi dòng canonical cũ thành:
 
 ```astro
 <link rel="canonical" href={new URL(pathname || '/', Astro.site)} />
 ```
 
-- [ ] **Step 2: Build + verify 17 pages** — `npm run build`, rồi grep dist:
+- [ ] **Step 2: Build + verify 17 pages** — `npm run build`, rồi grep dist (assert ĐÚNG 1 canonical/page — không dùng head -1):
 
 ```bash
 for f in $(find dist -name "*.html"); do
-  url=$(grep -o '<link rel="canonical" href="[^"]*"' "$f" | head -1 | sed 's/.*href="//;s/"//')
-  echo "$f -> $url"
+  n=$(grep -c '<link rel="canonical"' "$f")
+  url=$(grep -o '<link rel="canonical" href="[^"]*"' "$f" | sed 's/.*href="//;s/"//')
+  echo "$n | $f -> $url"
+done | sort | uniq -c | head; echo "---non-self:"; for f in $(find dist -name "*.html"); do
+  url=$(grep -o '<link rel="canonical" href="[^"]*"' "$f" | sed 's/.*href="//;s/"//')
+  case "$f" in dist/index.html) own="SITE/";; *) own="SITE${f#dist}";; esac
+  [ "${url#SITE}" = "${own}" ] || echo "MISMATCH $f -> $url (own=$own)"
 done
 ```
 
-Expected: canonical của `/vi/skills/` = `<site>/vi/skills/`, của `/skills/` = `<site>/skills/`... — MỌI page canonical == own URL (kể cả docs ×2, 404).
+Expected: count canonical = 1/page; MISMATCH rỗng. (404 page canonical self cũng harmless — noindex.)
 - [ ] **Step 3: Verify hreflang cluster nguyên vẹn** — spot-check `/skills/` + `/vi/skills/`: hreflang en → EN URL, vi → VI URL, x-default → EN URL (giữ như cũ).
 - [ ] **Step 4: Commit** `git commit -m "seo(sf-5): canonical self-referencing per locale, giữ hreflang cluster (FI-298)"`
 
@@ -104,7 +109,7 @@ Expected: canonical của `/vi/skills/` = `<site>/vi/skills/`, của `/skills/` 
 </script>
 ```
 
-- [ ] **Step 2: Verify flow** — mở `/docs/story-workflow/#philosophy`, click VI → Expected: land `/vi/docs/story-workflow/#triết-lý` (anchor VI tương ứng — LƯU Ý: hash EN không map sang slug VI; verify thực tế: nếu anchor EN `#philosophy` không tồn tại trang VI thì hash giữ nguyên vẫn better-than-drop; nếu thấy nhảy sai chỗ → report, quyết giữ hay bỏ khi thấy behavior thật).
+- [ ] **Step 2: Verify flow (tiêu chí binary đã pin)** — mở `/docs/story-workflow/#philosophy`, click VI → Expected: URL `/vi/docs/story-workflow/#philosophy`, không 404, không jump sai (hash EN không tồn tại trang VI → browser đứng top — strictly better-than-drop; KHÔNG map slug EN→VI). Verdict pinned: giữ hash mọi trường hợp.
 - [ ] **Step 3: Commit** `git commit -m "fix(sf-5): lang-switch giữ anchor hash khi chuyển locale (FI-298)"`
 
 ### Task 6: Motion util extend — `revealChildren` helper
@@ -155,7 +160,7 @@ Current state đã tốt: section-heads + bento + GetWakii cells + Philosophy pi
   <div class="gate" data-reveal>
 ```
 
-Giữ `.gates` block reveal cho title/intro (đứng trước, vào batch riêng — stagger tự nhiên theo thứ tự DOM).
+Giữ `.gates` block reveal cho title/intro. **LƯU Ý nested-reveal (plan-critic P1):** parent `.gates.reveal` + children `.gate[data-reveal]` cùng vào 1 IO batch → fade chồng nhau. Browser check Step 3 quyết: nếu compound fade xấu → fix path đã pre-authorize: bỏ `reveal` khỏi `.gates`, thay bằng `data-reveal` riêng trên `.agents-title`/`.gates-title` + `.gates-intro`/`.agents-intro`.
 - [ ] **Step 3: Build + browser check** — scroll landing: FAQ items + gate cards fade-in staggered; reduced-motion: đứng im visible (contract `.anim` gate).
 - [ ] **Step 4: Commit** `git commit -m "feat(sf-5): landing deep pass — stagger FAQ items + gate cards (FI-298)"`
 
@@ -184,6 +189,24 @@ import '../styles/motion.css';
 </script>
 ```
 
+Và scoped style trong DocsLayout (bxreveal 28px quá mạnh cho prose — override nhẹ hơn, vẫn transform/opacity only, kill-switch RM vẫn thắng vì `animation: none !important`):
+
+```css
+.docs-article :global([data-reveal].reveal-in) {
+  animation: docsreveal 0.45s ease both;
+}
+@keyframes docsreveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+```
+
 - [ ] **Step 2: Verify đọc không bị phá** — docs page scroll chậm: paragraph fade-in tinh tế (0.55s, không translate lớn); bật reduced-motion → đứng im visible ngay.
 - [ ] **Step 3: Commit** `git commit -m "feat(sf-5): docs light reveals qua revealChildren + DocsLayout (FI-298)"`
 
@@ -200,7 +223,7 @@ import '../styles/motion.css';
 **Files:** read-only
 
 - [ ] **Step 1: Grep layout-thrash** — mọi animate mới chỉ transform/opacity. Grep `@keyframes` trong `src/` → từng keyframe chỉ chứa `transform`/`opacity` (filter các exception hiện có: `blink` steps opacity — đã có từ trước).
-- [ ] **Step 2: Lighthouse** `/` và `/vi/` (đóng tab, best-run 3 lần):
+- [ ] **Step 2: Lighthouse** — PREREQ: `npm run preview` đang chạy @4321 + Chrome đầy đủ available (không dùng playwright headless shell — screenshot fail im lặng theo memory). Đóng tab, best-run 3 lần:
 
 ```bash
 npx lighthouse http://localhost:4321/ --only-categories=performance --output=json --quiet --chrome-flags="--headless" 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['categories']['performance']['score']*100)"
@@ -258,4 +281,10 @@ Expected: ≥ 99 cả hai (baseline). Dưới → SO SÁH từng metric vs SF-1 
 | Hand-off §6 annotation (stacked vs 2 cột) | NO-ACTION — implement theo prototype 1:1, đúng ý |
 | scroll-behavior smooth embed quirk | NO-ACTION — browser thật OK, RM kill-switch có sẵn → ghi verdict |
 | Nav-cta → getting-started | NO-ACTION — đã quyết trên epic 14:22 |
-| Breakpoint 1024 vs 1020 sibling | Đánh giá Task 12 — align nếu trivial, else flag |
+| Breakpoint 1024 vs 1020 sibling | NO-ACTION (pinned) — align ngoài cosmetic exception → flag-only |
+| LangSwitcher fix ~6 dòng (ngoài "1-2 dòng") | Sanctioned trong convergence lang-switch correctness (acceptance 5) — ghi rõ audit |
+
+## P1/P2 plan-critic đã áp (2026-09-04)
+- P0: task-store deps (#2←all, #6←#3#4#5, #5←#1); canonical REPLACE + assert 1/page
+- P1: docs keyframe nhẹ hơn scoped trong DocsLayout; Task 5 verdict pinned; Task 7 nested-reveal fix path pre-authorized; Task 10 prereq preview+Chrome
+- P2: RoadmapPage.astro vào extraction; 404 canonical harmless note; DOM-sim là evidence chính (screenshot phụ); improvements-log addendum lúc merge; breakpoint flag-only
