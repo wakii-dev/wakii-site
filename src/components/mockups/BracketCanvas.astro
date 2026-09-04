@@ -1,0 +1,203 @@
+---
+/**
+ * Mockup kit — BracketCanvas: epic → SF dependency board (680×400 fixed
+ * coordinate space, auto-scaled to container width). Pure renderer;
+ * geometry + labels come in via props (i18n/landing.ts).
+ */
+import type { BentoEdge, BentoNode } from '../../i18n/landing';
+
+interface Props {
+  tiers: { label: string; x: number; w: number }[];
+  nodes: BentoNode[];
+  edges: BentoEdge[];
+  /** pill text per node status, locale-aware */
+  statusLabels?: Partial<Record<BentoNode['status'], string>>;
+}
+const { tiers, nodes, edges, statusLabels = {} } = Astro.props;
+const statusLabel = (s: BentoNode['status']) => statusLabels[s] ?? s;
+---
+
+<div class="board-outer">
+  <div class="board-scale" data-board>
+    <div class="cb-body">
+      <svg class="cb-edges" viewBox="0 0 680 400" aria-hidden="true">
+        {edges.map((e) => <path class:list={['cb-edge', { live: e.live }]} d={e.d} />)}
+      </svg>
+      {tiers.map((tier) => (
+        <div class="cb-tier" style={`left:${tier.x}px; width:${tier.w}px;`}>{tier.label}</div>
+      ))}
+      {nodes.map((n) => (
+        <div
+          class:list={['cb-node', `nt-${n.status}`]}
+          style={`left:${n.x}px; top:${n.y}px;`}
+        >
+          <div class="nh">
+            <span class="nid">{n.id}</span>
+            <span class:list={['pill', `pill-${n.status}`]}>{statusLabel(n.status)}</span>
+          </div>
+          <div class="ntt">{n.title}</div>
+          {n.agent && <div class="nag">{n.agent}</div>}
+          {n.status === 'running' && (
+            <div class="nprog" style={n.progress != null ? `width:${Math.round(n.progress * 100)}%;` : undefined} />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .board-outer {
+    position: relative;
+  }
+  .board-scale {
+    transform-origin: top left;
+  }
+  .cb-body {
+    position: relative;
+    width: 680px;
+    height: 400px;
+  }
+  .cb-edges {
+    position: absolute;
+    inset: 0;
+    width: 680px;
+    height: 400px;
+    pointer-events: none;
+  }
+  .cb-edge {
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+    fill: none;
+  }
+  .cb-edge.live {
+    stroke: var(--warn);
+    stroke-dasharray: 5 5;
+    animation: dashmove 1.2s linear infinite;
+    opacity: 0.8;
+  }
+  @keyframes dashmove {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+  .cb-tier {
+    position: absolute;
+    top: 14px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .cb-tier::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin-top: 6px;
+  }
+  .cb-node {
+    position: absolute;
+    width: 172px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--panel-2);
+    padding: 10px 12px 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cb-node:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 24px rgba(69, 224, 168, 0.15);
+  }
+  .cb-node .nh {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .cb-node .nid {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .cb-node.nt-epic .nid {
+    color: var(--text);
+  }
+  .cb-node.nt-epic {
+    border-color: var(--accent-dim);
+  }
+  .cb-node .ntt {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+  .cb-node .nag {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    margin-top: 5px;
+  }
+  .cb-node .nag::before {
+    content: '@ ';
+  }
+  .cb-node .nprog {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--warn);
+    animation: prog 2.4s ease-in-out infinite alternate;
+  }
+  @keyframes prog {
+    from {
+      width: 42%;
+    }
+    to {
+      width: 78%;
+    }
+  }
+  .cb-node.nt-done {
+    border-color: rgba(69, 224, 168, 0.45);
+  }
+
+  .pill {
+    font-size: 10.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .pill-done {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.4);
+    background: var(--accent-soft);
+  }
+  .pill-running {
+    color: var(--warn);
+    border-color: rgba(224, 181, 69, 0.4);
+    background: var(--warn-soft);
+  }
+  .pill-queued,
+  .pill-epic {
+    color: var(--text-faint);
+    border-color: var(--border-strong);
+    background: var(--panel);
+  }
+</style>
+
+<script>
+  // Auto-scale: 680×400 board → container width. Runs even under
+  // prefers-reduced-motion (static information must stay readable).
+  function scaleAll() {
+    document.querySelectorAll<HTMLElement>('[data-board]').forEach((board) => {
+      const outer = board.parentElement;
+      if (!outer) return;
+      const s = Math.min(1, outer.clientWidth / 680);
+      board.style.transform = `scale(${s.toFixed(4)})`;
+      outer.style.height = `${400 * s}px`;
+    });
+  }
+  scaleAll();
+  window.addEventListener('resize', scaleAll);
+</script>

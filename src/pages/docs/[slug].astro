@@ -1,0 +1,52 @@
+---
+/**
+ * EN docs routes — slug contract LOCKED at SF-1 (src/config.ts DOC_SLUGS).
+ * Render markdown content qua DocsLayout (sidebar + prev/next + lang switch).
+ */
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { docSlug } from '../../content.config';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docs', (d) => d.id.startsWith('en/'));
+  return entries.map((entry) => ({
+    params: { slug: docSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<DocsLayout
+  locale="en"
+  slug={docSlug(entry.id)}
+  title={entry.data.title}
+  description={entry.data.description}
+>
+  <div class="crumb">~/docs/{docSlug(entry.id)}</div>
+  <h1>{entry.data.title}</h1>
+  <div class="prose">
+    <Content />
+  </div>
+</DocsLayout>
+
+<style>
+  .crumb {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 20px;
+  }
+  .crumb::before {
+    content: '$ cat ';
+    color: var(--accent);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.5vw, 36px);
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+</style>

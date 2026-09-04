@@ -1,0 +1,1002 @@
+---
+/**
+ * Landing — v2 "Modern Bento Premium" (direction-d3-bento.html, BINDING).
+ * Bento bất đối xứng 12-col; tilt-3D + parallax + reveal stagger 60ms;
+ * prefers-reduced-motion tắt toàn bộ (static render đầy đủ).
+ * Rendered for both locales: / (EN) and /vi/ (VI) pass their string map.
+ * Copy is PLACEHOLDER — SF-2 owns real landing copy.
+ */
+import type { LandingStrings } from '../i18n/landing';
+import { REPO_URL } from '../config';
+import TerminalBoot from './mockups/TerminalBoot.astro';
+import BracketCanvas from './mockups/BracketCanvas.astro';
+import AgentGrid from './mockups/AgentGrid.astro';
+import GatesStrip from './mockups/GatesStrip.astro';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
+const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
+const statusLabels: Record<string, string> =
+  t.lang === 'vi'
+    ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
+    : { epic: 'epic', done: 'done', running: 'running', queued: 'queued' };
+
+/** "Lead: rest" → <b>Lead:</b> rest (cell desc / watchdog foot idiom) */
+function splitLead(s: string): [string, string] {
+  const i = s.indexOf(': ');
+  return i === -1 ? ['', s] : [s.slice(0, i + 1), s.slice(i + 2)];
+}
+---
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">{t.hero.kicker}</div>
+      <h1>{t.hero.headlineBefore}<span class="hl">{t.hero.headlineHighlight}</span><span class="cursor"> </span></h1>
+      <p class="tagline">
+        {t.hero.tagline}<code>{t.hero.taglineCode}</code>,{t.lang === 'vi' ? ' bật sẵn mặc định.' : ' enabled by default.'}
+        {t.lang === 'vi'
+          ? 'Mô tả một ý tưởng — pipeline chạy: plan, agents song song, verify gates, một PR sạch.'
+          : 'Describe an idea and the pipeline runs: plan, parallel agents, verify gates, one clean PR.'}
+      </p>
+      <div class="cta-row">
+        <a href={REPO_URL} class="btn btn-primary">{t.hero.ctaPrimary}</a>
+        <a href={docsHref} class="btn btn-ghost">{t.hero.ctaGhost}</a>
+      </div>
+      <div class="hero-stats">
+        {t.hero.stats.map((s) => (
+          <div class="hs"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
+        ))}
+      </div>
+    </div>
+    <div>
+      <div data-hero-term>
+        <TerminalBoot title={t.hero.termTitle} cmd="wakii ./my-project" lines={t.hero.boot} lastCmd={t.hero.lastCmd} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ BENTO FEATURE SHOWCASE ============ -->
+<section class="bento-sec" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.bento.kicker}</div>
+      <h2>{t.bento.title}</h2>
+      <p>{t.bento.sub}</p>
+    </div>
+
+    <div class="bento" id="bento">
+      <!-- A: bracket canvas (large) -->
+      <div class="bx bx-a" data-depth="0.05">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label">
+            <span class="t">{t.bento.bracket.label}</span>
+            <span>{t.bento.bracket.meta}</span>
+            <span class="pill pill-running">{t.bento.bracket.pills.run}</span>
+            <span class="pill pill-done">{t.bento.bracket.pills.done}</span>
+          </div>
+          <BracketCanvas tiers={t.bento.bracket.tiers} nodes={t.bento.bracket.nodes} edges={t.bento.bracket.edges} statusLabels={statusLabels} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.bracket.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- B: agents -->
+      <div class="bx bx-b" data-depth="0.1">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.agents.label}</span><span class="pill pill-running">{t.bento.agents.pill}</span></div>
+          <AgentGrid items={t.bento.agents.items} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.agents.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- C: gates -->
+      <div class="bx bx-c" data-depth="0.08">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.gates.label}</span><span class="pill pill-running">{t.bento.gates.pill}</span></div>
+          <GatesStrip items={t.bento.gates.items} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.gates.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- D: memory -->
+      <div class="bx bx-d" data-depth="0.06">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.memory.label}</span><span>{t.bento.memory.meta}</span></div>
+          <div class="mem-body">
+            {t.bento.memory.lines.map((ln) => (
+              <div class="mem-ln">
+                <span class="mem-t">{ln.t}</span>
+                <span class:list={['mem-src', ln.srcKind]}>{ln.src}</span>
+                <span class="mem-tx">{ln.tx}</span>
+              </div>
+            ))}
+          </div>
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.memory.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- E: watchdog -->
+      <div class="bx bx-e" data-depth="0.11">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.watchdog.label}</span><span class="pill pill-running">{t.bento.watchdog.pill}</span></div>
+          <div class="wd-body">
+            {t.bento.watchdog.lines.map((ln) => (
+              <div class:list={['wd-ln', ln.kind]}>{ln.text}</div>
+            ))}
+          </div>
+          <div class="wd-foot">{(() => { const [b, rest] = splitLead(t.bento.watchdog.foot); return <><span class="ok">{b}</span> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- F: figma → verify -->
+      <div class="bx bx-f" data-depth="0.14">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.figma.label}</span><span>{t.bento.figma.meta}</span></div>
+          <div class="fv-body">
+            {t.bento.figma.rows.map((row) => (
+              <div class="fv-row">
+                <span class="fv-k">{row.k}</span>
+                <span class="fv-v">{row.v}</span>
+              </div>
+            ))}
+            <div class:list={['fv-verdict', { ok: t.bento.figma.verdictOk }]}>{t.bento.figma.verdict}</div>
+          </div>
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.figma.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZERO-SETUP ============ -->
+<section class="zero">
+  <div class="wrap zero-grid">
+    {t.zero.map((z) => (
+      <div class="zero-item">
+        <div class="status"><em>{z.status}</em></div>
+        <h3>{z.title}</h3>
+        <p>{z.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ============ WORKFLOW ============ -->
+<section class="flow" id="workflow">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.workflow.kicker}</div>
+      <h2>{t.workflow.title}</h2>
+      <p>{t.workflow.sub}</p>
+    </div>
+    <div class="pipe">
+      {t.workflow.stages.map((stage, i) => (
+        <>
+          {i > 0 && <span class="arrow">→</span>}
+          {stage === 'parallel SFs' || stage === 'SF song song' ? (
+            <span class="hot">{stage}</span>
+          ) : (
+            <span class="st">
+              {stage}
+              {stage.startsWith('plan') || stage.startsWith('kế hoạch') ? (
+                <span class="plan-note">{t.workflow.planNote}</span>
+              ) : null}
+            </span>
+          )}
+        </>
+      ))}
+    </div>
+    <div class="pipe-legend">{t.workflow.legend}</div>
+    <div class="flow-note">{t.workflow.note}</div>
+  </div>
+</section>
+
+<!-- ============ QUICKSTART ============ -->
+<section class="quick" id="quickstart">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.quickstart.kicker}</div>
+      <h2>{t.quickstart.title}</h2>
+    </div>
+    <div class="quick-steps">
+      {t.quickstart.steps.map((step) => (
+        <div class="qs">
+          <div class="qn"><b>{step.n}</b> {step.comment}</div>
+          <h3>{step.title}</h3>
+          <p>{step.desc}</p>
+          <div class="cmd">{step.cmd}</div>
+        </div>
+      ))}
+    </div>
+    <p class="quick-more">{t.quickstart.more} <a href={docsHref}>{t.quickstart.moreLink}</a></p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.faq.kicker}</div>
+      <h2>{t.faq.title}</h2>
+    </div>
+    {t.faq.items.map((item) => (
+      <details>
+        <summary>{item.q}</summary>
+        <div class="ans">{item.a}</div>
+      </details>
+    ))}
+    <p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>
+  </div>
+</section>
+
+<style>
+  /* ===== HERO ===== */
+  .hero {
+    padding: 80px 0 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 20%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 20%, black 20%, transparent 75%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 56px;
+    align-items: center;
+    position: relative;
+    perspective: 1600px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 4.6vw, 58px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+  .hero h1 .hl {
+    color: var(--accent);
+  }
+  .hero h1 .cursor::after {
+    content: '▊';
+    color: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+    font-weight: 400;
+  }
+  .hero .tagline {
+    margin-top: 22px;
+    color: var(--text-dim);
+    max-width: 520px;
+    font-size: 15px;
+  }
+  .hero .tagline code {
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: var(--radius);
+  }
+  .cta-row {
+    margin-top: 38px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 28px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--radius-btn);
+    transition: all 0.15s ease;
+  }
+  .btn::before {
+    content: '> ';
+    font-weight: 400;
+    opacity: 0.6;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg-deep);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 36px rgba(69, 224, 168, 0.35);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .hero-stats {
+    margin-top: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 560px;
+  }
+  .hs {
+    flex: 1;
+    padding: 14px 20px;
+    border-right: 1px solid var(--border);
+    min-width: 110px;
+  }
+  .hs:last-child {
+    border-right: none;
+  }
+  .hs .v {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .hs .k {
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 2px;
+  }
+
+  /* ===== BENTO ===== */
+  .bento-sec {
+    padding: 90px 0 60px;
+  }
+  .section-head h2 {
+    font-size: clamp(26px, 3.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2::before {
+    content: '// ';
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .section-head p {
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+    max-width: 640px;
+  }
+  .section-head {
+    margin-bottom: 44px;
+    will-change: transform, opacity;
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--bento-gap);
+  }
+  .bx {
+    will-change: transform;
+    /* cho phép track co dưới min-content của board 680px (scale script lo hình) */
+    min-width: 0;
+  }
+  .bx-a { grid-column: 1 / 9; grid-row: 1 / 3; }
+  .bx-b { grid-column: 9 / 13; }
+  .bx-c { grid-column: 9 / 13; }
+  .bx-d { grid-column: 1 / 6; }
+  .bx-e { grid-column: 6 / 10; }
+  .bx-f { grid-column: 10 / 13; }
+  .bx-in {
+    height: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    background: var(--bg-raised);
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .bx-in:hover {
+    border-color: var(--accent);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.08);
+  }
+  .bx-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .bx-label .t {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .bx-desc {
+    padding: 12px 18px 16px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    border-top: 1px dashed var(--border);
+  }
+  .bx-desc b {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .pill {
+    font-size: 10.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .pill-done {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.4);
+    background: var(--accent-soft);
+  }
+  .pill-running {
+    color: var(--warn);
+    border-color: rgba(224, 181, 69, 0.4);
+    background: var(--warn-soft);
+  }
+
+  /* memory log */
+  .mem-body {
+    padding: 16px 18px;
+    font-size: 12px;
+  }
+  .mem-ln {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    align-items: baseline;
+  }
+  .mem-ln:last-child {
+    border-bottom: none;
+  }
+  .mem-t {
+    color: var(--text-faint);
+    font-size: 10px;
+    white-space: nowrap;
+    min-width: 54px;
+  }
+  .mem-src {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .mem-src.gate {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.35);
+  }
+  .mem-src.watch {
+    color: var(--warn);
+    border-color: rgba(224, 181, 69, 0.35);
+  }
+  .mem-tx {
+    color: var(--text-dim);
+  }
+
+  /* watchdog console */
+  .wd-body {
+    padding: 16px 18px 18px;
+    font-size: 12.5px;
+  }
+  .wd-ln {
+    padding: 7px 10px;
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    color: var(--text-faint);
+    animation: wdcycle 9s ease infinite;
+  }
+  .wd-ln:nth-child(1) { animation-delay: 0s; }
+  .wd-ln:nth-child(2) { animation-delay: 2.2s; }
+  .wd-ln:nth-child(3) { animation-delay: 4.4s; }
+  .wd-ln:nth-child(4) { animation-delay: 6.6s; }
+  @keyframes wdcycle {
+    0%, 22% { opacity: 0.35; }
+    28%, 88% { opacity: 1; }
+    95%, 100% { opacity: 0.35; }
+  }
+  .wd-ln.warn {
+    color: var(--warn);
+  }
+  .wd-ln.ok {
+    color: var(--accent);
+  }
+  .wd-foot {
+    margin: 8px 18px 18px;
+    padding: 10px 14px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+  .wd-foot .ok {
+    color: var(--accent);
+  }
+
+  /* figma → verify cell */
+  .fv-body {
+    padding: 16px 18px;
+    font-size: 12px;
+  }
+  .fv-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    align-items: baseline;
+  }
+  .fv-k {
+    color: var(--accent);
+    font-size: 10.5px;
+    white-space: nowrap;
+    min-width: 74px;
+  }
+  .fv-k::before {
+    content: '▸ ';
+  }
+  .fv-v {
+    color: var(--text-dim);
+  }
+  .fv-verdict {
+    margin-top: 12px;
+    padding: 9px 12px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .fv-verdict.ok {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.35);
+  }
+  .fv-verdict.ok::before {
+    content: '✓ ';
+  }
+
+  /* ===== ZERO-SETUP ===== */
+  .zero {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-raised);
+    padding: 42px 0;
+  }
+  .zero-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .zero-item {
+    padding: 12px 32px;
+    border-left: 1px dashed var(--border-strong);
+  }
+  .zero-item:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+  .zero-item .status {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .zero-item .status::before {
+    content: '[ OK ] ';
+    color: var(--accent);
+  }
+  .zero-item .status em {
+    color: var(--text-faint);
+    font-style: normal;
+  }
+  .zero-item h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+  .zero-item p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .zero-item p code {
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* ===== WORKFLOW ===== */
+  .flow {
+    padding: var(--section-pad) 0;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .pipe {
+    font-size: 13.5px;
+    line-height: 2.4;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 30px 34px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .pipe .st {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .pipe .plan-note {
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+  .pipe .arrow {
+    color: var(--text-faint);
+    padding: 0 6px;
+  }
+  .pipe .hot {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .pipe-legend {
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+  .pipe-legend::before {
+    content: '▮ ';
+    color: var(--accent);
+  }
+  .flow-note {
+    margin-top: 36px;
+    border-left: 2px solid var(--accent);
+    padding: 8px 0 8px 20px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    max-width: 660px;
+  }
+
+  /* ===== QUICKSTART ===== */
+  .quick {
+    padding: var(--section-pad) 0;
+  }
+  .quick-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .qs {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 24px;
+    transition: border-color 0.15s ease;
+  }
+  .qs:hover {
+    border-color: var(--accent);
+  }
+  .qs .qn {
+    font-size: 11.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+  .qs .qn b {
+    color: var(--accent);
+  }
+  .qs h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .qs p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .qs .cmd {
+    margin-top: 16px;
+    font-size: 12.5px;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: var(--radius-btn);
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .qs .cmd::before {
+    content: '$ ';
+    color: var(--text-faint);
+  }
+  .quick-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .quick-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .quick-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  /* ===== FAQ ===== */
+  .faq {
+    padding: var(--section-pad) 0;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border);
+  }
+  details {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 18px 24px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 14.5px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  summary::before {
+    content: '? ';
+    color: var(--accent);
+    font-weight: 700;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '+';
+    color: var(--accent);
+    font-size: 16px;
+  }
+  details[open] summary::after {
+    content: '-';
+  }
+  details .ans {
+    padding: 0 24px 20px 52px;
+    color: var(--text-dim);
+    font-size: 13.5px;
+    font-family: var(--font-sans);
+  }
+  details .ans code {
+    color: var(--accent);
+    font-size: 12.5px;
+  }
+  .faq-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .faq-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .faq-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  /* ===== REVEAL (JS-gated — no-JS / reduced-motion giữ static đầy đủ) ===== */
+  :global(.anim) .reveal {
+    opacity: 0;
+  }
+  :global(.anim) .reveal-in {
+    animation: bxreveal 0.55s ease both;
+  }
+  @keyframes bxreveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 28px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1020px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .bento {
+      grid-template-columns: 1fr;
+    }
+    .bx-a,
+    .bx-b,
+    .bx-c,
+    .bx-d,
+    .bx-e,
+    .bx-f {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .zero-grid,
+    .quick-steps {
+      grid-template-columns: 1fr;
+    }
+    .zero-item {
+      border-left: none;
+      padding-left: 0;
+      padding: 12px 0;
+    }
+  }
+</style>
+
+<script>
+  // v2 motion — port of direction-d3-bento.html, transform/opacity ONLY.
+  // prefers-reduced-motion OR coarse pointer → static fallback (no .anim,
+  // no tilt/parallax; board auto-scale still runs inside BracketCanvas).
+  (function () {
+    'use strict';
+    var RM = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (RM.matches || !finePointer.matches) return;
+
+    var lerp = function (a: number, b: number, t: number) {
+      return a + (b - a) * t;
+    };
+    var clamp = function (v: number, a: number, b: number) {
+      return Math.min(b, Math.max(a, v));
+    };
+
+    // Reveal styling is gated on .anim (added here, only when motion is OK)
+    document.documentElement.classList.add('anim');
+
+    /* ---- hover tilt-3D per bento cell (±4-7deg, lerp 0.12) ---- */
+    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(function (el) {
+      var rx = 0, ry = 0, trx = 0, try_ = 0, raf: number | null = null, active = false;
+      function frame() {
+        rx = lerp(rx, trx, 0.12);
+        ry = lerp(ry, try_, 0.12);
+        el.style.transform =
+          'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateZ(6px)';
+        if (active || Math.abs(rx - trx) > 0.01 || Math.abs(ry - try_) > 0.01) {
+          raf = requestAnimationFrame(frame);
+        } else {
+          raf = null;
+          el.style.transform = '';
+        }
+      }
+      function kick() {
+        if (!raf) raf = requestAnimationFrame(frame);
+      }
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        try_ = ((e.clientX - r.left) / r.width - 0.5) * 7;
+        trx = -((e.clientY - r.top) / r.height - 0.5) * 6;
+        active = true;
+        kick();
+      });
+      el.addEventListener('mouseleave', function () {
+        trx = 0;
+        try_ = 0;
+        active = false;
+        kick();
+      });
+    });
+
+    /* ---- scroll: hero tilt + bento parallax ---- */
+    var heroTerm = document.querySelector<HTMLElement>('[data-hero-term]');
+    var hero = document.querySelector<HTMLElement>('.hero');
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+    if (hero && heroTerm) {
+      hero.addEventListener('mousemove', function (e) {
+        var r = hero.getBoundingClientRect();
+        tx = (e.clientX - r.left) / r.width - 0.5;
+        ty = (e.clientY - r.top) / r.height - 0.5;
+      });
+      hero.addEventListener('mouseleave', function () {
+        tx = 0;
+        ty = 0;
+      });
+    }
+
+    var cells = Array.prototype.slice.call(document.querySelectorAll<HTMLElement>('.bx[data-depth]'));
+
+    function update() {
+      var vh = window.innerHeight;
+      if (hero && heroTerm) {
+        cx = lerp(cx, tx, 0.08);
+        cy = lerp(cy, ty, 0.08);
+        heroTerm.style.transform =
+          'rotateX(' + (-cy * 6).toFixed(2) + 'deg) rotateY(' + (cx * 8).toFixed(2) + 'deg)';
+      }
+      // depth parallax between cells (3 tốc độ qua data-depth)
+      var bento = document.getElementById('bento');
+      if (bento) {
+        var b = bento.getBoundingClientRect();
+        if (b.top < vh && b.bottom > 0) {
+          var prog = (b.top + b.height / 2 - vh / 2) / (vh + b.height);
+          cells.forEach(function (c) {
+            var d = parseFloat(c.dataset.depth || '') || 0.05;
+            c.style.transform = 'translate3d(0,' + (prog * d * 900).toFixed(1) + 'px,0)';
+          });
+        }
+      }
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(function () {
+            update();
+            ticking = false;
+          });
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update);
+    update();
+
+    /* ---- reveal-on-scroll, stagger 60ms trong từng batch ---- */
+    var io = new IntersectionObserver(
+      function (entries) {
+        var pending = entries
+          .filter(function (e) {
+            return e.isIntersecting;
+          })
+          .sort(function (a, b) {
+            return a.boundingClientRect.top - b.boundingClientRect.top;
+          });
+        pending.forEach(function (e, i) {
+          var el = e.target as HTMLElement;
+          el.style.animationDelay = (i * 60) + 'ms';
+          el.classList.add('reveal-in');
+          el.addEventListener(
+            'animationend',
+            function () {
+              // dọn class + delay để tilt inline transform không bị animation giữ
+              el.classList.remove('reveal', 'reveal-in');
+              el.style.animationDelay = '';
+            },
+            { once: true }
+          );
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      io.observe(el);
+    });
+  })();
+</script>
