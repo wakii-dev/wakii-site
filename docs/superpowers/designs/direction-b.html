@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wakii — Agentic IDE with a built-in superpowers team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0C0A08;
+    --bg-raise: #12100D;
+    --panel: #161310;
+    --line: #262019;
+    --line-strong: #3A3128;
+    --text: #F2EDE4;
+    --text-dim: #A89C8B;
+    --text-faint: #6E6355;
+    --accent: #E8A33D;
+    --accent-dim: rgba(232, 163, 61, 0.14);
+    --serif: 'Fraunces', serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+  a { color: inherit; }
+
+  /* ===== NAV ===== */
+  nav {
+    border-bottom: 1px solid var(--line);
+    background: rgba(12, 10, 8, 0.88);
+    backdrop-filter: blur(14px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .logo {
+    font-family: var(--serif); font-weight: 500; font-size: 24px;
+    letter-spacing: 0.01em;
+  }
+  .logo .dot { color: var(--accent); font-family: var(--mono); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 14.5px; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    color: var(--accent) !important; font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+
+  /* ===== SHARED ===== */
+  .kicker {
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px;
+  }
+  .kicker .idx { color: var(--text-faint); }
+
+  /* ===== HERO ===== */
+  .hero { padding: 140px 0 110px; text-align: center; }
+  .hero .overline {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-faint); margin-bottom: 40px;
+  }
+  .hero .overline b { color: var(--accent); font-weight: 500; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 92px);
+    font-weight: 300;
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero h1 em {
+    font-style: italic; font-weight: 400; color: var(--accent);
+  }
+  .hero .tagline {
+    margin: 36px auto 0; max-width: 600px;
+    font-size: 18px; color: var(--text-dim); line-height: 1.75;
+  }
+  .cta-row {
+    margin-top: 52px; display: flex; gap: 28px; justify-content: center; align-items: baseline; flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-family: var(--serif); font-size: 19px; font-weight: 500;
+    color: var(--bg); background: var(--accent);
+    padding: 16px 40px; border-radius: 999px;
+    text-decoration: none; transition: all 0.2s ease;
+    display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,163,61,0.25); }
+  .btn-ghost {
+    font-family: var(--serif); font-style: italic; font-size: 19px;
+    color: var(--text-dim); text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 3px; transition: color 0.2s ease;
+  }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+  .hero-rule {
+    width: 64px; height: 1px; background: var(--accent);
+    margin: 72px auto 0;
+  }
+
+  /* ===== ZERO-SETUP ===== */
+  .zero {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: var(--bg-raise); padding: 56px 0;
+  }
+  .zero-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; text-align: center; }
+  .zero-item .glyph {
+    font-family: var(--serif); font-style: italic; font-size: 30px;
+    color: var(--accent); line-height: 1;
+  }
+  .zero-item h3 {
+    font-family: var(--serif); font-size: 21px; font-weight: 500;
+    margin-top: 16px; letter-spacing: -0.01em;
+  }
+  .zero-item p { font-size: 14px; color: var(--text-dim); margin-top: 8px; max-width: 280px; margin-left: auto; margin-right: auto; }
+  .zero-item p code { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+  /* ===== FEATURES (editorial, hairline) ===== */
+  .section { padding: 120px 0; }
+  .section-head { max-width: 680px; margin-bottom: 72px; }
+  .section-head h2 {
+    font-family: var(--serif); font-size: clamp(34px, 4.5vw, 52px);
+    font-weight: 300; line-height: 1.12; letter-spacing: -0.015em;
+  }
+  .section-head h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-head p { margin-top: 20px; color: var(--text-dim); font-size: 17px; max-width: 520px; }
+
+  .feat-list { border-top: 1px solid var(--line); }
+  .feat-row {
+    display: grid; grid-template-columns: 80px 1fr 1.2fr;
+    gap: 32px; padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: background 0.2s ease;
+  }
+  .feat-row:hover { background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+  .feat-row .fn {
+    font-family: var(--serif); font-style: italic;
+    font-size: 22px; color: var(--text-faint);
+  }
+  .feat-row:hover .fn { color: var(--accent); }
+  .feat-row h3 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .feat-row p { font-size: 15px; color: var(--text-dim); }
+  .feat-row p code { font-family: var(--mono); font-size: 12.5px; color: var(--accent); }
+
+  /* ===== WORKFLOW ===== */
+  .flow { padding: 120px 0; background: var(--bg-raise); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .flow-steps { max-width: 720px; margin-top: 8px; }
+  .fstep {
+    display: grid; grid-template-columns: 72px 1fr; gap: 32px;
+    padding: 28px 0; border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .fstep:last-child { border-bottom: none; }
+  .fstep .n {
+    font-family: var(--serif); font-size: 40px; font-weight: 300;
+    color: var(--line-strong); line-height: 1;
+  }
+  .fstep.hot .n { color: var(--accent); }
+  .fstep h4 {
+    font-family: var(--serif); font-size: 24px; font-weight: 500; letter-spacing: -0.01em;
+    display: inline;
+  }
+  .fstep h4::after {
+    content: " — "; color: var(--line-strong); font-weight: 300;
+  }
+  .fstep .d {
+    display: inline; font-size: 15.5px; color: var(--text-dim);
+  }
+  .flow-aside {
+    margin-top: 56px; font-family: var(--mono); font-size: 13px;
+    color: var(--text-faint); border-left: 2px solid var(--accent);
+    padding-left: 20px; max-width: 560px; line-height: 1.8;
+  }
+  .flow-aside b { color: var(--text-dim); font-weight: 500; }
+
+  /* ===== QUICKSTART ===== */
+  .quick { padding: 120px 0; }
+  .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .q-card h3 { font-family: var(--serif); font-size: 24px; font-weight: 500; margin-top: 18px; }
+  .q-card .qn { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; color: var(--accent); }
+  .q-card p { font-size: 14.5px; color: var(--text-dim); margin-top: 10px; }
+  .q-card .cmd {
+    margin-top: 20px; font-family: var(--mono); font-size: 12.5px;
+    color: var(--text); background: var(--panel);
+    border: 1px solid var(--line); border-left: 2px solid var(--accent);
+    padding: 12px 16px; white-space: nowrap; overflow-x: auto;
+  }
+  .quick-more { margin-top: 44px; font-size: 15.5px; color: var(--text-dim); }
+  .quick-more a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
+
+  /* ===== FAQ ===== */
+  .faq { padding: 110px 0; background: var(--bg-raise); border-top: 1px solid var(--line); }
+  .faq .two-col { display: grid; grid-template-columns: 1fr 1.6fr; gap: 72px; align-items: start; }
+  .faq h2 { font-family: var(--serif); font-size: clamp(32px, 4vw, 46px); font-weight: 300; line-height: 1.15; }
+  .faq h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .faq-list { border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary {
+    padding: 22px 0; cursor: pointer; list-style: none;
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "↓"; font-family: var(--mono); font-size: 15px; color: var(--accent);
+    transition: transform 0.25s ease;
+  }
+  details[open] summary::after { transform: rotate(180deg); }
+  details .ans { padding: 0 0 24px; color: var(--text-dim); font-size: 15px; max-width: 640px; }
+
+  /* ===== FOOTER ===== */
+  footer { border-top: 1px solid var(--line); padding: 64px 0; }
+  .foot-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
+  .foot-logo { font-family: var(--serif); font-size: 40px; font-weight: 300; }
+  .foot-logo .dot { color: var(--accent); font-family: var(--mono); }
+  .foot-links { display: flex; gap: 28px; font-size: 14px; }
+  .foot-links a { color: var(--text-dim); text-decoration: none; }
+  .foot-links a:hover { color: var(--accent); }
+  .foot-bottom {
+    margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--text-faint);
+  }
+  .foot-bottom a { color: var(--text-dim); text-decoration: none; }
+  .foot-bottom a:hover { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .zero-grid, .quick-grid { grid-template-columns: 1fr; gap: 40px; }
+    .feat-row { grid-template-columns: 1fr; gap: 8px; padding: 32px 0; }
+    .faq .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo">Wakii<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#quickstart">Quickstart</a>
+      <a href="#faq">FAQ</a>
+      <a href="#" class="nav-cta">Get Wakii</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="overline">An open-source IDE · <b>built on Orca</b></div>
+    <h1>An agentic IDE with a <em>superpowers team</em> built in.</h1>
+    <p class="tagline">No plugins to hunt. No kits to configure. Wakii arrives with nine agents, story workflows and verification gates — already installed, already on. Describe an idea; receive one verified pull request.</p>
+    <div class="cta-row">
+      <a href="#" class="btn-primary">Get Wakii</a>
+      <a href="#" class="btn-ghost">Read the guide</a>
+    </div>
+    <div class="hero-rule"></div>
+  </div>
+</header>
+
+<section class="zero">
+  <div class="wrap zero-grid">
+    <div class="zero-item">
+      <div class="glyph">i.</div>
+      <h3>Bundled plugin</h3>
+      <p>Superpowers ships inside the app itself — installed the moment Wakii is.</p>
+    </div>
+    <div class="zero-item">
+      <div class="glyph">ii.</div>
+      <h3>Kit auto-installs</h3>
+      <p>Skills settle quietly into <code>~/.claude</code> on first launch. You do nothing.</p>
+    </div>
+    <div class="zero-item">
+      <div class="glyph">iii.</div>
+      <h3>Enabled by default</h3>
+      <p>The team is on when you open the editor. Leaving is a choice; joining isn't.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="idx">Chapter 02 —</span> Features</div>
+      <h2>Not a chat window. <em>A working team.</em></h2>
+      <p>Every capability is one thread in the same story pipeline — from an idea spoken aloud to a pull request worth reviewing.</p>
+    </div>
+    <div class="feat-list">
+      <div class="feat-row">
+        <div class="fn">01</div>
+        <h3>Story system</h3>
+        <p>Epics decompose into spec slices — <code>SF brackets</code> — each with explicit scope, so nothing is built half-understood.</p>
+      </div>
+      <div class="feat-row">
+        <div class="fn">02</div>
+        <h3>Bracket canvas</h3>
+        <p>The whole story map lives on a canvas beside your editor: dependencies, progress, gates — visible at a glance.</p>
+      </div>
+      <div class="feat-row">
+        <div class="fn">03</div>
+        <h3>Nine agents, gated</h3>
+        <p>Coordinators, designers, executors, verifiers — with gates between every role. Nothing passes unchecked.</p>
+      </div>
+      <div class="feat-row">
+        <div class="fn">04</div>
+        <h3>Watchdog</h3>
+        <p>When work stalls or a hand-off goes unfinished, the watchdog notices — and drives it to completion on its own.</p>
+      </div>
+      <div class="feat-row">
+        <div class="fn">05</div>
+        <h3>Memory loop</h3>
+        <p>Decisions, verdicts and patterns persist across sessions. Your team doesn't start over — it gets sharper.</p>
+      </div>
+      <div class="feat-row">
+        <div class="fn">06</div>
+        <h3>Figma, verified</h3>
+        <p>Designs flow in, prototypes come out, and verifiers check the build against the source of truth — pixel by pixel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="workflow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="idx">Chapter 03 —</span> The Workflow</div>
+      <h2>From idea to <em>one clean PR</em>.</h2>
+    </div>
+    <div class="flow-steps">
+      <div class="fstep"><div class="n">1</div><div><h4>Idea</h4><span class="d">you describe what you want, in plain language.</span></div></div>
+      <div class="fstep"><div class="n">2</div><div><h4>Impact</h4><span class="d">the team scopes the blast radius before anything is planned.</span></div></div>
+      <div class="fstep"><div class="n">3</div><div><h4>Plan</h4><span class="d">the story lands as Linear subtasks — ordered, scoped, reviewable.</span></div></div>
+      <div class="fstep hot"><div class="n">4</div><div><h4>Parallel SFs</h4><span class="d">agents execute spec slices concurrently, coordinated through gates.</span></div></div>
+      <div class="fstep"><div class="n">5</div><div><h4>Verify gates</h4><span class="d">testers check every slice against its spec before it counts as done.</span></div></div>
+      <div class="fstep"><div class="n">6</div><div><h4>One PR per story</h4><span class="d">however many agents it took, you receive a single clean pull request.</span></div></div>
+    </div>
+    <p class="flow-aside">The whole pipeline runs in the open — track every slice, gate and verdict live in the <b>Superpowers panel</b> and the <b>bracket canvas</b>.</p>
+  </div>
+</section>
+
+<section class="quick" id="quickstart">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="idx">Chapter 04 —</span> Quickstart</div>
+      <h2>Begin in <em>three steps</em>.</h2>
+    </div>
+    <div class="quick-grid">
+      <div class="q-card">
+        <div class="qn">STEP I</div>
+        <h3>Build Wakii</h3>
+        <p>Clone the repository and build from source — one command, fully self-contained.</p>
+        <div class="cmd">$ git clone wakii && make</div>
+      </div>
+      <div class="q-card">
+        <div class="qn">STEP II</div>
+        <h3>Open a project</h3>
+        <p>The superpowers kit installs itself on first launch. There is nothing to configure.</p>
+        <div class="cmd">$ wakii ./your-project</div>
+      </div>
+      <div class="q-card">
+        <div class="qn">STEP III</div>
+        <h3>Describe an idea</h3>
+        <p>The team plans, executes in parallel, and hands you one verified pull request.</p>
+        <div class="cmd">/superpowers "add dark mode"</div>
+      </div>
+    </div>
+    <p class="quick-more">This is only the beginning — the <a href="#">full usage guide</a> walks through every panel, gate and workflow.</p>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap two-col">
+    <div>
+      <div class="kicker"><span class="idx">Chapter 05 —</span> FAQ</div>
+      <h2>Questions, <em>answered plainly</em>.</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Is Wakii really zero-setup?</summary>
+        <p>Yes. The plugin is bundled in the app and the skills kit installs itself to <code style="font-family:var(--mono);font-size:12.5px;color:var(--accent)">~/.claude</code> on first launch, enabled by default. Open Wakii — the team is already there.</p>
+      </details>
+      <details>
+        <summary>How is this different from an AI plugin?</summary>
+        <p>A plugin gives you a chat window. Wakii gives you a team: nine agents with defined roles, gates between them, a watchdog that completes stalled work, and memory that compounds across sessions.</p>
+      </details>
+      <details>
+        <summary>What does "one PR per story" mean?</summary>
+        <p>Each story — no matter how many agents or spec slices it takes — lands as one clean, reviewable pull request with verification behind it. No PR storms, no half-merged states.</p>
+      </details>
+      <details>
+        <summary>What is Wakii's relationship to Orca?</summary>
+        <p>Wakii is an open-source fork of Orca, which is MIT licensed. We credit the upstream project fully and build the superpowers team on top of it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-logo">Wakii<span class="dot">.</span></div>
+      <div class="foot-links">
+        <a href="#">GitHub</a>
+        <a href="#">Guide</a>
+        <a href="#">Orca upstream</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Wakii is an open-source agentic IDE, forked from <a href="#">Orca</a> (MIT license).</span>
+      <span>© 2026 Wakii contributors</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
