@@ -1,0 +1,95 @@
+---
+/**
+ * Mockup kit — AgentGrid: 3-col grid of agent cells with online/working dots.
+ * Pure renderer; items via props.
+ */
+interface AgentItem {
+  name: string;
+  role: string;
+  state: string;
+  working: boolean;
+}
+interface Props {
+  items: AgentItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="ag-grid">
+  {items.map((a) => (
+    <div class="ag-cell">
+      <span class:list={['ag-dot', { work: a.working }]} />
+      <div class="ag-name">{a.name}</div>
+      <div class="ag-role">{a.role}</div>
+      <div class:list={['ag-state', a.working ? 'work' : 'on']}>{a.state}</div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .ag-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    padding: 14px;
+  }
+  .ag-cell {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel-2);
+    padding: 11px 12px;
+    position: relative;
+    min-height: 78px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .ag-cell:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .ag-dot {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .ag-dot.work {
+    background: var(--warn);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  .ag-name {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text);
+    padding-right: 16px;
+    word-break: break-all;
+    line-height: 1.35;
+  }
+  .ag-role {
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .ag-state {
+    font-size: 9.5px;
+    margin-top: 5px;
+    letter-spacing: 0.08em;
+  }
+  .ag-state::before {
+    content: '● ';
+  }
+  .ag-state.on {
+    color: var(--accent);
+  }
+  .ag-state.work {
+    color: var(--warn);
+  }
+</style>

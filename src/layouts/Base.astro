@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_NAME, SITE_TAGLINE } from '../config';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Error pages (404): never index. */
+  noindex?: boolean;
+}
+
+const { title, description = SITE_TAGLINE, noindex = false } = Astro.props;
+
+/**
+ * Locale URL mapping (prefixDefaultLocale: false):
+ *   EN canonical  /docs/x        <->  VI  /vi/docs/x
+ *   EN root       /              <->  VI  /vi/
+ * If a VI page does not exist, hreflang still points at the mapped URL —
+ * VI routes are generated from the same slug contract, so a missing VI page
+ * means the slug is missing in both locales (contract violation, not fallback).
+ *
+ * Canonical (SF-5, FI-298): self-referencing per locale — per Google guidance,
+ * a non-self canonical can cause the hreflang cluster to be ignored. The
+ * hreflang annotations below still cross-link the EN <-> VI pair.
+ */
+const { pathname } = Astro.url;
+const isVi = pathname === '/vi' || pathname.startsWith('/vi/');
+const canonicalPath = isVi ? (pathname.replace(/^\/vi/, '') || '/') : pathname;
+const viPath = canonicalPath === '/' ? '/vi/' : `/vi${canonicalPath}`;
+const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}`;
+---
+
+<!doctype html>
+<html lang={isVi ? 'vi' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={new URL(pathname || '/', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(canonicalPath, Astro.site)} />
+    <link rel="alternate" hreflang="vi" href={new URL(viPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(canonicalPath, Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

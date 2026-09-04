@@ -1,0 +1,103 @@
+---
+/**
+ * Landing — Philosophy section: 8 pillar cards + deep-link to the full
+ * philosophy heading in the story-workflow doc (locale-aware anchor).
+ * New in SF-4 (FI-299). Card language reuses the established bento tokens
+ * (--panel / --border / --radius-cell); no tilt (not a bento cell). Motion:
+ * `.reveal` classes consumed by the shared initMotion() booted in
+ * Landing.astro — no new script here.
+ */
+import type { LandingStrings } from '../../i18n/landing';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+const docHref =
+  t.lang === 'vi' ? '/vi/docs/story-workflow/#triết-lý' : '/docs/story-workflow/#philosophy';
+---
+
+<section class="philosophy" id="philosophy">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.philosophy.kicker}</div>
+      <h2>{t.philosophy.title}</h2>
+      <p>{t.philosophy.sub}</p>
+    </div>
+    <div class="pillars">
+      {t.philosophy.pillars.map((pillar, i) => (
+        <div class="pillar reveal">
+          <span class="num">{String(i + 1).padStart(2, '0')}</span>
+          <div class="name">{pillar.name}</div>
+          <p class="line">{pillar.line}</p>
+        </div>
+      ))}
+    </div>
+    <p class="quick-more"><a href={docHref}>{t.philosophy.docLink}</a></p>
+  </div>
+</section>
+
+<style>
+  .philosophy {
+    padding: var(--section-pad) 0;
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--bento-gap);
+  }
+  .pillar {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 20px 22px;
+  }
+  .pillar .num {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .pillar .name {
+    margin-top: 12px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .pillar .line {
+    margin-top: 8px;
+    color: var(--text-dim);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .quick-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .quick-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .quick-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  @media (max-width: 1024px) {
+    .pillars {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+    .pillar {
+      padding: 16px 18px;
+    }
+  }
+</style>

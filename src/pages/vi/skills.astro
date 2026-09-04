@@ -1,0 +1,476 @@
+---
+/**
+ * /vi/skills — Bento Catalog, VI (SF-2, FI-296). Song song EN src/pages/skills.astro;
+ * skill names + commands giữ tiếng Anh cả hai locale (pattern src/i18n/landing.ts).
+ * VI page copy là dev draft — gate duyệt copy riêng ở SF-5.
+ */
+import Base from '../../layouts/Base.astro';
+import { skills } from '../../data/skills';
+import { REPO_URL } from '../../config';
+
+const publicSkills = skills.filter((s) => s.public === true);
+const publicCount = publicSkills.length;
+const categoryCount = new Set(publicSkills.map((s) => s.category)).size;
+
+/** Build-from-source command — same format as the landing quickstart (REPO_URL only, never a literal). */
+const installCmd = `git clone ${REPO_URL} wakii && cd wakii && make`;
+
+const groups = [
+  {
+    key: 'workflow',
+    blurb: 'Từ ý tưởng thô tới merge đã kiểm chứng — lên kế hoạch, công bố, và điều hành trọn vẹn một tính năng.',
+  },
+  {
+    key: 'design',
+    blurb: 'Giao diện có chủ đích — direction, motion, review, và chuyển dịch từ ảnh sang code.',
+  },
+  {
+    key: 'reference',
+    blurb: 'Chiều sâu theo nhu cầu — định tuyến, lý thuyết đồ thị, và nghệ thuật prompt.',
+  },
+] as const;
+
+/** Pinned DOM order per group (hand-off §3) — workflow must lead with the flagship w1 slot. */
+const cellOrder: Partial<Record<(typeof groups)[number]['key'], string[]>> = {
+  workflow: ['story-workflow', 'brainstorm', 'writing-plans-linear', 'orca-superpowers-workflow'],
+};
+
+/** 12-col span map (hand-off §3) — per skill id. */
+const spans: Record<string, string> = {
+  'story-workflow': 's-w1',
+  brainstorm: 's-w2',
+  'writing-plans-linear': 's-w3',
+  'orca-superpowers-workflow': 's-w4',
+  'frontend-design': 's-d1',
+  'gpt-taste': 's-d2',
+  'design-taste-frontend': 's-d3',
+  'image-to-code': 's-d3',
+  'mock-prototype': 's-d3',
+  'web-design-guidelines': 's-d3',
+  'figma-orientation': 's-r',
+  'graph-engineering': 's-r',
+  'prompt-master': 's-r',
+};
+---
+
+<Base title="danh mục skills" description={`${publicCount} skill public trong kit của Wakii — lệnh, tác dụng, và cách vận hành. Skill workflow, design, và reference, giải thích đầy đủ.`}>
+  <header class="skills-hero">
+    <div class="wrap">
+      <div class="kicker">skills</div>
+      <h1>Bộ kit, từng cell một.<br /><span class="hl">{publicCount} skills</span>, giải thích đầy đủ</h1>
+      <p class="sub">
+        Mọi skill public trong kit — lệnh, tác dụng, và cách vận hành bên dưới.
+        Không hộp đen: <code>git clone</code> mã nguồn, chạy <code>make</code>,
+        và đọc cùng.
+      </p>
+      <div class="hero-stats">
+        <div class="hs"><div class="v">{publicCount}</div><div class="k">skill public</div></div>
+        <div class="hs"><div class="v">{categoryCount}</div><div class="k">nhóm</div></div>
+        <div class="hs"><div class="v">MIT</div><div class="k">giấy phép</div></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="install" id="install" data-reveal>
+    <div class="wrap">
+      <div class="terminal">
+        <div class="term-bar">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span class="term-title">wakii — install</span>
+        </div>
+        <div class="term-body">
+          <div class="term-cmd"><span class="ps">$</span>{installCmd}</div>
+          <a class="term-link" href="/vi/docs/getting-started/">→ hướng dẫn đầy đủ: /vi/docs/getting-started/</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    groups.map((g) => (
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head" data-reveal>
+            <h2>{g.key}</h2>
+            <p>{g.blurb}</p>
+          </div>
+          <div class="bento">
+            {publicSkills
+              .filter((s) => s.category === g.key)
+              .sort((a, b) => {
+                const ord = cellOrder[g.key];
+                return ord ? ord.indexOf(a.id) - ord.indexOf(b.id) : 0;
+              })
+              .map((s) => (
+                <div class:list={['bx', spans[s.id], s.id === 'story-workflow' && 'bx-big']} data-reveal>
+                  <div class="bx-in">
+                    <div class="bx-label">
+                      <span class="t">{s.command}</span>
+                      <span class="pill">{s.id === 'story-workflow' ? 'flagship' : s.category}</span>
+                    </div>
+                    <div class="bx-body">
+                      <h3>{s.name}</h3>
+                      <p class="desc">{s.desc_vi}</p>
+                      <div class="bx-how">
+                        <div class="lbl">cách vận hành</div>
+                        <p>{s.how_vi}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  /* ---- hero ---- */
+  .skills-hero {
+    padding: 76px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .skills-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+  }
+  .skills-hero .wrap {
+    position: relative;
+  }
+  h1 {
+    font-size: clamp(30px, 4.4vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    max-width: 760px;
+  }
+  .hl {
+    color: var(--accent);
+  }
+  .sub {
+    margin-top: 20px;
+    color: var(--text-dim);
+    max-width: 620px;
+    font-size: 15px;
+    font-family: var(--font-sans);
+  }
+  .sub code {
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: var(--radius);
+    font-size: 13px;
+  }
+  .hero-stats {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 560px;
+  }
+  .hs {
+    flex: 1;
+    padding: 14px 20px;
+    border-right: 1px solid var(--border-strong);
+    min-width: 96px;
+  }
+  .hs:last-child {
+    border-right: none;
+  }
+  .hs .v {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .hs .k {
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 2px;
+  }
+
+  /* ---- install strip ---- */
+  .install {
+    padding: 0 0 8px;
+  }
+  .terminal {
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+  .dot-r {
+    background: var(--red);
+  }
+  .dot-y {
+    background: #e0b545;
+  }
+  .dot-g {
+    background: var(--accent);
+  }
+  .term-title {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-left: 6px;
+  }
+  .term-body {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    font-size: 13px;
+  }
+  .term-cmd {
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .ps {
+    color: var(--text-faint);
+    margin-right: 8px;
+  }
+  .term-link {
+    margin-left: auto;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12.5px;
+  }
+  .term-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- category sections ---- */
+  .section {
+    padding: 64px 0 8px;
+  }
+  .section-head {
+    margin-bottom: 34px;
+  }
+  .section-head h2 {
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2::before {
+    content: '// ';
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .section-head p {
+    margin-top: 10px;
+    color: var(--text-dim);
+    max-width: 620px;
+    font-size: 14.5px;
+    font-family: var(--font-sans);
+  }
+
+  /* ---- bento grid (12-col, hand-off §3 span map) ---- */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+  }
+  .bx {
+    min-width: 0;
+  }
+  .s-w1 {
+    grid-column: 1 / 8;
+    grid-row: 1 / 3;
+  }
+  .s-w2,
+  .s-w3 {
+    grid-column: 8 / 13;
+  }
+  .s-w4 {
+    grid-column: 1 / 13;
+  }
+  .s-d1 {
+    grid-column: 1 / 7;
+  }
+  .s-d2 {
+    grid-column: 7 / 13;
+  }
+  .s-d3 {
+    grid-column: span 3;
+  }
+  .s-r {
+    grid-column: span 4;
+  }
+
+  /* ---- card anatomy ---- */
+  .bx-in {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+  .bx-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .bx-label .t {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .pill {
+    font-size: 10.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(69, 224, 168, 0.4);
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  .bx-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .bx-body h3 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .desc {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text-dim);
+    font-family: var(--font-sans);
+  }
+  .bx-how {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+  .bx-how .lbl {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .bx-how .lbl::before {
+    content: '» ';
+  }
+  .bx-how p {
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-faint);
+    font-family: var(--font-sans);
+  }
+
+  /* ---- flagship big card overrides ---- */
+  .bx-big h3 {
+    font-size: 18px;
+  }
+  .bx-big .desc {
+    font-size: 14.5px;
+  }
+  .bx-big .bx-how p {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ---- responsive (hand-off §6) ---- */
+  @media (max-width: 980px) {
+    .s-w1 {
+      grid-column: 1 / 13;
+      grid-row: auto;
+    }
+    .s-w2,
+    .s-w3 {
+      grid-column: 1 / 7;
+    }
+    .s-w4,
+    .s-d1,
+    .s-d2 {
+      grid-column: 1 / 13;
+    }
+    .s-d3,
+    .s-r {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 620px) {
+    .wrap {
+      padding: 0 20px;
+    }
+    .bento {
+      gap: 12px;
+    }
+    .bento .bx {
+      grid-column: 1 / 13;
+    }
+    .hs {
+      min-width: 96px;
+    }
+    .term-link {
+      margin-left: 0;
+    }
+  }
+
+  /* ---- hover lift (pure CSS, touch devices excluded) ---- */
+  @media (hover: hover) and (pointer: fine) {
+    .bx-in:hover {
+      border-color: var(--accent);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(69, 224, 168, 0.08);
+      transform: translateY(-3px);
+    }
+  }
+</style>
+
+<script>
+  // SF-2 motion contract: consume the shared util, nothing custom.
+  // data-reveal lives on the terminal, each .section-head and each outer .bx.
+  import { initMotion } from '../../components/motion';
+  initMotion();
+</script>

@@ -1,0 +1,40 @@
+---
+/**
+ * Landing — v2 "Modern Bento Premium" (direction-d3-bento.html, BINDING).
+ * Pure shell: renders section components in order and boots the shared
+ * motion util. All copy lives in src/i18n/landing.ts.
+ * Rendered for both locales: / (EN) and /vi/ (VI) pass their string map.
+ *
+ * Ownership (FI-294 componentize, SF-1): each section component in
+ * src/components/landing/ is owned by its SF — GetWakii.astro → SF-3,
+ * Workflow.astro + Philosophy.astro → SF-4, the rest read-only.
+ */
+import type { LandingStrings } from '../i18n/landing';
+import Hero from './landing/Hero.astro';
+import Bento from './landing/Bento.astro';
+import ZeroSetup from './landing/ZeroSetup.astro';
+import Workflow from './landing/Workflow.astro';
+import Philosophy from './landing/Philosophy.astro';
+import GetWakii from './landing/GetWakii.astro';
+import Faq from './landing/Faq.astro';
+import '../styles/landing.css';
+import '../styles/motion.css';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+---
+
+<Hero strings={strings} />
+<Bento strings={strings} />
+<ZeroSetup strings={strings} />
+<Workflow strings={strings} />
+<Philosophy strings={strings} />
+<GetWakii strings={strings} />
+<Faq strings={strings} />
+
+<script>
+  import { initMotion } from './motion';
+  initMotion();
+</script>

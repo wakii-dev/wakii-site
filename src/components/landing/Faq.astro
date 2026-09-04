@@ -1,0 +1,96 @@
+---
+/**
+ * Landing — FAQ section. Extracted from Landing.astro (SF-1 componentize,
+ * FI-295) — markup + styles verbatim.
+ */
+import type { LandingStrings } from '../../i18n/landing';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
+---
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.faq.kicker}</div>
+      <h2>{t.faq.title}</h2>
+    </div>
+    {t.faq.items.map((item) => (
+      <details data-reveal>
+        <summary>{item.q}</summary>
+        <div class="ans">{item.a}</div>
+      </details>
+    ))}
+    <p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding: var(--section-pad) 0;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border);
+  }
+  details {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 18px 24px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 14.5px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  summary::before {
+    content: '? ';
+    color: var(--accent);
+    font-weight: 700;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '+';
+    color: var(--accent);
+    font-size: 16px;
+  }
+  details[open] summary::after {
+    content: '-';
+  }
+  details .ans {
+    padding: 0 24px 20px 52px;
+    color: var(--text-dim);
+    font-size: 13.5px;
+    font-family: var(--font-sans);
+  }
+  details .ans code {
+    color: var(--accent);
+    font-size: 12.5px;
+  }
+  .faq-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .faq-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .faq-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+</style>

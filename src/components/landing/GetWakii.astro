@@ -1,0 +1,273 @@
+---
+/**
+ * Landing — Get Wakii section (SF-3 FI-297).
+ * "Bento Composer" per docs/superpowers/designs/sf3-direction.md (BINDING):
+ * asymmetric bento 12-col — steps hero (8/12) + requirements & repository
+ * sidebar. Copy = getWakii keys verbatim (SF-1 pre-add, VI-approved);
+ * REPO_URL from src/config.ts (placeholder-mode — never hardcode a URL).
+ */
+import type { LandingStrings } from '../../i18n/landing';
+import { REPO_URL } from '../../config';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+const g = t.getWakii;
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
+// data carries a literal <repo-url> — interpolate the constant at render time
+const cmd = (s: string) => s.replace('<repo-url>', REPO_URL);
+// note = "<head> — <rest>" → bold the lead phrase (both locales use " — ")
+const [noteHead, ...rest] = g.note.split(' — ');
+const noteRest = rest.join(' — ');
+---
+
+<section class="gw" id="get-wakii">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{g.kicker}</div>
+      <h2>{g.title}</h2>
+      <p>{g.sub}</p>
+    </div>
+
+    <div class="bento">
+      <div class="cell steps reveal">
+        <div class="bx-in" data-tilt>
+          <div class="bx-label"><span class="t">install sequence</span><span class="meta">3 steps · exit 0</span></div>
+          <div class="bx-body">
+            {g.steps.map((step) => (
+              <div class="stp">
+                <div class="n">{step.n}</div>
+                <div class="stp-main">
+                  <h3>{step.title} <span class="cmt">{step.comment}</span></h3>
+                  <p>{step.desc}</p>
+                  <div class="cmd">{cmd(step.cmd)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="cell req reveal">
+        <div class="bx-in" data-tilt>
+          <div class="bx-label"><span class="t">{g.reqTitle}</span><span class="meta">pre-flight</span></div>
+          <div class="bx-body">
+            {g.reqItems.map((item) => (
+              <div class="req-row"><span class="name">{item}</span></div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="cell cta reveal">
+        <div class="bx-in" data-tilt>
+          <div class="bx-label"><span class="t">repository</span><span class="meta">github</span></div>
+          <div class="bx-body cta-body">
+            <a class="btn btn-primary" href={REPO_URL}>{g.repoCta}</a>
+            <a class="btn btn-ghost" href={docsHref}>{t.hero.ctaGhost}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="gw-note reveal"><b>{noteHead}</b>{noteRest && ` — ${noteRest}`}</p>
+  </div>
+</section>
+
+<style>
+  .gw {
+    padding: 92px 0 64px;
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
+    gap: var(--bento-gap);
+  }
+  .cell { min-width: 0; }
+  .steps { grid-column: 1 / 9; grid-row: 1 / 3; }
+  .req, .cta { grid-column: 9 / 13; }
+
+  .bx-in {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 250ms ease, border-color 250ms ease;
+  }
+  .bx-in:hover {
+    border-color: var(--accent);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.07);
+  }
+  .bx-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 18px;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+  }
+  .bx-label .t {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .bx-label .meta {
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .bx-body {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+  }
+
+  /* steps */
+  .stp {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 4px 18px;
+    padding: 18px 20px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+  .stp:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .stp .n {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .stp h3 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .stp .cmt {
+    font-size: 10.5px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-faint);
+  }
+  .stp p {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  .cmd {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .cmd::before {
+    content: '$ ';
+    color: var(--text-faint);
+  }
+
+  /* requirements */
+  .req-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .req-row:last-child {
+    border-bottom: none;
+  }
+  .req-row .name::before {
+    content: '✓ ';
+    color: var(--accent);
+  }
+
+  /* repository cta */
+  .cta-body {
+    justify-content: center;
+    gap: 14px;
+  }
+  .btn {
+    display: inline-block;
+    font-size: 13.5px;
+    padding: 11px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .btn::before {
+    content: '> ';
+    opacity: 0.55;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg-deep);
+    font-weight: 500;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 32px rgba(69, 224, 168, 0.35);
+  }
+  .btn-ghost {
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* note */
+  .gw-note {
+    margin-top: 20px;
+    border-left: 2px solid var(--accent);
+    padding: 6px 0 6px 18px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    max-width: 820px;
+  }
+
+  @media (max-width: 980px) {
+    .steps {
+      grid-column: 1 / 13;
+      grid-row: auto;
+    }
+    .req, .cta {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 720px) {
+    .gw {
+      padding: 72px 0 48px;
+    }
+    .req, .cta {
+      grid-column: 1 / 13;
+    }
+    .stp {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+/**
+ * Landing — Zero-setup strip. Extracted from Landing.astro (SF-1
+ * componentize, FI-295) — markup + styles verbatim.
+ */
+import type { LandingStrings } from '../../i18n/landing';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+---
+
+<section class="zero">
+  <div class="wrap zero-grid">
+    {t.zero.map((z) => (
+      <div class="zero-item">
+        <div class="status"><em>{z.status}</em></div>
+        <h3>{z.title}</h3>
+        <p>{z.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .zero {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-raised);
+    padding: 42px 0;
+  }
+  .zero-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .zero-item {
+    padding: 12px 32px;
+    border-left: 1px dashed var(--border-strong);
+  }
+  .zero-item:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+  .zero-item .status {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .zero-item .status::before {
+    content: '[ OK ] ';
+    color: var(--accent);
+  }
+  .zero-item .status em {
+    color: var(--text-faint);
+    font-style: normal;
+  }
+  .zero-item h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+  .zero-item p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .zero-item p code {
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  @media (max-width: 1020px) {
+    .zero-grid {
+      grid-template-columns: 1fr;
+    }
+    .zero-item {
+      border-left: none;
+      padding-left: 0;
+      padding: 12px 0;
+    }
+  }
+</style>
