@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wakii — the IDE with a built-in team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070A08;
+    --bg-raise: #0B0F0C;
+    --panel: #0D1310;
+    --line: #1C2B22;
+    --line-strong: #2B4234;
+    --text: #D9E6DD;
+    --text-dim: #8FA697;
+    --text-faint: #5A7163;
+    --accent: #45E0A8;
+    --accent-dim: rgba(69, 224, 168, 0.1);
+    --amber: #E0B545;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14.5px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 32px; }
+  ::selection { background: var(--accent); color: #04140D; }
+
+  /* ===== NAV ===== */
+  nav {
+    border-bottom: 1px solid var(--line);
+    background: rgba(7, 10, 8, 0.9);
+    backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .logo { font-weight: 700; font-size: 17px; letter-spacing: -0.02em; }
+  .logo .dot { color: var(--accent); }
+  .logo .prompt { color: var(--text-faint); font-weight: 400; }
+  .nav-links { display: flex; gap: 26px; align-items: center; font-size: 13px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; }
+  .nav-links a::before { content: "./"; color: var(--text-faint); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    border: 1px solid var(--accent); color: var(--accent) !important;
+    padding: 7px 16px;
+  }
+  .nav-cta::before { content: "$ " !important; color: var(--text-faint); }
+  .nav-cta:hover { background: var(--accent); color: #04140D !important; }
+  .nav-cta:hover::before { color: #04140D; }
+
+  /* ===== SHARED ===== */
+  .kicker { font-size: 12px; color: var(--text-faint); margin-bottom: 28px; letter-spacing: 0.08em; }
+  .kicker::before { content: "## "; color: var(--accent); }
+  .blink { animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ===== TILT-DEPTH LAYERS (variant) ===== */
+  .hero { padding: 96px 0 88px; position: relative; }
+  .depth-mark {
+    position: absolute; top: 40px; left: 50%; margin-left: -480px;
+    width: 960px; pointer-events: none; user-select: none;
+    font-size: 11px; line-height: 1.25; letter-spacing: 0.35em;
+    color: var(--accent); opacity: 0.045; white-space: pre; z-index: 0;
+    will-change: transform;
+  }
+  .hero .wrap { position: relative; z-index: 1; }
+  .tilt-scene {
+    perspective: 1400px;
+    margin-bottom: 72px;
+  }
+  .tilt-card {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .tilt-card .ghost {
+    position: absolute; inset: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .tilt-card .ghost.g1 { transform: translateZ(-50px); border-color: rgba(69,224,168,0.10); }
+  .tilt-card .ghost.g2 { transform: translateZ(-110px); border-color: rgba(69,224,168,0.05); }
+
+  /* ===== HERO ===== */
+  .term {
+    border: 1px solid var(--line-strong); border-radius: 10px;
+    background: var(--bg-raise);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(69,224,168,0.04);
+    overflow: hidden;
+    position: relative; z-index: 1;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .term-bar .tl { width: 11px; height: 11px; border-radius: 50%; background: var(--line-strong); }
+  .term-bar .tl:first-child { background: #E5654F; }
+  .term-bar .tl:nth-child(2) { background: var(--amber); }
+  .term-bar .tl:nth-child(3) { background: var(--accent); }
+  .term-bar .title { margin-left: 12px; font-size: 12px; color: var(--text-faint); }
+  .term-body { padding: 32px 36px 40px; font-size: 14px; }
+  .term-body .ln { margin-bottom: 10px; color: var(--text-faint); }
+  .term-body .cmd { color: var(--text); }
+  .term-body .cmd::before { content: "$ "; color: var(--accent); }
+  .term-body .out-ok { color: var(--text-dim); }
+  .term-body .ok { color: var(--accent); }
+  .term-body .last { margin-top: 22px; margin-bottom: 0; }
+  .term-body .cursor-line::after { content: "▊"; color: var(--accent); animation: blink 1.1s steps(1) infinite; }
+
+  .hero h1 {
+    font-size: clamp(34px, 5.5vw, 62px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+  .hero h1 .hl { color: var(--accent); }
+  .hero h1 .cursor::after { content: "▊"; color: var(--accent); animation: blink 1.1s steps(1) infinite; font-weight: 400; }
+  .hero .tagline { margin-top: 26px; color: var(--text-dim); max-width: 640px; font-size: 15px; }
+  .hero .tagline code { color: var(--accent); background: var(--accent-dim); padding: 1px 6px; }
+  .cta-row { margin-top: 44px; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: var(--mono); font-size: 15px; font-weight: 500;
+    padding: 14px 28px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.15s ease;
+  }
+  .btn::before { content: "> "; font-weight: 400; opacity: 0.6; }
+  .btn-primary { background: var(--accent); color: #04140D; }
+  .btn-primary::before { opacity: 0.5; }
+  .btn-primary:hover { box-shadow: 0 0 32px rgba(69,224,168,0.35); transform: translateY(-1px); }
+  .btn-ghost { border: 1px solid var(--line-strong); color: var(--text-dim); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    margin-top: 48px; display: flex; gap: 0; flex-wrap: wrap;
+    border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    max-width: 720px;
+    will-change: transform;
+  }
+  .hs { flex: 1; padding: 16px 24px; border-right: 1px solid var(--line); min-width: 140px; }
+  .hs:last-child { border-right: none; }
+  .hs .v { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .hs .k { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+
+  /* ===== ZERO-SETUP ===== */
+  .zero {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: var(--bg-raise); padding: 44px 0;
+  }
+  .zero-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .zero-item { padding: 12px 32px; border-left: 1px dashed var(--line-strong); }
+  .zero-item:first-child { border-left: none; padding-left: 0; }
+  .zero-item .status { font-size: 12px; margin-bottom: 12px; }
+  .zero-item .status::before { content: "[ OK ] "; color: var(--accent); }
+  .zero-item .status em { color: var(--text-faint); font-style: normal; }
+  .zero-item h3 { font-size: 15.5px; font-weight: 700; }
+  .zero-item p { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+  .zero-item p code { color: var(--accent); font-size: 12px; }
+
+  /* ===== FEATURES ===== */
+  .section { padding: 96px 0; }
+  .section-head h2 { font-size: clamp(26px, 3.5vw, 38px); font-weight: 700; letter-spacing: -0.02em; }
+  .section-head h2::before { content: "// "; color: var(--accent); font-weight: 400; }
+  .section-head p { margin-top: 14px; color: var(--text-dim); font-size: 14.5px; max-width: 580px; }
+  .section-head { margin-bottom: 48px; }
+
+  .feat-list { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .feat {
+    display: grid; grid-template-columns: 200px 1fr auto;
+    gap: 28px; padding: 26px 28px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    align-items: baseline;
+    transition: background 0.15s ease;
+    will-change: transform, opacity;
+  }
+  .feat:last-child { border-bottom: none; }
+  .feat:hover { background: var(--accent-dim); }
+  .feat .id { font-size: 12.5px; color: var(--text-faint); }
+  .feat .id b { color: var(--accent); font-weight: 500; }
+  .feat h3 { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .feat p { font-size: 13.5px; color: var(--text-dim); }
+  .feat .flag {
+    font-size: 11.5px; color: var(--accent); border: 1px solid var(--line-strong);
+    padding: 4px 10px; border-radius: 4px; white-space: nowrap;
+    background: var(--panel);
+  }
+
+  /* ===== WORKFLOW ===== */
+  .flow { padding: 96px 0; background: var(--bg-raise); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .pipe {
+    font-size: 13.5px; line-height: 2.4; color: var(--text-dim);
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--panel); padding: 32px 36px;
+    overflow-x: auto; white-space: nowrap;
+    will-change: transform;
+  }
+  .pipe .st { color: var(--text); font-weight: 500; }
+  .pipe .arrow { color: var(--text-faint); padding: 0 6px; }
+  .pipe .hot { color: var(--accent); font-weight: 700; }
+  .pipe .gate::before { content: "["; color: var(--text-faint); }
+  .pipe .gate::after { content: "]"; color: var(--text-faint); }
+  .pipe-legend { margin-top: 24px; font-size: 12.5px; color: var(--text-faint); }
+  .pipe-legend .dot-ac { color: var(--accent); }
+  .flow-note {
+    margin-top: 40px; border-left: 2px solid var(--accent);
+    padding: 8px 0 8px 20px; font-size: 13.5px; color: var(--text-dim); max-width: 640px;
+  }
+  .flow-note b { color: var(--text); font-weight: 500; }
+  .flow-note em { color: var(--accent); font-style: normal; }
+
+  /* ===== QUICKSTART ===== */
+  .quick { padding: 96px 0; }
+  .quick-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .qs {
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--panel); padding: 24px;
+    transition: border-color 0.15s ease, transform 0.2s ease;
+    will-change: transform;
+  }
+  .qs:hover { border-color: var(--accent); }
+  .qs .qn { font-size: 11.5px; color: var(--text-faint); letter-spacing: 0.1em; }
+  .qs .qn b { color: var(--accent); }
+  .qs h3 { font-size: 15.5px; font-weight: 700; margin-top: 10px; }
+  .qs p { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+  .qs .cmd {
+    margin-top: 16px; font-size: 12.5px; color: var(--accent);
+    background: var(--bg); border: 1px solid var(--line);
+    padding: 10px 14px; border-radius: 6px; white-space: nowrap; overflow-x: auto;
+  }
+  .qs .cmd::before { content: "$ "; color: var(--text-faint); }
+  .quick-more { margin-top: 32px; font-size: 13.5px; color: var(--text-dim); }
+  .quick-more::before { content: "-> "; color: var(--accent); }
+  .quick-more a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+
+  /* ===== FAQ ===== */
+  .faq { padding: 88px 0; background: var(--bg-raise); border-top: 1px solid var(--line); }
+  details { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); margin-bottom: 12px; overflow: hidden; }
+  summary {
+    padding: 18px 24px; cursor: pointer; list-style: none;
+    font-size: 14.5px; font-weight: 500;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  }
+  summary::before { content: "? "; color: var(--accent); font-weight: 700; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--accent); font-size: 16px; }
+  details[open] summary::after { content: "-"; }
+  details .ans { padding: 0 24px 20px 52px; color: var(--text-dim); font-size: 13.5px; }
+  details .ans code { color: var(--accent); font-size: 12.5px; }
+
+  /* ===== FOOTER ===== */
+  footer { border-top: 1px solid var(--line); padding: 40px 0; font-size: 12.5px; color: var(--text-faint); }
+  .foot-inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .foot-inner .l b { color: var(--text-dim); font-weight: 500; }
+  .foot-inner .l b .dot { color: var(--accent); }
+  .foot-inner a { color: var(--text-dim); text-decoration: none; }
+  .foot-inner a:hover { color: var(--accent); }
+  .foot-inner a::before { content: "./"; color: var(--text-faint); }
+
+  @media (max-width: 900px) {
+    .zero-grid, .quick-steps { grid-template-columns: 1fr; }
+    .zero-item { border-left: none; padding-left: 0; padding: 12px 0; }
+    .feat { grid-template-columns: 1fr; gap: 8px; }
+    .feat .flag { justify-self: start; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .term-body { padding: 24px 20px 32px; }
+    .depth-mark { display: none; }
+  }
+
+  /* ===== REDUCED MOTION ===== */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .blink, .term-body .cursor-line::after, .hero h1 .cursor::after { animation: none; }
+    .depth-mark, .tilt-card, .tilt-card .ghost, .hero-stats, .pipe, .qs, .feat { transform: none !important; opacity: 1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo"><span class="prompt">~/</span>wakii<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="#features">features</a>
+      <a href="#workflow">workflow</a>
+      <a href="#quickstart">quickstart</a>
+      <a href="#faq">faq</a>
+      <a href="#" class="nav-cta">get wakii</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <pre class="depth-mark" id="depthMark" aria-hidden="true">
+ /\
+{  }   <>   [ ]   { }   /\   <>   [ ]   { }   /\   <>
+[  ]  /\  { }  <>  [ ]  /\  { }  <>  [ ]  /\  { }  <>
+ <>  {  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]
+/\  <>  [ ]  { }  /\  <>  [ ]  { }  /\  <>  [ ]  { }
+{  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]  /\
+[ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {
+ <>  {  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]
+/\  <>  [ ]  { }  /\  <>  [ ]  { }  /\  <>  [ ]  { }
+{  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]  /\
+[ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {
+ <>  {  }  [ ]  /\  <>  {  }  [ ]  /\  <>  {  }  [ ]
+  </pre>
+  <div class="wrap">
+
+    <div class="tilt-scene">
+      <div class="tilt-card" id="tiltCard">
+        <div class="ghost g1" aria-hidden="true"></div>
+        <div class="ghost g2" aria-hidden="true"></div>
+        <div class="term">
+          <div class="term-bar">
+            <span class="tl"></span><span class="tl"></span><span class="tl"></span>
+            <span class="title">wakii — zsh</span>
+          </div>
+          <div class="term-body">
+            <div class="ln cmd">wakii ./my-project</div>
+            <div class="ln out-ok">› resolving project context … <span class="ok">done</span></div>
+            <div class="ln out-ok">› bundled plugin <span class="ok">loaded</span> · kit → <span class="ok">~/.claude</span> · team <span class="ok">enabled</span></div>
+            <div class="ln out-ok">› 9 agents online · superpowers panel ready</div>
+            <div class="ln last cmd cursor-line">/superpowers "ship the next feature while I get coffee"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="heroCopy">
+      <div class="kicker">agentic ide // open source // fork of orca</div>
+      <h1>Your IDE just hired <span class="hl">a team</span><span class="cursor"> </span></h1>
+      <p class="tagline">Wakii is an agentic IDE with a built-in superpowers team — plugin bundled, kit auto-installed to <code>~/.claude</code>, enabled by default. Describe an idea and the pipeline runs: plan, parallel agents, verify gates, one clean PR.</p>
+      <div class="cta-row">
+        <a href="#" class="btn btn-primary">get wakii — build from source</a>
+        <a href="#" class="btn btn-ghost">read the guide</a>
+      </div>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hs"><div class="v">9</div><div class="k">agents, role-gated</div></div>
+      <div class="hs"><div class="v">0</div><div class="k">setup steps</div></div>
+      <div class="hs"><div class="v">1</div><div class="k">PR per story</div></div>
+      <div class="hs"><div class="v">MIT</div><div class="k">fork of orca</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="zero">
+  <div class="wrap zero-grid">
+    <div class="zero-item">
+      <div class="status"><em>bootstrap</em> 0.0s</div>
+      <h3>Bundled plugin</h3>
+      <p>Superpowers ships inside the app. No marketplace, no version juggling.</p>
+    </div>
+    <div class="zero-item">
+      <div class="status"><em>install</em> ~/.claude</div>
+      <h3>Kit auto-installs</h3>
+      <p>Skills land in <code>~/.claude</code> on first launch. You never touch a config file.</p>
+    </div>
+    <div class="zero-item">
+      <div class="status"><em>config</em> enabled=true</div>
+      <h3>Enabled by default</h3>
+      <p>The team is on when you open Wakii. Opt out per-project — not opt in.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">capabilities</div>
+      <h2>features.sh</h2>
+      <p>Six systems, one pipeline. Each one exists to move a story from spoken idea to verified pull request.</p>
+    </div>
+    <div class="feat-list" id="featList">
+      <div class="feat">
+        <div class="id">sf<b>.001</b><br>core</div>
+        <div><h3>Story system</h3><p>Epics decompose into spec slices — SF brackets — each with explicit scope, so nothing ships half-understood.</p></div>
+        <div class="flag">epic → SF bracket</div>
+      </div>
+      <div class="feat">
+        <div class="id">sf<b>.002</b><br>ui</div>
+        <div><h3>Bracket canvas panel</h3><p>The whole story map on a live canvas beside your editor — dependencies, status, gates at a glance.</p></div>
+        <div class="flag">visual tracking</div>
+      </div>
+      <div class="feat">
+        <div class="id">sf<b>.003</b><br>team</div>
+        <div><h3>9-agent team + gates</h3><p>Coordinators, designers, executors, verifiers. Gates between roles mean nothing passes unchecked.</p></div>
+        <div class="flag">role-gated</div>
+      </div>
+      <div class="feat">
+        <div class="id">sf<b>.004</b><br>reliability</div>
+        <div><h3>Watchdog auto-complete</h3><p>Catches stalls and unfinished hand-offs, then drives the work to completion on its own.</p></div>
+        <div class="flag">no babysitting</div>
+      </div>
+      <div class="feat">
+        <div class="id">sf<b>.005</b><br>memory</div>
+        <div><h3>Memory &amp; learning loop</h3><p>Decisions, verdicts and patterns persist across sessions. The team gets sharper every story.</p></div>
+        <div class="flag">persistent context</div>
+      </div>
+      <div class="feat">
+        <div class="id">sf<b>.006</b><br>design</div>
+        <div><h3>Figma-to-verify pipeline</h3><p>Design files in, prototypes out — and verifiers check the build against the source of truth.</p></div>
+        <div class="flag">design-accurate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="workflow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">pipeline</div>
+      <h2>cat workflow.md</h2>
+    </div>
+    <div class="pipe" id="pipe">
+      <span class="st">idea</span><span class="arrow">→</span><span class="st">impact</span><span class="arrow">→</span><span class="st">plan <span style="color:var(--text-faint);font-weight:400">(linear subtasks)</span></span><span class="arrow">→</span><span class="hot">parallel SFs</span><span class="arrow">→</span><span class="st gate">verify gates</span><span class="arrow">→</span><span class="st">1 PR / story</span>
+    </div>
+    <div class="pipe-legend"><span class="dot-ac">▮</span> highlighted stage = agents executing concurrently</div>
+    <div class="flow-note">The pipeline runs in the open. Track every slice, gate and verdict live in the <b>Superpowers panel</b> and the <em>bracket canvas</em> — while the <b>watchdog</b> makes sure nothing stalls.</div>
+  </div>
+</section>
+
+<section class="quick" id="quickstart">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">getting started</div>
+      <h2>quickstart — 3 steps</h2>
+    </div>
+    <div class="quick-steps" id="quickSteps">
+      <div class="qs">
+        <div class="qn"><b>step 01</b> // build</div>
+        <h3>Build Wakii</h3>
+        <p>Clone and build from source. One command, fully self-contained.</p>
+        <div class="cmd">git clone wakii && make</div>
+      </div>
+      <div class="qs">
+        <div class="qn"><b>step 02</b> // open</div>
+        <h3>Open a project</h3>
+        <p>The kit installs itself on first launch. Nothing to configure.</p>
+        <div class="cmd">wakii ./your-project</div>
+      </div>
+      <div class="qs">
+        <div class="qn"><b>step 03</b> // delegate</div>
+        <h3>Describe an idea</h3>
+        <p>The team plans, executes in parallel, hands you one verified PR.</p>
+        <div class="cmd">/superpowers "add dark mode"</div>
+      </div>
+    </div>
+    <p class="quick-more">just the teaser — the <a href="#">full usage guide</a> covers every panel, gate and workflow.</p>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">faq</div>
+      <h2>frequently asked</h2>
+    </div>
+    <details>
+      <summary>Is Wakii really zero-setup?</summary>
+      <div class="ans">Yes. The plugin is bundled in the app and the skills kit installs itself to <code>~/.claude</code> on first launch, enabled by default. Open Wakii — the team is already there.</div>
+    </details>
+    <details>
+      <summary>How is this different from an AI plugin in my editor?</summary>
+      <div class="ans">A plugin gives you a chat window. Wakii gives you a team: nine agents with defined roles, gates between them, a watchdog that completes stalled work, and memory that compounds across sessions.</div>
+    </details>
+    <details>
+      <summary>What does "one PR per story" mean?</summary>
+      <div class="ans">Each story — however many agents and spec slices it takes — lands as one clean, reviewable pull request with verification behind it. No PR storms, no half-merged states.</div>
+    </details>
+    <details>
+      <summary>What is Wakii's relationship to Orca?</summary>
+      <div class="ans">Wakii is an open-source fork of Orca, which is MIT licensed. We credit the upstream project fully and build the superpowers team on top of it.</div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="l"><b>wakii<span class="dot">.</span></b> — open-source agentic IDE, forked from <a href="#">orca</a> (MIT). exit code 0.</div>
+    <div>
+      <a href="#">github</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="#">guide</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="#">orca upstream</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (RM.matches || !finePointer.matches) return; // static fallback
+
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var clamp = function (v, min, max) { return Math.min(max, Math.max(min, v)); };
+
+  /* ---- 1. Terminal tilt (perspective + rotateX/Y, lerped in rAF) ---- */
+  var tiltCard = document.getElementById('tiltCard');
+  var hero = document.getElementById('hero');
+  var tx = 0, ty = 0, cx = 0, cy = 0, tiltActive = false;
+
+  hero.addEventListener('mousemove', function (e) {
+    var r = hero.getBoundingClientRect();
+    tx = (e.clientX - r.left) / r.width - 0.5;
+    ty = (e.clientY - r.top) / r.height - 0.5;
+    tiltActive = true;
+  });
+  hero.addEventListener('mouseleave', function () { tx = 0; ty = 0; });
+
+  /* ---- 2. Scroll depth: watermark + rows at different drift speeds ---- */
+  var depthMark = document.getElementById('depthMark');
+  var heroCopy = document.getElementById('heroCopy');
+  var heroStats = document.getElementById('heroStats');
+  var feats = Array.prototype.slice.call(document.querySelectorAll('#featList .feat'));
+  var pipe = document.getElementById('pipe');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('#quickSteps .qs'));
+
+  function driftRow(el, i, sign, maxShift) {
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight;
+    // progress: -1 (below fold) .. 0 (center) .. 1 (above fold)
+    var p = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+    var shift = clamp(p, -1, 1) * maxShift * sign * (1 + (i % 3) * 0.35);
+    el.style.transform = 'translate3d(' + shift.toFixed(1) + 'px,0,0)';
+    el.style.opacity = (1 - Math.abs(clamp(p, -1, 1)) * 0.18).toFixed(3);
+  }
+
+  function onScroll() {
+    var y = window.scrollY || window.pageYOffset;
+    if (y < window.innerHeight * 1.4) {
+      depthMark.style.transform = 'translate3d(0,' + (y * -0.14).toFixed(1) + 'px,0)';
+      heroCopy.style.transform = 'translate3d(0,' + (y * -0.05).toFixed(1) + 'px,0)';
+      heroStats.style.transform = 'translate3d(0,' + (y * -0.08).toFixed(1) + 'px,0)';
+    }
+    for (var i = 0; i < feats.length; i++) driftRow(feats[i], i, i % 2 === 0 ? -1 : 1, 16);
+    driftRow(pipe, 0, 1, 22);
+    for (var j = 0; j < steps.length; j++) driftRow(steps[j], j, j % 2 === 0 ? 1 : -1, 12);
+  }
+
+  /* ---- single rAF loop, 60fps, transform/opacity only ---- */
+  var ticking = false;
+  function frame() {
+    if (tiltActive) {
+      cx = lerp(cx, tx, 0.08);
+      cy = lerp(cy, ty, 0.08);
+      tiltCard.style.transform =
+        'rotateX(' + (-cy * 7).toFixed(2) + 'deg) rotateY(' + (cx * 9).toFixed(2) + 'deg)';
+      if (Math.abs(cx - tx) < 0.001 && Math.abs(cy - ty) < 0.001 && tx === 0 && ty === 0) tiltActive = false;
+    }
+    if (ticking) { onScroll(); ticking = false; }
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('scroll', function () { ticking = true; }, { passive: true });
+  onScroll();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
