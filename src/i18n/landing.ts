@@ -328,7 +328,7 @@ export const en: LandingStrings = {
     title: 'build it from source',
     sub: 'Wakii is a desktop app built from an open repo. Three commands from clone to the Superpowers panel — no configuration along the way.',
     steps: [
-      { n: 'step 01', comment: '// clone', title: 'Get the source', desc: 'Clone the repository — the github link in the footer points at the Wakii fork.', cmd: 'git clone <repo-url> wakii && cd wakii' },
+      { n: 'step 01', comment: '// clone', title: 'Get the source', desc: 'Clone the repository from GitHub — the link is in the site footer.', cmd: 'git clone <repo-url> wakii && cd wakii' },
       { n: 'step 02', comment: '// install', title: 'Install dependencies', desc: 'Pulls the JavaScript deps and builds the native modules for your platform. First run takes a few minutes.', cmd: 'pnpm install' },
       { n: 'step 03', comment: '// run', title: 'Run the app', desc: 'Dev mode for looking around, or a production build. The Wakii window opens with the team already inside.', cmd: 'pnpm dev   # or: pnpm build && pnpm start' },
     ],
@@ -524,7 +524,7 @@ export const vi: LandingStrings = {
     title: 'build từ mã nguồn',
     sub: 'Wakii là app desktop build từ repo mở. Ba lệnh từ clone tới Superpowers panel — không cần cấu hình gì trên đường đi.',
     steps: [
-      { n: 'bước 01', comment: '// clone', title: 'Lấy mã nguồn', desc: 'Clone repository — link github ở footer trỏ tới fork Wakii.', cmd: 'git clone <repo-url> wakii && cd wakii' },
+      { n: 'bước 01', comment: '// clone', title: 'Lấy mã nguồn', desc: 'Clone repository từ GitHub — link nằm ở footer của site.', cmd: 'git clone <repo-url> wakii && cd wakii' },
       { n: 'bước 02', comment: '// cài', title: 'Cài dependencies', desc: 'Kéo JavaScript deps và build native module cho hệ điều hành của bạn. Lần đầu mất vài phút.', cmd: 'pnpm install' },
       { n: 'bước 03', comment: '// chạy', title: 'Chạy app', desc: 'Chế độ dev để xem quanh, hoặc build production. Cửa sổ Wakii mở ra với team đã ở bên trong.', cmd: 'pnpm dev   # hoặc: pnpm build && pnpm start' },
     ],
