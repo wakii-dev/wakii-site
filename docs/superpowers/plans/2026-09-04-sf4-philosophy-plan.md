@@ -43,9 +43,9 @@
 **Files:**
 - Modify: `src/components/Landing.astro`
 
-- [ ] **Step 1:** import Philosophy + render `<Philosophy strings={strings} />` NGAY SAU `<Workflow>` (trước GetWakii). KHÔNG đổi thứ tự/số lượng section khác (boundary).
-- [ ] **Step 2:** build xanh; grep dist EN `/` + `/vi/`: section `#philosophy` tồn tại giữa `#workflow` và get-wakii; comment ownership header cập nhật (philosophy → SF-4).
-- [ ] **Step 3: Commit** — `feat(sf-4): wire philosophy section sau workflow trên landing (FI-299)`
+- [x] **Step 1:** import Philosophy + render `<Philosophy strings={strings} />` NGAY SAU `<Workflow>` (trước GetWakii). KHÔNG đổi thứ tự/số lượng section khác (boundary).
+- [x] **Step 2:** build xanh; grep dist EN `/` + `/vi/`: section `#philosophy` tồn tại giữa `#workflow` và get-wakii; comment ownership header cập nhật (philosophy → SF-4).
+- [x] **Step 3: Commit** — `feat(sf-4): wire philosophy section sau workflow trên landing (FI-299)`
 
 ### Task 4: Workflow deepen — agents block (ai làm gì)
 
