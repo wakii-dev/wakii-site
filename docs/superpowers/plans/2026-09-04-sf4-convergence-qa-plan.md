@@ -25,8 +25,8 @@ Biên merge: story/fi289-wakii-site (no-ff, merge-playbook).
 - [x] **Task 4 — locale-e2e-cả-2-ngôn-ngữ:** ✅ nav CTA, sidebar, prev-next, lang switch, 404 — flow click thật trên Orca browser.
 - [x] **Task 5 — link-integrity-full-site:** ✅ 187 links, 0 broken, 0 missing trailing slash (sau fix dd98b65).
 - [x] **Task 6 — responsive-audit:** ✅ scrollWidth=390 @390px trên 4 key pages; known P2 bento mid-word wrap (SF-1 kit, không sửa).
-- [ ] **Task 7 — pre-publish-checklist:** OG+og.png ĐÃ THÊM (c716a53), hreflang/sitemap/robots/404 ✅ — ⏳ REPO_URL chờ user confirm (gate 2).
-- [ ] **Task 8 — deploy-verify-preview-xanh:** chưa chạy — chờ gate 2 + merge.
+- [x] **Task 7 — pre-publish-checklist:** ✅ OG+og.png (c716a53, 89f8b2a), hreflang/sitemap/robots/404 OK; REPO_URL + SITE_URL confirmed (gate 2, 8f1a5b4).
+- [x] **Task 8 — deploy-verify-preview-xanh:** ✅ Vercel preview https://wakii-site-lg1xufkri-1foxglobal.vercel.app — routes 200/404 đúng, lang switch verified trên deploy.
 - [ ] **Task 8 — deploy-verify-preview-xanh:** preview deploy cuối cùng xanh, site release-ready.
 
 ## Done criteria (ACCEPTANCE — context pack sf-4.md)
