@@ -126,7 +126,7 @@ export const en: LandingStrings = {
     tagline: 'Wakii is an agentic IDE with a built-in superpowers team — plugin bundled, kit auto-installed to ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build from source',
-    ctaGhost: 'explore the team',
+    ctaGhost: 'read the guide',
     stats: [
       { v: '9', k: 'agents, role-gated' },
       { v: '0', k: 'setup steps' },
@@ -268,7 +268,7 @@ export const vi: LandingStrings = {
     tagline: 'Wakii là một agentic IDE với team superpowers tích hợp sẵn — plugin đóng gói sẵn, kit tự cài vào ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build từ mã nguồn',
-    ctaGhost: 'khám phá team',
+    ctaGhost: 'đọc hướng dẫn',
     stats: [
       { v: '9', k: 'agents, phân vai' },
       { v: '0', k: 'bước cài đặt' },
