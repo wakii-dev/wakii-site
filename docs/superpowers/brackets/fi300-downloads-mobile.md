@@ -4,7 +4,7 @@ Destination: story/fi300-downloads-mobile
 
 ## SF-1 Releases foundation
 Tier: 0
-linear:
+linear: FI-301
 Design: none
 What: Visitor thấy mục Download trên nav/footer + roadmap + docs đều nói nhất quán về downloads/mobile theo đúng trạng thái flag — khi chưa có binary thì KHÔNG có link chết nào, chỉ có hướng dẫn build-from-source + follow releases
 Depends on: —
@@ -12,7 +12,7 @@ Tasks: config-flags-and-urls (DOWNLOAD_URLS/DOWNLOADS_LIVE/MOBILE_STORE_URLS/MOB
 
 ## SF-2 Download page + mobile connect component
 Tier: 1
-linear:
+linear: FI-302
 Design: mock-prototype
 What: Visitor vào /download (EN+VI) thấy đúng nút theo hệ điều hành (flag on) hoặc hướng dẫn build + follow releases (flag off), và thấy block mobile app với badges iOS/Android + QR (flag on) hoặc coming soon (flag off)
 Depends on: SF-1
@@ -21,7 +21,7 @@ Design-note: design phase (3 hướng → user pick → hand-off docs/superpower
 
 ## SF-3 Landing Get Wakii upgrade + mobile teaser
 Tier: 2
-linear:
+linear: FI-303
 Design: none
 What: Visitor trên landing thấy Get Wakii upgrade — download là primary CTA (theo flag), build-from-source secondary — và teaser mobile app dẫn sang /download; nav-cta trỏ đúng theo flag
 Depends on: SF-1, SF-2
@@ -29,7 +29,7 @@ Tasks: get-wakii-restructure-download-primary-source-secondary / wire-keys-SF-1 
 
 ## SF-4 Convergence QA
 Tier: 3
-linear:
+linear: FI-304
 Design: none
 What: Toàn bộ surfaces story sạch khi audit: copy EN+VI duyệt được ở CẢ 2 biến thể flag, mọi URL resolve đúng theo flag, Lighthouse đạt 2 mục tiêu, e2e flow landing → /download → platform → mobile chạy trọn, mock flip cả 2 flags render đúng
 Depends on: SF-3
