@@ -30,8 +30,8 @@
 - Modify: `src/i18n/landing.ts` (interface `bento` — xóa `stats`, thêm `figma`; en + vi)
 - Modify: `src/components/Landing.astro` (cell F markup + CSS)
 
-- [ ] **Step 1: Đổi interface** — xóa `stats: { v: string; k: string }[]`; thêm `figma: { label: string; meta: string; verdict: string; verdictOk: boolean; rows: { k: string; v: string }[]; desc: string }`
-- [ ] **Step 2: EN strings** — cell "figma → verify" pipeline: label `figma-to-verify`, rows mock (capture → tokens → states → browser walkthrough → verdict PASS), desc map feature "Figma-to-verify pipeline" (tránh "Stories tab"). Ví dụ:
+- [x] **Step 1: Đổi interface** — xóa `stats: { v: string; k: string }[]`; thêm `figma: { label: string; meta: string; verdict: string; verdictOk: boolean; rows: { k: string; v: string }[]; desc: string }`
+- [x] **Step 2: EN strings** — cell "figma → verify" pipeline: label `figma-to-verify`, rows mock (capture → tokens → states → browser walkthrough → verdict PASS), desc map feature "Figma-to-verify pipeline" (tránh "Stories tab"). Ví dụ:
   ```ts
   figma: {
     label: 'figma → verify pipeline',
@@ -46,11 +46,11 @@
     desc: 'SF.006 — figma-to-verify: the build is checked against the design, pixel by pixel, before merge.',
   },
   ```
-- [ ] **Step 3: VI strings** — dịch từ EN đã duyệt (label/meta giữ tech term khi tự nhiên)
-- [ ] **Step 4: Markup** — thay cell F stats bằng: bx-label (label + meta) + rows list (kiểu mem-ln: `.fv-row` k/v) + verdict footer (`.ok` mint khi verdictOk) + bx-desc; giữ `class="bx bx-f" data-depth="0.14"`, grid span `10/13` không đổi
-- [ ] **Step 5: CSS** — thêm `.fv-row`/`.fv-k`/`.fv-v`/`.fv-verdict` theo pattern `.mem-ln` hiện có; xóa `.stat-cell`/`.stat` CSS
-- [ ] **Step 6: Build + accuracy guard** — `pnpm build` xanh; grep dist KHÔNG có "Stories tab"; 6 cells map đủ inventory
-- [ ] **Step 7: Commit** — `feat(landing): figma-to-verify cell thay stats — đủ 6 feature inventory (acceptance #2)`
+- [x] **Step 3: VI strings** — dịch từ EN đã duyệt (label/meta giữ tech term khi tự nhiên)
+- [x] **Step 4: Markup** — thay cell F stats bằng: bx-label (label + meta) + rows list (kiểu mem-ln: `.fv-row` k/v) + verdict footer (`.ok` mint khi verdictOk) + bx-desc; giữ `class="bx bx-f" data-depth="0.14"`, grid span `10/13` không đổi
+- [x] **Step 5: CSS** — thêm `.fv-row`/`.fv-k`/`.fv-v`/`.fv-verdict` theo pattern `.mem-ln` hiện có; xóa `.stat-cell`/`.stat` CSS
+- [x] **Step 6: Build + accuracy guard** — `pnpm build` xanh; grep dist KHÔNG có "Stories tab"; 6 cells map đủ inventory
+- [x] **Step 7: Commit** — `feat(landing): figma-to-verify cell thay stats — đủ 6 feature inventory (acceptance #2)`
 
 ### Task 3: FAQ teaser link + footer kit credit
 
@@ -59,19 +59,19 @@
 - Modify: `src/components/Landing.astro` (FAQ section cuối — link dạng `.quick-more`)
 - Modify: `src/components/Footer.astro` (thêm kit credit)
 
-- [ ] **Step 1: Strings** — interface `faq` thêm `more: string; moreLink: string; slug: '/docs/faq'` (hoặc hardcode qua faqHref như docsHref pattern — dùng helper `(t.lang === 'vi' ? '/vi' : '') + '/docs/faq'`); EN: more = `'only the short version — the'`, moreLink = `'full FAQ'`; VI: `'chỉ bản rút gọn —'` / `'toàn bộ FAQ'`
-- [ ] **Step 2: Markup** — sau accordion, thêm `<p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>` + CSS copy `.quick-more` pattern
-- [ ] **Step 3: Footer credit** — thêm dòng kit origin: `superpowers kit by Jesse Vincent (obra/superpowers) (MIT)` trong `.l` hoặc links, ghi cả 2 locale dùng chung (footer chung)
-- [ ] **Step 4: Build + verify** — build xanh; dist có link `/docs/faq` + `/vi/docs/faq`; footer credit render
-- [ ] **Step 5: Commit** — `feat(landing): FAQ teaser link → docs/faq + footer superpowers kit credit (acceptance #5, kit-license verdict)`
+- [x] **Step 1: Strings** — interface `faq` thêm `more: string; moreLink: string; slug: '/docs/faq'` (hoặc hardcode qua faqHref như docsHref pattern — dùng helper `(t.lang === 'vi' ? '/vi' : '') + '/docs/faq'`); EN: more = `'only the short version — the'`, moreLink = `'full FAQ'`; VI: `'chỉ bản rút gọn —'` / `'toàn bộ FAQ'`
+- [x] **Step 2: Markup** — sau accordion, thêm `<p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>` + CSS copy `.quick-more` pattern
+- [x] **Step 3: Footer credit** — thêm dòng kit origin: `superpowers kit by Jesse Vincent (obra/superpowers) (MIT)` trong `.l` hoặc links, ghi cả 2 locale dùng chung (footer chung)
+- [x] **Step 4: Build + verify** — build xanh; dist có link `/docs/faq` + `/vi/docs/faq`; footer credit render
+- [x] **Step 5: Commit** — `feat(landing): FAQ teaser link → docs/faq + footer superpowers kit credit (acceptance #5, kit-license verdict)`
 
 ### Task 4: Verify pass — browser walkthrough 3 tầng + responsive + reduced-motion
 
 **Files:** (không sửa code trừ khi phát hiện lỗi)
 
-- [ ] **Step 1: Dev/preview server** — `pnpm preview` (dist build Task 3), mở Orca browser tab
-- [ ] **Step 2: DOM tier** — snapshot cả `/` và `/vi/`: đủ 6 sections đúng thứ tự (hero → bento/features → zero-setup → workflow → quickstart → faq); links: hero primary → REPO_URL, ghost → /docs/getting-started, quickstart more → same, FAQ more → /docs/faq, footer → REPO_URL + orca upstream
-- [ ] **Step 3: VISUAL tier** — screenshot EN + VI full-page, so direction-d3-bento.html: bento layout 6 cells đúng spans, tilt không vỡ, mono/mint DNA
-- [ ] **Step 4: FLOW tier** — load → LangSwitcher EN↔VI (không 404) → click CTA (mở REPO_URL) → FAQ accordion mở/đóng → smooth scroll #features/#workflow
-- [ ] **Step 5: Responsive + reduced-motion** — mobile 390px: 1-col stack, nav collapse, không overflow-x; `prefers-reduced-motion`: static render đầy đủ thông tin
-- [ ] **Step 6: Fix nếu phát hiện lỗi** (commit riêng `fix(landing): ...`), tick plan checkbox, ghi evidence vào audit comment
+- [x] **Step 1: Dev/preview server** — `pnpm preview` (dist build Task 3), mở Orca browser tab
+- [x] **Step 2: DOM tier** — snapshot cả `/` và `/vi/`: đủ 6 sections đúng thứ tự (hero → bento/features → zero-setup → workflow → quickstart → faq); links: hero primary → REPO_URL, ghost → /docs/getting-started, quickstart more → same, FAQ more → /docs/faq, footer → REPO_URL + orca upstream
+- [x] **Step 3: VISUAL tier** — screenshot EN + VI full-page, so direction-d3-bento.html: bento layout 6 cells đúng spans, tilt không vỡ, mono/mint DNA
+- [x] **Step 4: FLOW tier** — load → LangSwitcher EN↔VI (không 404) → click CTA (mở REPO_URL) → FAQ accordion mở/đóng → smooth scroll #features/#workflow
+- [x] **Step 5: Responsive + reduced-motion** — mobile 390px: 1-col stack, nav collapse, không overflow-x; `prefers-reduced-motion`: static render đầy đủ thông tin
+- [x] **Step 6: Fix nếu phát hiện lỗi** (commit riêng `fix(landing): ...`), tick plan checkbox, ghi evidence vào audit comment — đã fix: min-width:0 bento cells (tràn mobile) + fv-k spacing
