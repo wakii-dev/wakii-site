@@ -38,6 +38,10 @@ const t = strings;
       ))}
     </div>
     <div class="pipe-legend">{t.workflow.legend}</div>
+    <div class="agents reveal">
+      <div class="agents-title">{t.workflowDeep.agentsTitle}</div>
+      <p class="agents-intro">{t.workflowDeep.agentsIntro}</p>
+    </div>
     <div class="flow-note">{t.workflow.note}</div>
   </div>
 </section>
@@ -84,6 +88,23 @@ const t = strings;
   .pipe-legend::before {
     content: '▮ ';
     color: var(--accent);
+  }
+  .agents {
+    margin-top: 36px;
+    border-left: 2px solid var(--accent);
+    padding: 8px 0 8px 20px;
+    max-width: 660px;
+  }
+  .agents-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+    color: var(--accent);
+  }
+  .agents-intro {
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: var(--text-dim);
   }
   .flow-note {
     margin-top: 36px;

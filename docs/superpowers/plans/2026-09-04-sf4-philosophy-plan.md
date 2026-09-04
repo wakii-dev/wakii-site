@@ -52,9 +52,9 @@
 **Files:**
 - Modify: `src/components/landing/Workflow.astro`
 
-- [ ] **Step 1:** sau `.pipe` + legend, thêm agents block: tiêu đề mono (`t.workflowDeep.agentsTitle`) + đoạn giải thích 9 agents (`agentsIntro`) — style continuation của `.flow-note` hiện có (border-left mint).
-- [ ] **Step 2:** build xanh, EN+VI render đúng keys (không key lộ raw).
-- [ ] **Step 3: Commit** — `feat(sf-4): workflow deepen — 9 agents block (FI-299)`
+- [x] **Step 1:** sau `.pipe` + legend, thêm agents block: tiêu đề mono (`t.workflowDeep.agentsTitle`) + đoạn giải thích 9 agents (`agentsIntro`) — style continuation của `.flow-note` hiện có (border-left mint).
+- [x] **Step 2:** build xanh, EN+VI render đúng keys (không key lộ raw).
+- [x] **Step 3: Commit** — `feat(sf-4): workflow deepen — 9 agents block (FI-299)`
 
 ### Task 5: Workflow deepen — gates B0–B5 block
 
