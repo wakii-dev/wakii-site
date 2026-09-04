@@ -16,7 +16,7 @@ Biên merge: story/fi289-wakii-site (no-ff, merge-playbook).
 
 ## Tasks (thứ tự bắt buộc — VI gate đầu tiên)
 
-- [ ] **Task 1 — vi-user-review-gate-trước-tất-cả:** build + preview local, post comment preview URL + danh sách 6 trang VI (/vi/, /vi/docs/{5 slugs}/) lên FI-293, VERIFY-FAIL-WAIT chờ user duyệt. Trong lúc chờ: QA scaffold không phụ thuộc VI copy.
+- [x] **Task 1 — vi-user-review-gate-trước-tất-cả:** build + preview local, post comment preview URL + danh sách 6 trang VI (/vi/, /vi/docs/{5 slugs}/) lên FI-293, VERIFY-FAIL-WAIT chờ user duyệt. Trong lúc chờ: QA scaffold không phụ thuộc VI copy.
   - Build xanh 13 trang, preview :4321 sống (EN+VI 200). Comment gate: https://linear.app/my-app-hoivu/issue/FI-293/sf-4-convergence-qa-pre-publish-wakii-website#comment-4062441f
   - Rule 0 visual check: VI landing + VI getting-started render đúng (screenshots /tmp/sf4-vi-*.png). **PASSED: VI-APPROVED qua chat 2026-09-04.**
   - Ghi chú responsive scaffold: cảnh báo overflow 390px đầu tiên là artifact headless Chrome (clamp min window width); probe same-origin iframe xác nhận scrollWidth=390, không tràn trang. Known P2: agent names wrap mid-word trong bento cells (mockup kit, SF-1 sở hữu).
@@ -27,7 +27,6 @@ Biên merge: story/fi289-wakii-site (no-ff, merge-playbook).
 - [x] **Task 6 — responsive-audit:** ✅ scrollWidth=390 @390px trên 4 key pages; known P2 bento mid-word wrap (SF-1 kit, không sửa).
 - [x] **Task 7 — pre-publish-checklist:** ✅ OG+og.png (c716a53, 89f8b2a), hreflang/sitemap/robots/404 OK; REPO_URL + SITE_URL confirmed (gate 2, 8f1a5b4).
 - [x] **Task 8 — deploy-verify-preview-xanh:** ✅ Vercel preview https://wakii-site-lg1xufkri-1foxglobal.vercel.app — routes 200/404 đúng, lang switch verified trên deploy.
-- [ ] **Task 8 — deploy-verify-preview-xanh:** preview deploy cuối cùng xanh, site release-ready.
 
 ## Done criteria (ACCEPTANCE — context pack sf-4.md)
 
