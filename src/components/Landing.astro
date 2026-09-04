@@ -20,6 +20,7 @@ const { strings } = Astro.props;
 const t = strings;
 
 const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
+const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
 const statusLabels: Record<string, string> =
   t.lang === 'vi'
     ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
@@ -45,7 +46,7 @@ function splitLead(s: string): [string, string] {
       </p>
       <div class="cta-row">
         <a href={REPO_URL} class="btn btn-primary">{t.hero.ctaPrimary}</a>
-        <a href="#features" class="btn btn-ghost">{t.hero.ctaGhost}</a>
+        <a href={docsHref} class="btn btn-ghost">{t.hero.ctaGhost}</a>
       </div>
       <div class="hero-stats">
         {t.hero.stats.map((s) => (
@@ -133,14 +134,20 @@ function splitLead(s: string): [string, string] {
         </div>
       </div>
 
-      <!-- F: stats -->
+      <!-- F: figma → verify -->
       <div class="bx bx-f" data-depth="0.14">
         <div class="bx-in reveal" data-tilt>
-          <div class="stat-cell">
-            {t.bento.stats.map((s) => (
-              <div class="stat"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
+          <div class="bx-label"><span class="t">{t.bento.figma.label}</span><span>{t.bento.figma.meta}</span></div>
+          <div class="fv-body">
+            {t.bento.figma.rows.map((row) => (
+              <div class="fv-row">
+                <span class="fv-k">{row.k}</span>
+                <span class="fv-v">{row.v}</span>
+              </div>
             ))}
+            <div class:list={['fv-verdict', { ok: t.bento.figma.verdictOk }]}>{t.bento.figma.verdict}</div>
           </div>
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.figma.desc); return <><b>{b}</b> {rest}</>; })()}</div>
         </div>
       </div>
     </div>
@@ -224,6 +231,7 @@ function splitLead(s: string): [string, string] {
         <div class="ans">{item.a}</div>
       </details>
     ))}
+    <p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>
   </div>
 </section>
 
@@ -380,6 +388,8 @@ function splitLead(s: string): [string, string] {
   }
   .bx {
     will-change: transform;
+    /* cho phép track co dưới min-content của board 680px (scale script lo hình) */
+    min-width: 0;
   }
   .bx-a { grid-column: 1 / 9; grid-row: 1 / 3; }
   .bx-b { grid-column: 9 / 13; }
@@ -530,29 +540,44 @@ function splitLead(s: string): [string, string] {
     color: var(--accent);
   }
 
-  /* stats cell */
-  .stat-cell {
-    padding: 22px 24px;
-    display: grid;
-    gap: 14px;
+  /* figma → verify cell */
+  .fv-body {
+    padding: 16px 18px;
+    font-size: 12px;
   }
-  .stat {
+  .fv-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
     border-bottom: 1px dashed var(--border);
-    padding-bottom: 12px;
+    align-items: baseline;
   }
-  .stat:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  .stat .v {
-    font-size: 30px;
-    font-weight: 700;
+  .fv-k {
     color: var(--accent);
-    letter-spacing: -0.02em;
+    font-size: 10.5px;
+    white-space: nowrap;
+    min-width: 74px;
   }
-  .stat .k {
-    font-size: 11px;
+  .fv-k::before {
+    content: '▸ ';
+  }
+  .fv-v {
+    color: var(--text-dim);
+  }
+  .fv-verdict {
+    margin-top: 12px;
+    padding: 9px 12px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    font-size: 11.5px;
     color: var(--text-faint);
+  }
+  .fv-verdict.ok {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.35);
+  }
+  .fv-verdict.ok::before {
+    content: '✓ ';
   }
 
   /* ===== ZERO-SETUP ===== */
@@ -768,6 +793,20 @@ function splitLead(s: string): [string, string] {
   details .ans code {
     color: var(--accent);
     font-size: 12.5px;
+  }
+  .faq-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .faq-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .faq-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
   }
 
   /* ===== REVEAL (JS-gated — no-JS / reduced-motion giữ static đầy đủ) ===== */
