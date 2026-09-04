@@ -1,0 +1,35 @@
+/*
+ * Wakii design tokens — "Terminal Mono" direction (user-approved 2026-09-04).
+ * Source of truth: docs/superpowers/designs/sf1-direction.md (BINDING).
+ * Layout/behavior fidelity target: docs/superpowers/designs/direction-c.html.
+ *
+ * SF-2/SF-3 consume these names — do not rename.
+ */
+:root {
+  /* type */
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* color */
+  --bg: #0A0E0D;
+  --bg-raised: #101614;
+  --border: #1E2A26;
+  --accent: #45E0A8;
+  --accent-dim: #2A6B52;
+  --text: #D7E2DD;
+  --text-dim: #6B7A74;
+  --warn: #E8A33D;
+
+  /* derived aliases (not in hand-off; kept for prototype fidelity) */
+  --border-strong: #2B4234;
+  --accent-soft: rgba(69, 224, 168, 0.1);
+  --text-faint: #5A7163;
+  --bg-deep: #04140D; /* text color on accent fills */
+
+  /* shape — sharp, no soft rounding (hand-off: radius 0–4px) */
+  --radius: 4px;
+
+  /* rhythm — 8px grid, large section padding (hand-off: 96–128px) */
+  --section-pad: 96px;
+  --wrap: 980px;
+}

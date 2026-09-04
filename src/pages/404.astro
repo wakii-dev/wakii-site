@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — page not found" description="This page does not exist.">
+  <section class="wrap nf">
+    <div class="code">404</div>
+    <p class="msg">command not found: /this-page</p>
+    <p class="hint">The page you asked for does not exist. <a href="/">exit code 0 — back home</a></p>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding: 128px 32px;
+    text-align: center;
+  }
+  .code {
+    font-size: clamp(64px, 10vw, 120px);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .msg {
+    margin-top: 20px;
+    color: var(--text);
+    font-size: 16px;
+  }
+  .msg::before {
+    content: 'zsh: ';
+    color: var(--text-faint);
+  }
+  .hint {
+    margin-top: 16px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .hint a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+</style>

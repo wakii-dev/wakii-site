@@ -1,0 +1,90 @@
+---
+import LangSwitcher from './LangSwitcher.astro';
+---
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="/"><span class="prompt">~/</span>wakii<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="/#features">features</a>
+      <a href="/#workflow">workflow</a>
+      <a href="/#quickstart">quickstart</a>
+      <a href="/#faq">faq</a>
+      <a href="/docs/getting-started" class="nav-cta">get wakii</a>
+    </div>
+    <LangSwitcher />
+  </div>
+</nav>
+
+<style>
+  nav {
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    gap: 20px;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .logo .dot {
+    color: var(--accent);
+  }
+  .logo .prompt {
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+  .nav-links {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    font-size: 13px;
+    margin-left: auto;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .nav-links a::before {
+    content: './';
+    color: var(--text-faint);
+  }
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+  .nav-cta {
+    border: 1px solid var(--accent);
+    color: var(--accent) !important;
+    padding: 7px 16px;
+    border-radius: var(--radius);
+  }
+  .nav-cta::before {
+    content: '$ ' !important;
+    color: var(--text-faint);
+  }
+  .nav-cta:hover {
+    background: var(--accent);
+    color: var(--bg-deep) !important;
+  }
+  .nav-cta:hover::before {
+    color: var(--bg-deep);
+  }
+
+  @media (max-width: 900px) {
+    .nav-links a:not(.nav-cta) {
+      display: none;
+    }
+  }
+</style>
