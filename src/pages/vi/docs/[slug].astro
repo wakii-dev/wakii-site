@@ -1,13 +1,10 @@
 ---
 /**
- * VI docs routes — generated from the EN slug contract so a missing VI
- * translation never produces a dead link: if vi/<slug>.md does not exist yet,
- * the EN content renders with a fallback notice (never a 404). This enforces
- * acceptance "trang VI thiếu → fallback EN" by construction.
+ * VI docs routes — fallback-by-construction (SF-1): thiếu vi/<slug>.md → render
+ * EN content với fallback notice, không bao giờ 404. VI có đủ → render VI.
  */
-import { getCollection } from 'astro:content';
-import Base from '../../../layouts/Base.astro';
-import LangSwitcher from '../../../components/LangSwitcher.astro';
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../../layouts/DocsLayout.astro';
 import { docSlug } from '../../../content.config';
 
 export async function getStaticPaths() {
@@ -16,41 +13,45 @@ export async function getStaticPaths() {
   return enEntries.map((en) => {
     const slug = docSlug(en.id);
     const vi = viEntries.find((v) => docSlug(v.id) === slug);
-    return { params: { slug }, props: { entry: vi ?? en, viExists: !!vi } };
+    return { params: { slug }, props: { entry: vi ?? en, viExists: !!vi, isFallback: !vi } };
   });
 }
 
-const { entry, viExists } = Astro.props;
+const { entry, viExists, isFallback } = Astro.props;
+const { Content } = await render(entry);
 ---
-
-<Base title={entry.data.title} description={entry.data.description}>
-  <article class="wrap doc">
-    <div class="crumb">~/vi/docs/{docSlug(entry.id)}</div>
-    <h1>{entry.data.title}</h1>
-    {viExists ? null : <p class="fallback-note">Bản dịch tiếng Việt chưa có — đang hiển thị nội dung tiếng Anh.</p>}
-    <p class="body">{entry.body}</p>
-    <div class="switch-row"><LangSwitcher viExists={viExists} /></div>
-  </article>
-</Base>
+<DocsLayout
+  locale="vi"
+  slug={docSlug(entry.id)}
+  title={entry.data.title}
+  description={entry.data.description}
+  viExists={viExists}
+>
+  <div class="crumb">~/vi/docs/{docSlug(entry.id)}</div>
+  <h1>{entry.data.title}</h1>
+  {isFallback && <p class="fallback-note">Bản dịch tiếng Việt chưa có — đang hiển thị nội dung tiếng Anh.</p>}
+  <div class="prose">
+    <Content />
+  </div>
+</DocsLayout>
 
 <style>
-  .doc {
-    padding: 96px 32px 128px;
-    max-width: 780px;
-  }
   .crumb {
+    font-family: var(--font-display);
     font-size: 12px;
     color: var(--text-faint);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   .crumb::before {
     content: '$ cat ';
     color: var(--accent);
   }
   h1 {
-    font-size: clamp(26px, 3.5vw, 38px);
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.5vw, 36px);
     letter-spacing: -0.02em;
-    margin-bottom: 20px;
+    color: var(--text);
+    margin-bottom: 28px;
   }
   .fallback-note {
     border-left: 2px solid var(--warn);
@@ -58,13 +59,5 @@ const { entry, viExists } = Astro.props;
     color: var(--warn);
     font-size: 13px;
     margin-bottom: 20px;
-  }
-  .body {
-    font-family: var(--font-sans);
-    color: var(--text-dim);
-    font-size: 15px;
-  }
-  .switch-row {
-    margin-top: 40px;
   }
 </style>

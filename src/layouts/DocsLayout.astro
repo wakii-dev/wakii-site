@@ -1,0 +1,283 @@
+---
+/**
+ * Docs layout (SF-3) — sidebar trái mono-nav + prev/next, theo direction v2
+ * (docs/superpowers/designs/sf1-direction.md: sidebar mono, headings JetBrains
+ * Mono, body Inter, prev/next mono-link, lang switcher EN | VI).
+ * Tự query collection theo locale — sort theo frontmatter `order`.
+ */
+import Base from './Base.astro';
+import LangSwitcher from '../components/LangSwitcher.astro';
+import { getCollection } from 'astro:content';
+import { docSlug } from '../content.config';
+
+interface Props {
+  locale: 'en' | 'vi';
+  slug: string;
+  title: string;
+  description?: string;
+  viExists?: boolean;
+}
+
+const { locale, slug, title, description, viExists = true } = Astro.props;
+
+const entries = (await getCollection('docs', (d) => d.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+const slugs = entries.map((e) => docSlug(e.id));
+const idx = slugs.indexOf(slug);
+const prev = idx > 0 ? entries[idx - 1] : null;
+const next = idx >= 0 && idx < entries.length - 1 ? entries[idx + 1] : null;
+const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}` : `/docs/${s}`);
+---
+<Base title={title} description={description}>
+  <div class="docs-shell">
+    <aside class="docs-sidebar">
+      <div class="docs-eyebrow">~/docs</div>
+      <nav aria-label="Docs navigation">
+        <ul>
+          {entries.map((e) => {
+            const s = docSlug(e.id);
+            return (
+              <li>
+                <a href={href(s)} aria-current={s === slug ? 'page' : undefined}>
+                  <span class="idx">{String(e.data.order).padStart(2, '0')}</span>
+                  {e.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <div class="docs-lang">
+        <LangSwitcher viExists={viExists} />
+      </div>
+    </aside>
+    <article class="docs-article">
+      <slot />
+      <nav class="docs-pager" aria-label="Docs pagination">
+        <span class="pager-cell">
+          {prev && (
+            <a class="pager-link" href={href(docSlug(prev.id))}>
+              <span class="pager-dir">← prev</span>
+              {prev.data.title}
+            </a>
+          )}
+        </span>
+        <span class="pager-cell pager-right">
+          {next && (
+            <a class="pager-link" href={href(docSlug(next.id))}>
+              <span class="pager-dir">next →</span>
+              {next.data.title}
+            </a>
+          )}
+        </span>
+      </nav>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .docs-shell {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 32px 128px;
+  }
+  .docs-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .docs-eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .docs-eyebrow::before {
+    content: '$ ';
+    color: var(--accent);
+  }
+  .docs-sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-left: 1px solid var(--border);
+  }
+  .docs-sidebar a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 12px;
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-left: 1px solid transparent;
+    margin-left: -1px;
+  }
+  .docs-sidebar a:hover {
+    color: var(--text);
+  }
+  .docs-sidebar a[aria-current='page'] {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .docs-sidebar .idx {
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+  .docs-sidebar a[aria-current='page'] .idx {
+    color: var(--accent-dim);
+  }
+  .docs-lang {
+    font-family: var(--font-display);
+    font-size: 11px;
+  }
+  .docs-article {
+    min-width: 0;
+  }
+  .docs-pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .pager-cell {
+    min-width: 0;
+  }
+  .pager-right {
+    text-align: right;
+  }
+  .pager-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .pager-right .pager-link {
+    align-items: flex-end;
+  }
+  .pager-link:hover {
+    color: var(--accent);
+  }
+  .pager-dir {
+    font-size: 11px;
+    color: var(--accent-dim);
+  }
+  /* Prose (markdown body) — scoped-global vì Content render vào slot */
+  .docs-article :global(.prose) {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+  .docs-article :global(.prose h2) {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .docs-article :global(.prose h3) {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--text);
+    margin: 28px 0 8px;
+  }
+  .docs-article :global(.prose p) {
+    margin: 0 0 14px;
+  }
+  .docs-article :global(.prose a) {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .docs-article :global(.prose a:hover) {
+    text-decoration: underline;
+  }
+  .docs-article :global(.prose ul),
+  .docs-article :global(.prose ol) {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+  .docs-article :global(.prose li) {
+    margin-bottom: 6px;
+  }
+  .docs-article :global(.prose code) {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--text);
+  }
+  .docs-article :global(.prose pre) {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 18px;
+  }
+  .docs-article :global(.prose pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .docs-article :global(.prose table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 18px;
+    font-size: 13.5px;
+  }
+  .docs-article :global(.prose th) {
+    font-family: var(--font-display);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-align: left;
+    color: var(--text);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 8px 12px;
+  }
+  .docs-article :global(.prose td) {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+  }
+  .docs-article :global(.prose blockquote) {
+    border-left: 2px solid var(--accent-dim);
+    margin: 0 0 14px;
+    padding-left: 14px;
+    color: var(--text-faint);
+  }
+  .docs-article :global(.prose hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+  @media (max-width: 800px) {
+    .docs-shell {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 48px 20px 96px;
+    }
+    .docs-sidebar {
+      position: static;
+    }
+  }
+</style>
