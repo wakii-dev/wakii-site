@@ -21,7 +21,7 @@
 - Modify: `src/pages/docs/[slug].astro` (thay placeholder body)
 - Modify: `src/pages/vi/docs/[slug].astro` (thay placeholder body, giữ fallback-by-construction)
 
-- [ ] **Step 1: Tạo `src/layouts/DocsLayout.astro`**
+- [x] **Step 1: Tạo `src/layouts/DocsLayout.astro`**
 
 ```astro
 ---
@@ -306,7 +306,7 @@ const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}` : `/docs/${s}`);
 
 Lưu ý token names: toàn bộ tokens dùng ở trên ĐÃ tồn tại trong `src/styles/tokens.css` (v2, SF-1 khóa) — `--font-display/--font-sans/--bg-raised/--border/--border-strong/--accent/--accent-dim/--text/--text-dim/--text-faint/--warn/--bg-card`. Dùng đúng names này, KHÔNG tạo token mới.
 
-- [ ] **Step 2: Rewrite `src/pages/docs/[slug].astro` (EN) — render markdown qua DocsLayout**
+- [x] **Step 2: Rewrite `src/pages/docs/[slug].astro` (EN) — render markdown qua DocsLayout**
 
 ```astro
 ---
@@ -363,7 +363,7 @@ const { Content } = await render(entry);
 </style>
 ```
 
-- [ ] **Step 3: Rewrite `src/pages/vi/docs/[slug].astro` (VI) — giữ fallback-by-construction**
+- [x] **Step 3: Rewrite `src/pages/vi/docs/[slug].astro` (VI) — giữ fallback-by-construction**
 
 ```astro
 ---
@@ -431,12 +431,12 @@ const { Content } = await render(entry);
 </style>
 ```
 
-- [ ] **Step 4: Build xanh + placeholder render đúng**
+- [x] **Step 4: Build xanh + placeholder render đúng**
 
 Run: `pnpm build`
 Expected: build sạch, 10 docs routes generated (`dist/docs/*/index.html` + `dist/vi/docs/*/index.html`).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/layouts/DocsLayout.astro src/pages/docs/[slug].astro src/pages/vi/docs/[slug].astro
@@ -448,11 +448,11 @@ git commit -m "feat(docs): DocsLayout — sidebar mono-nav + prev/next + markdow
 **Files:**
 - Create: `docs/superpowers/notes/inventory-reconfirm.md`
 
-- [ ] **Step 1: Ghi note từ research đã verify (file:line evidence, nguồn `~/Desktop/projects/orca`)**
+- [x] **Step 1: Ghi note từ research đã verify (file:line evidence, nguồn `~/Desktop/projects/orca`)**
 
 Ghi đúng các con số đã verify (KHÔNG thêm/bớt): build (pnpm 12 — `package.json:308`, Node 24 — `:305-307`, `pnpm install`/`pnpm dev`/`pnpm build`/`pnpm start` — `:59-60,87-88`, CONTRIBUTING.md:17-22); panel (manifest `orca-plugin.json:14-19` — id `superpowers`, title "Superpowers", icon `zap`; tabs "⚡ Workflow" + "🌳 Story" — `panel.html:87-90`; Story Ops B1–B5 + B0 browser test — `kit/bin/story-verify:5-13`; KHÔNG "Stories tab" trong panel — phrase chỉ nằm trong code comments; "Stories" view nằm ở Linear task page — `task-page-localized-options.tsx:150-161`, không phải panel); agents (đúng 9 — `kit/agents/*.md`, vai trò theo `kit/kit.json`); kit (17 skills — `kit/skills/` = 17 entries trong `kit.json`; 23 story-* CLIs — `kit/bin/`; install vào `~/.claude` idempotent — `main.mjs:443`; MIT — `docs/superpowers/notes/kit-license.md`).
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/superpowers/notes/inventory-reconfirm.md
@@ -465,7 +465,7 @@ git commit -m "docs(notes): inventory reconfirm — build/panel/agents/kit facts
 - Create (ngoài site repo, trong orca repo): worktree `~/Desktop/projects/orca-wakii-docs-validate` (hoặc path tương đương — worktree MỚI, không tái dùng build cũ)
 - Create: `docs/superpowers/notes/getting-started-validation.md` (bằng chứng)
 
-- [ ] **Step 1: Tạo clean worktree + pnpm install**
+- [x] **Step 1: Tạo clean worktree + pnpm install**
 
 ```bash
 cd ~/Desktop/projects/orca
@@ -475,7 +475,7 @@ pnpm install   # Node 24 + pnpm 12 — log đầy đủ
 ```
 Expected: install thành công (postinstall rebuild native deps chạy).
 
-- [ ] **Step 2: Build + chạy app**
+- [x] **Step 2: Build + chạy app**
 
 ```bash
 pnpm build
@@ -483,15 +483,15 @@ pnpm start     # production Electron app mở
 ```
 Expected: app desktop mở không lỗi.
 
-- [ ] **Step 3: Xác nhận panel ⚡ bằng mắt (Rule 0)**
+- [x] **Step 3: Xác nhận panel ⚡ bằng mắt (Rule 0)**
 
 Mở app → nhìn right sidebar → thấy icon ⚡ Superpowers → click → panel mở với 2 tabs "⚡ Workflow" + "🌳 Story". Chụp screenshot làm bằng chứng.
 
-- [ ] **Step 4: Ghi validation note + dọn worktree**
+- [x] **Step 4: Ghi validation note + dọn worktree**
 
 `docs/superpowers/notes/getting-started-validation.md`: từng lệnh đã chạy, kết quả, screenshot path, thời gian. Giữ worktree đến khi Task 4 xong rồi `git worktree remove`.
 
-- [ ] **Step 5: Commit note**
+- [x] **Step 5: Commit note**
 
 ```bash
 git add docs/superpowers/notes/getting-started-validation.md
@@ -503,11 +503,11 @@ git commit -m "docs(notes): getting-started validation — steps executed in cle
 **Files:**
 - Modify: `src/content/docs/en/getting-started.md` (thay placeholder)
 
-- [ ] **Step 1: Viết nội dung khớp 1:1 với Task 3 đã chạy**
+- [x] **Step 1: Viết nội dung khớp 1:1 với Task 3 đã chạy**
 
 Cấu trúc: (1) Prerequisites — Node 24, pnpm 12, git; clone từ repo URL (tham chiếu config `REPO_URL`, không hardcode URL ngoài constant); (2) `pnpm install` — lưu ý lần đầu lâu do native deps (node-pty...); (3) `pnpm dev` (dev, hot-reload) HOẶC `pnpm build` + `pnpm start` (production) — mô tả CẢ HAI như validation đã chạy; (4) Mở Superpowers panel — icon ⚡ ở activity bar phải (Mod+L toggle right sidebar); (5) First run — mô tả ngắn 2 tabs "⚡ Workflow" + "🌳 Story". Accuracy guard: KHÔNG "Stories tab"; chỉ bundled install story (kit tự cài vào `~/.claude` — enabled by default). Internal links sang `superpowers-panel` (detail) — relative `/docs/superpowers-panel/`.
 
-- [ ] **Step 2: Frontmatter + build**
+- [x] **Step 2: Frontmatter + build**
 
 ```yaml
 ---
@@ -518,7 +518,7 @@ order: 0
 ```
 Run: `pnpm build` — xanh.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/content/docs/en/getting-started.md
@@ -531,11 +531,11 @@ git commit -m "feat(docs): getting-started EN — validated build-from-source st
 - Modify: `src/content/docs/en/superpowers-panel.md`
 - Modify: `src/content/docs/en/story-workflow.md`
 
-- [ ] **Step 1: superpowers-panel** — mô tả đúng UI thật (theo inventory note): mở từ đâu (⚡ activity bar, Mod+L); tab "⚡ Workflow" (intent: New feature/Continue work/Quick fix; mode toggles: Autonomous, Plan only, Linear audit log...; Subagents grid 9 checkboxes default ON; Execute select: Delegate/Inline/Superpowers); tab "🌳 Story" (Create/Approve/Launch SFs; bracket canvas — epic node + SF nodes + dependency edges + state colors; Story Ops gates B0–B5 + Watchdog/Verify/Stats buttons). CẤM "Stories tab"; KHÔNG mô tả Stories view của Linear task page như một phần panel. Frontmatter order: 1.
+- [x] **Step 1: superpowers-panel** — mô tả đúng UI thật (theo inventory note): mở từ đâu (⚡ activity bar, Mod+L); tab "⚡ Workflow" (intent: New feature/Continue work/Quick fix; mode toggles: Autonomous, Plan only, Linear audit log...; Subagents grid 9 checkboxes default ON; Execute select: Delegate/Inline/Superpowers); tab "🌳 Story" (Create/Approve/Launch SFs; bracket canvas — epic node + SF nodes + dependency edges + state colors; Story Ops gates B0–B5 + Watchdog/Verify/Stats buttons). CẤM "Stories tab"; KHÔNG mô tả Stories view của Linear task page như một phần panel. Frontmatter order: 1.
 
-- [ ] **Step 2: story-workflow** — luồng: idea → Phase 0 impact → plan (Linear subtasks) → epic + SF bracket (tiers, depends on) → launch SFs song song → mỗi SF: code → gates (B0 browser, B1 code+tests, B2 plan ticked, B3 review, B4 merge, B5 Done) → watchdog auto-resume khi stall → 1 PR per story. Frontmatter order: 2. Link sang `agents-and-kit`.
+- [x] **Step 2: story-workflow** — luồng: idea → Phase 0 impact → plan (Linear subtasks) → epic + SF bracket (tiers, depends on) → launch SFs song song → mỗi SF: code → gates (B0 browser, B1 code+tests, B2 plan ticked, B3 review, B4 merge, B5 Done) → watchdog auto-resume khi stall → 1 PR per story. Frontmatter order: 2. Link sang `agents-and-kit`.
 
-- [ ] **Step 3: Build + commit**
+- [x] **Step 3: Build + commit**
 
 ```bash
 pnpm build
@@ -549,11 +549,11 @@ git commit -m "feat(docs): superpowers-panel + story-workflow EN (FI-292)"
 - Modify: `src/content/docs/en/agents-and-kit.md`
 - Modify: `src/content/docs/en/faq.md`
 
-- [ ] **Step 1: agents-and-kit** — bảng 9 agents (tên + 1 câu vai trò, đúng `kit/kit.json`); kit: 17 skills bundled, tự cài vào `~/.claude` khi app chạy đầu tiên (idempotent); 23 `story-*` CLIs trong `~/.claude/bin`; license: kit origin superpowers MIT (credit Jesse Vincent/obra — upstream credit). SỐ LIỆU CHỈ từ `docs/superpowers/notes/inventory-reconfirm.md` — không hardcode khác. Frontmatter order: 3.
+- [x] **Step 1: agents-and-kit** — bảng 9 agents (tên + 1 câu vai trò, đúng `kit/kit.json`); kit: 17 skills bundled, tự cài vào `~/.claude` khi app chạy đầu tiên (idempotent); 23 `story-*` CLIs trong `~/.claude/bin`; license: kit origin superpowers MIT (credit Jesse Vincent/obra — upstream credit). SỐ LIỆU CHỈ từ `docs/superpowers/notes/inventory-reconfirm.md` — không hardcode khác. Frontmatter order: 3.
 
-- [ ] **Step 2: faq** — Q&A ngắn (≥6): Wakii là gì; khác Orca upstream thế nào (bundled superpowers kit + story workflow); cần gì để build (Node 24, pnpm 12); không thấy ⚡ panel (check right sidebar/Mod+L, plugin bundled enabled by default); docs có tiếng Việt không (lang switcher EN|VI, fallback EN); license (MIT, credit upstream). Câu nào trùng landing FAQ → docs là bản đầy đủ (DRY: landing chỉ teaser). Frontmatter order: 4.
+- [x] **Step 2: faq** — Q&A ngắn (≥6): Wakii là gì; khác Orca upstream thế nào (bundled superpowers kit + story workflow); cần gì để build (Node 24, pnpm 12); không thấy ⚡ panel (check right sidebar/Mod+L, plugin bundled enabled by default); docs có tiếng Việt không (lang switcher EN|VI, fallback EN); license (MIT, credit upstream). Câu nào trùng landing FAQ → docs là bản đầy đủ (DRY: landing chỉ teaser). Frontmatter order: 4.
 
-- [ ] **Step 3: Build + commit**
+- [x] **Step 3: Build + commit**
 
 ```bash
 pnpm build
@@ -566,15 +566,15 @@ git commit -m "feat(docs): agents-and-kit + faq EN — inventory-confirmed numbe
 **Files:**
 - Modify: `src/content/docs/vi/getting-started.md`, `superpowers-panel.md`, `story-workflow.md`, `agents-and-kit.md`, `faq.md`
 
-- [ ] **Step 1: Dịch từng trang từ EN đã duyệt**
+- [x] **Step 1: Dịch từng trang từ EN đã duyệt**
 
 Quy tắc: dịch tự nhiên, UI terms kỹ thuật giữ EN (Superpowers panel, bracket canvas, gate, sidebar, worktree, SF, PR, build, bundle); commands/code KHÔNG dịch; frontmatter title + description dịch (title giữ ngắn), `order` giữ nguyên. Tên trang VI gợi ý: "Bắt đầu", "Superpowers panel", "Story workflow", "Agents & kit", "FAQ".
 
-- [ ] **Step 2: Build + kiểm fallback không còn**
+- [x] **Step 2: Build + kiểm fallback không còn**
 
 Run: `pnpm build` — 10 routes đủ; `/vi/docs/*` render VI (không fallback note).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/content/docs/vi/
@@ -587,13 +587,13 @@ git commit -m "feat(docs): VI translations — 5 docs pages (FI-292)"
 - Modify: bất kỳ content file thiếu description
 - Modify: `docs/superpowers/plans/2026-09-04-sf3-docs-plan.md` (tick)
 
-- [ ] **Step 1: SEO pass** — mọi frontmatter có `title` + `description` (Base đã render title/description/canonical/hreflang — SF-1); description ≤ 160 ký tự; không sửa Base.
+- [x] **Step 1: SEO pass** — mọi frontmatter có `title` + `description` (Base đã render title/description/canonical/hreflang — SF-1); description ≤ 160 ký tự; không sửa Base.
 
-- [ ] **Step 2: Link integrity** — grep toàn docs content: mọi internal link (`/docs/...`, `/vi/docs/...`) khớp slug contract (`getting-started|superpowers-panel|story-workflow|agents-and-kit|faq`); link giữa các trang dùng path có trailingslash nhất quán (`/docs/<slug>/`).
+- [x] **Step 2: Link integrity** — grep toàn docs content: mọi internal link (`/docs/...`, `/vi/docs/...`) khớp slug contract (`getting-started|superpowers-panel|story-workflow|agents-and-kit|faq`); link giữa các trang dùng path có trailingslash nhất quán (`/docs/<slug>/`).
 
 Run: `grep -oE '\]\(/(vi/)?docs/[a-z-]+' src/content/docs -r | sort -u` — mỗi link khớp 1 slug hợp lệ.
 
-- [ ] **Step 3: Build cuối + tick plan + commit**
+- [x] **Step 3: Build cuối + tick plan + commit**
 
 ```bash
 pnpm build
