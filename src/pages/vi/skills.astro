@@ -30,6 +30,11 @@ const groups = [
   },
 ] as const;
 
+/** Pinned DOM order per group (hand-off §3) — workflow must lead with the flagship w1 slot. */
+const cellOrder: Partial<Record<(typeof groups)[number]['key'], string[]>> = {
+  workflow: ['story-workflow', 'brainstorm', 'writing-plans-linear', 'orca-superpowers-workflow'],
+};
+
 /** 12-col span map (hand-off §3) — per skill id. */
 const spans: Record<string, string> = {
   'story-workflow': 's-w1',
@@ -94,6 +99,10 @@ const spans: Record<string, string> = {
           <div class="bento">
             {publicSkills
               .filter((s) => s.category === g.key)
+              .sort((a, b) => {
+                const ord = cellOrder[g.key];
+                return ord ? ord.indexOf(a.id) - ord.indexOf(b.id) : 0;
+              })
               .map((s) => (
                 <div class:list={['bx', spans[s.id], s.id === 'story-workflow' && 'bx-big']} data-reveal>
                   <div class="bx-in">
