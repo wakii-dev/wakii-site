@@ -92,6 +92,33 @@ export interface LandingStrings {
     moreLink: string;
   };
   faq: { kicker: string; title: string; more: string; moreLink: string; items: { q: string; a: string }[] };
+  /** Philosophy section (SF-4 wires markup) — 8 pillars, condensed from story-workflow.md */
+  philosophy: {
+    kicker: string;
+    title: string;
+    sub: string;
+    docLink: string;
+    pillars: { name: string; line: string }[];
+  };
+  /** #workflow deepen (SF-4 wires markup) — how the 9 agents + gates B0-B5 work */
+  workflowDeep: {
+    agentsTitle: string;
+    agentsIntro: string;
+    gatesTitle: string;
+    gatesIntro: string;
+    gates: { id: string; label: string; desc: string }[];
+  };
+  /** Get Wakii / download section (SF-3 replaces quickstart with this) */
+  getWakii: {
+    kicker: string;
+    title: string;
+    sub: string;
+    steps: { n: string; comment: string; title: string; desc: string; cmd: string }[];
+    reqTitle: string;
+    reqItems: string[];
+    repoCta: string;
+    note: string;
+  };
 }
 
 const BRACKET_GEOMETRY = {
@@ -264,6 +291,52 @@ export const en: LandingStrings = {
       { q: "What is Wakii's relationship to Orca?", a: 'Wakii is an open-source fork of Orca, which is MIT licensed. We credit the upstream project fully and build the superpowers team on top of it.' },
     ],
   },
+  philosophy: {
+    kicker: 'philosophy',
+    title: 'Eight pillars, one pipeline',
+    sub: 'The mechanics are public — the reasons they are built this way matter more. Condensed from the full story workflow; each pillar has a deeper write-up in the docs.',
+    docLink: 'read the full philosophy',
+    pillars: [
+      { name: 'Analyze once, inherit many', line: 'Deep analysis is expensive, so it runs exactly once at the epic level — every sub-feature inherits the results through a context pack.' },
+      { name: 'A team with separated powers', line: 'The PM specs but never codes; the developer builds but never approves its own work; the tester hunts failures but never fixes them.' },
+      { name: 'Gates, not trust', line: 'Tool-enforced gates plus a real browser walkthrough demand evidence — "the agent says it works" is not a verdict.' },
+      { name: 'Humans own the irreversibles', line: 'Architecture decisions and the merge to your branch are human gates — nothing irreversible happens without a person saying yes.' },
+      { name: 'Tiers and one destination branch', line: 'Dependencies are explicit tiers; every tier merges into one story branch, so parallelism never means divergent histories.' },
+      { name: 'Watchdog: idle is not dead', line: 'A silent agent might be running a long build — the watchdog checks three layers before resuming a stall from its last good state.' },
+      { name: 'Memory and the learning loop', line: 'Every task ends with a ritual — what broke, what fixed it — so the next story starts smarter instead of rediscovering the same trap.' },
+      { name: 'Defensive by design', line: 'The workflow assumes it will be the one making the mistake — so mistakes are cheap, visible, and revertable by default.' },
+    ],
+  },
+  workflowDeep: {
+    agentsTitle: 'who does what',
+    agentsIntro:
+      'Nine role-gated agents run every story. Analysts frame the problem, critics attack the spec and the plan, an executor builds in an isolated worktree, a designer prototypes the UI before code — and an independent reviewer plus a verifier check everything the executor claims. No agent approves its own work.',
+    gatesTitle: 'six gates per story',
+    gatesIntro:
+      'Every sub-feature passes the Story Ops gates before it counts. Gates are tool-enforced — a gate that could self-approve would not be a gate.',
+    gates: [
+      { id: 'B0', label: 'browser test', desc: 'A real three-tier walkthrough — DOM, screenshots, click-through flow — before anything is called done.' },
+      { id: 'B1', label: 'code + tests', desc: 'Implementation complete, tests green on the touched surface. No green, no gate.' },
+      { id: 'B2', label: 'plan', desc: 'Every plan step ticked off with evidence — nothing silently skipped.' },
+      { id: 'B3', label: 'review', desc: 'An independent reviewer attacks the diff: bugs, security, scope creep.' },
+      { id: 'B4', label: 'merge', desc: 'Merge into the story destination branch, audit trail recorded.' },
+      { id: 'B5', label: 'done', desc: 'The issue closes only after verification is clean — tracking truth matches the repo.' },
+    ],
+  },
+  getWakii: {
+    kicker: 'get wakii',
+    title: 'build it from source',
+    sub: 'Wakii is a desktop app built from an open repo. Three commands from clone to the Superpowers panel — no configuration along the way.',
+    steps: [
+      { n: 'step 01', comment: '// clone', title: 'Get the source', desc: 'Clone the repository — the github link in the footer points at the Wakii fork.', cmd: 'git clone <repo-url> wakii && cd wakii' },
+      { n: 'step 02', comment: '// install', title: 'Install dependencies', desc: 'Pulls the JavaScript deps and builds the native modules for your platform. First run takes a few minutes.', cmd: 'pnpm install' },
+      { n: 'step 03', comment: '// run', title: 'Run the app', desc: 'Dev mode for looking around, or a production build. The Wakii window opens with the team already inside.', cmd: 'pnpm dev   # or: pnpm build && pnpm start' },
+    ],
+    reqTitle: 'requirements',
+    reqItems: ['Node.js 24', 'pnpm 12', 'git'],
+    repoCta: 'view the repo on github',
+    note: 'No binaries yet — releases are on the roadmap. Building from source takes a few minutes and always matches the docs.',
+  },
 };
 
 export const vi: LandingStrings = {
@@ -413,5 +486,51 @@ export const vi: LandingStrings = {
       { q: '"Một PR mỗi story" nghĩa là gì?', a: 'Mỗi story — dù cần bao nhiêu agent và spec slice — hạ cánh thành một pull request sạch, review được, có verify phía sau. Không mưa PR, không trạng thái merge dở.' },
       { q: 'Wakii liên quan gì tới Orca?', a: 'Wakii là fork mã nguồn mở của Orca, vốn MIT licensed. Chúng tôi credit đầy đủ dự án upstream và xây team superpowers trên đó.' },
     ],
+  },
+  philosophy: {
+    kicker: 'triết lý',
+    title: 'Tám trụ cột, một pipeline',
+    sub: 'Cơ chế thì công khai — nhưng lý do nó được xây như vậy mới là điều quan trọng. Bản rút gọn từ story workflow đầy đủ; mỗi trụ cột có bài viết sâu hơn trong docs.',
+    docLink: 'đọc toàn bộ triết lý',
+    pillars: [
+      { name: 'Phân tích một lần, kế thừa nhiều lần', line: 'Phân tích sâu tốn kém nên chỉ chạy đúng một lần ở cấp epic — mọi sub-feature kế thừa kết quả qua context pack.' },
+      { name: 'Team có quyền lực tách bạch', line: 'PM viết spec nhưng không code; developer xây nhưng không duyệt chính mình; tester săn lỗi nhưng không sửa.' },
+      { name: 'Gate, không phải niềm tin', line: 'Gate ép bởi công cụ cộng walkthrough browser thật đòi bằng chứng — "agent nói nó chạy" không phải verdict.' },
+      { name: 'Con người nắm những gì không thể hoàn tác', line: 'Quyết định kiến trúc và merge vào nhánh của bạn là gate của con người — không gì không thể hoàn tác xảy ra nếu thiếu một người gật đầu.' },
+      { name: 'Tier và một nhánh đích duy nhất', line: 'Dependency là tier tường minh; mọi tier merge vào một nhánh story — chạy song song không đồng nghĩa lịch sử phân tách.' },
+      { name: 'Watchdog: im lặng không phải là chết', line: 'Agent im lặng có thể đang chạy build dài — watchdog kiểm ba lớp trước khi resume một stall từ trạng thái tốt cuối.' },
+      { name: 'Memory và vòng học hỏi', line: 'Mỗi task kết thúc bằng một nghi thức — cái gì vỡ, cái gì sửa — để story sau bắt đầu thông minh hơn thay vì dính lại cùng một bẫy.' },
+      { name: 'Phòng thủ by design', line: 'Workflow giả định chính nó sẽ là người mắc lỗi — nên lỗi rẻ, nhìn thấy được, và revert được theo mặc định.' },
+    ],
+  },
+  workflowDeep: {
+    agentsTitle: 'ai làm gì',
+    agentsIntro:
+      'Chín agent phân vai chạy mọi story. Nhóm phân tích dựng khung vấn đề, nhóm critic tấn công spec và plan, một executor xây trong worktree cách ly, một designer vẽ UI trước khi code — và reviewer độc lập cùng verifier kiểm tra mọi thứ executor tuyên bố. Không agent nào duyệt chính công việc của mình.',
+    gatesTitle: 'sáu gate mỗi story',
+    gatesIntro:
+      'Mọi sub-feature phải qua các gate Story Ops mới được tính. Gate được công cụ ép thực thi — một gate có thể tự duyệt chính nó thì không phải gate.',
+    gates: [
+      { id: 'B0', label: 'browser test', desc: 'Walkthrough thật ba tầng — DOM, screenshot, flow click-through — trước khi gọi cái gì là xong.' },
+      { id: 'B1', label: 'code + tests', desc: 'Implement hoàn tất, test xanh trên bề mặt bị sửa. Không xanh, không qua gate.' },
+      { id: 'B2', label: 'plan', desc: 'Mỗi bước plan được tick kèm bằng chứng — không gì bị bỏ qua trong im lặng.' },
+      { id: 'B3', label: 'review', desc: 'Một reviewer độc lập tấn công diff: bug, bảo mật, lan man phạm vi.' },
+      { id: 'B4', label: 'merge', desc: 'Merge vào nhánh đích của story, audit trail được ghi lại.' },
+      { id: 'B5', label: 'done', desc: 'Issue chỉ đóng sau khi verification sạch — sự thật trên tracking khớp với repo.' },
+    ],
+  },
+  getWakii: {
+    kicker: 'get wakii',
+    title: 'build từ mã nguồn',
+    sub: 'Wakii là app desktop build từ repo mở. Ba lệnh từ clone tới Superpowers panel — không cần cấu hình gì trên đường đi.',
+    steps: [
+      { n: 'bước 01', comment: '// clone', title: 'Lấy mã nguồn', desc: 'Clone repository — link github ở footer trỏ tới fork Wakii.', cmd: 'git clone <repo-url> wakii && cd wakii' },
+      { n: 'bước 02', comment: '// cài', title: 'Cài dependencies', desc: 'Kéo JavaScript deps và build native module cho hệ điều hành của bạn. Lần đầu mất vài phút.', cmd: 'pnpm install' },
+      { n: 'bước 03', comment: '// chạy', title: 'Chạy app', desc: 'Chế độ dev để xem quanh, hoặc build production. Cửa sổ Wakii mở ra với team đã ở bên trong.', cmd: 'pnpm dev   # hoặc: pnpm build && pnpm start' },
+    ],
+    reqTitle: 'yêu cầu',
+    reqItems: ['Node.js 24', 'pnpm 12', 'git'],
+    repoCta: 'xem repo trên github',
+    note: 'Chưa có binary — release nằm trong roadmap. Build từ mã nguồn mất vài phút và luôn khớp với docs.',
   },
 };
