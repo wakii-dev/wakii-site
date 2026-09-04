@@ -449,4 +449,22 @@ const spans: Record<string, string> = {
       margin-left: 0;
     }
   }
+
+  /* ---- hover lift (pure CSS, touch devices excluded) ---- */
+  @media (hover: hover) and (pointer: fine) {
+    .bx-in:hover {
+      border-color: var(--accent);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(69, 224, 168, 0.08);
+      transform: translateY(-3px);
+    }
+  }
 </style>
+
+<script>
+  // SF-2 motion contract: consume the shared util, nothing custom.
+  // data-reveal lives on the terminal, each .section-head and each outer .bx.
+  import { initMotion } from '../components/motion';
+  initMotion();
+</script>

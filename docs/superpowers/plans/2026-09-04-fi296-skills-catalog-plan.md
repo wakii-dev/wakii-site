@@ -42,7 +42,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       3 dots + title `wakii — install`; command dựng từ `REPO_URL` (config.ts),
       format giống landing; link `→ full guide: /docs/getting-started/` (trailing
       slash, KHÔNG `#get-wakii`).
-- [ ] 8. entrance-animations-qua-util — `initMotion()` đúng 1 lần (script page);
+- [x] 8. entrance-animations-qua-util — `initMotion()` đúng 1 lần (script page);
       `data-reveal` trên terminal + `.section-head` + outer `.bx` (KHÔNG trên
       `.bx-in`); KHÔNG IO/script riêng, KHÔNG data-tilt/parallax; hover lift CSS
       thuần bọc `@media (hover:hover) and (pointer:fine)`.
