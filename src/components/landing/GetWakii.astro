@@ -19,9 +19,8 @@ const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
 // data carries a literal <repo-url> — interpolate the constant at render time
 const cmd = (s: string) => s.replace('<repo-url>', REPO_URL);
 // note = "<head> — <rest>" → bold the lead phrase (both locales use " — ")
-const dash = g.note.indexOf(' — ');
-const noteHead = dash > -1 ? g.note.slice(0, dash) : g.note;
-const noteRest = dash > -1 ? g.note.slice(dash + 1) : '';
+const [noteHead, ...rest] = g.note.split(' — ');
+const noteRest = rest.join(' — ');
 ---
 
 <section class="gw" id="get-wakii">
@@ -35,7 +34,7 @@ const noteRest = dash > -1 ? g.note.slice(dash + 1) : '';
     <div class="bento">
       <div class="cell steps reveal">
         <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">▸ install sequence</span><span class="meta">3 steps · exit 0</span></div>
+          <div class="bx-label"><span class="t">install sequence</span><span class="meta">3 steps · exit 0</span></div>
           <div class="bx-body">
             {g.steps.map((step) => (
               <div class="stp">
@@ -53,7 +52,7 @@ const noteRest = dash > -1 ? g.note.slice(dash + 1) : '';
 
       <div class="cell req reveal">
         <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">▸ {g.reqTitle}</span><span class="meta">pre-flight</span></div>
+          <div class="bx-label"><span class="t">{g.reqTitle}</span><span class="meta">pre-flight</span></div>
           <div class="bx-body">
             {g.reqItems.map((item) => (
               <div class="req-row"><span class="name">{item}</span></div>
@@ -64,7 +63,7 @@ const noteRest = dash > -1 ? g.note.slice(dash + 1) : '';
 
       <div class="cell cta reveal">
         <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">▸ repository</span><span class="meta">github</span></div>
+          <div class="bx-label"><span class="t">repository</span><span class="meta">github</span></div>
           <div class="bx-body cta-body">
             <a class="btn btn-primary" href={REPO_URL}>{g.repoCta}</a>
             <a class="btn btn-ghost" href={docsHref}>{t.hero.ctaGhost}</a>

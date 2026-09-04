@@ -14,8 +14,8 @@ Design phase (tasks 1-2) hoàn thành PRE-LAUNCH — hand-off commit 5547901 là
 - [x] 6. roadmap-route-en — `src/pages/roadmap.astro`: 3 lane now/next/later từ `roadmap.ts` verbatim (card count 2/3/3), lane-foot + tag + chrome EN, kicker "roadmap", entrance `.reveal` + `initMotion()`
 - [x] 7. roadmap-route-vi — `src/pages/vi/roadmap.astro`: label_vi + desc_vi; h2/sub VI authored (FLAG: qua copy-review gate SF-5); chrome EN giữ nguyên
 - [x] 8. roadmap-entrance-qua-util — consumed in 6/7 (motion.css import + initMotion, no new primitives)
-- [ ] 9. seo-meta-hreflang-route-mới — Base.astro tự sinh canonical/hreflang từ pathname; verify /roadmap ↔ /vi/roadmap + lang switcher 2 chiều
-- [ ] 10. responsive-pass — ≤980 (steps full, req+cta span 6, lanes stack), ≤720 (all full, stp 1col, pad 20px), @390 zero horizontal scroll (iframe probe scrollWidth)
+- [x] 9. seo-meta-hreflang-route-mới — Base.astro tự sinh canonical/hreflang từ pathname; verify /roadmap ↔ /vi/roadmap + lang switcher 2 chiều
+- [x] 10. responsive-pass — ≤980 (steps full, req+cta span 6, lanes stack), ≤720 (all full, stp 1col, pad 20px), @390 zero horizontal scroll (iframe probe scrollWidth)
 
 ## Meta-steps (numbered, không checkbox)
 
