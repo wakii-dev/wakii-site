@@ -17,7 +17,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       `/tmp/story/fi294/design/sf2-*.html`). Evidence: hand-off `sf2-direction.md` §1.
 - [x] 2. design-user-pick-gate — DONE pre-launch (user chọn b — Bento Catalog,
       comment DESIGN-PICK trên epic). Evidence: hand-off header "user-selected: B".
-- [ ] 3. catalog-route-en — `src/pages/skills.astro`: Base + Nav/Footer sẵn; hero
+- [x] 3. catalog-route-en — `src/pages/skills.astro`: Base + Nav/Footer sẵn; hero
       (kicker `## skills`, h1 + `.hl` 13 skills derive từ data, sub với inline
       `<code>`, hero-stats 3 ô derive: count/categories/MIT).
       **Token mapping PIN (plan-critic P0):** prototype name → tokens.css thật,
@@ -30,11 +30,11 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       Exit: build green + 13 card + hero stats khớp số render thực (§7.1).
 - [ ] 4. catalog-route-vi — `src/pages/vi/skills.astro`: song song EN, copy VI draft
       (skill name + command giữ EN); title VI; VI copy flag gate SF-5.
-- [ ] 5. category-grouping-theo-taxonomy-SF-1 — filter `public === true` (13),
+- [x] 5. category-grouping-theo-taxonomy-SF-1 — filter `public === true` (13),
       group workflow(4) → design(6) → reference(3), thứ tự section cứng; section-head
       copy EN/VI theo hand-off §3; category `platform` (5 skills) + 2 workflow
       internal (`public:false`) không render.
-- [ ] 6. card-expanded-content — bento 12-col span map hand-off §3 (w1 flagship
+- [x] 6. card-expanded-content — bento 12-col span map hand-off §3 (w1 flagship
       `bx-big` + pill "flagship"); card anatomy `.bx-label`(command ▸ + pill) /
       `.bx-body`(h3 name, desc, bx-how dashed "how it works" + how_*); VI dùng
       desc_vi/how_vi.
