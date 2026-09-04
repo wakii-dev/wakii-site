@@ -20,6 +20,10 @@ const { title, description = SITE_TAGLINE, noindex = false } = Astro.props;
  * If a VI page does not exist, hreflang still points at the mapped URL —
  * VI routes are generated from the same slug contract, so a missing VI page
  * means the slug is missing in both locales (contract violation, not fallback).
+ *
+ * Canonical (SF-5, FI-298): self-referencing per locale — per Google guidance,
+ * a non-self canonical can cause the hreflang cluster to be ignored. The
+ * hreflang annotations below still cross-link the EN <-> VI pair.
  */
 const { pathname } = Astro.url;
 const isVi = pathname === '/vi' || pathname.startsWith('/vi/');
@@ -36,7 +40,7 @@ const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={new URL(canonicalPath, Astro.site)} />
+    <link rel="canonical" href={new URL(pathname || '/', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(canonicalPath, Astro.site)} />
     <link rel="alternate" hreflang="vi" href={new URL(viPath, Astro.site)} />
     <link rel="alternate" hreflang="x-default" href={new URL(canonicalPath, Astro.site)} />
