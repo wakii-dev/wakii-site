@@ -1,0 +1,53 @@
+---
+/**
+ * Docs placeholder routes — slug contract LOCKED at SF-1 (see src/config.ts DOC_SLUGS).
+ * SF-3 replaces the placeholder body with real Content Collections rendering.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { docSlug } from '../../content.config';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docs', (d) => d.id.startsWith('en/'));
+  return entries.map((entry) => ({
+    params: { slug: docSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<Base title={entry.data.title} description={entry.data.description}>
+  <article class="wrap doc">
+    <div class="crumb">~/docs/{docSlug(entry.id)}</div>
+    <h1>{entry.data.title}</h1>
+    <p class="body">{entry.body}</p>
+  </article>
+</Base>
+
+<style>
+  .doc {
+    padding: 96px 32px 128px;
+    max-width: 780px;
+  }
+  .crumb {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 24px;
+  }
+  .crumb::before {
+    content: '$ cat ';
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(26px, 3.5vw, 38px);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .body {
+    font-family: var(--font-sans);
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+</style>

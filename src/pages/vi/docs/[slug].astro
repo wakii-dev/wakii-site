@@ -1,0 +1,70 @@
+---
+/**
+ * VI docs routes — generated from the EN slug contract so a missing VI
+ * translation never produces a dead link: if vi/<slug>.md does not exist yet,
+ * the EN content renders with a fallback notice (never a 404). This enforces
+ * acceptance "trang VI thiếu → fallback EN" by construction.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import LangSwitcher from '../../../components/LangSwitcher.astro';
+import { docSlug } from '../../../content.config';
+
+export async function getStaticPaths() {
+  const enEntries = await getCollection('docs', (d) => d.id.startsWith('en/'));
+  const viEntries = await getCollection('docs', (d) => d.id.startsWith('vi/'));
+  return enEntries.map((en) => {
+    const slug = docSlug(en.id);
+    const vi = viEntries.find((v) => docSlug(v.id) === slug);
+    return { params: { slug }, props: { entry: vi ?? en, viExists: !!vi } };
+  });
+}
+
+const { entry, viExists } = Astro.props;
+---
+
+<Base title={entry.data.title} description={entry.data.description}>
+  <article class="wrap doc">
+    <div class="crumb">~/vi/docs/{docSlug(entry.id)}</div>
+    <h1>{entry.data.title}</h1>
+    {viExists ? null : <p class="fallback-note">Bản dịch tiếng Việt chưa có — đang hiển thị nội dung tiếng Anh.</p>}
+    <p class="body">{entry.body}</p>
+    <div class="switch-row"><LangSwitcher viExists={viExists} /></div>
+  </article>
+</Base>
+
+<style>
+  .doc {
+    padding: 96px 32px 128px;
+    max-width: 780px;
+  }
+  .crumb {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 24px;
+  }
+  .crumb::before {
+    content: '$ cat ';
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(26px, 3.5vw, 38px);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .fallback-note {
+    border-left: 2px solid var(--warn);
+    padding-left: 14px;
+    color: var(--warn);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .body {
+    font-family: var(--font-sans);
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+  .switch-row {
+    margin-top: 40px;
+  }
+</style>

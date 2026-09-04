@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import Landing from '../components/Landing.astro';
+import { en } from '../i18n/landing';
+import { SITE_TAGLINE } from '../config';
+---
+
+<Base title={`wakii — ${SITE_TAGLINE}`} description={SITE_TAGLINE}>
+  <Landing strings={en} />
+</Base>
