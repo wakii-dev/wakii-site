@@ -1,0 +1,285 @@
+---
+/**
+ * MobileConnect — jumbo bento cell innards (SF-2, FI-302). Design binding 1:1:
+ * docs/superpowers/designs/sf-downloads-direction.md "Bento Dispatch" —
+ * Surface 2 = the sp8 jumbo cell of /download.
+ *
+ * Prop-driven for SF-3 teaser reuse: pass the `mobile` slice of
+ * src/i18n/downloads.ts (KEY-OWNERSHIP: SF-1 owns those keys — this
+ * component never hardcodes copy). Flags + store URLs come from
+ * src/config.ts directly so every consumer renders the same flag state.
+ *
+ * Gates baked in:
+ *   G-QR  QR renders ONLY when MOBILE_LIVE AND a real store URL exists;
+ *         encodes the store page (never a pairing endpoint — site is static).
+ *         flag=false → white overlay with the reviewed coming-soon copy.
+ *   G-A2  badges link the real store URL when present; a missing URL renders
+ *         an honest dashed badge without a href (partial-fill safe).
+ *   G-C   capabilities = exactly the reviewed `caps` array (3 items);
+ *         zero-default: no caps → no capability list at all.
+ *
+ * Renders the cell INNARDS (.bx-in …) only — the page owns the outer
+ * .bx wrapper + grid placement (span map stays with the layout).
+ */
+import { MOBILE_LIVE, MOBILE_STORE_URLS, REPO_URL } from '../../config';
+import QRCode from 'qrcode';
+import type { DownloadStrings } from '../../i18n/downloads';
+
+interface Props {
+  t: DownloadStrings['mobile'];
+}
+const { t } = Astro.props;
+
+// G-QR: build-time SVG, store page as the encoded target.
+const storeUrl = MOBILE_STORE_URLS.ios || MOBILE_STORE_URLS.android || '';
+const qrSvg =
+  MOBILE_LIVE && storeUrl
+    ? await QRCode.toString(storeUrl, {
+        type: 'svg',
+        margin: 0,
+        color: { dark: '#0A0E0D', light: '#FFFFFF' },
+      })
+    : '';
+
+// Follow-updates target — the GitHub Releases page (same real page the
+// desktop follow-releases cell points at; no invented URLs).
+const releasesUrl = `${REPO_URL}/releases`;
+---
+
+<div class="bx-in">
+  <div class="bx-label">
+    <span class="t">{t.label}</span>
+    <span class="pill">qr pairing</span>
+  </div>
+  <div class="bx-body">
+    <div class="mob-grid">
+      <div class="qr-frame">
+        {qrSvg ? <Fragment set:html={qrSvg} /> : <div class="qr-flag">{t.notLive.comingSoon}</div>}
+      </div>
+      <div class="mob-side">
+        <div class="badges">
+          {
+            MOBILE_STORE_URLS.ios ? (
+              <a class="badge" href={MOBILE_STORE_URLS.ios}>
+                <span class="os"></span>
+                <span class="bl"><b>{t.badgeIos}</b></span>
+              </a>
+            ) : (
+              <span class="badge soon">
+                <span class="os"></span>
+                <span class="bl"><b>{t.badgeIos}</b></span>
+              </span>
+            )
+          }
+          {
+            MOBILE_STORE_URLS.android ? (
+              <a class="badge" href={MOBILE_STORE_URLS.android}>
+                <span class="os">▶</span>
+                <span class="bl"><b>{t.badgeAndroid}</b></span>
+              </a>
+            ) : (
+              <span class="badge soon">
+                <span class="os">▶</span>
+                <span class="bl"><b>{t.badgeAndroid}</b></span>
+              </span>
+            )
+          }
+        </div>
+        {
+          t.caps.length > 0 && (
+            <div class="caps">
+              <div class="caps-intro">{t.capsIntro}</div>
+              {t.caps.map((cap) => (
+                <div class="cap">{cap}</div>
+              ))}
+            </div>
+          )
+        }
+        <p class="mob-copy">{t.sub}</p>
+      </div>
+    </div>
+  </div>
+  <div class="bx-foot">
+    {qrSvg ? <span>{t.live.qrCaption}</span> : <a href={releasesUrl}>{t.notLive.followUpdates} →</a>}
+  </div>
+</div>
+
+<style>
+  /* ---- bento anatomy (scoped copy — component renders its own .bx-in) ---- */
+  .bx-in {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+  }
+  .bx-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .bx-label .t {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .pill {
+    font-size: 10.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(69, 224, 168, 0.4);
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  .bx-body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .bx-foot {
+    margin-top: auto;
+    padding: 14px 20px 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+  .bx-foot a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .bx-foot a:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- mobile jumbo cell (hand-off Surface 2) ---- */
+  .mob-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+    flex: 1;
+  }
+  .qr-frame {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px;
+    width: 170px;
+    height: 170px;
+    position: relative;
+  }
+  .qr-frame :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .qr-flag {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 10px;
+    font-size: 10px;
+    color: var(--warn);
+    text-align: center;
+    padding: 10px;
+    line-height: 1.6;
+  }
+  .mob-side {
+    min-width: 0;
+  }
+  .badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.25s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a.badge:hover {
+      border-color: var(--accent);
+    }
+  }
+  .badge .os {
+    font-size: 17px;
+    color: var(--text);
+  }
+  .badge .bl b {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .badge.soon {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+  .caps {
+    display: flex;
+    flex-direction: column;
+  }
+  .caps-intro {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .cap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .cap:last-child {
+    border-bottom: 0;
+  }
+  .cap::before {
+    content: '✓';
+    color: var(--accent);
+  }
+  .mob-copy {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 720px) {
+    .mob-grid {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+    .qr-frame {
+      width: 150px;
+      height: 150px;
+    }
+  }
+</style>
