@@ -46,7 +46,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       `data-reveal` trên terminal + `.section-head` + outer `.bx` (KHÔNG trên
       `.bx-in`); KHÔNG IO/script riêng, KHÔNG data-tilt/parallax; hover lift CSS
       thuần bọc `@media (hover:hover) and (pointer:fine)`.
-- [ ] 9. seo-meta-hreflang-route-mới — title `skills — wakii` / VI tương ứng
+- [x] 9. seo-meta-hreflang-route-mới — title `skills — wakii` / VI tương ứng
       (tránh double suffix); verify view-source canonical + hreflang en/vi/
       x-default cho cả 2 route (Base math đã agnostic — chỉ verify, không sửa);
       lang-switcher round-trip 2 chiều (ACCEPTANCE 4); regression hreflang 1
