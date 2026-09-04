@@ -601,3 +601,23 @@ pnpm build
 git add docs/superpowers/plans/2026-09-04-sf3-docs-plan.md src/content
 git commit -m "docs(docs): seo meta pass + link integrity + plan tick (FI-292)"
 ```
+
+### Task 9: Story-workflow philosophy extension (PM update 2026-09-04)
+
+**Files:**
+- Modify: `src/content/docs/en/story-workflow.md`
+- Modify: `src/content/docs/vi/story-workflow.md`
+
+- [x] **Step 1: Philosophy section EN** — 8 trụ cột từ context pack UPDATE
+  2026-09-04 (analyze-once-inherit-many / team model tách bạch / gates thay
+  vì niềm tin + Rule 0 / human gates / tier & bracket topology / watchdog
+  idle≠chết / memory & learning loop / defensive patterns), mỗi trụ cột 1
+  đoạn + ví dụ cụ thể; case study dùng chính story FI-289 (rework có kiểm
+  soát, watchdog tự điều phối, reviewer bắt P0, getting-started validate
+  bằng thực thi).
+
+- [x] **Step 2: VI translation** — dịch đầy đủ, UI terms giữ EN.
+
+- [x] **Step 3: Rebuild + verify** — build 13 pages OK; cả 2 locale chứa đủ
+  needle (8 pillar + case study); zero "Stories tab" trong dist; internal
+  links sống (fragment #story-ops-gates tồn tại trên trang đích).
