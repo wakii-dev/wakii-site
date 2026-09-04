@@ -20,7 +20,7 @@ const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
       <h2>{t.faq.title}</h2>
     </div>
     {t.faq.items.map((item) => (
-      <details>
+      <details data-reveal>
         <summary>{item.q}</summary>
         <div class="ans">{item.a}</div>
       </details>

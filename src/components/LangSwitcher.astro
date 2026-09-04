@@ -54,3 +54,14 @@ const viHref = canonicalPath === '/' ? '/vi/' : `/vi${canonicalPath}`;
     color: var(--border-strong);
   }
 </style>
+
+<script>
+  // SF-5 (FI-298): giữ anchor hash khi chuyển locale (docs deep-link, vd
+  // /docs/story-workflow/#philosophy). Hash EN không map slug VI — browser
+  // đứng top, vẫn better-than-drop. Verdict pinned tại plan Task 5.
+  document.querySelectorAll<HTMLAnchorElement>('.lang-switch a').forEach((a) => {
+    a.addEventListener('click', () => {
+      if (location.hash && !a.href.includes('#')) a.href += location.hash;
+    });
+  });
+</script>

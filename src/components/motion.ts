@@ -156,3 +156,14 @@ export function initMotion(): void {
     io.observe(el);
   });
 }
+
+/**
+ * SF-5 extension (FI-298) — tag direct matches inside `container` with
+ * `.reveal` so the initMotion() IntersectionObserver reveals them per-batch
+ * (60ms stagger). Call BEFORE initMotion() — the observer queries `.reveal`
+ * once at init. No-op visually when reduced-motion is on: initMotion exits
+ * early and motion.css only hides elements under the `html.anim` gate.
+ */
+export function revealChildren(container: ParentNode, selector: string): void {
+  container.querySelectorAll(selector).forEach((el) => el.classList.add('reveal'));
+}

@@ -7,6 +7,7 @@
  */
 import Base from './Base.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
+import '../styles/motion.css';
 import { getCollection } from 'astro:content';
 import { docSlug } from '../content.config';
 
@@ -74,6 +75,18 @@ const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}/` : `/docs/${s}/`)
     </article>
   </div>
 </Base>
+
+<script>
+  // SF-5 (FI-298) docs light reveal — fade-in nhẹ per prose block khi scroll,
+  // giữ đọc là chính. Tag TRƯỚC initMotion() (observer quét lúc init).
+  // Reduced-motion: initMotion early-return + .anim gate → static visible.
+  import { initMotion, revealChildren } from '../components/motion';
+  const article = document.querySelector('.docs-article');
+  if (article) {
+    revealChildren(article, '.prose > *');
+    initMotion();
+  }
+</script>
 
 <style>
   .docs-shell {
@@ -278,6 +291,22 @@ const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}/` : `/docs/${s}/`)
     }
     .docs-sidebar {
       position: static;
+    }
+  }
+  /* Docs reveal nhẹ hơn bxreveal (28px quá mạnh cho prose) — vẫn
+     transform/opacity only; kill-switch prefers-reduced-motion vẫn thắng.
+     Prose children nhận class .reveal (revealChildren) nên dùng .reveal-in. */
+  .docs-article :global(.reveal-in) {
+    animation: docsreveal 0.45s ease both;
+  }
+  @keyframes docsreveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
     }
   }
 </style>
