@@ -1,0 +1,224 @@
+---
+/**
+ * Roadmap page body — Now / Next / Later (SF-3 FI-297), shared by
+ * /roadmap (EN) and /vi/roadmap (VI). "Bento Composer" per
+ * docs/superpowers/designs/sf3-direction.md §Surface B.
+ * Content = src/data/roadmap.ts VERBATIM (approved at epic spec §4) — never
+ * invent items. Page chrome (tag/lane-foot/labels) stays EN in both locales
+ * (mono terminal chrome, per design §5); h2/sub are real content (localized —
+ * VI copy authored here, goes through the SF-5 copy-review gate).
+ */
+import Base from '../layouts/Base.astro';
+import { roadmap } from '../data/roadmap';
+import '../styles/motion.css';
+
+interface Props {
+  lang: 'en' | 'vi';
+}
+const { lang } = Astro.props;
+
+const COPY = {
+  en: {
+    title: 'roadmap',
+    h2: 'where wakii is headed',
+    sub: 'Three lanes, deliberately fuzzy — there is no release cadence yet. What is in flight, what is queued, and what waits for demand.',
+    description:
+      'What the wakii team is building — three lanes, deliberately fuzzy: Now, Next, Later.',
+  },
+  vi: {
+    title: 'roadmap',
+    h2: 'wakii đang đi đâu',
+    sub: 'Ba làn, cố ý mơ hồ — chưa có nhịp release nào cả. Cái đang làm, cái đang chờ, và cái chờ theo nhu cầu thật.',
+    description:
+      'Team wakii đang xây gì — ba làn, cố ý mơ hồ: Đang làm, Tiếp theo, Tầm nhìn.',
+  },
+} as const;
+const c = COPY[lang];
+
+const LANES = ['now', 'next', 'later'] as const;
+const TAGS = ['in flight', 'queued', 'someday'] as const;
+const FEET = [
+  'moving right now — updated as work lands',
+  'queued behind the current story',
+  'no date, demand-driven',
+];
+---
+
+<Base title={c.title} description={c.description}>
+  <section class="rm">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="kicker">roadmap</div>
+        <h2>{c.h2}</h2>
+        <p>{c.sub}</p>
+      </div>
+
+      <div class="lanes">
+        {roadmap.map((lane, i) => (
+          <div class={`lane lane-${LANES[i]} reveal`}>
+            <div class="lane-in">
+              <div class="lane-head">
+                <div class="lane-title">{lang === 'vi' ? lane.label_vi : lane.label_en}</div>
+                <span class="lane-when">{lane.when}</span>
+              </div>
+              <div class="lane-body">
+                {lane.items.map((item) => (
+                  <div class="card">
+                    <span class="tag">{TAGS[i]}</span>
+                    <h3>{item.title}</h3>
+                    <p>{lang === 'vi' ? item.desc_vi : item.desc_en}</p>
+                  </div>
+                ))}
+              </div>
+              <div class="lane-foot">{FEET[i]}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initMotion } from './motion';
+  initMotion();
+</script>
+
+<style>
+  .rm {
+    padding: 92px 0 110px;
+    border-top: 1px solid var(--border);
+  }
+  .lanes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bento-gap);
+    align-items: start;
+  }
+  .lane {
+    min-width: 0;
+  }
+  .lane-in {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .lane-now .lane-in { border-color: rgba(69, 224, 168, 0.45); }
+  .lane-next .lane-in { border-color: rgba(232, 163, 61, 0.4); }
+
+  .lane-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+  }
+  .lane-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .lane-title::before {
+    content: '▸ ';
+    font-weight: 400;
+    color: var(--text-faint);
+  }
+  .lane-now .lane-title { color: var(--accent); }
+  .lane-next .lane-title { color: var(--warn); }
+  .lane-later .lane-title { color: var(--text-dim); }
+
+  .lane-when {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+
+  .lane-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    flex: 1;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 15px 17px;
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+  .lane-now .tag {
+    color: var(--accent);
+    border-color: var(--border-strong);
+    background: var(--accent-soft);
+  }
+  .lane-next .tag {
+    color: var(--warn);
+    background: var(--warn-soft);
+  }
+  .card h3 {
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-top: 8px;
+  }
+  .card p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .lane-later .card { opacity: 0.72; }
+
+  .lane-foot {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    padding: 11px 20px;
+    border-top: 1px dashed var(--border);
+  }
+  .lane-now .lane-foot::before {
+    content: '● ';
+    color: var(--accent);
+    animation: blink 1.4s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lane-now .lane-foot::before {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .lanes {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
