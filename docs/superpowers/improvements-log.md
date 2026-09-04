@@ -11,3 +11,9 @@
 - **Astro `inlineStylesheets: auto`**: CSS bundle nhỏ được inline vào HTML head — grep dist/_astro/*.css KHÔNG đủ để kết luận "thiếu styles"; phải grep cả inline `<style>` trong dist/**/*.html.
 - **Anchor click + `scroll-behavior: smooth`** trong embedded browser: hash đổi nhưng không scroll (browser thật OK). Đã flag epic cho SF-5; nếu cần verify anchor trong embed → set `scrollBehavior='auto'` tạm rồi click.
 - **em-dash split off-by-one**: `indexOf(' — ')` + `slice(i+1)` giữ lại em-dash → dùng `split(' — ')`. Bug thật ("— —" trên landing note), bắt được nhờ Rule 0 flow walkthrough.
+
+## 2026-09-04 — SF-5 Convergence (FI-298)
+- **Reduced-motion mid-session P2**: nếu user bật `prefers-reduced-motion` SAU khi trang đã load với motion ON, `.anim` đã add → `.anim [data-reveal] {opacity:0}` giữ elements ẩn (initMotion đã chạy, observer vẫn reveal khi scroll nên thực tế self-heal trên scroll; chỉ ảnh hưởng elements ngoài viewport đầu chưa intersect). Suggested hardening: trong global.css RM media query thêm `.anim .reveal, .anim [data-reveal] { opacity: 1 !important; }`.
+- **Canonical swap per locale (verdict b)**: Base.astro canonical cũ build từ `canonicalPath` prop → dễ lệch thật-URL. Đổi sang self-referencing `new URL(pathname || '/', Astro.site)` — mỗi locale tự canonical (Google guidance cho hreflang cluster). Verdict pinned trong plan Task 4; verify script phải so trailing-slash (không `/index.html`).
+- **LangSwitcher hash preserve**: anchor hash EN (`#philosophy`) KHÔNG map slug VI nhưng giữ vẫn better-than-drop (browser đứng top thay vì chết link). Verdict pinned trong plan Task 5; e2e xác nhận hash sống qua switch.
+- **`npm install` tạo `package-lock.json` untracked** trong repo dùng `pnpm-lock.yaml` — KHÔNG commit (sẽ phá lockfile contract). Nếu cần build trong worktree, xóa lockfile sau hoặc dùng `npm ci --no-save`.
