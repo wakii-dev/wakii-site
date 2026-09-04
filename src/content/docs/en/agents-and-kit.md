@@ -49,5 +49,6 @@ Orca use.
 
 ## Related
 
+- [Skills catalog](/skills/) — every public skill, explained
 - [Superpowers panel](/docs/superpowers-panel/) — where the team is commanded
 - [Getting started](/docs/getting-started/) — build Wakii and meet the team

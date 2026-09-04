@@ -52,7 +52,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       lang-switcher round-trip 2 chiều (ACCEPTANCE 4); regression hreflang 1
       trang docs cũ. NOTE (plan-critic): Base.astro KHÔNG có og: meta (memory
       cũ sai) — OG ngoài scope SF-2, flag lên epic cho SF-5.
-- [ ] 10. cross-link-agents-and-kit — thêm link `/skills` vào
+- [x] 10. cross-link-agents-and-kit — thêm link `/skills` vào
       `src/content/docs/en/agents-and-kit.md` + `vi/` (trailing slash).
 - [ ] 11. responsive-pass — breakpoints hand-off §6 (>980 / ≤980 / ≤620); @390
       no horizontal overflow (iframe probe scrollWidth=390); command dài wrap

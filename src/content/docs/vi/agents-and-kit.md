@@ -49,5 +49,6 @@ upstream.
 
 ## Liên quan
 
+- [Danh mục skills](/vi/skills/) — mọi skill public, giải thích đầy đủ
 - [Superpowers panel](/vi/docs/superpowers-panel/) — nơi ra lệnh cho đội
 - [Bắt đầu](/vi/docs/getting-started/) — build Wakii và gặp đội
