@@ -121,7 +121,6 @@ const t = strings;
   }
   .gates {
     margin-top: 36px;
-    max-width: 660px;
   }
   .gates-title {
     font-size: 11px;
@@ -133,13 +132,13 @@ const t = strings;
     margin-top: 8px;
     font-size: 13.5px;
     color: var(--text-dim);
+    max-width: 660px;
   }
   .gate-grid {
     margin-top: 18px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
-    max-width: none;
   }
   .gate {
     min-width: 0;
@@ -173,5 +172,26 @@ const t = strings;
     font-size: 13.5px;
     color: var(--text-dim);
     max-width: 660px;
+  }
+
+  @media (max-width: 1024px) {
+    .gate-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .pipe {
+      padding: 24px 20px;
+    }
+    .agents,
+    .flow-note {
+      padding-left: 14px;
+    }
+    .gate-grid {
+      grid-template-columns: 1fr;
+    }
+    .gate {
+      padding: 14px 16px;
+    }
   }
 </style>

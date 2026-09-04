@@ -70,9 +70,9 @@
 **Files:**
 - Modify: `src/components/landing/Philosophy.astro`, `src/components/landing/Workflow.astro`
 
-- [ ] **Step 1:** breakpoints: pillars 4→2 (≤1024px) →1 (≤640px); gates grid 3→2→1 tương ứng. Card padding co hợp lý.
-- [ ] **Step 2:** workflow strip (`.pipe`) đã có `overflow-x: auto` — kiểm mobile không vỡ; agents/gates blocks stack gọn.
-- [ ] **Step 3: Commit** — `feat(sf-4): responsive 8 pillar cards + gates grid (FI-299)`
+- [x] **Step 1:** breakpoints: pillars 4→2 (≤1024px) →1 (≤640px); gates grid 3→2→1 tương ứng. Card padding co hợp lý.
+- [x] **Step 2:** workflow strip (`.pipe`) đã có `overflow-x: auto` — kiểm mobile không vỡ; agents/gates blocks stack gọn.
+- [x] **Step 3: Commit** — `feat(sf-4): responsive 8 pillar cards + gates grid (FI-299)`
 
 ### Task 7: DOM-tier verify (dist grep)
 
