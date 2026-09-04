@@ -1,38 +1,43 @@
-# SF-2/SF-3 design hand-off — "Platform Detective" (hướng a) — FI-300
+# SF-2/SF-3 design hand-off — "Bento Dispatch" (hướng b) — FI-300
 
-USER-PICK-APPROVED 2026-09-04 (chat: "a"). Source of truth visual: `/tmp/story/fi300/design/sf-dl-a.html` (copy tham chiếu; file /tmp không sống theo repo — hand-off này là binding). Style authority: `src/styles/tokens.css` (v2 Bento Premium) — **BIND TOKEN TỪ tokens.css THẬT, KHÔNG copy token names prototype** (prototype `--accent-dim` ≠ tokens.css — lesson FI-296: dùng đúng tên token repo, thiếu thì dùng giá trị gần nhất + note).
+USER-PICK-APPROVED 2026-09-04 (chat: "a" → **đổi sang "b"**). Source of truth visual: `/tmp/story/fi300/design/sf-dl-b.html` (tham chiếu — /tmp không sống theo repo, hand-off này là binding). Style authority: `src/styles/tokens.css` (v2 Bento Premium) — **BIND TOKEN TỪ tokens.css THẬT, KHÔNG copy token names prototype** (lesson FI-296: `--accent-dim` prototype ≠ repo → dùng token repo có sẵn).
 
-## Design language (kế thừa site)
-- Tokens: mint accent #45E0A8, near-black bg #0A0E0D, JetBrains Mono (headings/labels/buttons) + Inter (body), cell radius 12px, btn radius 6px.
-- Chrome pattern site: `## ` kicker, `// ` h2 prefix, `▸ ` panel-bar label, mono meta nhỏ.
-- Buttons: `.btn` mono 13.5px, `> ` prefix; primary = mint bg + hover translateY(-1px) + glow; ghost = border; **soon = dashed border + pill "soon" amber** (flag=false).
-- Warn note: amber-soft box, `⚠` prefix — bắt buộc cạnh mọi download button (unsigned).
+## Design language (kế thừa /skills + /roadmap đã ship)
+- Bento core: grid 12-col gap 18px; cell = `.bx` (min-width:0) → `.bx-in` (bg-card, border-strong, radius 12, hover lift -3px + mint glow, chỉ hover-capable pointers) → `.bx-label` (bar `▸ tên` + meta phải, bg #0D1310-ish) → `.bx-body` → `.bx-foot` (dashed top, mono 10.5px, warn `<b>` amber).
+- Canvas: grid-bg 56px mask ellipse (như /skills).
+- Buttons: mono 13px `> ` prefix; primary mint (hover translateY + glow) · ghost border · **soon dashed + pill "soon" amber** (flag=false).
+- Pills: `.pill` mint mono nhỏ (dùng cho "qr pairing", "v0.1.0 · latest", "primary").
+- Chapter chrome: `## ` kicker, `// ` h2.
 
-## Surface 1 — /download (EN + /vi/download)
-1. **Hero**: kicker `download` + h1 mono ("Get Wakii on your machine.") + sub trung thực unsigned.
-2. **Detect card** (centerpiece): card lớn border-strong radius 12, bar đầu "▸ your platform" + meta "detected via UA · no JS? manual tabs below"; scan-line animation 2.4s (animate CHỈ dòng 2px này; respects prefers-reduced-motion qua motion util/global); body 2 cột: trái = OS logo + tên + meta asset (tên file từ DOWNLOAD_URLS asset names · size nếu có · "unsigned"); phải = primary button (flag=true) hoặc btn-soon (flag=false) + alt-links "not this? macOS (Intel) · Windows · build from source" (anchor tới tabs).
-   - UA detect = progressive enhancement inline script nhỏ (navigator.userAgent → chọn tab/card active); KHÔNG JS = cả 2 panel tabs render sẵn (manual-first).
-3. **Manual tabs**: tab bar macOS | Windows (mono, `.on` = accent-soft); tabpanel 2 card song song server-rendered — mỗi card: OS + ext, ver line (flag=true: "latest · <tháng>"; flag=false: "not yet released"), primary download button (href từ `DOWNLOAD_URLS`, flag=false → btn-soon KHÔNG href), ghost "follow releases" (chỉ flag=true; flag=false panel releases riêng là primary path), warn note G-I (macOS: Privacy & Security → Open Anyway; Windows: SmartScreen → More info › Run anyway — EN+VI từ downloads.ts).
-4. **Two-col panels**: "▸ follow releases" (GitHub Releases link — luôn có, là primary CTA khi flag=false) + "▸ build from source" (terminal mockup `$ git clone … && make install` + link `/docs/getting-started/` — secondary).
+## Surface 1 — /download (EN + /vi/download) = 1 bento 8 cells
+| Cell | Span | Nội dung | Flag=false | Flag=true |
+|---|---|---|---|---|
+| macOS | sp7 | cell-logo ◆ + "Wakii for macOS" + meta SEQUOIA+ · size · UNSIGNED; btn download .dmg (href = `DOWNLOAD_URLS`) | btn-soon + pill-soon, KHÔNG href | btn-primary + pill "vX · latest" |
+| Windows | sp5 | cell-logo ⊞ + "Wakii for Windows"; btn .exe | như trên | như trên |
+| mobile connect | sp8 (jumbo) | pill "qr pairing"; mob-grid `auto 1fr`: QR frame trắng 170px + badges + caps + copy | **QR overlay trắng "QR goes live with vX"**; badges dashed "coming soon" không href | QR SVG thật (generate lúc build, encode store URL theo G-QR — KHÔNG pairing endpoint); badges = link App Store / Google Play (`MOBILE_STORE_URLS`) |
+| iOS | sp4 | **soon-cell: border dashed + opacity .75 + logo dashed** | btn-soon "app store" + soon | Khi MOBILE_LIVE=true → cell thành link store hoặc gộp vào jumbo (agent quyết theo data thật) |
+| build from source | sp4r | terminal mockup `$ git clone github.com/wakii/wakii` + `$ make install` + ghost "full guide: /docs/getting-started/" | như nhau (luôn khả dụng) | như nhau |
+| follow releases | sp4 | copy + button watch releases → GitHub Releases | **btn-PRIMARY** (đây là primary path khi chưa có binary) | btn-ghost (secondary) |
+| changelog | sp4 | ver + "what's new" | **ACCURACY GATE: khi chưa có release → KHÔNG render cell này** (hoặc state "no releases yet" — KHÔNG hiển thị version giả) | ver thật từ release |
+| checksums | sp4 | terminal `$ shasum -a 256 …` | **ACCURACY GATE: chưa có asset → KHÔNG render cell** (hash giả = dead-claim) | hash thật từ release (SF-4 drill xác minh) |
+- Warn unsigned (G-I) nằm trong `bx-foot` từng OS cell: macOS "first launch → System Settings › Privacy & Security › Open Anyway" / Windows "first launch → SmartScreen › More info › Run anyway".
+- **Manual-first tuyệt đối: KHÔNG có tab, KHÔNG có state ẩn** — cả macOS/Windows render song song; không-JS = toàn trang vẫn đầy đủ (chỉ mất UA-highlight nếu có).
 
-## Surface 2 — Mobile connect block (component, SF-3 teaser reuse)
-Grid 2 cột (380px | 1fr):
-- **QR cell**: khung QR trắng 196px; **flag=false → overlay trắng phủ "QR goes live with v0.1.0"** (KHÔNG render QR giả scan được); caption mono nhỏ. Production QR = SVG thật generate lúc build khi MOBILE_LIVE=true, encode store URL theo platform (G-QR — KHÔNG pairing endpoint).
-- **Info col**: h2 "Wakii in your pocket"; copy chính (EN page: "Scan the QR to get the app, then connect from inside the app." / VI: "Quét QR để tải app, kết nối từ trong app." — **EN/VI phân tách, VI đi gate G-D convergence**); badges iOS/Android: flag=true → link App Store / Google Play (MOBILE_STORE_URLS), flag=false → dashed "coming soon" không href; caps list ✓ 3 dòng đúng G-C: "Watch agents run / Xem agents chạy" · "Approve gates / Duyệt gates" · "Send tasks / Gửi task".
+## Surface 2 — Mobile connect block
+Chính là cell jumbo sp8 ở trên — **build thành component độc lập** (`src/components/download/MobileConnect.astro` hoặc tương đương, prop-driven: locale + flags + store urls) để SF-3 teaser reuse; render đúng cả 4 tổ hợp 2 flags.
 
-## Surface 3 — Landing Get Wakii upgrade (SF-3)
-Grid 1.4fr 1fr 1fr:
-- **Main cell** (download PRIMARY): glow radial mint góc; h3 "download wakii.desktop"; meta version/ext; os-chips row (macOS arm64/x64, Windows x64); primary CTA flag-aware (flag=false → "follow releases" primary + btn-soon download); **teaser mono mint**: "or pair your phone — scan & connect → /download".
-- **Side 1** build-from-source (SECONDARY, ghost): label `» build from source`, copy ngắn, ghost button → `/docs/getting-started/`.
-- **Side 2** stay-in-the-loop: ghost → GitHub Releases.
-Anchor `#get-wakii` GIỮ NGUYÊN (G-F — verify anchor thực trước khi wire).
+## Surface 3 — Landing Get Wakii upgrade (SF-3) = mini-bento 3 cells
+- **gw-a (6-col, PRIMARY)**: bx-label "download wakii.desktop" + pill "primary"; meta version/ext/unsigned; btn-primary flag-aware (flag=false → primary = "all platforms → /download", download btn-soon); bx-foot "ios + android pairing — see /download".
+- **gw-b (3-col)**: "from source · dev" — copy ngắn + ghost → `/docs/getting-started/` (SECONDARY).
+- **gw-c (3-col)**: "mobile · qr" — copy ngắn + ghost "get the app → /download" (teaser; không nhúng QR vào landing).
+- Anchor `#get-wakii` GIỮ NGUYÊN (G-F — verify anchor thực trước khi wire).
 
 ## Behavior contracts
-- **Flag logic**: mọi điều kiện đọc 2 flags ĐỘC LẬP (DOWNLOADS_LIVE, MOBILE_LIVE) từ config — 4 tổ hợp phải render hợp lệ; KHÔNG dead link/claim ở bất kỳ tổ hợp nào.
-- **Motion**: entrance qua motion util có sẵn (`data-reveal` / `revealChildren`) — KHÔNG viết animation script riêng; scan-line = CSS animation duy nhất, tôn trọng prefers-reduced-motion.
-- **No-JS**: tabs + detect chỉ là enhancement; toàn bộ content + nút nhìn được không JS (tabpanel server-rendered song song).
-- **Responsive**: 720px breakpoint — dc-body/tabpanel/two-col/mobile grid/gw-grid stack 1 cột; wrap 20px; h1 clamp xuống 30px. Verify @390 bằng iframe probe.
-- **Content binding**: MỌI string qua `src/i18n/downloads.ts` (SF-1 đã pre-add full set — SF-2/3 KHÔNG thêm key; thiếu → flag epic FI-300). Version/size là placeholder, bind config khi flag=true.
+- **Flag logic**: 2 flags ĐỘC LẬP → 4 tổ hợp render hợp lệ, 0 dead link/claim (SF-4 drill xác minh).
+- **Motion**: entrance qua motion util (`data-reveal` / `revealChildren` có sẵn) — KHÔNG viết script mới; hover lift = CSS transition.
+- **Responsive**: @980 — sp7/sp5/sp8/sp4r → full width, sp4 → span 6, gw-a full, gw-b/c span 6; @720 — mọi cell full width, bento gap 12px, wrap 20px, h1 30px, mob-grid stack. Verify @390 bằng iframe probe.
+- **Content binding**: MỌI string qua `src/i18n/downloads.ts` (SF-1 pre-add — KHÔNG thêm key; thiếu → flag epic FI-300). Version/size/hash placeholder chỉ render khi có data thật.
 
-## Content note đã PM-decide
-EN page dùng EN copy riêng (không dùng VI strings làm canonical EN — designer flag); VI copy mới toàn bộ đi gate G-D ở SF-4.
+## Content notes PM-decided
+- EN page dùng EN copy riêng ("Scan the QR to get the app, then connect from inside the app." / "Watch agents run · Approve gates · Send tasks"); VI ("Quét QR để tải app, kết nối từ trong app" / "Xem agents chạy · Duyệt gates · Gửi task") đi gate G-D convergence SF-4.
+- Changelog/checksums cells chỉ render khi có release data thật (xem ACCURACY GATE ở bảng) — khác prototype (prototype hiển thị ở cả 2 bands cho minh họa layout).
