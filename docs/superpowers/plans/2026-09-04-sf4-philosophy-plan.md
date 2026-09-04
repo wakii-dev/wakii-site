@@ -78,19 +78,19 @@
 
 **Files:** (verify — sửa nếu phát hiện lỗi)
 
-- [ ] **Step 1:** `pnpm build` xanh (13 pages không đổi số).
-- [ ] **Step 2:** grep dist: EN `/` + VI `/vi/` có 8 pillar names + docLink href đúng (`/docs/story-workflow/#philosophy` và `/vi/docs/story-workflow/#triết-lý`); gates B0–B5 đủ 6; section order hero→bento→zero-setup→workflow→philosophy→get-wakii→faq.
-- [ ] **Step 3:** KHÔNG có "Stories tab", không key raw lộ. Evidence ghi Phase 4 audit.
+- [x] **Step 1:** `pnpm build` xanh (13 pages không đổi số).
+- [x] **Step 2:** grep dist: EN `/` + VI `/vi/` có 8 pillar names + docLink href đúng (`/docs/story-workflow/#philosophy` và `/vi/docs/story-workflow/#triết-lý`); gates B0–B5 đủ 6; section order hero→bento→zero-setup→workflow→philosophy→get-wakii→faq.
+- [x] **Step 3:** KHÔNG có "Stories tab", không key raw lộ. Evidence ghi Phase 4 audit.
 
 ### Task 8: Browser walkthrough 3 tầng + reduced-motion (Rule 0)
 
 **Files:** (sửa nếu phát hiện lỗi — fix commit riêng)
 
-- [ ] **Step 1: PREVIEW SERVER + browser** — `pnpm preview`, mở tab; NHÌN trước khi đo.
-- [ ] **Step 2: VISUAL tier** — screenshot EN + VI full-page: philosophy section + workflow deepen so design binding (tokens mint/near-black, card language nhất quán bento).
-- [ ] **Step 3: FLOW tier** — nav→scroll tới #philosophy→click "đọc đầy đủ" → docs story-workflow CUỘN ĐÚNG VỊ TRÍ triết lý (không 404, đúng locale, anchor hoạt động); lang-switch EN↔VI giữ section; quay lại landing.
-- [ ] **Step 4: Responsive + reduced-motion** — iframe probe 390px (memory: tin cậy hơn screenshot clamp): 8 cards xếp gọn không overflow-x; reduced-motion → static đầy đủ.
-- [ ] **Step 5: Fix nếu lỗi** (commit riêng `fix(sf-4): ...`) — nếu không xác nhận được bằng mắt → NÓI THẬT, nhờ user.
+- [x] **Step 1: PREVIEW SERVER + browser** — `pnpm preview`, mở tab; NHÌN trước khi đo.
+- [x] **Step 2: VISUAL tier** — screenshot EN + VI full-page: philosophy section + workflow deepen so design binding (tokens mint/near-black, card language nhất quán bento).
+- [x] **Step 3: FLOW tier** — nav→scroll tới #philosophy→click "đọc đầy đủ" → docs story-workflow CUỘN ĐÚNG VỊ TRÍ triết lý (không 404, đúng locale, anchor hoạt động); lang-switch EN↔VI giữ section; quay lại landing.
+- [x] **Step 4: Responsive + reduced-motion** — iframe probe 390px (memory: tin cậy hơn screenshot clamp): 8 cards xếp gọn không overflow-x; reduced-motion → static đầy đủ.
+- [x] **Step 5: Fix nếu lỗi** (commit riêng `fix(sf-4): ...`) — không có lỗi SF-4 cần fix (footer `.links` overflow 390px là pre-existing SF-1, flag notes — ngoài boundary).
 
 ---
 
