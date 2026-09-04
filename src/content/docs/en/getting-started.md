@@ -31,8 +31,8 @@ git clone <repo-url> wakii
 cd wakii
 ```
 
-The canonical repo URL lives in the **Get Wakii** button in the
-[site header](/) — it points at the Wakii fork on GitHub.
+The repo URL is the **github** link in the [site footer](/) — it points at
+the Wakii fork on GitHub.
 
 ## 2. Install dependencies
 

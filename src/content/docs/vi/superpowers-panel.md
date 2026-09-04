@@ -58,7 +58,7 @@ chia thành sub-feature có phụ thuộc:
 
 ## Story Ops gates
 
-Story Ops kiểm tra story against definition-of-done, từng gate một:
+Story Ops kiểm tra story so với definition-of-done, từng gate một:
 
 | Gate | Kiểm tra |
 |---|---|

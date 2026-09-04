@@ -46,8 +46,8 @@ orchestration, tích hợp Linear, v.v.) để điều khiển máy và công c�
 
 Kit có nguồn từ dự án open-source
 [superpowers](https://github.com/obra/superpowers) của Jesse Vincent,
-phát hành theo giấy phép **MIT**. Wakii bundle nó và ghi nhận đầy đủ —
-xem credit ở [footer của site](/vi/).
+phát hành theo giấy phép **MIT** — cùng giấy phép với Wakii và Orca
+upstream.
 
 ## Liên quan
 

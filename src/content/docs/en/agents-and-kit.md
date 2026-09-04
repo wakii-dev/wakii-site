@@ -47,8 +47,8 @@ and tools.
 
 The kit originates from the open-source
 [superpowers](https://github.com/obra/superpowers) project by Jesse Vincent,
-released under the **MIT license**. Wakii bundles it and stays grateful —
-see the credit in our [site footer](/).
+released under the **MIT license** — the same license Wakii and upstream
+Orca use.
 
 ## Related
 

@@ -44,4 +44,4 @@ có cả hai ngôn ngữ.
 
 Wakii theo giấy phép MIT, tương tự superpowers kit bundle sẵn của Jesse
 Vincent ([obra/superpowers](https://github.com/obra/superpowers)). Orca
-upstream cũng là MIT — credit nằm ở footer của site.
+upstream cũng là MIT.

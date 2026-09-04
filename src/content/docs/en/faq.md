@@ -45,4 +45,4 @@ available in both languages.
 
 Wakii is MIT-licensed, as is the bundled superpowers kit by Jesse Vincent
 ([obra/superpowers](https://github.com/obra/superpowers)). Orca upstream is
-MIT as well — credits live in the site footer.
+MIT as well.

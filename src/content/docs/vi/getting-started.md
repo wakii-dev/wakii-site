@@ -31,8 +31,8 @@ git clone <repo-url> wakii
 cd wakii
 ```
 
-URL repo chính thức nằm trong nút **Get Wakii** ở
-[header của site](/) — trỏ đến fork Wakii trên GitHub.
+URL repo là link **github** ở [footer của site](/vi/) — trỏ đến fork
+Wakii trên GitHub.
 
 ## 2. Cài dependencies
 
