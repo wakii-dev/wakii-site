@@ -28,7 +28,7 @@ task-executor duy nhất, serial theo thứ tự dưới (không parallel worker
       `--panel`/`--text-faint`/`--accent` giữ nguyên tên · literal chỉ khi không có token
       khớp value prototype. Card radius = `--radius-cell` (12px — deviation 14px ghi nhận).
       Exit: build green + 13 card + hero stats khớp số render thực (§7.1).
-- [ ] 4. catalog-route-vi — `src/pages/vi/skills.astro`: song song EN, copy VI draft
+- [x] 4. catalog-route-vi — `src/pages/vi/skills.astro`: song song EN, copy VI draft
       (skill name + command giữ EN); title VI; VI copy flag gate SF-5.
 - [x] 5. category-grouping-theo-taxonomy-SF-1 — filter `public === true` (13),
       group workflow(4) → design(6) → reference(3), thứ tự section cứng; section-head
