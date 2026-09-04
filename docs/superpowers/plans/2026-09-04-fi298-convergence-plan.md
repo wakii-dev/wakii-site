@@ -22,11 +22,11 @@
 - Create: `/tmp/story/fi294/copy-review-sf5.html` (artifact review, không commit)
 - Read-only: `src/data/skills.ts`, `src/data/roadmap.ts`, `src/i18n/landing.ts`
 
-- [ ] **Step 1: Trích xuất copy mới của story 2 ×2 locales** — script node đọc 3 data modules + `src/components/RoadmapPage.astro` (h2/sub VI draft SF-3 sống ở đây, không phải data module), render HTML bảng cạnh nhau EN | VI cho: skills (13 public: name/desc/how-it-works), roadmap (lanes Now/Next/Later + items + page h2/sub), philosophy (8 pillars + sub), workflowDeep (agents block + gates B0-B5), getWakii (steps/req/cta/note). Gate do COORDINATOR giữ (AskUserQuestion) — không giao worker.
+- [x] **Step 1: Trích xuất copy mới của story 2 ×2 locales** — script node đọc 3 data modules + `src/components/RoadmapPage.astro` (h2/sub VI draft SF-3 sống ở đây, không phải data module), render HTML bảng cạnh nhau EN | VI cho: skills (13 public: name/desc/how-it-works), roadmap (lanes Now/Next/Later + items + page h2/sub), philosophy (8 pillars + sub), workflowDeep (agents block + gates B0-B5), getWakii (steps/req/cta/note). Gate do COORDINATOR giữ (AskUserQuestion) — không giao worker.
 
-- [ ] **Step 2: Post epic comment** `orca linear comment add --id FI-294 --body-file -` — link artifact + hướng dẫn view (`open /tmp/story/fi294/copy-review-sf5.html`), ghi rõ "copy gate binary — cần user confirm trước motion pass".
+- [x] **Step 2: Post epic comment** `orca linear comment add --id FI-294 --body-file -` — link artifact + hướng dẫn view (`open /tmp/story/fi294/copy-review-sf5.html`), ghi rõ "copy gate binary — cần user confirm trước motion pass".
 
-- [ ] **Step 3: USER CONFIRM qua chat (AskUserQuestion)** — Approved → tick + ghi no-changes ở Task 2; có feedback → liệt kê chính xác key/locale cần sửa rồi sang Task 2. KHÔNG tự duyệt thay user.
+- [x] **Step 3: USER CONFIRM qua chat (AskUserQuestion)** — ✅ APPROVED (user, 2026-09-04, qua chat). Kết quả: APPROVED — no-changes → tick + ghi no-changes ở Task 2; có feedback → liệt kê chính xác key/locale cần sửa rồi sang Task 2. KHÔNG tự duyệt thay user.
 
 **Meta (numbered, không checkbox):**
 1. Gate binary — user là người duyệt, artifact chỉ là vehicle.
@@ -37,9 +37,9 @@
 **Files:**
 - Modify (CHỈ nếu có feedback): `src/data/skills.ts`, `src/data/roadmap.ts`, `src/i18n/landing.ts`
 
-- [ ] **Step 1:** Nếu có feedback — sửa đúng key/locale user chỉ, KHÔNG mở rộng sang key khác.
-- [ ] **Step 2:** `npm run build` — Expected: xanh, 17 pages.
-- [ ] **Step 3: Commit** `git add <files> && git commit -m "copy(sf-5): áp feedback copy gate VI/EN (FI-298)"` (hoặc nếu no-changes: không commit, ghi dòng no-changes vào plan + audit comment).
+- [x] **Step 1:** Nếu có feedback — sửa đúng key/locale user chỉ, KHÔNG mở rộng sang key khác.
+- [x] **Step 2:** `npm run build` — Expected: xanh, 17 pages.
+- [x] **Step 3: Commit** `git add <files> && git commit -m "copy(sf-5): áp feedback copy gate VI/EN (FI-298)"` (hoặc nếu no-changes: không commit, ghi dòng no-changes vào plan + audit comment).
 
 ### Task 3: Canonical self-referencing (verdict b) — Base.astro
 
@@ -48,13 +48,13 @@
 
 **Quyết định (b) — self-referencing per locale.** Lý do: Google guidance — canonical không self-referencing có thể khiến hreflang cluster bị bỏ qua; hreflang en/vi/x-default đã đúng 2 chiều nên chỉ cần canonical trỏ own URL. Hreflang giữ nguyên.
 
-- [ ] **Step 1: REPLACE dòng 39 (không thêm — tránh duplicate canonical):** giữ `canonicalPath` (dùng cho hreflang EN + x-default), đổi dòng canonical cũ thành:
+- [x] **Step 1: REPLACE dòng 39 (không thêm — tránh duplicate canonical):** giữ `canonicalPath` (dùng cho hreflang EN + x-default), đổi dòng canonical cũ thành:
 
 ```astro
 <link rel="canonical" href={new URL(pathname || '/', Astro.site)} />
 ```
 
-- [ ] **Step 2: Build + verify 17 pages** — `npm run build`, rồi grep dist (assert ĐÚNG 1 canonical/page — không dùng head -1):
+- [x] **Step 2: Build + verify 17 pages** — `npm run build`, rồi grep dist (assert ĐÚNG 1 canonical/page — không dùng head -1):
 
 ```bash
 for f in $(find dist -name "*.html"); do
@@ -69,15 +69,15 @@ done
 ```
 
 Expected: count canonical = 1/page; MISMATCH rỗng. (404 page canonical self cũng harmless — noindex.)
-- [ ] **Step 3: Verify hreflang cluster nguyên vẹn** — spot-check `/skills/` + `/vi/skills/`: hreflang en → EN URL, vi → VI URL, x-default → EN URL (giữ như cũ).
-- [ ] **Step 4: Commit** `git commit -m "seo(sf-5): canonical self-referencing per locale, giữ hreflang cluster (FI-298)"`
+- [x] **Step 3: Verify hreflang cluster nguyên vẹn** — spot-check `/skills/` + `/vi/skills/`: hreflang en → EN URL, vi → VI URL, x-default → EN URL (giữ như cũ).
+- [x] **Step 4: Commit** `git commit -m "seo(sf-5): canonical self-referencing per locale, giữ hreflang cluster (FI-298)"`
 
 ### Task 4: Footer `.links` overflow 442px@390 — wrap fix (cosmetic)
 
 **Files:**
 - Modify: `src/components/Footer.astro` (`.links` block, ~dòng 60)
 
-- [ ] **Step 1:** Thêm `flex-wrap: wrap;` vào `.links` (gap: 10px hiện có đã áp cả 2 trục khi wrap).
+- [x] **Step 1:** Thêm `flex-wrap: wrap;` vào `.links` (gap: 10px hiện có đã áp cả 2 trục khi wrap).
 
 ```css
 .links {
@@ -88,15 +88,15 @@ Expected: count canonical = 1/page; MISMATCH rỗng. (404 page canonical self c�
 }
 ```
 
-- [ ] **Step 2: Verify iframe probe @390** trên `/` và `/roadmap` — Expected: `document.documentElement.scrollWidth <= 390` (hết overflow 442).
-- [ ] **Step 3: Commit** `git commit -m "fix(sf-5): footer .links wrap — hết overflow 442px@390 (FI-298)"`
+- [x] **Step 2: Verify iframe probe @390** trên `/` và `/roadmap` — Expected: `document.documentElement.scrollWidth <= 390` (hết overflow 442).
+- [x] **Step 3: Commit** `git commit -m "fix(sf-5): footer .links wrap — hết overflow 442px@390 (FI-298)"`
 
 ### Task 5: Lang-switch drop anchor hash — preserve fix (cosmetic)
 
 **Files:**
 - Modify: `src/components/LangSwitcher.astro` (thêm script cuối file)
 
-- [ ] **Step 1:** Thêm script preserve hash khi click lang link:
+- [x] **Step 1:** Thêm script preserve hash khi click lang link:
 
 ```html
 <script>
@@ -109,15 +109,15 @@ Expected: count canonical = 1/page; MISMATCH rỗng. (404 page canonical self c�
 </script>
 ```
 
-- [ ] **Step 2: Verify flow (tiêu chí binary đã pin)** — mở `/docs/story-workflow/#philosophy`, click VI → Expected: URL `/vi/docs/story-workflow/#philosophy`, không 404, không jump sai (hash EN không tồn tại trang VI → browser đứng top — strictly better-than-drop; KHÔNG map slug EN→VI). Verdict pinned: giữ hash mọi trường hợp.
-- [ ] **Step 3: Commit** `git commit -m "fix(sf-5): lang-switch giữ anchor hash khi chuyển locale (FI-298)"`
+- [x] **Step 2: Verify flow (tiêu chí binary đã pin)** — mở `/docs/story-workflow/#philosophy`, click VI → Expected: URL `/vi/docs/story-workflow/#philosophy`, không 404, không jump sai (hash EN không tồn tại trang VI → browser đứng top — strictly better-than-drop; KHÔNG map slug EN→VI). Verdict pinned: giữ hash mọi trường hợp.
+- [x] **Step 3: Commit** `git commit -m "fix(sf-5): lang-switch giữ anchor hash khi chuyển locale (FI-298)"`
 
 ### Task 6: Motion util extend — `revealChildren` helper
 
 **Files:**
 - Modify: `src/components/motion.ts` (thêm export cuối file)
 
-- [ ] **Step 1:** Thêm helper — tag direct children của một container với `.reveal` TRƯỚC khi `initMotion()` quét (initMotion query lúc init nên helper phải chạy trước):
+- [x] **Step 1:** Thêm helper — tag direct children của một container với `.reveal` TRƯỚC khi `initMotion()` quét (initMotion query lúc init nên helper phải chạy trước):
 
 ```ts
 /**
@@ -131,8 +131,8 @@ export function revealChildren(container: ParentNode, selector: string): void {
 }
 ```
 
-- [ ] **Step 2:** Không đổi hành vi hiện tại — `npm run build` xanh là đủ (helper mới, chưa consumer).
-- [ ] **Step 3: Commit** `git commit -m "feat(sf-5): motion util — revealChildren helper cho docs light reveal (FI-298)"`
+- [x] **Step 2:** Không đổi hành vi hiện tại — `npm run build` xanh là đủ (helper mới, chưa consumer).
+- [x] **Step 3: Commit** `git commit -m "feat(sf-5): motion util — revealChildren helper cho docs light reveal (FI-298)"`
 
 ### Task 7: Landing motion deep pass
 
@@ -142,7 +142,7 @@ export function revealChildren(container: ParentNode, selector: string): void {
 
 Current state đã tốt: section-heads + bento + GetWakii cells + Philosophy pillars + agents/gates blocks đã reveal (SF-2/3/4). Deep pass = lấp gap còn reveal nguyên khối:
 
-- [ ] **Step 1: Faq.astro** — từng `<details>` nhận `data-reveal`:
+- [x] **Step 1: Faq.astro** — từng `<details>` nhận `data-reveal`:
 
 ```astro
 {t.faq.items.map((item) => (
@@ -153,7 +153,7 @@ Current state đã tốt: section-heads + bento + GetWakii cells + Philosophy pi
 ))}
 ```
 
-- [ ] **Step 2: Workflow.astro** — từng gate card nhận `data-reveal` (batch stagger 60ms của IO thay vì khối `.gates` reveal một lần):
+- [x] **Step 2: Workflow.astro** — từng gate card nhận `data-reveal` (batch stagger 60ms của IO thay vì khối `.gates` reveal một lần):
 
 ```astro
 {t.workflowDeep.gates.map((gate) => (
@@ -161,15 +161,15 @@ Current state đã tốt: section-heads + bento + GetWakii cells + Philosophy pi
 ```
 
 Giữ `.gates` block reveal cho title/intro. **LƯU Ý nested-reveal (plan-critic P1):** parent `.gates.reveal` + children `.gate[data-reveal]` cùng vào 1 IO batch → fade chồng nhau. Browser check Step 3 quyết: nếu compound fade xấu → fix path đã pre-authorize: bỏ `reveal` khỏi `.gates`, thay bằng `data-reveal` riêng trên `.agents-title`/`.gates-title` + `.gates-intro`/`.agents-intro`.
-- [ ] **Step 3: Build + browser check** — scroll landing: FAQ items + gate cards fade-in staggered; reduced-motion: đứng im visible (contract `.anim` gate).
-- [ ] **Step 4: Commit** `git commit -m "feat(sf-5): landing deep pass — stagger FAQ items + gate cards (FI-298)"`
+- [x] **Step 3: Build + browser check** — scroll landing: FAQ items + gate cards fade-in staggered; reduced-motion: đứng im visible (contract `.anim` gate).
+- [x] **Step 4: Commit** `git commit -m "feat(sf-5): landing deep pass — stagger FAQ items + gate cards (FI-298)"`
 
 ### Task 8: Docs light reveals (DocsLayout)
 
 **Files:**
 - Modify: `src/layouts/DocsLayout.astro` (import motion.css + script)
 
-- [ ] **Step 1:** Thêm vào DocsLayout:
+- [x] **Step 1:** Thêm vào DocsLayout:
 
 ```astro
 import '../styles/motion.css';
@@ -207,8 +207,8 @@ Và scoped style trong DocsLayout (bxreveal 28px quá mạnh cho prose — overr
 }
 ```
 
-- [ ] **Step 2: Verify đọc không bị phá** — docs page scroll chậm: paragraph fade-in tinh tế (0.55s, không translate lớn); bật reduced-motion → đứng im visible ngay.
-- [ ] **Step 3: Commit** `git commit -m "feat(sf-5): docs light reveals qua revealChildren + DocsLayout (FI-298)"`
+- [x] **Step 2: Verify đọc không bị phá** — docs page scroll chậm: paragraph fade-in tinh tế (0.55s, không translate lớn); bật reduced-motion → đứng im visible ngay.
+- [x] **Step 3: Commit** `git commit -m "feat(sf-5): docs light reveals qua revealChildren + DocsLayout (FI-298)"`
 
 ### Task 9: Reduced-motion audit toàn site
 
