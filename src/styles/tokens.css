@@ -1,18 +1,21 @@
 /*
- * Wakii design tokens — "Terminal Mono" direction (user-approved 2026-09-04).
- * Source of truth: docs/superpowers/designs/sf1-direction.md (BINDING).
- * Layout/behavior fidelity target: docs/superpowers/designs/direction-c.html.
+ * Wakii design tokens — "Modern Bento Premium" v2 (user-approved 2026-09-04).
+ * Source of truth: docs/superpowers/designs/sf1-direction.md (BINDING, v2).
+ * Fidelity target: docs/superpowers/designs/direction-d3-bento.html.
+ * v1 Terminal Mono DNA (mono/mint/near-black) retained as identity base.
  *
  * SF-2/SF-3 consume these names — do not rename.
  */
 :root {
   /* type */
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: var(--font-display);
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* color */
   --bg: #0A0E0D;
   --bg-raised: #101614;
+  --bg-card: #131A17; /* bento cells */
   --border: #1E2A26;
   --accent: #45E0A8;
   --accent-dim: #2A6B52;
@@ -20,16 +23,23 @@
   --text-dim: #6B7A74;
   --warn: #E8A33D;
 
-  /* derived aliases (not in hand-off; kept for prototype fidelity) */
+  /* derived aliases (prototype fidelity; hand-off token values win above) */
   --border-strong: #2B4234;
   --accent-soft: rgba(69, 224, 168, 0.1);
   --text-faint: #5A7163;
   --bg-deep: #04140D; /* text color on accent fills */
+  --panel: #0D1310;
+  --panel-2: #101712;
+  --warn-soft: rgba(232, 163, 61, 0.12);
+  --red: #E5654F;
 
-  /* shape — sharp, no soft rounding (hand-off: radius 0–4px) */
-  --radius: 4px;
+  /* shape — v2: soft bento cells, sharp-ish buttons */
+  --radius-cell: 12px; /* bento cells (hand-off: 8–12px) */
+  --radius: 8px;       /* cards, pipes, accordions */
+  --radius-btn: 6px;   /* buttons */
 
-  /* rhythm — 8px grid, large section padding (hand-off: 96–128px) */
+  /* rhythm — 8px grid; bento gap 18px (hand-off: 16–20px) */
   --section-pad: 96px;
-  --wrap: 980px;
+  --wrap: 1240px;
+  --bento-gap: 18px;
 }
