@@ -10,7 +10,7 @@ Design phase (tasks 1-2) hoàn thành PRE-LAUNCH — hand-off commit 5547901 là
 - [x] 2. design-user-pick-gate — DONE: user chọn **b — Bento Composer** (comment DESIGN-PICK trên epic FI-294)
 - [x] 3. get-wakii-component-thay-quickstart — rewrite `GetWakii.astro`: bento 12-col (steps 1/9×row1/3 + req 9/13 + cta 9/13), keys `getWakii` verbatim, tilt `data-tilt` trên bx-in, reveal qua motion util, anchor `id="get-wakii"`, Nav.astro `#quickstart`→`#get-wakii`; DROP req-note + cta-sub (không có key trong binding table)
 - [x] 4. placeholder-mode-repo-link-qua-REPO_URL — import `REPO_URL` từ `src/config.ts`; interpolate vào `steps[].cmd` (thay literal `<repo-url>`) + href btn-primary; zero hardcoded github URL
-- [ ] 5. nav-cta-decision-note-ghi-epic — comment lên epic FI-294: giữ "get wakii" → `/docs/getting-started/` tới khi REPO_URL thật (publish checklist story 1)
+- [x] 5. nav-cta-decision-note-ghi-epic — comment lên epic FI-294: giữ "get wakii" → `/docs/getting-started/` tới khi REPO_URL thật (publish checklist story 1)
 - [x] 6. roadmap-route-en — `src/pages/roadmap.astro`: 3 lane now/next/later từ `roadmap.ts` verbatim (card count 2/3/3), lane-foot + tag + chrome EN, kicker "roadmap", entrance `.reveal` + `initMotion()`
 - [x] 7. roadmap-route-vi — `src/pages/vi/roadmap.astro`: label_vi + desc_vi; h2/sub VI authored (FLAG: qua copy-review gate SF-5); chrome EN giữ nguyên
 - [x] 8. roadmap-entrance-qua-util — consumed in 6/7 (motion.css import + initMotion, no new primitives)
