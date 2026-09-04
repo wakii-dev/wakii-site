@@ -1,0 +1,25 @@
+/*
+ * Landing shared styles — section header pattern used by multiple landing
+ * sections (bento, workflow, get-wakii, faq). Imported by the Landing shell.
+ */
+
+.section-head h2 {
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.section-head h2::before {
+  content: '// ';
+  color: var(--accent);
+  font-weight: 400;
+}
+.section-head p {
+  margin-top: 14px;
+  color: var(--text-dim);
+  font-size: 14.5px;
+  max-width: 640px;
+}
+.section-head {
+  margin-bottom: 44px;
+  will-change: transform, opacity;
+}

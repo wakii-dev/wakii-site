@@ -1,0 +1,109 @@
+---
+/**
+ * Landing — Get Wakii section. SF-1 componentize: this currently renders the
+ * quickstart content verbatim (SF-3 FI-297 owns replacing it with the
+ * download section — keys already in LandingStrings.getWakii).
+ */
+import type { LandingStrings } from '../../i18n/landing';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
+---
+
+<section class="quick" id="quickstart">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.quickstart.kicker}</div>
+      <h2>{t.quickstart.title}</h2>
+    </div>
+    <div class="quick-steps">
+      {t.quickstart.steps.map((step) => (
+        <div class="qs">
+          <div class="qn"><b>{step.n}</b> {step.comment}</div>
+          <h3>{step.title}</h3>
+          <p>{step.desc}</p>
+          <div class="cmd">{step.cmd}</div>
+        </div>
+      ))}
+    </div>
+    <p class="quick-more">{t.quickstart.more} <a href={docsHref}>{t.quickstart.moreLink}</a></p>
+  </div>
+</section>
+
+<style>
+  .quick {
+    padding: var(--section-pad) 0;
+  }
+  .quick-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .qs {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 24px;
+    transition: border-color 0.15s ease;
+  }
+  .qs:hover {
+    border-color: var(--accent);
+  }
+  .qs .qn {
+    font-size: 11.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+  .qs .qn b {
+    color: var(--accent);
+  }
+  .qs h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .qs p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .qs .cmd {
+    margin-top: 16px;
+    font-size: 12.5px;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: var(--radius-btn);
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .qs .cmd::before {
+    content: '$ ';
+    color: var(--text-faint);
+  }
+  .quick-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .quick-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .quick-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  @media (max-width: 1020px) {
+    .quick-steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

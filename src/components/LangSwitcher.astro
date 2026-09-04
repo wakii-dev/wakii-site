@@ -1,0 +1,56 @@
+---
+/**
+ * EN | VI switcher. URL mapping (locked at SF-1, prefixDefaultLocale: false):
+ *   /        <-> /vi/
+ *   /docs/x  <-> /vi/docs/x
+ *
+ * Fallback contract: if a VI page is missing, link to the EN page instead of a
+ * dead /vi/ URL. At build time every route is generated for both locales from
+ * the same slug list, so by construction links are never dead in SF-1; the
+ * `viExists` prop lets SF-3 content-driven pages opt out when a VI translation
+ * has not landed yet (falls back to EN).
+ */
+interface Props {
+  viExists?: boolean;
+}
+const { viExists = true } = Astro.props;
+
+const { pathname } = Astro.url;
+const isVi = pathname === '/vi' || pathname.startsWith('/vi/');
+const canonicalPath = isVi ? pathname.replace(/^\/vi/, '') || '/' : pathname;
+const viHref = canonicalPath === '/' ? '/vi/' : `/vi${canonicalPath}`;
+---
+<div class="lang-switch" role="group" aria-label="Language switcher">
+  <a href={canonicalPath} aria-current={isVi ? undefined : 'true'}>EN</a>
+  <span class="sep" aria-hidden="true">|</span>
+  {
+    viExists ? (
+      <a href={viHref} aria-current={isVi ? 'true' : undefined}>VI</a>
+    ) : (
+      <a href={canonicalPath} class="fallback" title="Tiếng Việt chưa có — fallback English (EN)" aria-current={isVi ? 'true' : undefined}>VI</a>
+    )
+  }
+</div>
+
+<style>
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .lang-switch a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .lang-switch a:hover {
+    color: var(--accent);
+  }
+  .lang-switch a[aria-current='true'] {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .sep {
+    color: var(--border-strong);
+  }
+</style>
