@@ -24,7 +24,7 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
       </div>
       <div class="term-body" data-typein>
         <div class="ln cmd">{`wakii ./my-project`}</div>
-        {t.hero.boot.map((line) => <div class="ln out-ok" set:html={line.replace(/(done|xong|loaded|enabled|online|sẵn sàng|~\/\.claude)/g, '<span class="ok">$1</span>')} />)}
+        {t.hero.boot.map((line) => <div class="ln out-ok" set:html={line.replace(/(done|xong|loaded|enabled|~\/\.claude)/g, '<span class="ok">$1</span>')} />)}
         <div class="ln last cmd cursor-line" data-cmd>{t.hero.lastCmd}</div>
       </div>
     </div>

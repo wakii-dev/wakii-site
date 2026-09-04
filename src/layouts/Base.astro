@@ -7,9 +7,11 @@ import { SITE_NAME, SITE_TAGLINE } from '../config';
 interface Props {
   title: string;
   description?: string;
+  /** Error pages (404): never index. */
+  noindex?: boolean;
 }
 
-const { title, description = SITE_TAGLINE } = Astro.props;
+const { title, description = SITE_TAGLINE, noindex = false } = Astro.props;
 
 /**
  * Locale URL mapping (prefixDefaultLocale: false):
@@ -33,6 +35,7 @@ const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={new URL(canonicalPath, Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(canonicalPath, Astro.site)} />
     <link rel="alternate" hreflang="vi" href={new URL(viPath, Astro.site)} />

@@ -20,7 +20,7 @@ const isVi = pathname === '/vi' || pathname.startsWith('/vi/');
 const canonicalPath = isVi ? pathname.replace(/^\/vi/, '') || '/' : pathname;
 const viHref = canonicalPath === '/' ? '/vi/' : `/vi${canonicalPath}`;
 ---
-<div class="lang-switch" aria-label="Language switcher">
+<div class="lang-switch" role="group" aria-label="Language switcher">
   <a href={canonicalPath} aria-current={isVi ? undefined : 'true'}>EN</a>
   <span class="sep" aria-hidden="true">|</span>
   {

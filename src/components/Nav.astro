@@ -1,16 +1,20 @@
 ---
 import LangSwitcher from './LangSwitcher.astro';
+
+// Locale-aware internal links (prefixDefaultLocale: false → VI at /vi/...)
+const { pathname } = Astro.url;
+const prefix = pathname === '/vi' || pathname.startsWith('/vi/') ? '/vi' : '';
 ---
 
 <nav>
   <div class="wrap nav-inner">
-    <a class="logo" href="/"><span class="prompt">~/</span>wakii<span class="dot">.</span></a>
+    <a class="logo" href={prefix || '/'}><span class="prompt">~/</span>wakii<span class="dot">.</span></a>
     <div class="nav-links">
-      <a href="/#features">features</a>
-      <a href="/#workflow">workflow</a>
-      <a href="/#quickstart">quickstart</a>
-      <a href="/#faq">faq</a>
-      <a href="/docs/getting-started" class="nav-cta">get wakii</a>
+      <a href={`${prefix}/#features`}>features</a>
+      <a href={`${prefix}/#workflow`}>workflow</a>
+      <a href={`${prefix}/#quickstart`}>quickstart</a>
+      <a href={`${prefix}/#faq`}>faq</a>
+      <a href={`${prefix}/docs/getting-started`} class="nav-cta">get wakii</a>
     </div>
     <LangSwitcher />
   </div>

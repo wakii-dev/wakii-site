@@ -1,17 +1,20 @@
 ---
 import { REPO_URL } from '../config';
+
+const { pathname } = Astro.url;
+const prefix = pathname === '/vi' || pathname.startsWith('/vi/') ? '/vi' : '';
 ---
 
 <footer>
   <div class="wrap foot-inner">
     <div class="l">
       <b>wakii<span class="dot">.</span></b> — open-source agentic IDE, forked from
-      <a href="https://github.com/stablyai/orca" rel="noopener">orca</a> (MIT). exit code 0.
+      <a href="https://github.com/stablyai/orca" rel="noopener">orca</a> (MIT). exit code 0. © Wakii.
     </div>
     <div class="links">
       <a href={REPO_URL} rel="noopener">github</a>
       <span aria-hidden="true">·</span>
-      <a href="/docs/getting-started">guide</a>
+      <a href={`${prefix}/docs/getting-started`}>guide</a>
       <span aria-hidden="true">·</span>
       <a href="https://github.com/stablyai/orca" rel="noopener">orca upstream</a>
     </div>
