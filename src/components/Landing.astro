@@ -19,6 +19,7 @@ interface Props {
 const { strings } = Astro.props;
 const t = strings;
 
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
 const statusLabels: Record<string, string> =
   t.lang === 'vi'
     ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
@@ -206,7 +207,7 @@ function splitLead(s: string): [string, string] {
         </div>
       ))}
     </div>
-    <p class="quick-more">{t.quickstart.more} <a href={`/docs/getting-started`}>{t.quickstart.moreLink}</a></p>
+    <p class="quick-more">{t.quickstart.more} <a href={docsHref}>{t.quickstart.moreLink}</a></p>
   </div>
 </section>
 

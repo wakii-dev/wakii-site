@@ -14,8 +14,11 @@ interface Props {
   okWords?: string[];
 }
 const { title, cmd, lines, lastCmd, okWords = ['done', 'xong', 'loaded', 'enabled', 'ready', '~/.claude'] } = Astro.props;
-const hl = (line: string) =>
-  line.replace(new RegExp(`(${okWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g'), '<span class="ok">$1</span>');
+/** split a boot line into text/ok segments (template-rendered → scoped + escaped) */
+const seg = (line: string) =>
+  line
+    .split(new RegExp(`(${okWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g'))
+    .map((text, i) => ({ text, ok: i % 2 === 1 }));
 ---
 
 <div class="term" data-terminal>
@@ -25,7 +28,11 @@ const hl = (line: string) =>
   </div>
   <div class="term-body" data-typein>
     <div class="ln cmd">{cmd}</div>
-    {lines.map((line) => <div class="ln out" set:html={hl(line)} />)}
+    {lines.map((line) => (
+      <div class="ln out">
+        {seg(line).map((p) => (p.ok ? <span class="ok">{p.text}</span> : p.text))}
+      </div>
+    ))}
     <div class="ln last cmd cursor-line" data-cmd>{lastCmd}</div>
   </div>
 </div>
