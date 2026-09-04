@@ -38,6 +38,23 @@ const t = strings;
       ))}
     </div>
     <div class="pipe-legend">{t.workflow.legend}</div>
+    <div class="agents reveal">
+      <div class="agents-title">{t.workflowDeep.agentsTitle}</div>
+      <p class="agents-intro">{t.workflowDeep.agentsIntro}</p>
+    </div>
+    <div class="gates reveal">
+      <div class="gates-title">{t.workflowDeep.gatesTitle}</div>
+      <p class="gates-intro">{t.workflowDeep.gatesIntro}</p>
+      <div class="gate-grid">
+        {t.workflowDeep.gates.map((gate) => (
+          <div class="gate">
+            <span class="gate-id">{gate.id}</span>
+            <div class="gate-label">{gate.label}</div>
+            <p class="gate-desc">{gate.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
     <div class="flow-note">{t.workflow.note}</div>
   </div>
 </section>
@@ -85,6 +102,69 @@ const t = strings;
     content: '▮ ';
     color: var(--accent);
   }
+  .agents {
+    margin-top: 36px;
+    border-left: 2px solid var(--accent);
+    padding: 8px 0 8px 20px;
+    max-width: 660px;
+  }
+  .agents-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+    color: var(--accent);
+  }
+  .agents-intro {
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .gates {
+    margin-top: 36px;
+  }
+  .gates-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+    color: var(--accent);
+  }
+  .gates-intro {
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    max-width: 660px;
+  }
+  .gate-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .gate {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 16px 18px;
+  }
+  .gate-id {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .gate-label {
+    margin-top: 8px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+  .gate-desc {
+    margin-top: 6px;
+    color: var(--text-dim);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
   .flow-note {
     margin-top: 36px;
     border-left: 2px solid var(--accent);
@@ -92,5 +172,26 @@ const t = strings;
     font-size: 13.5px;
     color: var(--text-dim);
     max-width: 660px;
+  }
+
+  @media (max-width: 1024px) {
+    .gate-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .pipe {
+      padding: 24px 20px;
+    }
+    .agents,
+    .flow-note {
+      padding-left: 14px;
+    }
+    .gate-grid {
+      grid-template-columns: 1fr;
+    }
+    .gate {
+      padding: 14px 16px;
+    }
   }
 </style>

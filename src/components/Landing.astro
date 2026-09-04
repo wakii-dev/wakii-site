@@ -7,13 +7,14 @@
  *
  * Ownership (FI-294 componentize, SF-1): each section component in
  * src/components/landing/ is owned by its SF — GetWakii.astro → SF-3,
- * Workflow.astro (+ future philosophy) → SF-4, the rest read-only.
+ * Workflow.astro + Philosophy.astro → SF-4, the rest read-only.
  */
 import type { LandingStrings } from '../i18n/landing';
 import Hero from './landing/Hero.astro';
 import Bento from './landing/Bento.astro';
 import ZeroSetup from './landing/ZeroSetup.astro';
 import Workflow from './landing/Workflow.astro';
+import Philosophy from './landing/Philosophy.astro';
 import GetWakii from './landing/GetWakii.astro';
 import Faq from './landing/Faq.astro';
 import '../styles/landing.css';
@@ -29,6 +30,7 @@ const { strings } = Astro.props;
 <Bento strings={strings} />
 <ZeroSetup strings={strings} />
 <Workflow strings={strings} />
+<Philosophy strings={strings} />
 <GetWakii strings={strings} />
 <Faq strings={strings} />
 
