@@ -61,9 +61,9 @@
 **Files:**
 - Modify: `src/components/landing/Workflow.astro`
 
-- [ ] **Step 1:** gates block: tiêu đề (`gatesTitle`) + intro (`gatesIntro`) + grid 6 gate chips từ `t.workflowDeep.gates` — mỗi chip: id mono mint (`B0`) + label + desc dim. Grid language giống pillar cards (cùng tokens).
-- [ ] **Step 2:** build xanh; reveal classes trên cả 2 blocks mới.
-- [ ] **Step 3: Commit** — `feat(sf-4): workflow deepen — gates B0–B5 block (FI-299)`
+- [x] **Step 1:** gates block: tiêu đề (`gatesTitle`) + intro (`gatesIntro`) + grid 6 gate chips từ `t.workflowDeep.gates` — mỗi chip: id mono mint (`B0`) + label + desc dim. Grid language giống pillar cards (cùng tokens).
+- [x] **Step 2:** build xanh; reveal classes trên cả 2 blocks mới.
+- [x] **Step 3: Commit** — `feat(sf-4): workflow deepen — gates B0–B5 block (FI-299)`
 
 ### Task 6: Responsive pass — 8 cards + workflow strip mobile
 
