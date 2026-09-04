@@ -5,15 +5,14 @@
 /**
  * Public repository URL (CTA "Get Wakii — build from source", footer).
  *
- * PLACEHOLDER — the fork is currently private.
- * SF-4 pre-publish checklist MUST confirm/replace this before the site goes public.
+ * CONFIRMED by user — SF-4 pre-publish gate 2 (2026-09-04, FI-293).
  * All links must reference this constant, never a hardcoded URL.
  */
 export const REPO_URL = 'https://github.com/wakii/wakii';
 
 /**
  * Canonical site URL (sitemap, robots.txt, OG base).
- * PLACEHOLDER — SF-4 pre-publish confirms the production domain.
+ * CONFIRMED by user — SF-4 pre-publish gate 2 (2026-09-04, FI-293).
  */
 export const SITE_URL = 'https://wakii.dev';
 
