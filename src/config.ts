@@ -53,9 +53,8 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
 export const DOWNLOADS_LIVE = false;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
-  macos: 'https://github.com/wakii/wakii/releases/latest/download/Wakii.dmg',
-  windows:
-    'https://github.com/wakii/wakii/releases/latest/download/WakiiSetup.exe',
+  macos: `${REPO_URL}/releases/latest/download/Wakii.dmg`,
+  windows: `${REPO_URL}/releases/latest/download/WakiiSetup.exe`,
 };
 
 /**

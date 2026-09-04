@@ -20,10 +20,12 @@ export interface DownloadStrings {
   lang: 'en' | 'vi';
   page: {
     title: string;
-    description: string;
     kicker: string;
     h2: string;
-    sub: string;
+    /** SEO meta + sub are flag-conditional too — "installers for macOS &
+     *  Windows" is only a true statement when DOWNLOADS_LIVE (review P2). */
+    live: { description: string; sub: string };
+    notLive: { description: string; sub: string };
   };
   desktop: {
     label: string;
@@ -75,11 +77,18 @@ export const en: DownloadStrings = {
   lang: 'en',
   page: {
     title: 'Download',
-    description:
-      'Get Wakii — download installers for macOS and Windows, or build from source. Mobile apps for iOS and Android.',
     kicker: 'download',
     h2: 'get wakii',
-    sub: 'Installers for macOS and Windows, or build from source — and a mobile companion for your agent team.',
+    live: {
+      description:
+        'Get Wakii — download installers for macOS and Windows, or build from source. Mobile apps for iOS and Android.',
+      sub: 'Installers for macOS and Windows, or build from source — and a mobile companion for your agent team.',
+    },
+    notLive: {
+      description:
+        'Get Wakii — build from source for now, installers are on the roadmap. Mobile apps for iOS and Android.',
+      sub: 'Wakii is built from source for now (installers are on the roadmap) — and a mobile companion for your agent team is coming.',
+    },
   },
   desktop: {
     label: 'desktop',
@@ -132,11 +141,18 @@ export const vi: DownloadStrings = {
   lang: 'vi',
   page: {
     title: 'Tải xuống',
-    description:
-      'Tải Wakii — bản cài cho macOS và Windows, hoặc build từ mã nguồn. App mobile cho iOS và Android.',
     kicker: 'tải xuống',
     h2: 'tải wakii',
-    sub: 'Bản cài cho macOS và Windows, hoặc build từ mã nguồn — kèm app mobile đồng hành cho team agent của bạn.',
+    live: {
+      description:
+        'Tải Wakii — bản cài cho macOS và Windows, hoặc build từ mã nguồn. App mobile cho iOS và Android.',
+      sub: 'Bản cài cho macOS và Windows, hoặc build từ mã nguồn — kèm app mobile đồng hành cho team agent của bạn.',
+    },
+    notLive: {
+      description:
+        'Tải Wakii — hiện tại build từ mã nguồn, bản cài nằm trong roadmap. App mobile cho iOS và Android.',
+      sub: 'Hiện tại Wakii được build từ mã nguồn (bản cài nằm trong roadmap) — app mobile đồng hành cho team agent của bạn sắp đến.',
+    },
   },
   desktop: {
     label: 'desktop',
