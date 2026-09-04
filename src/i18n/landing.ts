@@ -73,7 +73,14 @@ export interface LandingStrings {
       lines: { text: string; kind: 'plain' | 'warn' | 'ok' }[];
       foot: string;
     };
-    stats: { v: string; k: string }[];
+    figma: {
+      label: string;
+      meta: string;
+      rows: { k: string; v: string }[];
+      verdict: string;
+      verdictOk: boolean;
+      desc: string;
+    };
   };
   zero: { status: string; title: string; desc: string }[];
   workflow: { kicker: string; title: string; sub: string; stages: string[]; planNote: string; legend: string; note: string };
@@ -84,7 +91,7 @@ export interface LandingStrings {
     more: string;
     moreLink: string;
   };
-  faq: { kicker: string; title: string; items: { q: string; a: string }[] };
+  faq: { kicker: string; title: string; more: string; moreLink: string; items: { q: string; a: string }[] };
 }
 
 const BRACKET_GEOMETRY = {
@@ -126,7 +133,7 @@ export const en: LandingStrings = {
     tagline: 'Wakii is an agentic IDE with a built-in superpowers team — plugin bundled, kit auto-installed to ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build from source',
-    ctaGhost: 'explore the team',
+    ctaGhost: 'read the guide',
     stats: [
       { v: '9', k: 'agents, role-gated' },
       { v: '0', k: 'setup steps' },
@@ -207,12 +214,18 @@ export const en: LandingStrings = {
       ],
       foot: 'SF.004 — watchdog auto-complete: stalled work finishes itself. You get coffee.',
     },
-    stats: [
-      { v: '9', k: 'role-gated agents' },
-      { v: '6', k: 'gates before merge' },
-      { v: '1', k: 'PR per story' },
-      { v: '0', k: 'setup steps' },
-    ],
+    figma: {
+      label: 'figma → verify pipeline',
+      meta: 'design → shipped, diffed',
+      rows: [
+        { k: 'capture', v: 'frame + tokens captured, committed to the repo' },
+        { k: 'implement', v: 'tokens-only, component map before code' },
+        { k: 'verify', v: 'screenshot diff vs capture, side by side' },
+      ],
+      verdict: 'visual diff: 0 unexpected deltas',
+      verdictOk: true,
+      desc: 'SF.006 — figma-to-verify: the build is checked against the design, pixel by pixel, before merge.',
+    },
   },
   zero: [
     { status: 'bootstrap 0.0s', title: 'Bundled plugin', desc: 'Superpowers ships inside the app. No marketplace, no version juggling.' },
@@ -242,6 +255,8 @@ export const en: LandingStrings = {
   faq: {
     kicker: 'faq',
     title: 'frequently asked',
+    more: 'only the short version — the',
+    moreLink: 'full FAQ',
     items: [
       { q: 'Is Wakii really zero-setup?', a: 'Yes. The plugin is bundled in the app and the skills kit installs itself to ~/.claude on first launch, enabled by default. Open Wakii — the team is already there.' },
       { q: 'How is this different from an AI plugin in my editor?', a: 'A plugin gives you a chat window. Wakii gives you a team: nine agents with defined roles, gates between them, a watchdog that completes stalled work, and memory that compounds across sessions.' },
@@ -268,7 +283,7 @@ export const vi: LandingStrings = {
     tagline: 'Wakii là một agentic IDE với team superpowers tích hợp sẵn — plugin đóng gói sẵn, kit tự cài vào ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build từ mã nguồn',
-    ctaGhost: 'khám phá team',
+    ctaGhost: 'đọc hướng dẫn',
     stats: [
       { v: '9', k: 'agents, phân vai' },
       { v: '0', k: 'bước cài đặt' },
@@ -349,12 +364,18 @@ export const vi: LandingStrings = {
       ],
       foot: 'SF.004 — watchdog tự hoàn tất: work stalled tự kết thúc. Bạn cứ đi pha cà phê.',
     },
-    stats: [
-      { v: '9', k: 'agents phân vai' },
-      { v: '6', k: 'gates trước merge' },
-      { v: '1', k: 'PR mỗi story' },
-      { v: '0', k: 'bước cài đặt' },
-    ],
+    figma: {
+      label: 'pipeline figma → verify',
+      meta: 'thiết kế → shipped, so từng pixel',
+      rows: [
+        { k: 'capture', v: 'frame + tokens được chụp, commit vào repo' },
+        { k: 'implement', v: 'chỉ dùng tokens, vẽ component map trước khi code' },
+        { k: 'verify', v: 'soi screenshot với capture chuẩn, cạnh nhau' },
+      ],
+      verdict: 'visual diff: 0 sai lệch ngoài dự kiến',
+      verdictOk: true,
+      desc: 'SF.006 — figma-to-verify: bản build được đối chiếu với thiết kế, từng pixel, trước khi merge.',
+    },
   },
   zero: [
     { status: 'bootstrap 0.0s', title: 'Plugin đóng gói sẵn', desc: 'Superpowers nằm sẵn trong app. Không marketplace, không lo version.' },
@@ -384,6 +405,8 @@ export const vi: LandingStrings = {
   faq: {
     kicker: 'faq',
     title: 'câu hỏi thường gặp',
+    more: 'chỉ là bản rút gọn —',
+    moreLink: 'toàn bộ FAQ',
     items: [
       { q: 'Wakii có thật sự zero-setup?', a: 'Có. Plugin được đóng gói sẵn trong app và bộ skills kit tự cài vào ~/.claude ngay lần mở đầu, bật sẵn mặc định. Mở Wakii — team đã ở đó.' },
       { q: 'Khác gì một AI plugin trong editor?', a: 'Plugin cho bạn một cửa sổ chat. Wakii cho bạn một team: chín agent với vai trò rõ ràng, gate giữa chúng, một watchdog hoàn tất work stalled, và memory tích lũy qua các session.' },

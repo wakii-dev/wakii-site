@@ -19,5 +19,35 @@ cuối SF-1 (ghi trong docs/superpowers/notes/). Pass accuracy guard mọi trang
 4. VI pages đầy đủ; UI terms kỹ thuật giữ EN khi dịch tự nhiên hơn
 5. Internal links giữa docs pages không chết (link integrity toàn docs)
 
+## UPDATE 2026-09-04 (PM — user yêu cầu): story-workflow page phải truyền tải TOÀN BỘ triết lý
+
+Trang `/docs/story-workflow` không chỉ là how-to — cần section **Philosophy** đầy đủ
+(dài nhất site, là trang "linh hồn" sản phẩm), phủ 8 trụ cột:
+
+1. **Analyze once, inherit many** — phân tích sâu chạy 1 lần ở epic, SF kế thừa qua
+   context pack; SF chỉ chạy plan/execute/verify, không re-analyze, không re-ask
+2. **Team model tách bạch** — PM (điều phối, KHÔNG code) / Developer (implement,
+   KHÔNG tự duyệt) / Tester độc lập (chỉ tìm lỗi, KHÔNG fix); dev không review code
+   mình = bug thật mới bị bắt
+3. **Gates thay vì niềm tin** — 5 gates tool-enforced mỗi SF (preflight, diff-review,
+   test, snapshot, post-merge); Rule 0 browser verify 3 tầng (DOM/VISUAL/FLOW —
+   không tự kết luận khi chưa thấy); gate FAIL = không tiếp tục
+4. **Human gates** — quyết định kiến trúc + merge về main là quyền người; agents
+   đưa nhánh đích tới trạng thái sạch rồi DỪNG (1 PR/story, merge là human gate cuối)
+5. **Tier & bracket topology** — tier = dependency depth; tier boundary = merge point;
+   nhánh đích duy nhất `story/<epic>-<slug>` là "main của story"
+6. **Watchdog & stall detection** — idle ≠ chết: check 3 tầng (commits, terminal
+   state, Linear) trước khi kết luận; unlimited self-check loop tới STORY-COMPLETE;
+   resume = đánh thức bằng input, KHÔNG khởi lại
+7. **Memory & learning loop** — post-task-ritual chốt bài học sau mỗi task; story-memory
+   lưu pattern có provenance cho run sau tái sử dụng
+8. **Defensive patterns** — thiết kế cho việc mình sẽ SAI; làm sai lầm rẻ và observable
+   (không xóa gì, mọi thứ revert-able); giấy ≠ chạy được (verify-first: lệnh mới phải
+   dry-test trước khi tin)
+
+Copy: mỗi trụ cột 1 đoạn ngắn + ví dụ cụ thể. Case study: dùng chính story FI-289
+(story này tự minh họa triết lý — design đổi giữa chừng → rework có kiểm soát;
+watchdog tự điều phối; reviewer bắt P0 trước merge). VI dịch đầy đủ.
+
 ## Boundary
 - KHÔNG đụng landing (SF-2), tokens/layout (SF-1), QA (SF-4)
