@@ -1,6 +1,6 @@
 ---
 title: Agents & kit
-description: Đội 9 agent, 17 workflow skills bundled, và 23 story CLIs — tất cả tự cài sẵn, không cần setup.
+description: Đội 9 agent, 20 skills bundled, và 24 story CLIs — tất cả tự cài sẵn, không cần setup.
 order: 3
 ---
 
@@ -28,19 +28,17 @@ chế kiềm chế chéo giữa họ mới là điều quan trọng:
 
 Kit bundled (`story-team-kit`) mang theo toàn bộ máy móc workflow:
 
-- **17 skills** — các process skill agent load theo nhu cầu: brainstorming,
+- **20 skills** — các skill agent load theo nhu cầu: brainstorming,
   viết plan, thực thi plan, code review, quản lý story, design pipeline,
-  và nhiều hơn nữa.
-- **23 CLI `story-*`** — cài vào `~/.claude/bin/`: `story-verify` (kiểm
+  và nhiều hơn nữa — kể cả platform skill để điều khiển máy và công cụ
+  của bạn (computer use, orchestration, tích hợp Linear).
+- **24 CLI `story-*`** — cài vào `~/.claude/bin/`: `story-verify` (kiểm
   tra gates), `story-watchdog` (phát hiện stall), `story-preflight`,
   `story-test`, và cả hộp công cụ story-ops còn lại.
 
 Việc cài đặt diễn ra tự động lần đầu Wakii chạy — kit được chép vào
 `~/.claude/` và giữ đồng bộ theo version app. Hoàn toàn idempotent: chạy
 lại không bao giờ nhân đôi hay ghi đè config local của bạn.
-
-Ngoài kit, bản thân app còn bundle skills riêng (computer use,
-orchestration, tích hợp Linear, v.v.) để điều khiển máy và công cụ của bạn.
 
 ## License
 

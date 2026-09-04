@@ -1,6 +1,6 @@
 ---
 title: Agents and kit
-description: The 9-agent story team, 17 bundled workflow skills, and 23 story CLIs — all installed for you, zero setup.
+description: The 9-agent story team, 20 bundled skills, and 24 story CLIs — all installed for you, zero setup.
 order: 3
 ---
 
@@ -28,20 +28,17 @@ and the checks-and-balances between them are the point:
 
 The bundled kit (`story-team-kit`) carries the workflow machinery:
 
-- **17 skills** — the process skills agents load on demand: brainstorming,
+- **20 skills** — the skills agents load on demand: brainstorming,
   writing plans, executing plans, code review, story management, design
-  pipelines, and more.
-- **23 `story-*` CLIs** — installed to `~/.claude/bin/`: `story-verify`
+  pipelines, and more — including platform skills for controlling your
+  machine and tools (computer use, orchestration, Linear integration).
+- **24 `story-*` CLIs** — installed to `~/.claude/bin/`: `story-verify`
   (gate checks), `story-watchdog` (stall detection), `story-preflight`,
   `story-test`, and the rest of the story-ops toolbox.
 
 Installation happens automatically the first time Wakii runs — the kit is
 copied into `~/.claude/` and stays in sync with the app version. It is
 idempotent: re-running never duplicates or clobbers your local config.
-
-On top of the kit, the app itself bundles its own skills (computer use,
-orchestration, Linear integration, and more) for controlling your machine
-and tools.
 
 ## License
 
