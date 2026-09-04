@@ -1,0 +1,110 @@
+---
+/**
+ * Mockup kit — GatesStrip: B0–B5 pipeline progress (done ✓ / running pulse /
+ * pending dim) with connector lines. Pure renderer; items via props.
+ */
+interface GateItem {
+  id: string;
+  label: string;
+  status: 'done' | 'run' | 'pending';
+}
+interface Props {
+  items: GateItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="gates">
+  <div class="gates-row">
+    {items.map((g) => (
+      <div class:list={['gate', g.status]}>
+        <span class="gate-line" />
+        <div class="gate-dot">{g.status === 'done' ? '✓' : g.id}</div>
+        <div class="gate-id">{g.id}</div>
+        <div class="gate-label">{g.label}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .gates {
+    padding: 24px 22px 20px;
+  }
+  .gates-row {
+    display: flex;
+    align-items: flex-start;
+  }
+  .gate {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .gate-line {
+    position: absolute;
+    top: 14px;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+  }
+  .gate:first-child .gate-line {
+    display: none;
+  }
+  .gate.done .gate-line {
+    background: var(--accent);
+  }
+  .gate.run .gate-line {
+    background: linear-gradient(90deg, var(--accent) 50%, var(--border) 50%);
+  }
+  .gate-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 1px solid var(--border-strong);
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-faint);
+    position: relative;
+    z-index: 1;
+  }
+  .gate.done .gate-dot {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .gate.run .gate-dot {
+    border-color: var(--warn);
+    color: var(--warn);
+    background: var(--warn-soft);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  .gate-id {
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-top: 8px;
+    color: var(--text-dim);
+  }
+  .gate.done .gate-id {
+    color: var(--accent);
+  }
+  .gate.run .gate-id {
+    color: var(--warn);
+  }
+  .gate-label {
+    font-size: 9.5px;
+    color: var(--text-faint);
+    margin-top: 2px;
+    padding: 0 2px;
+  }
+</style>
