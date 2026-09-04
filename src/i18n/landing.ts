@@ -1,7 +1,25 @@
 /**
- * Landing strings — PLACEHOLDER copy (direction-c.html), EN is source of truth.
- * SF-2 owns real landing copy; structure here is locked to the approved direction.
+ * Landing strings — v2 "Modern Bento Premium" (direction-d3-bento.html).
+ * PLACEHOLDER copy; EN is source of truth. SF-2 owns real landing copy.
+ * Bento mockup data (nodes/agents/gates/watchdog) lives here so the mockup
+ * kit components (src/components/mockups/) stay pure renderers with props.
  */
+
+export interface BentoNode {
+  id: string;
+  title: string;
+  agent?: string;
+  status: 'epic' | 'done' | 'running' | 'queued';
+  x: number;
+  y: number;
+  /** progress 0-1 → animated bar; done nodes hide it */
+  progress?: number;
+}
+
+export interface BentoEdge {
+  d: string;
+  live?: boolean;
+}
 
 export interface LandingStrings {
   lang: 'en' | 'vi';
@@ -18,14 +36,47 @@ export interface LandingStrings {
     ctaGhost: string;
     stats: { v: string; k: string }[];
   };
-  zero: { status: string; title: string; desc: string }[];
-  features: {
+  bento: {
     kicker: string;
     title: string;
     sub: string;
-    items: { id: string; cat: string; name: string; desc: string; flag: string }[];
+    bracket: {
+      label: string;
+      meta: string;
+      pills: { run: string; done: string };
+      tiers: { label: string; x: number; w: number }[];
+      nodes: BentoNode[];
+      edges: BentoEdge[];
+      desc: string;
+    };
+    agents: {
+      label: string;
+      pill: string;
+      items: { name: string; role: string; state: string; working: boolean }[];
+      desc: string;
+    };
+    gates: {
+      label: string;
+      pill: string;
+      items: { id: string; label: string; status: 'done' | 'run' | 'pending' }[];
+      desc: string;
+    };
+    memory: {
+      label: string;
+      meta: string;
+      lines: { t: string; src: string; srcKind: 'gate' | 'watch' | 'plain'; tx: string }[];
+      desc: string;
+    };
+    watchdog: {
+      label: string;
+      pill: string;
+      lines: { text: string; kind: 'plain' | 'warn' | 'ok' }[];
+      foot: string;
+    };
+    stats: { v: string; k: string }[];
   };
-  workflow: { kicker: string; title: string; stages: string[]; planNote: string; legend: string; note: string };
+  zero: { status: string; title: string; desc: string }[];
+  workflow: { kicker: string; title: string; sub: string; stages: string[]; planNote: string; legend: string; note: string };
   quickstart: {
     kicker: string;
     title: string;
@@ -36,6 +87,28 @@ export interface LandingStrings {
   faq: { kicker: string; title: string; items: { q: string; a: string }[] };
 }
 
+const BRACKET_GEOMETRY = {
+  tiers: [
+    { label: 'epic', x: 20, w: 172 },
+    { label: 'spec & plan', x: 220, w: 172 },
+    { label: 'parallel SFs', x: 430, w: 180 },
+  ],
+  nodes: [
+    { id: 'FI-289', y: 150, status: 'epic' as const },
+    { id: 'SF-1', y: 72, status: 'done' as const },
+    { id: 'SF-2', y: 192, status: 'running' as const, progress: 0.64 },
+    { id: 'SF-3', y: 302, status: 'queued' as const },
+    { id: 'SF-4', y: 126, x: 430, status: 'running' as const, progress: 0.38 },
+  ],
+  edges: [
+    { d: 'M 192 186 C 210 186, 202 106, 220 106' },
+    { d: 'M 192 186 C 210 186, 202 226, 220 226', live: true },
+    { d: 'M 192 186 C 210 186, 202 336, 220 336' },
+    { d: 'M 392 226 C 412 226, 412 160, 430 160', live: true },
+    { d: 'M 392 106 C 412 106, 412 148, 430 148' },
+  ],
+};
+
 export const en: LandingStrings = {
   lang: 'en',
   hero: {
@@ -44,6 +117,7 @@ export const en: LandingStrings = {
       '› resolving project context … done',
       '› bundled plugin loaded · kit → ~/.claude · team enabled',
       '› 9 agents online · superpowers panel ready',
+      '› memory restored: 47 verdicts, 12 learned patterns',
     ],
     lastCmd: '/superpowers "ship the next feature while I get coffee"',
     kicker: 'agentic ide // open source // fork of orca',
@@ -52,12 +126,92 @@ export const en: LandingStrings = {
     tagline: 'Wakii is an agentic IDE with a built-in superpowers team — plugin bundled, kit auto-installed to ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build from source',
-    ctaGhost: 'read the guide',
+    ctaGhost: 'explore the team',
     stats: [
       { v: '9', k: 'agents, role-gated' },
       { v: '0', k: 'setup steps' },
       { v: '1', k: 'PR per story' },
-      { v: 'MIT', k: 'fork of orca' },
+    ],
+  },
+  bento: {
+    kicker: 'features // live demos',
+    title: 'Watch the team work',
+    sub: 'Every cell below is a live piece of the Superpowers panel, mid-flight on a real story. Hover to pick one up — this is what "agentic IDE" actually looks like.',
+    bracket: {
+      label: 'bracket canvas',
+      meta: 'FI-289 · wakii-site',
+      pills: { run: '2 running', done: '1 done' },
+      ...BRACKET_GEOMETRY,
+      nodes: BRACKET_GEOMETRY.nodes.map((n, i) => ({
+        ...n,
+        x: n.x ?? [20, 220, 220, 220, 430][i],
+        title: [
+          'agentic IDE landing',
+          'spec + design direction',
+          'bento landing EN+VI',
+          'docs × 2 locales',
+          'perf budget ≥ 90',
+        ][i],
+        agent: ['coordinator', 'designer · spec-critic', 'task-executor', '—', 'verifier'][i],
+      })),
+      desc: 'SF.002 — bracket canvas: epic → SF nodes with dependency edges, drawn live as the pipeline resolves them.',
+    },
+    agents: {
+      label: 'superpowers team',
+      pill: '4 working',
+      items: [
+        { name: 'task-executor', role: 'ships SF slices', state: 'working', working: true },
+        { name: 'code-reviewer', role: 'reviews at B3', state: 'reviewing', working: true },
+        { name: 'verifier', role: 'tests + browser', state: '47 green', working: true },
+        { name: 'spec-critic', role: 'attacks specs', state: 'online', working: false },
+        { name: 'plan-critic', role: 'stress-tests plans', state: 'online', working: false },
+        { name: 'phase0-impact-analyst', role: 'blast radius', state: 'online', working: false },
+        { name: 'security-audit', role: 'leaks & injection', state: 'online', working: false },
+        { name: 'rollback-fixer', role: 'clean reverts', state: 'online', working: false },
+        { name: 'designer', role: 'direction + UI', state: 'drafting', working: true },
+      ],
+      desc: 'SF.003 — 9-agent team: role-gated. No agent ships outside its job.',
+    },
+    gates: {
+      label: 'story ops — gates',
+      pill: 'B3 in progress',
+      items: [
+        { id: 'B0', label: 'browser test', status: 'done' },
+        { id: 'B1', label: 'code + tests', status: 'done' },
+        { id: 'B2', label: 'plan', status: 'done' },
+        { id: 'B3', label: 'review', status: 'run' },
+        { id: 'B4', label: 'merge', status: 'pending' },
+        { id: 'B5', label: 'done', status: 'pending' },
+      ],
+      desc: 'Story Ops: six gates per story. B3 review — APPROVE · 47/47 tests.',
+    },
+    memory: {
+      label: 'wakii memory — verdicts.log',
+      meta: 'session 47',
+      lines: [
+        { t: '09:41:07', src: 'B3', srcKind: 'gate', tx: 'SF-1 PASS — matches design tokens' },
+        { t: '10:02:33', src: 'B3', srcKind: 'gate', tx: 'SF-2 APPROVED — "extracted cleanly"' },
+        { t: '10:14:58', src: 'watchdog', srcKind: 'watch', tx: 'stall → resumed on SF-3' },
+        { t: '10:15:02', src: 'pattern', srcKind: 'plain', tx: 'learned: verify-first · 12 stories' },
+      ],
+      desc: 'SF.005 — memory loop: verdicts persist. Story #20 never re-argues story #3.',
+    },
+    watchdog: {
+      label: 'watchdog — live',
+      pill: 'monitoring',
+      lines: [
+        { text: '▸ watching SF-3 hand-off … silence threshold 45s', kind: 'plain' },
+        { text: '⚠ stall detected — executor idle 52s, checkpoint found', kind: 'warn' },
+        { text: '▸ resuming SF-3 from last checkpoint …', kind: 'plain' },
+        { text: '✓ SF-3 back on track — no human involved', kind: 'ok' },
+      ],
+      foot: 'SF.004 — watchdog auto-complete: stalled work finishes itself. You get coffee.',
+    },
+    stats: [
+      { v: '9', k: 'role-gated agents' },
+      { v: '6', k: 'gates before merge' },
+      { v: '1', k: 'PR per story' },
+      { v: '0', k: 'setup steps' },
     ],
   },
   zero: [
@@ -65,22 +219,10 @@ export const en: LandingStrings = {
     { status: 'install ~/.claude', title: 'Kit auto-installs', desc: 'Skills land in ~/.claude on first launch. You never touch a config file.' },
     { status: 'config enabled=true', title: 'Enabled by default', desc: 'The team is on when you open Wakii. Opt out per-project — not opt in.' },
   ],
-  features: {
-    kicker: 'capabilities',
-    title: 'features.sh',
-    sub: 'Six systems, one pipeline. Each one exists to move a story from spoken idea to verified pull request.',
-    items: [
-      { id: 'sf.001', cat: 'core', name: 'Story system', desc: 'Epics decompose into spec slices — SF brackets — each with explicit scope, so nothing ships half-understood.', flag: 'epic → SF bracket' },
-      { id: 'sf.002', cat: 'ui', name: 'Bracket canvas panel', desc: 'The whole story map on a live canvas beside your editor — dependencies, status, gates at a glance.', flag: 'visual tracking' },
-      { id: 'sf.003', cat: 'team', name: '9-agent team + gates', desc: 'Coordinators, designers, executors, verifiers. Gates between roles mean nothing passes unchecked.', flag: 'role-gated' },
-      { id: 'sf.004', cat: 'reliability', name: 'Watchdog auto-complete', desc: 'Catches stalls and unfinished hand-offs, then drives the work to completion on its own.', flag: 'no babysitting' },
-      { id: 'sf.005', cat: 'memory', name: 'Memory & learning loop', desc: 'Decisions, verdicts and patterns persist across sessions. The team gets sharper every story.', flag: 'persistent context' },
-      { id: 'sf.006', cat: 'design', name: 'Figma-to-verify pipeline', desc: 'Design files in, prototypes out — and verifiers check the build against the source of truth.', flag: 'design-accurate' },
-    ],
-  },
   workflow: {
     kicker: 'pipeline',
     title: 'cat workflow.md',
+    sub: 'One pipeline from spoken idea to merged PR — visible end to end in the Superpowers panel.',
     stages: ['idea', 'impact', 'plan', 'parallel SFs', 'verify gates', '1 PR / story'],
     planNote: '(linear subtasks)',
     legend: '▮ highlighted stage = agents executing concurrently',
@@ -117,6 +259,7 @@ export const vi: LandingStrings = {
       '› đang đọc ngữ cảnh dự án … xong',
       '› plugin đóng gói sẵn đã load · kit → ~/.claude · team đã bật',
       '› 9 agents online · superpowers panel sẵn sàng',
+      '› đã khôi phục memory: 47 verdicts, 12 pattern đã học',
     ],
     lastCmd: '/superpowers "ship tính năng tiếp theo trong lúc tôi pha cà phê"',
     kicker: 'agentic ide // mã nguồn mở // fork của orca',
@@ -125,12 +268,92 @@ export const vi: LandingStrings = {
     tagline: 'Wakii là một agentic IDE với team superpowers tích hợp sẵn — plugin đóng gói sẵn, kit tự cài vào ',
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build từ mã nguồn',
-    ctaGhost: 'đọc hướng dẫn',
+    ctaGhost: 'khám phá team',
     stats: [
       { v: '9', k: 'agents, phân vai' },
       { v: '0', k: 'bước cài đặt' },
       { v: '1', k: 'PR mỗi story' },
-      { v: 'MIT', k: 'fork của orca' },
+    ],
+  },
+  bento: {
+    kicker: 'tính năng // demo trực tiếp',
+    title: 'Xem team làm việc',
+    sub: 'Mỗi cell dưới đây là một phần sống của Superpowers panel, đang chạy giữa chừng trên một story thật. Di chuột để nhấc lên — "agentic IDE" nhìn thế này đây.',
+    bracket: {
+      label: 'bracket canvas',
+      meta: 'FI-289 · wakii-site',
+      pills: { run: '2 đang chạy', done: '1 xong' },
+      ...BRACKET_GEOMETRY,
+      nodes: BRACKET_GEOMETRY.nodes.map((n, i) => ({
+        ...n,
+        x: n.x ?? [20, 220, 220, 220, 430][i],
+        title: [
+          'landing agentic IDE',
+          'spec + hướng thiết kế',
+          'landing bento EN+VI',
+          'docs × 2 locales',
+          'budget perf ≥ 90',
+        ][i],
+        agent: ['coordinator', 'designer · spec-critic', 'task-executor', '—', 'verifier'][i],
+      })),
+      desc: 'SF.002 — bracket canvas: node epic → SF với cạnh dependency, vẽ sống động theo tiến độ pipeline.',
+    },
+    agents: {
+      label: 'superpowers team',
+      pill: '4 đang làm',
+      items: [
+        { name: 'task-executor', role: 'ship SF slice', state: 'đang làm', working: true },
+        { name: 'code-reviewer', role: 'review ở B3', state: 'đang review', working: true },
+        { name: 'verifier', role: 'tests + browser', state: '47 xanh', working: true },
+        { name: 'spec-critic', role: 'tấn công spec', state: 'online', working: false },
+        { name: 'plan-critic', role: 'stress-test plan', state: 'online', working: false },
+        { name: 'phase0-impact-analyst', role: 'bán kính ảnh hưởng', state: 'online', working: false },
+        { name: 'security-audit', role: 'leak & injection', state: 'online', working: false },
+        { name: 'rollback-fixer', role: 'revert sạch', state: 'online', working: false },
+        { name: 'designer', role: 'direction + UI', state: 'đang vẽ', working: true },
+      ],
+      desc: 'SF.003 — team 9 agents: phân vai. Không agent nào ship ngoài phạm vi job của mình.',
+    },
+    gates: {
+      label: 'story ops — gates',
+      pill: 'B3 đang chạy',
+      items: [
+        { id: 'B0', label: 'browser test', status: 'done' },
+        { id: 'B1', label: 'code + tests', status: 'done' },
+        { id: 'B2', label: 'plan', status: 'done' },
+        { id: 'B3', label: 'review', status: 'run' },
+        { id: 'B4', label: 'merge', status: 'pending' },
+        { id: 'B5', label: 'done', status: 'pending' },
+      ],
+      desc: 'Story Ops: sáu gate mỗi story. B3 review — APPROVE · 47/47 tests.',
+    },
+    memory: {
+      label: 'wakii memory — verdicts.log',
+      meta: 'session 47',
+      lines: [
+        { t: '09:41:07', src: 'B3', srcKind: 'gate', tx: 'SF-1 PASS — khớp design tokens' },
+        { t: '10:02:33', src: 'B3', srcKind: 'gate', tx: 'SF-2 APPROVED — "extracted cleanly"' },
+        { t: '10:14:58', src: 'watchdog', srcKind: 'watch', tx: 'stall → resume SF-3' },
+        { t: '10:15:02', src: 'pattern', srcKind: 'plain', tx: 'đã học: verify-first · 12 stories' },
+      ],
+      desc: 'SF.005 — vòng memory: verdict được lưu lại. Story #20 không tranh luận lại story #3.',
+    },
+    watchdog: {
+      label: 'watchdog — live',
+      pill: 'đang giám sát',
+      lines: [
+        { text: '▸ đang theo dõi hand-off SF-3 … ngưỡng im lặng 45s', kind: 'plain' },
+        { text: '⚠ phát hiện stall — executor idle 52s, đã có checkpoint', kind: 'warn' },
+        { text: '▸ resume SF-3 từ checkpoint cuối …', kind: 'plain' },
+        { text: '✓ SF-3 trở lại lộ trình — không cần con người', kind: 'ok' },
+      ],
+      foot: 'SF.004 — watchdog tự hoàn tất: work stalled tự kết thúc. Bạn cứ đi pha cà phê.',
+    },
+    stats: [
+      { v: '9', k: 'agents phân vai' },
+      { v: '6', k: 'gates trước merge' },
+      { v: '1', k: 'PR mỗi story' },
+      { v: '0', k: 'bước cài đặt' },
     ],
   },
   zero: [
@@ -138,22 +361,10 @@ export const vi: LandingStrings = {
     { status: 'install ~/.claude', title: 'Kit tự cài đặt', desc: 'Skills nằm trong ~/.claude ngay lần mở đầu tiên. Bạn không đụng vào config nào.' },
     { status: 'config enabled=true', title: 'Bật sẵn mặc định', desc: 'Team đã bật khi bạn mở Wakii. Tắt theo từng dự án — không phải opt in.' },
   ],
-  features: {
-    kicker: 'năng lực',
-    title: 'features.sh',
-    sub: 'Sáu hệ thống, một pipeline. Mỗi hệ thống đưa một story từ ý tưởng nói ra tới pull request đã verify.',
-    items: [
-      { id: 'sf.001', cat: 'core', name: 'Hệ thống story', desc: 'Epic được tách thành các spec slice — SF bracket — mỗi slice phạm vi rõ ràng, không thứ nào ship nửa vời.', flag: 'epic → SF bracket' },
-      { id: 'sf.002', cat: 'ui', name: 'Bracket canvas panel', desc: 'Toàn bộ sơ đồ story trên canvas sống ngay cạnh editor — dependency, trạng thái, gate nhìn một phát hiểu ngay.', flag: 'theo dõi trực quan' },
-      { id: 'sf.003', cat: 'team', name: 'Team 9 agents + gates', desc: 'Coordinator, designer, executor, verifier. Gate giữa các vai — không gì lọt qua khi chưa được kiểm.', flag: 'phân vai' },
-      { id: 'sf.004', cat: 'reliability', name: 'Watchdog tự hoàn tất', desc: 'Bắt các work stalled và hand-off dở dang, rồi tự đưa tới hoàn thành.', flag: 'không cần trông nom' },
-      { id: 'sf.005', cat: 'memory', name: 'Memory & vòng học hỏi', desc: 'Quyết định, verdict và pattern được lưu qua các session. Team càng làm càng sắc.', flag: 'ngữ cảnh bền vững' },
-      { id: 'sf.006', cat: 'design', name: 'Pipeline Figma-to-verify', desc: 'File design vào, prototype ra — và verifier đối chiếu build với nguồn chuẩn.', flag: 'đúng design' },
-    ],
-  },
   workflow: {
     kicker: 'pipeline',
     title: 'cat workflow.md',
+    sub: 'Một pipeline từ ý tưởng nói ra tới PR được merge — nhìn thấy hết đầu-cuối trong Superpowers panel.',
     stages: ['ý tưởng', 'tác động', 'kế hoạch', 'SF song song', 'cổng verify', '1 PR / story'],
     planNote: '(subtask linear)',
     legend: '▮ stage nổi bật = các agent chạy đồng thời',
