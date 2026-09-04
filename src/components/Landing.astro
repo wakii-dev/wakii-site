@@ -20,6 +20,7 @@ const { strings } = Astro.props;
 const t = strings;
 
 const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
+const faqHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/faq';
 const statusLabels: Record<string, string> =
   t.lang === 'vi'
     ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
@@ -230,6 +231,7 @@ function splitLead(s: string): [string, string] {
         <div class="ans">{item.a}</div>
       </details>
     ))}
+    <p class="faq-more">{t.faq.more} <a href={faqHref}>{t.faq.moreLink}</a></p>
   </div>
 </section>
 
@@ -789,6 +791,20 @@ function splitLead(s: string): [string, string] {
   details .ans code {
     color: var(--accent);
     font-size: 12.5px;
+  }
+  .faq-more {
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .faq-more::before {
+    content: '-> ';
+    color: var(--accent);
+  }
+  .faq-more a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
   }
 
   /* ===== REVEAL (JS-gated — no-JS / reduced-motion giữ static đầy đủ) ===== */

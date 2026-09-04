@@ -18,11 +18,11 @@
 - Modify: `src/i18n/landing.ts` (en.hero.ctaGhost ~line 129, vi.hero.ctaGhost ~line 271)
 - Modify: `src/components/Landing.astro:48` (cta-row href)
 
-- [ ] **Step 1: Đổi string EN** — `en.hero.ctaGhost`: `'explore the team'` → `'read the guide'` (thương hiệu landing dùng lowercase mono style)
-- [ ] **Step 2: Đổi string VI** — `vi.hero.ctaGhost`: `'khám phá team'` → `'đọc hướng dẫn'`
-- [ ] **Step 3: Đổi href trong Landing.astro** — `#features` → `{docsHref}` (đã có sẵn `docsHref` = locale-prefixed `/docs/getting-started` ở frontmatter line 22)
-- [ ] **Step 4: Build + verify** — `pnpm build` xanh; grep dist: EN `href="/docs/getting-started"` tại hero CTA, VI `href="/vi/docs/getting-started"`
-- [ ] **Step 5: Commit** — `feat(landing): hero ghost CTA → read the guide → docs/getting-started (acceptance #4)`
+- [x] **Step 1: Đổi string EN** — `en.hero.ctaGhost`: `'explore the team'` → `'read the guide'` (thương hiệu landing dùng lowercase mono style)
+- [x] **Step 2: Đổi string VI** — `vi.hero.ctaGhost`: `'khám phá team'` → `'đọc hướng dẫn'`
+- [x] **Step 3: Đổi href trong Landing.astro** — `#features` → `{docsHref}` (đã có sẵn `docsHref` = locale-prefixed `/docs/getting-started` ở frontmatter line 22)
+- [x] **Step 4: Build + verify** — `pnpm build` xanh; grep dist: EN `href="/docs/getting-started"` tại hero CTA, VI `href="/vi/docs/getting-started"`
+- [x] **Step 5: Commit** — `feat(landing): hero ghost CTA → read the guide → docs/getting-started (acceptance #4)`
 
 ### Task 2: Figma-to-verify cell thay stats cell (features inventory #6)
 

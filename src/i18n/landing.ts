@@ -91,7 +91,7 @@ export interface LandingStrings {
     more: string;
     moreLink: string;
   };
-  faq: { kicker: string; title: string; items: { q: string; a: string }[] };
+  faq: { kicker: string; title: string; more: string; moreLink: string; items: { q: string; a: string }[] };
 }
 
 const BRACKET_GEOMETRY = {
@@ -255,6 +255,8 @@ export const en: LandingStrings = {
   faq: {
     kicker: 'faq',
     title: 'frequently asked',
+    more: 'only the short version — the',
+    moreLink: 'full FAQ',
     items: [
       { q: 'Is Wakii really zero-setup?', a: 'Yes. The plugin is bundled in the app and the skills kit installs itself to ~/.claude on first launch, enabled by default. Open Wakii — the team is already there.' },
       { q: 'How is this different from an AI plugin in my editor?', a: 'A plugin gives you a chat window. Wakii gives you a team: nine agents with defined roles, gates between them, a watchdog that completes stalled work, and memory that compounds across sessions.' },
@@ -403,6 +405,8 @@ export const vi: LandingStrings = {
   faq: {
     kicker: 'faq',
     title: 'câu hỏi thường gặp',
+    more: 'chỉ là bản rút gọn —',
+    moreLink: 'toàn bộ FAQ',
     items: [
       { q: 'Wakii có thật sự zero-setup?', a: 'Có. Plugin được đóng gói sẵn trong app và bộ skills kit tự cài vào ~/.claude ngay lần mở đầu, bật sẵn mặc định. Mở Wakii — team đã ở đó.' },
       { q: 'Khác gì một AI plugin trong editor?', a: 'Plugin cho bạn một cửa sổ chat. Wakii cho bạn một team: chín agent với vai trò rõ ràng, gate giữa chúng, một watchdog hoàn tất work stalled, và memory tích lũy qua các session.' },
