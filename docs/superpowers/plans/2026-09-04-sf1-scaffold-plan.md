@@ -26,3 +26,10 @@ layout/structure/behavior. Điểm lệch (bg #0A0E0D vs #070A08, v.v.) → hand
 - [x] 14. vercel.json: buildCommand astro build, output dist/, cleanUrls; deploy preview nếu credentials có — không có → note vào FI-290 (deploy proof hoãn, không block).
 - [x] 15. Kit license verify: đọc LICENSE của origin superpowers kit → verdict + bằng chứng (path + snippet) vào docs/superpowers/notes/kit-license.md.
 - [x] 16. Final build + preview local + browser verify 3 tầng + code-reviewer + merge no-ff + audit comment + story-verify gate + FI-290 Done.
+
+## v2 REWORK — Modern Bento Premium (D3, user đổi direction 2026-09-04)
+
+- [x] 17. Tokens v2: --bg-card #131A17, --font-display, radius cells 8-12px (bento) / buttons 6px, wrap 1240px, bento gap 18px; giữ DNA v1 (mint/near-black).
+- [x] 18. Mockup kit components có props: TerminalBoot, BracketCanvas (nodes/edges/tiers + auto-scale), AgentGrid, GatesStrip (src/components/mockups/).
+- [x] 19. Landing v2 bento bất đối xứng 12-col: hero 2-col (text + terminal cell), features = bento showcase 6 cells (bracket canvas lớn, agents, gates, memory, watchdog, stats), zero/workflow/quickstart/FAQ giữ structure v2; tilt-3D ±4deg lerp, parallax translate3d 3 tốc độ, reveal stagger 60ms, prefers-reduced-motion tắt toàn bộ, transform/opacity only.
+- [x] 20. Strings v2 (en+vi) cho bento content; build + verify + browser 3 tầng + code-reviewer + merge no-ff + gate + FI-290 Done.

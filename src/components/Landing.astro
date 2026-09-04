@@ -1,54 +1,153 @@
 ---
 /**
- * Landing — structure locked to direction-c.html (Terminal Mono, user-approved).
+ * Landing — v2 "Modern Bento Premium" (direction-d3-bento.html, BINDING).
+ * Bento bất đối xứng 12-col; tilt-3D + parallax + reveal stagger 60ms;
+ * prefers-reduced-motion tắt toàn bộ (static render đầy đủ).
  * Rendered for both locales: / (EN) and /vi/ (VI) pass their string map.
  * Copy is PLACEHOLDER — SF-2 owns real landing copy.
  */
 import type { LandingStrings } from '../i18n/landing';
-import { REPO_URL, DOC_SLUGS } from '../config';
+import { REPO_URL } from '../config';
+import TerminalBoot from './mockups/TerminalBoot.astro';
+import BracketCanvas from './mockups/BracketCanvas.astro';
+import AgentGrid from './mockups/AgentGrid.astro';
+import GatesStrip from './mockups/GatesStrip.astro';
 
 interface Props {
   strings: LandingStrings;
 }
 const { strings } = Astro.props;
 const t = strings;
-const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
+
+const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started';
+const statusLabels: Record<string, string> =
+  t.lang === 'vi'
+    ? { epic: 'epic', done: 'xong', running: 'đang chạy', queued: 'hàng đợi' }
+    : { epic: 'epic', done: 'done', running: 'running', queued: 'queued' };
+
+/** "Lead: rest" → <b>Lead:</b> rest (cell desc / watchdog foot idiom) */
+function splitLead(s: string): [string, string] {
+  const i = s.indexOf(': ');
+  return i === -1 ? ['', s] : [s.slice(0, i + 1), s.slice(i + 2)];
+}
 ---
 
 <header class="hero">
-  <div class="wrap">
-    <div class="term">
-      <div class="term-bar">
-        <span class="tl"></span><span class="tl"></span><span class="tl"></span>
-        <span class="title">{t.hero.termTitle}</span>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">{t.hero.kicker}</div>
+      <h1>{t.hero.headlineBefore}<span class="hl">{t.hero.headlineHighlight}</span><span class="cursor"> </span></h1>
+      <p class="tagline">
+        {t.hero.tagline}<code>{t.hero.taglineCode}</code>,{t.lang === 'vi' ? ' bật sẵn mặc định.' : ' enabled by default.'}
+        {t.lang === 'vi'
+          ? 'Mô tả một ý tưởng — pipeline chạy: plan, agents song song, verify gates, một PR sạch.'
+          : 'Describe an idea and the pipeline runs: plan, parallel agents, verify gates, one clean PR.'}
+      </p>
+      <div class="cta-row">
+        <a href={REPO_URL} class="btn btn-primary">{t.hero.ctaPrimary}</a>
+        <a href="#features" class="btn btn-ghost">{t.hero.ctaGhost}</a>
       </div>
-      <div class="term-body" data-typein>
-        <div class="ln cmd">{`wakii ./my-project`}</div>
-        {t.hero.boot.map((line) => <div class="ln out-ok" set:html={line.replace(/(done|xong|loaded|enabled|~\/\.claude)/g, '<span class="ok">$1</span>')} />)}
-        <div class="ln last cmd cursor-line" data-cmd>{t.hero.lastCmd}</div>
+      <div class="hero-stats">
+        {t.hero.stats.map((s) => (
+          <div class="hs"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
+        ))}
       </div>
     </div>
-
-    <div class="kicker">{t.hero.kicker}</div>
-    <h1>{t.hero.headlineBefore}<span class="hl">{t.hero.headlineHighlight}</span><span class="cursor"> </span></h1>
-    <p class="tagline">
-      {t.hero.tagline}<code>{t.hero.taglineCode}</code>,{t.lang === 'vi' ? ' bật sẵn mặc định.' : ' enabled by default.'}
-      {t.lang === 'vi'
-        ? 'Mô tả một ý tưởng — pipeline chạy: plan, agents song song, verify gates, một PR sạch.'
-        : 'Describe an idea and the pipeline runs: plan, parallel agents, verify gates, one clean PR.'}
-    </p>
-    <div class="cta-row">
-      <a href={REPO_URL} class="btn btn-primary">{t.hero.ctaPrimary}</a>
-      <a href={quickstartHref} class="btn btn-ghost">{t.hero.ctaGhost}</a>
-    </div>
-    <div class="hero-stats">
-      {t.hero.stats.map((s) => (
-        <div class="hs"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
-      ))}
+    <div>
+      <div data-hero-term>
+        <TerminalBoot title={t.hero.termTitle} cmd="wakii ./my-project" lines={t.hero.boot} lastCmd={t.hero.lastCmd} />
+      </div>
     </div>
   </div>
 </header>
 
+<!-- ============ BENTO FEATURE SHOWCASE ============ -->
+<section class="bento-sec" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">{t.bento.kicker}</div>
+      <h2>{t.bento.title}</h2>
+      <p>{t.bento.sub}</p>
+    </div>
+
+    <div class="bento" id="bento">
+      <!-- A: bracket canvas (large) -->
+      <div class="bx bx-a" data-depth="0.05">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label">
+            <span class="t">{t.bento.bracket.label}</span>
+            <span>{t.bento.bracket.meta}</span>
+            <span class="pill pill-running">{t.bento.bracket.pills.run}</span>
+            <span class="pill pill-done">{t.bento.bracket.pills.done}</span>
+          </div>
+          <BracketCanvas tiers={t.bento.bracket.tiers} nodes={t.bento.bracket.nodes} edges={t.bento.bracket.edges} statusLabels={statusLabels} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.bracket.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- B: agents -->
+      <div class="bx bx-b" data-depth="0.1">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.agents.label}</span><span class="pill pill-running">{t.bento.agents.pill}</span></div>
+          <AgentGrid items={t.bento.agents.items} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.agents.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- C: gates -->
+      <div class="bx bx-c" data-depth="0.08">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.gates.label}</span><span class="pill pill-running">{t.bento.gates.pill}</span></div>
+          <GatesStrip items={t.bento.gates.items} />
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.gates.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- D: memory -->
+      <div class="bx bx-d" data-depth="0.06">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.memory.label}</span><span>{t.bento.memory.meta}</span></div>
+          <div class="mem-body">
+            {t.bento.memory.lines.map((ln) => (
+              <div class="mem-ln">
+                <span class="mem-t">{ln.t}</span>
+                <span class:list={['mem-src', ln.srcKind]}>{ln.src}</span>
+                <span class="mem-tx">{ln.tx}</span>
+              </div>
+            ))}
+          </div>
+          <div class="bx-desc">{(() => { const [b, rest] = splitLead(t.bento.memory.desc); return <><b>{b}</b> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- E: watchdog -->
+      <div class="bx bx-e" data-depth="0.11">
+        <div class="bx-in reveal" data-tilt>
+          <div class="bx-label"><span class="t">{t.bento.watchdog.label}</span><span class="pill pill-running">{t.bento.watchdog.pill}</span></div>
+          <div class="wd-body">
+            {t.bento.watchdog.lines.map((ln) => (
+              <div class:list={['wd-ln', ln.kind]}>{ln.text}</div>
+            ))}
+          </div>
+          <div class="wd-foot">{(() => { const [b, rest] = splitLead(t.bento.watchdog.foot); return <><span class="ok">{b}</span> {rest}</>; })()}</div>
+        </div>
+      </div>
+
+      <!-- F: stats -->
+      <div class="bx bx-f" data-depth="0.14">
+        <div class="bx-in reveal" data-tilt>
+          <div class="stat-cell">
+            {t.bento.stats.map((s) => (
+              <div class="stat"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZERO-SETUP ============ -->
 <section class="zero">
   <div class="wrap zero-grid">
     {t.zero.map((z) => (
@@ -61,30 +160,13 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
   </div>
 </section>
 
-<section class="section" id="features">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">{t.features.kicker}</div>
-      <h2>{t.features.title}</h2>
-      <p>{t.features.sub}</p>
-    </div>
-    <div class="feat-list">
-      {t.features.items.map((f, i) => (
-        <div class="feat">
-          <div class="id">sf<b>.00{i + 1}</b><br />{f.cat}</div>
-          <div><h3>{f.name}</h3><p>{f.desc}</p></div>
-          <div class="flag">{f.flag}</div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
+<!-- ============ WORKFLOW ============ -->
 <section class="flow" id="workflow">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">{t.workflow.kicker}</div>
       <h2>{t.workflow.title}</h2>
+      <p>{t.workflow.sub}</p>
     </div>
     <div class="pipe">
       {t.workflow.stages.map((stage, i) => (
@@ -92,8 +174,6 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
           {i > 0 && <span class="arrow">→</span>}
           {stage === 'parallel SFs' || stage === 'SF song song' ? (
             <span class="hot">{stage}</span>
-          ) : stage.includes('verify') || stage.includes('cổng') ? (
-            <span class="st gate">{stage}</span>
           ) : (
             <span class="st">
               {stage}
@@ -110,14 +190,15 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
   </div>
 </section>
 
+<!-- ============ QUICKSTART ============ -->
 <section class="quick" id="quickstart">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">{t.quickstart.kicker}</div>
       <h2>{t.quickstart.title}</h2>
     </div>
     <div class="quick-steps">
-      {t.quickstart.steps.map((step, i) => (
+      {t.quickstart.steps.map((step) => (
         <div class="qs">
           <div class="qn"><b>{step.n}</b> {step.comment}</div>
           <h3>{step.title}</h3>
@@ -126,13 +207,14 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
         </div>
       ))}
     </div>
-    <p class="quick-more">{t.quickstart.more} <a href={quickstartHref}>{t.quickstart.moreLink}</a></p>
+    <p class="quick-more">{t.quickstart.more} <a href={docsHref}>{t.quickstart.moreLink}</a></p>
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
 <section class="faq" id="faq">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="kicker">{t.faq.kicker}</div>
       <h2>{t.faq.title}</h2>
     </div>
@@ -148,72 +230,32 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
 <style>
   /* ===== HERO ===== */
   .hero {
-    padding: var(--section-pad) 0 88px;
-  }
-  .term {
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-    background: var(--bg-raised);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(69, 224, 168, 0.04);
+    padding: 80px 0 72px;
+    position: relative;
     overflow: hidden;
-    margin-bottom: 72px;
   }
-  .term-bar {
-    display: flex;
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 20%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 20%, black 20%, transparent 75%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 56px;
     align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-deep);
+    position: relative;
+    perspective: 1600px;
   }
-  .term-bar .tl {
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: var(--border-strong);
-  }
-  .term-bar .tl:nth-child(1) { background: #e5654f; }
-  .term-bar .tl:nth-child(2) { background: var(--warn); }
-  .term-bar .tl:nth-child(3) { background: var(--accent); }
-  .term-bar .title {
-    margin-left: 12px;
-    font-size: 12px;
-    color: var(--text-faint);
-  }
-  .term-body {
-    padding: 32px 36px 40px;
-    font-size: 14px;
-  }
-  .term-body .ln {
-    margin-bottom: 10px;
-    color: var(--text-faint);
-    white-space: pre-wrap;
-  }
-  .term-body .cmd {
-    color: var(--text);
-  }
-  .term-body .cmd::before {
-    content: '$ ';
-    color: var(--accent);
-  }
-  .term-body .out-ok {
-    color: var(--text-dim);
-  }
-  .term-body .ok {
-    color: var(--accent);
-  }
-  .term-body .last {
-    margin-top: 22px;
-    margin-bottom: 0;
-  }
-  .term-body .cursor-line::after {
-    content: '▊';
-    color: var(--accent);
-    animation: blink 1.1s steps(1) infinite;
-  }
-
   .hero h1 {
-    font-size: clamp(34px, 5.5vw, 62px);
+    font-size: clamp(34px, 4.6vw, 58px);
     font-weight: 700;
     line-height: 1.12;
     letter-spacing: -0.03em;
@@ -228,9 +270,9 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     font-weight: 400;
   }
   .hero .tagline {
-    margin-top: 26px;
+    margin-top: 22px;
     color: var(--text-dim);
-    max-width: 640px;
+    max-width: 520px;
     font-size: 15px;
   }
   .hero .tagline code {
@@ -240,11 +282,10 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     border-radius: var(--radius);
   }
   .cta-row {
-    margin-top: 44px;
+    margin-top: 38px;
     display: flex;
-    gap: 18px;
+    gap: 16px;
     flex-wrap: wrap;
-    align-items: center;
   }
   .btn {
     font-family: var(--font-mono);
@@ -255,6 +296,7 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    border-radius: var(--radius-btn);
     transition: all 0.15s ease;
   }
   .btn::before {
@@ -267,7 +309,7 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     color: var(--bg-deep);
   }
   .btn-primary:hover {
-    box-shadow: 0 0 32px rgba(69, 224, 168, 0.35);
+    box-shadow: 0 0 36px rgba(69, 224, 168, 0.35);
     transform: translateY(-1px);
   }
   .btn-ghost {
@@ -279,32 +321,238 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     color: var(--accent);
   }
   .hero-stats {
-    margin-top: 48px;
+    margin-top: 44px;
     display: flex;
     flex-wrap: wrap;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    max-width: 720px;
+    max-width: 560px;
   }
   .hs {
     flex: 1;
-    padding: 16px 24px;
+    padding: 14px 20px;
     border-right: 1px solid var(--border);
-    min-width: 140px;
+    min-width: 110px;
   }
   .hs:last-child {
     border-right: none;
   }
   .hs .v {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--accent);
   }
   .hs .k {
-    font-size: 11.5px;
+    font-size: 11px;
     color: var(--text-faint);
     margin-top: 2px;
+  }
+
+  /* ===== BENTO ===== */
+  .bento-sec {
+    padding: 90px 0 60px;
+  }
+  .section-head h2 {
+    font-size: clamp(26px, 3.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2::before {
+    content: '// ';
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .section-head p {
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+    max-width: 640px;
+  }
+  .section-head {
+    margin-bottom: 44px;
+    will-change: transform, opacity;
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--bento-gap);
+  }
+  .bx {
+    will-change: transform;
+  }
+  .bx-a { grid-column: 1 / 9; grid-row: 1 / 3; }
+  .bx-b { grid-column: 9 / 13; }
+  .bx-c { grid-column: 9 / 13; }
+  .bx-d { grid-column: 1 / 6; }
+  .bx-e { grid-column: 6 / 10; }
+  .bx-f { grid-column: 10 / 13; }
+  .bx-in {
+    height: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    background: var(--bg-raised);
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .bx-in:hover {
+    border-color: var(--accent);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.08);
+  }
+  .bx-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .bx-label .t {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .bx-desc {
+    padding: 12px 18px 16px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    border-top: 1px dashed var(--border);
+  }
+  .bx-desc b {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .pill {
+    font-size: 10.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .pill-done {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.4);
+    background: var(--accent-soft);
+  }
+  .pill-running {
+    color: var(--warn);
+    border-color: rgba(224, 181, 69, 0.4);
+    background: var(--warn-soft);
+  }
+
+  /* memory log */
+  .mem-body {
+    padding: 16px 18px;
+    font-size: 12px;
+  }
+  .mem-ln {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    align-items: baseline;
+  }
+  .mem-ln:last-child {
+    border-bottom: none;
+  }
+  .mem-t {
+    color: var(--text-faint);
+    font-size: 10px;
+    white-space: nowrap;
+    min-width: 54px;
+  }
+  .mem-src {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .mem-src.gate {
+    color: var(--accent);
+    border-color: rgba(69, 224, 168, 0.35);
+  }
+  .mem-src.watch {
+    color: var(--warn);
+    border-color: rgba(224, 181, 69, 0.35);
+  }
+  .mem-tx {
+    color: var(--text-dim);
+  }
+
+  /* watchdog console */
+  .wd-body {
+    padding: 16px 18px 18px;
+    font-size: 12.5px;
+  }
+  .wd-ln {
+    padding: 7px 10px;
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    color: var(--text-faint);
+    animation: wdcycle 9s ease infinite;
+  }
+  .wd-ln:nth-child(1) { animation-delay: 0s; }
+  .wd-ln:nth-child(2) { animation-delay: 2.2s; }
+  .wd-ln:nth-child(3) { animation-delay: 4.4s; }
+  .wd-ln:nth-child(4) { animation-delay: 6.6s; }
+  @keyframes wdcycle {
+    0%, 22% { opacity: 0.35; }
+    28%, 88% { opacity: 1; }
+    95%, 100% { opacity: 0.35; }
+  }
+  .wd-ln.warn {
+    color: var(--warn);
+  }
+  .wd-ln.ok {
+    color: var(--accent);
+  }
+  .wd-foot {
+    margin: 8px 18px 18px;
+    padding: 10px 14px;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+  .wd-foot .ok {
+    color: var(--accent);
+  }
+
+  /* stats cell */
+  .stat-cell {
+    padding: 22px 24px;
+    display: grid;
+    gap: 14px;
+  }
+  .stat {
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 12px;
+  }
+  .stat:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .stat .v {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat .k {
+    font-size: 11px;
+    color: var(--text-faint);
   }
 
   /* ===== ZERO-SETUP ===== */
@@ -312,7 +560,7 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     background: var(--bg-raised);
-    padding: 44px 0;
+    padding: 42px 0;
   }
   .zero-grid {
     display: grid;
@@ -347,76 +595,9 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     color: var(--text-dim);
     margin-top: 6px;
   }
-
-  /* ===== FEATURES ===== */
-  .section {
-    padding: var(--section-pad) 0;
-  }
-  .section-head h2 {
-    font-size: clamp(26px, 3.5vw, 38px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .section-head h2::before {
-    content: '// ';
+  .zero-item p code {
     color: var(--accent);
-    font-weight: 400;
-  }
-  .section-head p {
-    margin-top: 14px;
-    color: var(--text-dim);
-    font-size: 14.5px;
-    max-width: 580px;
-  }
-  .section-head {
-    margin-bottom: 48px;
-  }
-  .feat-list {
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .feat {
-    display: grid;
-    grid-template-columns: 200px 1fr auto;
-    gap: 28px;
-    padding: 26px 28px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    align-items: baseline;
-    transition: background 0.15s ease;
-  }
-  .feat:last-child {
-    border-bottom: none;
-  }
-  .feat:hover {
-    background: var(--accent-soft);
-  }
-  .feat .id {
-    font-size: 12.5px;
-    color: var(--text-faint);
-  }
-  .feat .id b {
-    color: var(--accent);
-    font-weight: 500;
-  }
-  .feat h3 {
-    font-size: 16.5px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .feat p {
-    font-size: 13.5px;
-    color: var(--text-dim);
-  }
-  .feat .flag {
-    font-size: 11.5px;
-    color: var(--accent);
-    border: 1px solid var(--border-strong);
-    padding: 4px 10px;
-    border-radius: var(--radius);
-    white-space: nowrap;
-    background: var(--bg-deep);
+    font-size: 12px;
   }
 
   /* ===== WORKFLOW ===== */
@@ -431,9 +612,9 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     line-height: 2.4;
     color: var(--text-dim);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--bg-deep);
-    padding: 32px 36px;
+    border-radius: var(--radius-cell);
+    background: var(--panel);
+    padding: 30px 34px;
     overflow-x: auto;
     white-space: nowrap;
   }
@@ -453,26 +634,22 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     color: var(--accent);
     font-weight: 700;
   }
-  .pipe .gate::before {
-    content: '[';
-    color: var(--text-faint);
-  }
-  .pipe .gate::after {
-    content: ']';
-    color: var(--text-faint);
-  }
   .pipe-legend {
-    margin-top: 24px;
+    margin-top: 20px;
     font-size: 12.5px;
     color: var(--text-faint);
   }
+  .pipe-legend::before {
+    content: '▮ ';
+    color: var(--accent);
+  }
   .flow-note {
-    margin-top: 40px;
+    margin-top: 36px;
     border-left: 2px solid var(--accent);
     padding: 8px 0 8px 20px;
     font-size: 13.5px;
     color: var(--text-dim);
-    max-width: 640px;
+    max-width: 660px;
   }
 
   /* ===== QUICKSTART ===== */
@@ -486,8 +663,8 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
   }
   .qs {
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--bg-deep);
+    border-radius: var(--radius-cell);
+    background: var(--panel);
     padding: 24px;
     transition: border-color 0.15s ease;
   }
@@ -519,7 +696,7 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     background: var(--bg);
     border: 1px solid var(--border);
     padding: 10px 14px;
-    border-radius: var(--radius);
+    border-radius: var(--radius-btn);
     white-space: nowrap;
     overflow-x: auto;
   }
@@ -544,14 +721,14 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
 
   /* ===== FAQ ===== */
   .faq {
-    padding: 88px 0;
+    padding: var(--section-pad) 0;
     background: var(--bg-raised);
     border-top: 1px solid var(--border);
   }
   details {
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--bg-deep);
+    background: var(--panel);
     margin-bottom: 12px;
     overflow: hidden;
   }
@@ -588,8 +765,47 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
     font-size: 13.5px;
     font-family: var(--font-sans);
   }
+  details .ans code {
+    color: var(--accent);
+    font-size: 12.5px;
+  }
 
-  @media (max-width: 900px) {
+  /* ===== REVEAL (JS-gated — no-JS / reduced-motion giữ static đầy đủ) ===== */
+  :global(.anim) .reveal {
+    opacity: 0;
+  }
+  :global(.anim) .reveal-in {
+    animation: bxreveal 0.55s ease both;
+  }
+  @keyframes bxreveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 28px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1020px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .bento {
+      grid-template-columns: 1fr;
+    }
+    .bx-a,
+    .bx-b,
+    .bx-c,
+    .bx-d,
+    .bx-e,
+    .bx-f {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
     .zero-grid,
     .quick-steps {
       grid-template-columns: 1fr;
@@ -599,62 +815,149 @@ const quickstartHref = `/docs/${DOC_SLUGS[0]}`;
       padding-left: 0;
       padding: 12px 0;
     }
-    .feat {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-    .feat .flag {
-      justify-self: start;
-    }
-    .term-body {
-      padding: 24px 20px 32px;
-    }
   }
 </style>
 
 <script>
-  // Boot-log type-in — hero only, runs once (~1.6s total), skipped when the
-  // user prefers reduced motion. Without JS the full log is visible (SEO/no-JS).
-  const body = document.querySelector('[data-typein]');
-  if (body && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const lines = Array.from(body.querySelectorAll('.ln'));
-    const total = 1600; // ms budget for the whole sequence
-    const textLens = lines.map((l) => (l.textContent ?? '').length);
-    const totalChars = textLens.reduce((a, b) => a + b, 0);
-    const perChar = total / totalChars;
+  // v2 motion — port of direction-d3-bento.html, transform/opacity ONLY.
+  // prefers-reduced-motion OR coarse pointer → static fallback (no .anim,
+  // no tilt/parallax; board auto-scale still runs inside BracketCanvas).
+  (function () {
+    'use strict';
+    var RM = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (RM.matches || !finePointer.matches) return;
 
-    const originals = lines.map((l) => l.innerHTML);
-    lines.forEach((l) => (l.innerHTML = '&nbsp;'));
-    const last = lines[lines.length - 1];
-    last.classList.remove('cursor-line');
+    var lerp = function (a: number, b: number, t: number) {
+      return a + (b - a) * t;
+    };
+    var clamp = function (v: number, a: number, b: number) {
+      return Math.min(b, Math.max(a, v));
+    };
 
-    let li = 0;
-    let ci = 0;
-    const plain = lines.map((l) => {
-      const tmp = document.createElement('div');
-      tmp.innerHTML = originals[lines.indexOf(l)];
-      return tmp.textContent ?? '';
+    // Reveal styling is gated on .anim (added here, only when motion is OK)
+    document.documentElement.classList.add('anim');
+
+    /* ---- hover tilt-3D per bento cell (±4-7deg, lerp 0.12) ---- */
+    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(function (el) {
+      var rx = 0, ry = 0, trx = 0, try_ = 0, raf: number | null = null, active = false;
+      function frame() {
+        rx = lerp(rx, trx, 0.12);
+        ry = lerp(ry, try_, 0.12);
+        el.style.transform =
+          'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateZ(6px)';
+        if (active || Math.abs(rx - trx) > 0.01 || Math.abs(ry - try_) > 0.01) {
+          raf = requestAnimationFrame(frame);
+        } else {
+          raf = null;
+          el.style.transform = '';
+        }
+      }
+      function kick() {
+        if (!raf) raf = requestAnimationFrame(frame);
+      }
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        try_ = ((e.clientX - r.left) / r.width - 0.5) * 7;
+        trx = -((e.clientY - r.top) / r.height - 0.5) * 6;
+        active = true;
+        kick();
+      });
+      el.addEventListener('mouseleave', function () {
+        trx = 0;
+        try_ = 0;
+        active = false;
+        kick();
+      });
     });
-    // strip the CSS-injected "$ " prefix for cmd lines when re-typing? No — it is
-    // CSS ::before content, so textContent never includes it. Safe to type raw.
 
-    function tick() {
-      if (li >= lines.length) {
-        last.classList.add('cursor-line');
-        lines.forEach((l, i) => (l.innerHTML = originals[i]));
-        return;
-      }
-      ci += 1;
-      if (ci >= plain[li].length) {
-        lines[li].textContent = plain[li];
-        li += 1;
-        ci = 0;
-        setTimeout(tick, 40);
-        return;
-      }
-      lines[li].textContent = plain[li].slice(0, ci);
-      setTimeout(tick, perChar);
+    /* ---- scroll: hero tilt + bento parallax ---- */
+    var heroTerm = document.querySelector<HTMLElement>('[data-hero-term]');
+    var hero = document.querySelector<HTMLElement>('.hero');
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+    if (hero && heroTerm) {
+      hero.addEventListener('mousemove', function (e) {
+        var r = hero.getBoundingClientRect();
+        tx = (e.clientX - r.left) / r.width - 0.5;
+        ty = (e.clientY - r.top) / r.height - 0.5;
+      });
+      hero.addEventListener('mouseleave', function () {
+        tx = 0;
+        ty = 0;
+      });
     }
-    setTimeout(tick, 250);
-  }
+
+    var cells = Array.prototype.slice.call(document.querySelectorAll<HTMLElement>('.bx[data-depth]'));
+
+    function update() {
+      var vh = window.innerHeight;
+      if (hero && heroTerm) {
+        cx = lerp(cx, tx, 0.08);
+        cy = lerp(cy, ty, 0.08);
+        heroTerm.style.transform =
+          'rotateX(' + (-cy * 6).toFixed(2) + 'deg) rotateY(' + (cx * 8).toFixed(2) + 'deg)';
+      }
+      // depth parallax between cells (3 tốc độ qua data-depth)
+      var bento = document.getElementById('bento');
+      if (bento) {
+        var b = bento.getBoundingClientRect();
+        if (b.top < vh && b.bottom > 0) {
+          var prog = (b.top + b.height / 2 - vh / 2) / (vh + b.height);
+          cells.forEach(function (c) {
+            var d = parseFloat(c.dataset.depth || '') || 0.05;
+            c.style.transform = 'translate3d(0,' + (prog * d * 900).toFixed(1) + 'px,0)';
+          });
+        }
+      }
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(function () {
+            update();
+            ticking = false;
+          });
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener('resize', update);
+    update();
+
+    /* ---- reveal-on-scroll, stagger 60ms trong từng batch ---- */
+    var io = new IntersectionObserver(
+      function (entries) {
+        var pending = entries
+          .filter(function (e) {
+            return e.isIntersecting;
+          })
+          .sort(function (a, b) {
+            return a.boundingClientRect.top - b.boundingClientRect.top;
+          });
+        pending.forEach(function (e, i) {
+          var el = e.target as HTMLElement;
+          el.style.animationDelay = (i * 60) + 'ms';
+          el.classList.add('reveal-in');
+          el.addEventListener(
+            'animationend',
+            function () {
+              // dọn class + delay để tilt inline transform không bị animation giữ
+              el.classList.remove('reveal', 'reveal-in');
+              el.style.animationDelay = '';
+            },
+            { once: true }
+          );
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      io.observe(el);
+    });
+  })();
 </script>

@@ -66,6 +66,12 @@ code {
   html {
     scroll-behavior: auto;
   }
+  /* v2 contract: TẮT TOÀN BỘ motion — static render đầy đủ thông tin */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
   .blink,
   .cursor-line::after,
   .cursor::after {
