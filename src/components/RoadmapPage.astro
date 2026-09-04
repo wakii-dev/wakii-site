@@ -3,13 +3,15 @@
  * Roadmap page body — Now / Next / Later (SF-3 FI-297), shared by
  * /roadmap (EN) and /vi/roadmap (VI). "Bento Composer" per
  * docs/superpowers/designs/sf3-direction.md §Surface B.
- * Content = src/data/roadmap.ts VERBATIM (approved at epic spec §4) — never
- * invent items. Page chrome (tag/lane-foot/labels) stays EN in both locales
+ * Content = src/data/roadmap.ts buildRoadmap(DOWNLOADS_LIVE) — base list
+ * verbatim from epic spec §4; the downloads line is flag-aware (FI-300 G-B).
+ * Page chrome (tag/lane-foot/labels) stays EN in both locales
  * (mono terminal chrome, per design §5); h2/sub are real content (localized —
  * VI copy authored here, goes through the SF-5 copy-review gate).
  */
 import Base from '../layouts/Base.astro';
-import { roadmap } from '../data/roadmap';
+import { buildRoadmap } from '../data/roadmap';
+import { DOWNLOADS_LIVE } from '../config';
 import '../styles/landing.css';
 import '../styles/motion.css';
 
@@ -35,6 +37,9 @@ const COPY = {
   },
 } as const;
 const c = COPY[lang];
+
+// G-B: downloads line is flag-aware — live → Now, not-live → Next
+const roadmap = buildRoadmap(DOWNLOADS_LIVE);
 
 const LANES = ['now', 'next', 'later'] as const;
 const TAGS = ['in flight', 'queued', 'someday'] as const;

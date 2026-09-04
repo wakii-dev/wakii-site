@@ -118,6 +118,9 @@ export interface LandingStrings {
     reqItems: string[];
     repoCta: string;
     note: string;
+    /** FI-300 G-D: note variant when DOWNLOADS_LIVE=true (SF-3 wires the
+     *  conditional — GetWakii.astro is SF-3-owned; key pre-added in SF-1). */
+    noteLive: string;
   };
 }
 
@@ -336,6 +339,8 @@ export const en: LandingStrings = {
     reqItems: ['Node.js 24', 'pnpm 12', 'git'],
     repoCta: 'view the repo on github',
     note: 'No binaries yet — releases are on the roadmap. Building from source takes a few minutes and always matches the docs.',
+    noteLive:
+      'Prefer an installer? Grab Wakii for macOS or Windows straight from the download page.',
   },
 };
 
@@ -532,5 +537,7 @@ export const vi: LandingStrings = {
     reqItems: ['Node.js 24', 'pnpm 12', 'git'],
     repoCta: 'xem repo trên github',
     note: 'Chưa có binary — release nằm trong roadmap. Build từ mã nguồn mất vài phút và luôn khớp với docs.',
+    noteLive:
+      'Thích bản cài sẵn? Tải Wakii cho macOS hoặc Windows thẳng từ trang download.',
   },
 };
