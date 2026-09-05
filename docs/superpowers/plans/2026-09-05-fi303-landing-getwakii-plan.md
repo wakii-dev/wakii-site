@@ -59,12 +59,12 @@ Acceptance T2: mock-flip → nav-cta `/download` cả 2 locale; revert → docs.
 
 ## T3 — Verify passes (evidence)
 
-- [ ] G-F: grep không có deep-link nào trỏ anchor không tồn tại; `#get-wakii` còn nguyên
-- [ ] Locale-switch / ↔ /vi/ giữ nội dung tương đương (DOM both)
-- [ ] Responsive @390 iframe probe (không headless screenshot ảo overflow)
-- [ ] Rule 0: DOM (orca exec eval single-token JS) + VISUAL (screenshot 2 locale,
+- [x] G-F: grep không có deep-link nào trỏ anchor không tồn tại; `#get-wakii` còn nguyên
+- [x] Locale-switch / ↔ /vi/ giữ nội dung tương đương (DOM both)
+- [x] Responsive @390 iframe probe (không headless screenshot ảo overflow)
+- [x] Rule 0: DOM (orca exec eval single-token JS) + VISUAL (screenshot 2 locale,
       cả 2 mock-flip states) + FLOW (nav → GetWakii → /download)
-- [ ] Mock-flip DOWNLOADS_LIVE true → verify → REVERT (không commit flip)
+- [x] Mock-flip DOWNLOADS_LIVE true → verify → REVERT (không commit flip)
 
 ## Process (thứ tự cố định — không checkbox)
 
