@@ -43,7 +43,7 @@ This repository holds the source of the official website — built with
 | `/skills`   | Public skills catalog — command, description, and internals per skill (EN+VI)  |
 | `/docs/*`   | Guides: getting started, superpowers panel, story workflow, agents & kit, FAQ  |
 | `/roadmap`  | Public roadmap — Now / Next / Later                                            |
-| `/download` | Direct downloads for macOS (Windows pending), QR code for mobile connect       |
+| `/download` | Direct downloads — macOS & Android (Windows pending), QR for mobile connect    |
 | `/vi/*`     | Vietnamese version of the site                                                 |
 
 ## Quick start
@@ -98,9 +98,11 @@ production URL: `https://wakii.dev` — sitemap and `robots.txt` derive from
 
 > `REPO_URL` points to the public product repo
 > [`wakii-dev/wakii`](https://github.com/wakii-dev/wakii), where release
-> `v1.4.197` hosts the macOS builds (`Wakii.dmg` Apple Silicon,
-> `Wakii-x64.dmg` Intel). `DOWNLOADS_LIVE` is on; the Windows asset
-> (`WakiiSetup.exe`) lands with the first Windows build.
+> `v1.4.198` hosts the macOS builds (`Wakii-1.4.198-arm64.dmg` Apple
+> Silicon, `...-x64.dmg` Intel) and the Android APK ships from the
+> `mobile-android-v0.0.48` pre-release. `DOWNLOADS_LIVE` and `MOBILE_LIVE`
+> are on; Windows stays an honest "soon" cell until a real
+> Windows-host build exists.
 
 </details>
 

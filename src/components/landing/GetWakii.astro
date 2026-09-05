@@ -68,16 +68,20 @@ const noteTail = noteRest.join(' — ');
             <span class="pill">primary</span>
           </div>
           <div class="bx-body">
-            <div class="meta-line">{macosAsset} · {windowsAsset}</div>
+            <div class="meta-line">{[macosAsset, windowsAsset].filter(Boolean).join(' · ')}</div>
             {
               DOWNLOADS_LIVE ? (
                 <div class="btn-col">
                   <a class="btn btn-primary" href={DOWNLOAD_URLS.macos}>
                     {dl.desktop.live.btnMacos}
                   </a>
-                  <a class="btn btn-ghost" href={DOWNLOAD_URLS.windows}>
-                    {dl.desktop.live.btnWindows}
-                  </a>
+                  {DOWNLOAD_URLS.windows ? (
+                    <a class="btn btn-ghost" href={DOWNLOAD_URLS.windows}>
+                      {dl.desktop.live.btnWindows}
+                    </a>
+                  ) : (
+                    <span class="btn btn-soon">{dl.desktop.live.btnWindows}</span>
+                  )}
                 </div>
               ) : (
                 <div class="btn-col">
@@ -94,7 +98,7 @@ const noteTail = noteRest.join(' — ');
             DOWNLOADS_LIVE && (
               <div class="bx-foot">
                 <div><b>{dl.desktop.live.warnMacos}</b></div>
-                <div><b>{dl.desktop.live.warnWindows}</b></div>
+                {DOWNLOAD_URLS.windows && <div><b>{dl.desktop.live.warnWindows}</b></div>}
               </div>
             )
           }

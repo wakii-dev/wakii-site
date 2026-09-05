@@ -88,14 +88,16 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
                 <div class="cell-logo">⊞</div>
                 <h2>{t.desktop.tabWindows}</h2>
               </div>
-              {DOWNLOADS_LIVE ? (
+              {DOWNLOADS_LIVE && DOWNLOAD_URLS.windows ? (
                 <div class="btn-row">
                   <a class="btn btn-primary" href={DOWNLOAD_URLS.windows}>{t.desktop.live.btnWindows}</a>
                 </div>
               ) : (
                 <span class="btn btn-soon">{t.desktop.live.btnWindows}</span>
               )}
-              {DOWNLOADS_LIVE && <div class="bx-foot"><b>{t.desktop.live.warnWindows}</b></div>}
+              {DOWNLOADS_LIVE && DOWNLOAD_URLS.windows && (
+                <div class="bx-foot"><b>{t.desktop.live.warnWindows}</b></div>
+              )}
             </div>
           </div>
         </div>

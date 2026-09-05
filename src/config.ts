@@ -38,34 +38,38 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
 /**
  * ── Direct downloads + mobile connect (story FI-300, SF-1 foundation) ──
  *
- * Flag flips remain USER/MANUAL decisions — this one was flipped by explicit
- * user instruction on 2026-09-05 (release v1.4.197 on wakii-dev/wakii).
+ * Flag flips remain USER/MANUAL decisions — flipped by explicit user
+ * instruction on 2026-09-05 against release v1.4.198 on wakii-dev/wakii
+ * (Android APK followed via the mobile-android-v0.0.48 pre-release).
  *
  * State at flip:
  *   (i)   repo is PUBLIC ✓,
- *   (ii)  release EXISTS, `Wakii.dmg` matches the real asset ✓,
- *   (iii) macOS build runs (user-verified locally); **WINDOWS PENDING** —
- *         no `WakiiSetup.exe` asset yet, so the Windows button 404s until
- *         a Windows build lands in the release. Accepted at flip time.
+ *   (ii)  release EXISTS, URLs point at the real assets ✓,
+ *   (iii) macOS + Android builds run (user-verified).
  *
- * URL pattern is pinned to `releases/latest/download/<asset>` (no version
- * constant) so a bump is a re-upload of the asset, not a version chase.
+ * WINDOWS: empty string = pending — components render an honest "soon"
+ * cell. The `orca-windows-setup.exe` asset in v1.4.198 is deliberately
+ * NOT linked (orca-branded; release notes mark Windows ⛔ until a real
+ * Windows-host build exists).
+ *
+ * URL pattern: v1.4.198 switched to VERSION-NAMED assets, so URLs pin an
+ * exact release — a version bump means updating these two lines.
  */
 export const DOWNLOADS_LIVE = true;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
-  macos: `${REPO_URL}/releases/latest/download/Wakii.dmg`,
-  windows: `${REPO_URL}/releases/latest/download/WakiiSetup.exe`,
+  macos: `${REPO_URL}/releases/download/v1.4.198/Wakii-1.4.198-arm64.dmg`,
+  windows: '',
 };
 
 /**
- * Mobile live gate — same runbook discipline as DOWNLOADS_LIVE.
- * Store channels do not exist yet: values stay EMPTY until the app is
- * published, then fill in the real store URLs (App Store / Google Play).
+ * Mobile live gate — per-OS partial fill (G-A2): an empty URL renders the
+ * honest coming-soon badge, a filled one becomes the real link (and the
+ * QR target). Android ships as a GitHub-release APK (sideload, no store).
  */
-export const MOBILE_LIVE = false;
+export const MOBILE_LIVE = true;
 
 export const MOBILE_STORE_URLS: { ios: string; android: string } = {
   ios: '',
-  android: '',
+  android: `${REPO_URL}/releases/download/mobile-android-v0.0.48/app-release.apk`,
 };
