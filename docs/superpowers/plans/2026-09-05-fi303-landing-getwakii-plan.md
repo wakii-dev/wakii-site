@@ -17,6 +17,7 @@ SF-4 copy gate trong audit comment.
 |---|---|
 | get-wakii-restructure + wire-keys-SF-1 + download-cta-flag-aware (G-A) + mobile-teaser-placement + entrance-wire-only + responsive-pass (markup) | T1 |
 | nav-cta-repoint-theo-flag (G-H) | T2 |
+| (review P1) flag-split section head qua keys `dl.page.kicker/h2` + (P2) note bold chỉ khi có tail | T4 |
 | anchor-sync-verify-thực (G-F) + locale-switch-pass + responsive-pass (bằng chứng) | T3 (verify, fix nếu cần) |
 
 ## T1 — GetWakii restructure: mini-bento gw-a/gw-b/gw-c

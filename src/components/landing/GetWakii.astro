@@ -50,8 +50,12 @@ const noteTail = noteRest.join(' — ');
 <section class="gw" id="get-wakii">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">{t.getWakii.kicker}</div>
-      <h2>{t.getWakii.title}</h2>
+      <!-- G-D: head is flag-split over existing keys — at DOWNLOADS_LIVE the
+           head mirrors the /download page (kicker "download", h2 "get wakii")
+           so the download-primary CTA is never introduced by the static
+           build-from-source title (review P1, FI-303). -->
+      <div class="kicker">{DOWNLOADS_LIVE ? dl.page.kicker : t.getWakii.kicker}</div>
+      <h2>{DOWNLOADS_LIVE ? dl.page.h2 : t.getWakii.title}</h2>
       <p>{DOWNLOADS_LIVE ? dl.page.live.sub : dl.page.notLive.sub}</p>
     </div>
 
@@ -155,7 +159,11 @@ const noteTail = noteRest.join(' — ');
       </div>
     </div>
 
-    <p class="gw-note reveal"><b>{noteHead}</b>{noteTail && ` — ${noteTail}`}</p>
+    <!-- bold-lead only when the key actually carries the " — " split
+         (noteLive has no separator — review P2, FI-303) -->
+    <p class="gw-note reveal">
+      {noteTail ? <Fragment><b>{noteHead}</b> — {noteTail}</Fragment> : note}
+    </p>
   </div>
 </section>
 
