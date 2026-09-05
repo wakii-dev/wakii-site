@@ -1,9 +1,14 @@
 ---
 import LangSwitcher from './LangSwitcher.astro';
+import { DOWNLOADS_LIVE } from '../config';
 
 // Locale-aware internal links (prefixDefaultLocale: false → VI at /vi/...)
 const { pathname } = Astro.url;
 const prefix = pathname === '/vi' || pathname.startsWith('/vi/') ? '/vi' : '';
+// G-H: nav-cta follows DOWNLOADS_LIVE — /download when live, else the
+// build-from-source guide (trailing slash per docs-link rule). MOBILE_LIVE
+// intentionally has no effect here.
+const ctaHref = DOWNLOADS_LIVE ? `${prefix}/download` : `${prefix}/docs/getting-started/`;
 ---
 
 <nav>
@@ -16,7 +21,7 @@ const prefix = pathname === '/vi' || pathname.startsWith('/vi/') ? '/vi' : '';
       <a href={`${prefix}/#faq`}>faq</a>
       <a href={`${prefix}/skills`}>skills</a>
       <a href={`${prefix}/roadmap`}>roadmap</a>
-      <a href={`${prefix}/docs/getting-started`} class="nav-cta">get wakii</a>
+      <a href={ctaHref} class="nav-cta">get wakii</a>
     </div>
     <LangSwitcher />
   </div>

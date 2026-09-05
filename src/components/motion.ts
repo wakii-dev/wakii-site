@@ -141,8 +141,14 @@ export function initMotion(): void {
         el.addEventListener(
           'animationend',
           () => {
-            // dọn class + delay để tilt inline transform không bị animation giữ
+            // dọn class + delay để tilt inline transform không bị animation giữ.
+            // data-reveal attribute must go WITH the class: `.anim [data-reveal]
+            // {opacity: 0}` re-applies after animationend otherwise, and every
+            // attribute-based cell (download cells, skills bento, workflow
+            // gates, faq) fades back out right after its entrance (Rule 0
+            // finding, FI-304).
             el.classList.remove('reveal', 'reveal-in');
+            el.removeAttribute('data-reveal');
             el.style.animationDelay = '';
           },
           { once: true }
