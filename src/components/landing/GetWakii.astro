@@ -1,78 +1,161 @@
 ---
 /**
- * Landing — Get Wakii section (SF-3 FI-297).
- * "Bento Composer" per docs/superpowers/designs/sf3-direction.md (BINDING):
- * asymmetric bento 12-col — steps hero (8/12) + requirements & repository
- * sidebar. Copy = getWakii keys verbatim (SF-1 pre-add, VI-approved);
- * REPO_URL from src/config.ts (placeholder-mode — never hardcode a URL).
+ * Landing — Get Wakii section (SF-3 FI-297 → upgraded FI-300 SF-3 FI-303).
+ * "Bento Dispatch" mini-bento per docs/superpowers/designs/sf-downloads-direction.md
+ * (BINDING, Surface 3): gw-a download (PRIMARY, flag-aware G-A) + gw-b from
+ * source (SECONDARY) + gw-c mobile teaser. Copy = keys only — getWakii (SF-1
+ * pre-add, VI-approved) + downloads.* slices (SF-1 store); the two hand-off
+ * micro-copy strings missing from the key store are inline drafts (EN+VI
+ * parallel) flagged for the SF-4 G-D copy gate — never hardcoded EN-only.
+ *
+ * Flags + URLs come from src/config.ts directly (same state every consumer
+ * renders). Anchor #get-wakii kept verbatim (G-F). Entrance via .reveal +
+ * shared initMotion() (wire-only). Key files are NOT edited (SF-1 owns them).
  */
 import type { LandingStrings } from '../../i18n/landing';
-import { REPO_URL } from '../../config';
+import { DOWNLOADS_LIVE, DOWNLOAD_URLS, MOBILE_LIVE, MOBILE_STORE_URLS } from '../../config';
+import { en as dlEn, vi as dlVi } from '../../i18n/downloads';
 
 interface Props {
   strings: LandingStrings;
 }
 const { strings } = Astro.props;
 const t = strings;
-const g = t.getWakii;
-const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
-// data carries a literal <repo-url> — interpolate the constant at render time
-const cmd = (s: string) => s.replace('<repo-url>', REPO_URL);
-// note = "<head> — <rest>" → bold the lead phrase (both locales use " — ")
-const [noteHead, ...rest] = g.note.split(' — ');
-const noteRest = rest.join(' — ');
+const dl = t.lang === 'vi' ? dlVi : dlEn;
+const prefix = t.lang === 'vi' ? '/vi' : '';
+const downloadHref = `${prefix}/download`;
+const docsHref = `${prefix}/docs/getting-started/`;
+
+// Factual asset names from config (SF-2 pattern — no version claims: no source).
+const macosAsset = DOWNLOAD_URLS.macos.split('/').pop() || '';
+const windowsAsset = DOWNLOAD_URLS.windows.split('/').pop() || '';
+
+// Teaser badge state — per-badge partial-fill-safe, same condition as the
+// MobileConnect component so landing and /download always agree (G-A2).
+const iosLive = MOBILE_LIVE && Boolean(MOBILE_STORE_URLS.ios);
+const androidLive = MOBILE_LIVE && Boolean(MOBILE_STORE_URLS.android);
+
+// Hand-off micro-copy absent from the key store → inline EN/VI drafts (G-D).
+const gwA =
+  t.lang === 'vi'
+    ? { label: 'tải wakii.desktop', all: 'mọi nền tảng → /download' }
+    : { label: 'download wakii.desktop', all: 'all platforms → /download' };
+
+// G-D note variant (SF-1 pre-added) — "<head> — <rest>" bold-lead pattern.
+const note = DOWNLOADS_LIVE ? t.getWakii.noteLive : t.getWakii.note;
+const [noteHead, ...noteRest] = note.split(' — ');
+const noteTail = noteRest.join(' — ');
 ---
 
 <section class="gw" id="get-wakii">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">{g.kicker}</div>
-      <h2>{g.title}</h2>
-      <p>{g.sub}</p>
+      <div class="kicker">{t.getWakii.kicker}</div>
+      <h2>{t.getWakii.title}</h2>
+      <p>{DOWNLOADS_LIVE ? dl.page.live.sub : dl.page.notLive.sub}</p>
     </div>
 
     <div class="bento">
-      <div class="cell steps reveal">
+      <!-- gw-a — download (PRIMARY, flag-aware G-A) -->
+      <div class="cell gw-a reveal">
         <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">install sequence</span><span class="meta">3 steps · exit 0</span></div>
+          <div class="bx-label">
+            <span class="t">{gwA.label}</span>
+            <span class="pill">primary</span>
+          </div>
           <div class="bx-body">
-            {g.steps.map((step) => (
-              <div class="stp">
-                <div class="n">{step.n}</div>
-                <div class="stp-main">
-                  <h3>{step.title} <span class="cmt">{step.comment}</span></h3>
-                  <p>{step.desc}</p>
-                  <div class="cmd">{cmd(step.cmd)}</div>
+            <div class="meta-line">{macosAsset} · {windowsAsset}</div>
+            {
+              DOWNLOADS_LIVE ? (
+                <div class="btn-col">
+                  <a class="btn btn-primary" href={DOWNLOAD_URLS.macos}>
+                    {dl.desktop.live.btnMacos}
+                  </a>
+                  <a class="btn btn-ghost" href={DOWNLOAD_URLS.windows}>
+                    {dl.desktop.live.btnWindows}
+                  </a>
                 </div>
+              ) : (
+                <div class="btn-col">
+                  <a class="btn btn-primary" href={downloadHref}>
+                    {gwA.all}
+                  </a>
+                  <span class="btn btn-soon">{dl.desktop.live.btnMacos}</span>
+                  <span class="btn btn-soon">{dl.desktop.live.btnWindows}</span>
+                </div>
+              )
+            }
+          </div>
+          {
+            DOWNLOADS_LIVE && (
+              <div class="bx-foot">
+                <div><b>{dl.desktop.live.warnMacos}</b></div>
+                <div><b>{dl.desktop.live.warnWindows}</b></div>
               </div>
-            ))}
-          </div>
+            )
+          }
         </div>
       </div>
 
-      <div class="cell req reveal">
+      <!-- gw-b — from source (SECONDARY) -->
+      <div class="cell gw-b reveal">
         <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">{g.reqTitle}</span><span class="meta">pre-flight</span></div>
+          <div class="bx-label">
+            <span class="t">{dl.desktop.notLive.buildFromSource}</span>
+            <span class="meta">dev</span>
+          </div>
           <div class="bx-body">
-            {g.reqItems.map((item) => (
-              <div class="req-row"><span class="name">{item}</span></div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div class="cell cta reveal">
-        <div class="bx-in" data-tilt>
-          <div class="bx-label"><span class="t">repository</span><span class="meta">github</span></div>
-          <div class="bx-body cta-body">
-            <a class="btn btn-primary" href={REPO_URL}>{g.repoCta}</a>
+            <p class="cell-copy">{t.getWakii.sub}</p>
             <a class="btn btn-ghost" href={docsHref}>{t.hero.ctaGhost}</a>
           </div>
         </div>
       </div>
+
+      <!-- gw-c — mobile teaser (no QR on landing per hand-off; badge state
+           mirrors MobileConnect: link only when MOBILE_LIVE AND a real URL) -->
+      <div class="cell gw-c reveal">
+        <div class="bx-in" data-tilt>
+          <div class="bx-label">
+            <span class="t">{dl.teaser.title}</span>
+            <span class="meta">ios · android</span>
+          </div>
+          <div class="bx-body">
+            <p class="cell-copy">{dl.teaser.sub}</p>
+            <div class="badges">
+              {
+                iosLive ? (
+                  <a class="badge" href={MOBILE_STORE_URLS.ios}>
+                    <span class="os"></span>
+                    <b>{dl.mobile.badgeIos}</b>
+                  </a>
+                ) : (
+                  <span class="badge soon">
+                    <span class="os"></span>
+                    <b>{dl.mobile.badgeIos}</b>
+                  </span>
+                )
+              }
+              {
+                androidLive ? (
+                  <a class="badge" href={MOBILE_STORE_URLS.android}>
+                    <span class="os">▶</span>
+                    <b>{dl.mobile.badgeAndroid}</b>
+                  </a>
+                ) : (
+                  <span class="badge soon">
+                    <span class="os">▶</span>
+                    <b>{dl.mobile.badgeAndroid}</b>
+                  </span>
+                )
+              }
+            </div>
+            <a class="btn btn-ghost" href={downloadHref}>{dl.teaser.cta}</a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <p class="gw-note reveal"><b>{noteHead}</b>{noteRest && ` — ${noteRest}`}</p>
+    <p class="gw-note reveal"><b>{noteHead}</b>{noteTail && ` — ${noteTail}`}</p>
   </div>
 </section>
 
@@ -83,12 +166,18 @@ const noteRest = rest.join(' — ');
   .bento {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto auto;
     gap: var(--bento-gap);
   }
-  .cell { min-width: 0; }
-  .steps { grid-column: 1 / 9; grid-row: 1 / 3; }
-  .req, .cta { grid-column: 9 / 13; }
+  .cell {
+    min-width: 0;
+  }
+  .gw-a {
+    grid-column: span 6;
+  }
+  .gw-b,
+  .gw-c {
+    grid-column: span 3;
+  }
 
   .bx-in {
     height: 100%;
@@ -102,14 +191,17 @@ const noteRest = rest.join(' — ');
     will-change: transform;
     transition: box-shadow 250ms ease, border-color 250ms ease;
   }
-  .bx-in:hover {
-    border-color: var(--accent);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.07);
+  @media (hover: hover) and (pointer: fine) {
+    .bx-in:hover {
+      border-color: var(--accent);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.07);
+    }
   }
   .bx-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     padding: 13px 18px;
     background: var(--bg-raised);
     border-bottom: 1px solid var(--border);
@@ -118,6 +210,7 @@ const noteRest = rest.join(' — ');
     font-size: 12.5px;
     font-weight: 700;
     color: var(--text);
+    overflow-wrap: anywhere;
   }
   .bx-label .t::before {
     content: '▸ ';
@@ -126,6 +219,16 @@ const noteRest = rest.join(' — ');
   .bx-label .meta {
     font-size: 11.5px;
     color: var(--text-faint);
+    white-space: nowrap;
+  }
+  .pill {
+    font-size: 10.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(69, 224, 168, 0.4);
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
   }
   .bx-body {
     padding: 22px 24px;
@@ -134,84 +237,40 @@ const noteRest = rest.join(' — ');
     gap: 14px;
     flex: 1;
   }
-
-  /* steps */
-  .stp {
-    display: grid;
-    grid-template-columns: 52px 1fr;
-    gap: 4px 18px;
-    padding: 18px 20px;
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    transition: border-color 200ms ease, transform 200ms ease;
-  }
-  .stp:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-  .stp .n {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1.1;
-  }
-  .stp h3 {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .stp .cmt {
+  .meta-line {
     font-size: 10.5px;
-    font-style: italic;
-    font-weight: 400;
     color: var(--text-faint);
+    letter-spacing: 0.04em;
   }
-  .stp p {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
-  .cmd {
-    margin-top: 8px;
-    font-size: 12.5px;
-    color: var(--accent);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 10px 14px;
-    border-radius: 6px;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-  .cmd::before {
-    content: '$ ';
-    color: var(--text-faint);
-  }
-
-  /* requirements */
-  .req-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .cell-copy {
     font-size: 13px;
-    padding: 9px 0;
-    border-bottom: 1px dashed var(--border);
+    color: var(--text-dim);
+    line-height: 1.65;
+    font-family: var(--font-sans);
   }
-  .req-row:last-child {
-    border-bottom: none;
+  .bx-foot {
+    margin-top: auto;
+    padding: 14px 20px 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
   }
-  .req-row .name::before {
-    content: '✓ ';
-    color: var(--accent);
+  .bx-foot b {
+    color: var(--warn);
+    font-weight: 500;
   }
 
-  /* repository cta */
-  .cta-body {
-    justify-content: center;
-    gap: 14px;
+  /* buttons (mono, "> " prefix — hand-off button language) */
+  .btn-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .btn {
     display: inline-block;
-    font-size: 13.5px;
+    font-size: 13px;
     padding: 11px 18px;
     border-radius: 6px;
     text-decoration: none;
@@ -227,20 +286,65 @@ const noteRest = rest.join(' — ');
     color: var(--bg-deep);
     font-weight: 500;
   }
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0 32px rgba(69, 224, 168, 0.35);
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(69, 224, 168, 0.35);
+    }
   }
   .btn-ghost {
     border: 1px solid var(--border-strong);
     color: var(--text-dim);
   }
-  .btn-ghost:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  @media (hover: hover) and (pointer: fine) {
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+  .btn-soon {
+    background: transparent;
+    border: 1px dashed var(--border-strong);
+    color: var(--text-faint);
+    cursor: default;
+  }
+  .btn-soon::before {
+    content: '◦ ';
   }
 
-  /* note */
+  /* teaser badges (mobile connect language, no QR on landing) */
+  .badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    transition: border-color 0.25s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a.badge:hover {
+      border-color: var(--accent);
+    }
+  }
+  .badge .os {
+    font-size: 15px;
+  }
+  .badge.soon {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+
+  /* note (G-D: flag-variant wired — noteLive when DOWNLOADS_LIVE) */
   .gw-note {
     margin-top: 20px;
     border-left: 2px solid var(--accent);
@@ -251,11 +355,11 @@ const noteRest = rest.join(' — ');
   }
 
   @media (max-width: 980px) {
-    .steps {
+    .gw-a {
       grid-column: 1 / 13;
-      grid-row: auto;
     }
-    .req, .cta {
+    .gw-b,
+    .gw-c {
       grid-column: span 6;
     }
   }
@@ -263,11 +367,12 @@ const noteRest = rest.join(' — ');
     .gw {
       padding: 72px 0 48px;
     }
-    .req, .cta {
+    .gw-b,
+    .gw-c {
       grid-column: 1 / 13;
     }
-    .stp {
-      grid-template-columns: 1fr;
+    .btn-col .btn {
+      width: 100%;
     }
   }
 </style>
