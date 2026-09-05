@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- wakii monogram icon — "w." drawn as geometry, no font dependency.
-       Replaces the old <text>-based favicon (font rendering was
-       inconsistent across platforms). Direction: The Monogram, 2026-09-05. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="wakii — monogram icon">
+  <!-- wakii icon symbol — "The Monogram" (chosen 2026-09-05, 3-direction draft).
+       Master file for reuse: favicon (public/favicon.svg is the small-size
+       twin), GitHub avatar, og-image, Electron app icon source.
+       Brand: dark tile #131A17→#04140D, mint stroke #45E0A8, dot #D7E2DD. -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#131A17"/>
