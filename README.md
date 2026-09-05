@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="public/wakii-icon.svg" width="72" alt="Wakii monogram icon">
-
-# Wakii
+# <img src="public/wakii-icon.svg" height="44" alt="Wakii monogram icon"> Wakii
 
 ### The agentic IDE with a built-in superpowers team
 
