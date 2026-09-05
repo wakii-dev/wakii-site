@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="public/wakii-icon.svg" width="72" alt="Wakii monogram icon">
+
 # Wakii
 
 ### The agentic IDE with a built-in superpowers team
@@ -8,6 +10,7 @@
 [![Deploy to Vercel](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml)
 [![Web](https://img.shields.io/badge/web-wakii.dev-45E0A8?logo=safari&logoColor=45E0A8)](https://wakii.dev)
 [![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=BC52EE)](https://astro.build)
+[![Release](https://img.shields.io/github/v/release/wakii-dev/wakii)](https://github.com/wakii-dev/wakii/releases)
 
 <img src=".github/assets/hero.png" alt="Wakii landing page — “Your IDE just hired a team” headline with a terminal showing the Wakii pipeline: plan, parallel agents, verify gates, one clean PR" width="100%">
 
@@ -42,7 +45,7 @@ This repository holds the source of the official website — built with
 | `/skills`   | Public skills catalog — command, description, and internals per skill (EN+VI)  |
 | `/docs/*`   | Guides: getting started, superpowers panel, story workflow, agents & kit, FAQ  |
 | `/roadmap`  | Public roadmap — Now / Next / Later                                            |
-| `/download` | Direct downloads for macOS & Windows, QR code for mobile connect               |
+| `/download` | Direct downloads for macOS (Windows pending), QR code for mobile connect       |
 | `/vi/*`     | Vietnamese version of the site                                                 |
 
 ## Quick start
@@ -95,9 +98,11 @@ push to `main`; `ci.yml` runs the build check on every PR). Canonical
 production URL: `https://wakii.dev` — sitemap and `robots.txt` derive from
 `SITE_URL` in `src/config.ts`.
 
-> `REPO_URL` in `src/config.ts` currently points to a placeholder (the product
-> fork is private). The pre-publish checklist must confirm it before the site
-> goes public.
+> `REPO_URL` points to the public product repo
+> [`wakii-dev/wakii`](https://github.com/wakii-dev/wakii), where release
+> `v1.4.197` hosts the macOS builds (`Wakii.dmg` Apple Silicon,
+> `Wakii-x64.dmg` Intel). `DOWNLOADS_LIVE` is on; the Windows asset
+> (`WakiiSetup.exe`) lands with the first Windows build.
 
 </details>
 
