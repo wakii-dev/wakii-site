@@ -47,19 +47,19 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
  *   (ii)  release EXISTS, URLs point at the real assets ✓,
  *   (iii) macOS + Android builds run (user-verified).
  *
- * WINDOWS: empty string = pending — components render an honest "soon"
- * cell. The `orca-windows-setup.exe` asset in v1.4.198 is deliberately
- * NOT linked (orca-branded; release notes mark Windows ⛔ until a real
- * Windows-host build exists).
+ * WINDOWS: linked to the v1.4.198 `orca-windows-setup.exe` asset (user
+ * instruction 2026-09-05 — the file is live on the release even though
+ * the asset name still carries orca branding). An empty string would
+ * render the per-OS "soon" cell instead.
  *
  * URL pattern: v1.4.198 switched to VERSION-NAMED assets, so URLs pin an
- * exact release — a version bump means updating these two lines.
+ * exact release — a version bump means updating these lines.
  */
 export const DOWNLOADS_LIVE = true;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
   macos: `${REPO_URL}/releases/download/v1.4.198/Wakii-1.4.198-arm64.dmg`,
-  windows: '',
+  windows: `${REPO_URL}/releases/download/v1.4.198/orca-windows-setup.exe`,
 };
 
 /**
