@@ -1,23 +1,51 @@
-# wakii-site
+<div align="center">
 
-Official website for **[Wakii](https://wakii.dev)** — *the agentic IDE with a
-built-in superpowers team*.
+# Wakii
 
-Built with [Astro](https://astro.build) and deployed on Vercel. Bilingual
-(English / Tiếng Việt) with a static, content-first architecture.
+### The agentic IDE with a built-in superpowers team
+
+[![CI](https://github.com/wakii-dev/wakii-site/actions/workflows/ci.yml/badge.svg)](https://github.com/wakii-dev/wakii-site/actions/workflows/ci.yml)
+[![Deploy to Vercel](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml)
+[![Web](https://img.shields.io/badge/web-wakii.dev-45E0A8?logo=safari&logoColor=45E0A8)](https://wakii.dev)
+[![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=BC52EE)](https://astro.build)
+
+<img src=".github/assets/hero.png" alt="Wakii landing page — “Your IDE just hired a team” headline with a terminal showing the Wakii pipeline: plan, parallel agents, verify gates, one clean PR" width="100%">
+
+**[wakii.dev](https://wakii.dev)** · [Docs](https://wakii.dev/docs/getting-started/) · [Skills](https://wakii.dev/skills/) · [Roadmap](https://wakii.dev/roadmap/) · [Download](https://wakii.dev/download/)
+
+This repository holds the source of the official website — built with
+[Astro](https://astro.build), deployed on Vercel, bilingual
+(English / Tiếng Việt), fully static.
+
+</div>
+
+## Highlights
+
+- **Static & content-first** — a 19-page Astro 5 build. No client framework;
+  content lives in typed data modules and markdown collections.
+- **Bilingual by design** — every page ships in English and Tiếng Việt
+  (`/vi/*` mirror), strings sourced from `src/i18n/`.
+- **The kit, in the open** — 21 built-in skills, 13 documented in the public
+  [skills catalog](https://wakii.dev/skills/) with commands and internals.
+- **Dark bento design system** — custom design tokens (`src/styles/tokens.css`)
+  and a shared motion layer, no UI framework.
+
+<div align="center">
+<img src=".github/assets/skills.png" alt="Wakii skills page — “The kit, cell by cell. 13 skills, fully explained” with install command and skill stats" width="72%">
+</div>
 
 ## Pages
 
-| Route            | Purpose                                                                     |
-| ---------------- | --------------------------------------------------------------------------- |
-| `/`              | Landing page — product positioning, feature highlights, CTAs                |
-| `/skills`        | Catalog of Wakii's 20 built-in skills (slash commands, EN + VI descriptions) |
-| `/docs/*`        | Guides: getting started, superpowers panel, story workflow, agents & kit, FAQ |
-| `/roadmap`       | Public roadmap — Now / Next / Later                                          |
-| `/download`      | Direct downloads for macOS & Windows, QR code for mobile connect             |
-| `/vi/*`          | Vietnamese version of the site                                              |
+| Route       | Purpose                                                                        |
+| ----------- | ------------------------------------------------------------------------------ |
+| `/`         | Landing — product positioning, feature highlights, CTAs                        |
+| `/skills`   | Public skills catalog — command, description, and internals per skill (EN+VI)  |
+| `/docs/*`   | Guides: getting started, superpowers panel, story workflow, agents & kit, FAQ  |
+| `/roadmap`  | Public roadmap — Now / Next / Later                                            |
+| `/download` | Direct downloads for macOS & Windows, QR code for mobile connect               |
+| `/vi/*`     | Vietnamese version of the site                                                 |
 
-## Development
+## Quick start
 
 ```bash
 pnpm install
@@ -35,7 +63,7 @@ src/
   config.ts        # single source of truth: REPO_URL, SITE_URL, SITE_NAME,
                    # SITE_TAGLINE, DOC_SLUGS (locked contract), download flags
   content/docs/    # markdown docs (content collections)
-  data/            # skills.ts (20-skill catalog), roadmap.ts (Now/Next/Later)
+  data/            # skills.ts (21-skill catalog), roadmap.ts (Now/Next/Later)
   i18n/            # EN + VI strings (landing, download, …)
   components/      # Astro components
   layouts/         # page layouts
@@ -43,27 +71,35 @@ src/
 public/            # static assets
 ```
 
-### Editing content
+<details>
+<summary><strong>Editing content</strong></summary>
 
 - **Docs** — add/edit markdown under `src/content/docs/`. The doc slugs are a
   locked contract (`DOC_SLUGS` in `src/config.ts`): `getting-started`,
   `superpowers-panel`, `story-workflow`, `agents-and-kit`, `faq`.
-- **Skills catalog** — `src/data/skills.ts` mirrors the frontmatter of the 20
-  skills in the product; `public: true` marks catalog-worthy skills.
+- **Skills catalog** — `src/data/skills.ts` mirrors the frontmatter of the
+  skills in the product; `public: true` marks catalog-worthy skills (13 of 21
+  are public).
 - **Roadmap** — `src/data/roadmap.ts`, grouped by `Now / Next / Later`
   (bilingual labels).
 - **Download flags** — direct-download availability is flag-controlled in
-  `src/config.ts` (story FI-300). Flag flips are **user/manual only**.
+  `src/config.ts`. Flag flips are **user/manual only**.
 
-## Deployment
+</details>
 
-The site deploys to **Vercel** (`vercel.json` + `.vercel/` project link).
-Canonical production URL: `https://wakii.dev` — sitemap and `robots.txt`
-derive from `SITE_URL` in `src/config.ts`.
+<details>
+<summary><strong>Deployment</strong></summary>
+
+The site deploys to **Vercel** via GitHub Actions (`deploy.yml`, production on
+push to `main`; `ci.yml` runs the build check on every PR). Canonical
+production URL: `https://wakii.dev` — sitemap and `robots.txt` derive from
+`SITE_URL` in `src/config.ts`.
 
 > `REPO_URL` in `src/config.ts` currently points to a placeholder (the product
 > fork is private). The pre-publish checklist must confirm it before the site
 > goes public.
+
+</details>
 
 ## Contributors
 
