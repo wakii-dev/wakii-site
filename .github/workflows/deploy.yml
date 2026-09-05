@@ -1,0 +1,67 @@
+name: Deploy to Vercel
+
+# Production deploy on push to main. Requires the repo secret VERCEL_TOKEN
+# (create at https://vercel.com/account/settings/tokens with scope to the
+# wakii-site project). Until the secret is set, the job no-ops cleanly.
+#
+# ORG_ID / PROJECT_ID are read from the committed .vercel/project.json
+# (project link — not secrets).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Production deploy
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: check
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "VERCEL_TOKEN secret not set — skipping deploy."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.check.outputs.enabled == 'true'
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.enabled == 'true'
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install Vercel CLI
+        if: steps.check.outputs.enabled == 'true'
+        run: pnpm add -g vercel@latest
+
+      - name: Pull Vercel environment (production)
+        if: steps.check.outputs.enabled == 'true'
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: team_LYpkzCuWJ362khDpi4HpAgAJ
+          VERCEL_PROJECT_ID: prj_s0Py3wquRDG6PDFSckei29FqGK9E
+
+      - name: Build
+        if: steps.check.outputs.enabled == 'true'
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: team_LYpkzCuWJ362khDpi4HpAgAJ
+          VERCEL_PROJECT_ID: prj_s0Py3wquRDG6PDFSckei29FqGK9E
+
+      - name: Deploy to production
+        if: steps.check.outputs.enabled == 'true'
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: team_LYpkzCuWJ362khDpi4HpAgAJ
+          VERCEL_PROJECT_ID: prj_s0Py3wquRDG6PDFSckei29FqGK9E
