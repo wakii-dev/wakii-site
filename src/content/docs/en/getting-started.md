@@ -9,10 +9,11 @@ running app with the **Superpowers panel** open — no configuration along
 the way. Every step below is executed verbatim on a clean checkout before
 it lands in these docs.
 
-> **No installer yet.** Ready-made downloads for macOS and Windows are on
-> the roadmap — for now, building from source (below) is the way in. You
-> can [follow releases on GitHub](https://github.com/wakii/wakii/releases)
-> to hear about installers first.
+> **Downloads are live for macOS.** Grab the ready-made build from the
+> [download page](/download/), or
+> [follow releases on GitHub](https://github.com/wakii-dev/wakii/releases)
+> to hear about new builds (Windows included) first. Building from source
+> (below) still works everywhere.
 
 ## Prerequisites
 

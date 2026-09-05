@@ -9,10 +9,11 @@ app đang chạy với **Superpowers panel** mở — không cần cấu hình g
 đường đi. Mỗi bước dưới đây đều đã được thực thi nguyên văn trên một
 checkout sạch trước khi viết vào docs.
 
-> **Chưa có bản cài.** Bản cài sẵn cho macOS và Windows nằm trong roadmap —
-> hiện tại, cách vào là build từ mã nguồn (bên dưới). Bạn có thể
-> [theo dõi releases trên GitHub](https://github.com/wakii/wakii/releases)
-> để biết sớm nhất khi bản cài ra mắt.
+> **Bản cài sẵn đã có cho macOS.** Tải bản build hoàn chỉnh tại
+> [trang download](/download/), hoặc
+> [theo dõi releases trên GitHub](https://github.com/wakii-dev/wakii/releases)
+> để biết sớm nhất khi có bản mới (gồm cả Windows). Build từ mã nguồn
+> (bên dưới) vẫn dùng được ở mọi nơi.
 
 ## Yêu cầu trước
 

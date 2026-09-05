@@ -3,13 +3,14 @@
  */
 
 /**
- * Public repository URL (CTA "Get Wakii — build from source", footer).
+ * Public repository URL (CTA "Get Wakii — build from source", footer,
+ * release asset base for DOWNLOAD_URLS).
  *
- * PLACEHOLDER — the fork is currently private.
- * SF-4 pre-publish checklist MUST confirm/replace this before the site goes public.
- * All links must reference this constant, never a hardcoded URL.
+ * Public repo — confirmed 2026-09-05 (was the `wakii/wakii` placeholder,
+ * which never existed). All links must reference this constant, never a
+ * hardcoded URL.
  */
-export const REPO_URL = 'https://github.com/wakii/wakii';
+export const REPO_URL = 'https://github.com/wakii-dev/wakii';
 
 /**
  * Canonical site URL (sitemap, robots.txt, OG base).
@@ -37,20 +38,20 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
 /**
  * ── Direct downloads + mobile connect (story FI-300, SF-1 foundation) ──
  *
- * FLAG FLIP = USER/MANUAL ONLY — agents must never flip these.
+ * Flag flips remain USER/MANUAL decisions — this one was flipped by explicit
+ * user instruction on 2026-09-05 (release v1.4.197 on wakii-dev/wakii).
  *
- * Runbook — ALL preconditions must hold before flipping DOWNLOADS_LIVE:
- *   (i)   repo is PUBLIC (it is private now — release URLs 404 for
- *         anonymous visitors on a private repo),
- *   (ii)  a GitHub release EXISTS and the assets below match the real
- *         asset names (current names are placeholders — confirm the real
- *         names at release time and update this map),
- *   (iii) the unsigned binaries actually RUN on both OSes.
+ * State at flip:
+ *   (i)   repo is PUBLIC ✓,
+ *   (ii)  release EXISTS, `Wakii.dmg` matches the real asset ✓,
+ *   (iii) macOS build runs (user-verified locally); **WINDOWS PENDING** —
+ *         no `WakiiSetup.exe` asset yet, so the Windows button 404s until
+ *         a Windows build lands in the release. Accepted at flip time.
  *
  * URL pattern is pinned to `releases/latest/download/<asset>` (no version
- * constant) so a flip is a one-line change, not a version chase.
+ * constant) so a bump is a re-upload of the asset, not a version chase.
  */
-export const DOWNLOADS_LIVE = false;
+export const DOWNLOADS_LIVE = true;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
   macos: `${REPO_URL}/releases/latest/download/Wakii.dmg`,
