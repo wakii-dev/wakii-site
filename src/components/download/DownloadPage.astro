@@ -1,0 +1,455 @@
+---
+/**
+ * Download page body (SF-2, FI-302) — shared by /download (EN) and
+ * /vi/download (VI) (pattern: RoadmapPage.astro, FI-297). Design binding 1:1:
+ * docs/superpowers/designs/sf-downloads-direction.md "Bento Dispatch" —
+ * whole page = asymmetric bento 12-col, every install target is a cell.
+ *
+ * Content = src/i18n/downloads.ts (SF-1 pre-add, KEY-OWNERSHIP: no new keys
+ * here — gaps are flagged to epic FI-300, never hardcoded). Flags + URLs
+ * from src/config.ts. Motion = shared initMotion() only (data-reveal).
+ *
+ * Accuracy gates (hand-off table + spec G-A/G-I):
+ *   - changelog / checksums cells are NOT rendered: no release data source
+ *     exists yet (fake version/hash = dead claim).
+ *   - version pill NOT rendered (no version field in config).
+ *   - flag=false → dashed non-href soon buttons, follow-releases becomes
+ *     the primary path; flag=true → real DOWNLOAD_URLS buttons + warn (G-I).
+ * Deviations from the prototype are logged in the FI-302 audit comment.
+ */
+import Base from '../../layouts/Base.astro';
+import MobileConnect from './MobileConnect.astro';
+import { DOWNLOADS_LIVE, DOWNLOAD_URLS, MOBILE_LIVE, MOBILE_STORE_URLS, REPO_URL } from '../../config';
+import type { DownloadStrings } from '../../i18n/downloads';
+import '../../styles/motion.css';
+
+interface Props {
+  t: DownloadStrings;
+}
+const { t } = Astro.props;
+const isVi = t.lang === 'vi';
+
+// Flag-conditional SEO + hero copy (dual-variant keys, G-D)
+const description = DOWNLOADS_LIVE ? t.page.live.description : t.page.notLive.description;
+const sub = DOWNLOADS_LIVE ? t.page.live.sub : t.page.notLive.sub;
+
+const releasesUrl = `${REPO_URL}/releases`;
+const gettingStarted = isVi ? '/vi/docs/getting-started/' : '/docs/getting-started/';
+const guideLabel = isVi
+  ? '→ hướng dẫn đầy đủ: /vi/docs/getting-started/'
+  : '→ full guide: /docs/getting-started/';
+
+// Real asset names from config (factual — used as cell meta, no size/OS claims)
+const macosAsset = DOWNLOAD_URLS.macos.split('/').pop() || '';
+const windowsAsset = DOWNLOAD_URLS.windows.split('/').pop() || '';
+
+const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
+---
+
+<Base title={t.page.title} description={description}>
+  <header class="dl-hero">
+    <div class="wrap">
+      <div class="kicker">{t.page.kicker}</div>
+      <h1>{t.page.h2}</h1>
+      <p class="sub">{sub}</p>
+    </div>
+  </header>
+
+  <section class="dl-section">
+    <div class="wrap">
+      <div class="bento">
+        <!-- macOS -->
+        <div class="bx sp7" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.desktop.tabMacos}</span><span class="meta">{macosAsset}</span></div>
+            <div class="bx-body">
+              <div class="cell-os-head">
+                <div class="cell-logo">◆</div>
+                <h2>{t.desktop.tabMacos}</h2>
+              </div>
+              {DOWNLOADS_LIVE ? (
+                <div class="btn-row">
+                  <a class="btn btn-primary" href={DOWNLOAD_URLS.macos}>{t.desktop.live.btnMacos}</a>
+                </div>
+              ) : (
+                <span class="btn btn-soon">{t.desktop.live.btnMacos}</span>
+              )}
+              {DOWNLOADS_LIVE && <div class="bx-foot"><b>{t.desktop.live.warnMacos}</b></div>}
+            </div>
+          </div>
+        </div>
+
+        <!-- Windows -->
+        <div class="bx sp5" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.desktop.tabWindows}</span><span class="meta">{windowsAsset}</span></div>
+            <div class="bx-body">
+              <div class="cell-os-head">
+                <div class="cell-logo">⊞</div>
+                <h2>{t.desktop.tabWindows}</h2>
+              </div>
+              {DOWNLOADS_LIVE ? (
+                <div class="btn-row">
+                  <a class="btn btn-primary" href={DOWNLOAD_URLS.windows}>{t.desktop.live.btnWindows}</a>
+                </div>
+              ) : (
+                <span class="btn btn-soon">{t.desktop.live.btnWindows}</span>
+              )}
+              {DOWNLOADS_LIVE && <div class="bx-foot"><b>{t.desktop.live.warnWindows}</b></div>}
+            </div>
+          </div>
+        </div>
+
+        <!-- mobile connect (jumbo, component reused by SF-3) -->
+        <div class="bx sp8" data-reveal>
+          <MobileConnect t={t.mobile} />
+        </div>
+
+        <!-- iOS cell — soon-cell while mobile is not live; store link once it is
+             (hand-off: "MOBILE_LIVE=true → cell thành link store, agent quyết
+             theo data thật"). Empty iOS URL keeps the honest coming-soon state. -->
+        <div class:list={['bx', 'sp4', !(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && 'soon-cell']} data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.mobile.badgeIos}</span></div>
+            <div class="bx-body">
+              {MOBILE_LIVE && MOBILE_STORE_URLS.ios ? (
+                <>
+                  <div class="cell-os-head">
+                    <div class="cell-logo"></div>
+                    <h2>{t.mobile.badgeIos}</h2>
+                  </div>
+                  <a class="btn btn-primary" href={MOBILE_STORE_URLS.ios}>{t.mobile.badgeIos} →</a>
+                </>
+              ) : (
+                <>
+                  <div class="cell-os-head">
+                    <div class="cell-logo dashed"></div>
+                    <h2>{t.mobile.badgeIos}</h2>
+                  </div>
+                  <p class="cell-copy">{t.mobile.notLive.comingSoon}</p>
+                </>
+              )}
+            </div>
+            {!(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && (
+              <div class="bx-foot"><a href={releasesUrl}>{t.mobile.notLive.followUpdates} →</a></div>
+            )}
+          </div>
+        </div>
+
+        <!-- build from source (always available) -->
+        <div class="bx sp6" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.desktop.notLive.buildFromSource}</span></div>
+            <div class="bx-body">
+              <p class="cell-copy">{DOWNLOADS_LIVE ? t.desktop.live.sourceAlt : t.desktop.notLive.note}</p>
+              <div class="term">
+                <div class="term-cmd"><span class="ps">$</span>{cloneCmd}</div>
+                <div class="term-cmd"><span class="ps">$</span>make install</div>
+              </div>
+              <a class="btn btn-ghost" href={gettingStarted}>{guideLabel}</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- follow releases (primary path while flag=false) -->
+        <div class="bx sp6" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.desktop.notLive.followReleases}</span></div>
+            <div class="bx-body">
+              <a class:list={['btn', DOWNLOADS_LIVE ? 'btn-ghost' : 'btn-primary']} href={releasesUrl}>github releases →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- hero (canvas = grid-bg mask, như /skills) ---- */
+  .dl-hero {
+    padding: 76px 0 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dl-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+  }
+  .dl-hero .wrap {
+    position: relative;
+  }
+  h1 {
+    font-size: clamp(30px, 4.4vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+  }
+  .sub {
+    margin-top: 18px;
+    color: var(--text-dim);
+    max-width: 620px;
+    font-size: 15px;
+    font-family: var(--font-sans);
+  }
+
+  /* ---- bento grid (12-col, hand-off span map; changelog/checksums dropped
+     per accuracy gate → row 3 rebalanced to sp6+sp6, deviation 1) ---- */
+  .dl-section {
+    padding: 44px 0 96px;
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+  }
+  .bx {
+    min-width: 0;
+  }
+  .sp7 {
+    grid-column: 1 / 8;
+  }
+  .sp5 {
+    grid-column: 8 / 13;
+  }
+  .sp8 {
+    grid-column: 1 / 9;
+  }
+  .sp4 {
+    grid-column: span 4;
+  }
+  .sp6 {
+    grid-column: span 6;
+  }
+
+  /* ---- card anatomy ---- */
+  .bx-in {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .bx-in:hover {
+      border-color: var(--accent);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(69, 224, 168, 0.08);
+      transform: translateY(-3px);
+    }
+  }
+  .bx-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .bx-label .t {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .bx-label .meta {
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .bx-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+  .bx-body h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .cell-copy {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    font-family: var(--font-sans);
+  }
+  .bx-foot {
+    margin-top: auto;
+    padding: 14px 20px 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+  .bx-foot b {
+    color: var(--warn);
+    font-weight: 500;
+  }
+  .bx-foot a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .bx-foot a:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- OS cell head ---- */
+  .cell-os-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .cell-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    border: 1px solid var(--border-strong);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .cell-logo.dashed {
+    background: transparent;
+    border-style: dashed;
+  }
+  .soon-cell .bx-in {
+    border-style: dashed;
+    opacity: 0.75;
+  }
+
+  /* ---- buttons (hand-off: mono 13px "> " prefix) ---- */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-btn);
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+    text-decoration: none;
+    align-self: flex-start;
+    overflow-wrap: anywhere;
+  }
+  .btn::before {
+    content: '> ';
+    opacity: 0.55;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg-deep);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(69, 224, 168, 0.35);
+    }
+  }
+  .btn-ghost {
+    border-color: var(--border-strong);
+    color: var(--text-dim);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+  .btn-soon {
+    background: transparent;
+    border: 1px dashed var(--border-strong);
+    color: var(--text-faint);
+    cursor: default;
+  }
+  .btn-soon::before {
+    content: '◦ ';
+  }
+
+  /* ---- terminal mockup (build-from-source cell) ---- */
+  .term {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 12px;
+    line-height: 1.9;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .term-cmd {
+    color: var(--text);
+  }
+  .ps {
+    color: var(--text-faint);
+    margin-right: 8px;
+  }
+
+  /* ---- responsive (hand-off: @980 sp7/sp5/sp8 → full, sp4 → full per
+     deviation 7; @720 all full, gap 12, wrap 20, h1 30px, mob-grid stack) ---- */
+  @media (max-width: 980px) {
+    .sp7,
+    .sp5,
+    .sp8,
+    .sp4 {
+      grid-column: 1 / 13;
+    }
+  }
+  @media (max-width: 720px) {
+    .wrap {
+      padding: 0 20px;
+    }
+    .bento {
+      gap: 12px;
+    }
+    .sp6 {
+      grid-column: 1 / 13;
+    }
+    h1 {
+      font-size: 30px;
+    }
+    .dl-hero {
+      padding-top: 56px;
+    }
+  }
+</style>
+
+<script>
+  // SF-2 motion contract: consume the shared util, nothing custom.
+  // data-reveal lives on each outer .bx; hero renders immediately.
+  import { initMotion } from '../motion';
+  initMotion();
+</script>

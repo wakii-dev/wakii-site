@@ -1,0 +1,11 @@
+---
+/**
+ * /download (EN) — SF-2, FI-302. Thin wrapper: shared renderer
+ * src/components/download/DownloadPage.astro + EN strings slice.
+ * SEO (canonical/hreflang) is handled by Base.astro from the pathname.
+ */
+import DownloadPage from '../components/download/DownloadPage.astro';
+import { en } from '../i18n/downloads';
+---
+
+<DownloadPage t={en} />

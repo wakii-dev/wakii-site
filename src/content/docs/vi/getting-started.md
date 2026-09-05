@@ -9,6 +9,11 @@ app đang chạy với **Superpowers panel** mở — không cần cấu hình g
 đường đi. Mỗi bước dưới đây đều đã được thực thi nguyên văn trên một
 checkout sạch trước khi viết vào docs.
 
+> **Chưa có bản cài.** Bản cài sẵn cho macOS và Windows nằm trong roadmap —
+> hiện tại, cách vào là build từ mã nguồn (bên dưới). Bạn có thể
+> [theo dõi releases trên GitHub](https://github.com/wakii/wakii/releases)
+> để biết sớm nhất khi bản cài ra mắt.
+
 ## Yêu cầu trước
 
 - **Node.js 24** — [nodejs.org](https://nodejs.org) hoặc version manager bạn dùng
