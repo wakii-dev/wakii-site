@@ -59,7 +59,7 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     <div class="wrap">
       <div class="bento">
         <!-- macOS -->
-        <div class="bx sp7" data-reveal>
+        <div class="bx sp6" data-reveal>
           <div class="bx-in">
             <div class="bx-label"><span class="t">{t.desktop.tabMacos}</span><span class="meta">{macosAsset}</span></div>
             <div class="bx-body">
@@ -80,7 +80,7 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
         </div>
 
         <!-- Windows -->
-        <div class="bx sp5" data-reveal>
+        <div class="bx sp6" data-reveal>
           <div class="bx-in">
             <div class="bx-label"><span class="t">{t.desktop.tabWindows}</span><span class="meta">{windowsAsset}</span></div>
             <div class="bx-body">
@@ -201,8 +201,8 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     font-family: var(--font-sans);
   }
 
-  /* ---- bento grid (12-col, hand-off span map; changelog/checksums dropped
-     per accuracy gate → row 3 rebalanced to sp6+sp6, deviation 1) ---- */
+  /* ---- bento grid (12-col; macOS/Windows equal per user request 2026-09-05 —
+     overrides hand-off 7+5; changelog/checksums dropped per accuracy gate) ---- */
   .dl-section {
     padding: 44px 0 96px;
   }
@@ -213,12 +213,6 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
   }
   .bx {
     min-width: 0;
-  }
-  .sp7 {
-    grid-column: 1 / 8;
-  }
-  .sp5 {
-    grid-column: 8 / 13;
   }
   .sp8 {
     grid-column: 1 / 9;
@@ -418,11 +412,9 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     margin-right: 8px;
   }
 
-  /* ---- responsive (hand-off: @980 sp7/sp5/sp8 → full, sp4 → full per
-     deviation 7; @720 all full, gap 12, wrap 20, h1 30px, mob-grid stack) ---- */
+  /* ---- responsive (hand-off: @980 sp8/sp4 → full, @720 all full, gap 12,
+     wrap 20, h1 30px, mob-grid stack) ---- */
   @media (max-width: 980px) {
-    .sp7,
-    .sp5,
     .sp8,
     .sp4 {
       grid-column: 1 / 13;
