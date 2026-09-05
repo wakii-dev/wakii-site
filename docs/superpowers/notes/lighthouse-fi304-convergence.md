@@ -16,7 +16,7 @@ emulation, categories perf/a11y/bp/seo. Runbook kế thừa `lighthouse-baseline
 ## Targets vs kết quả
 
 - **landing `/` + `/vi/` ≥ baseline (perf 99/96)**: run1 thấp hơn (91/83), run2 = 100/100.
-  Local-preview perf noiseConfirmed ±8 trở lên (baseline note đã ghi noisy; ở đây run1→run2
+  Local-preview perf noise confirmed ±8 trở lên (baseline note đã ghi noisy; ở đây run1→run2
   dao động 17 điểm trên cùng build). Kết luận: đạt baseline trong điều kiện đo ấm; số local
   không dùng để gate — số quyết định là đo trên deploy (VI prod 96 @ FI-294 audit).
 - **`/download` + `/vi/download` ≥ 95 tuyệt đối**: run2 đạt 100/100; run1 91. A11y 90 = đúng

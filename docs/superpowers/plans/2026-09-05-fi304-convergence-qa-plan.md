@@ -12,8 +12,8 @@ Docs nguồn: spec `2026-09-04-site-downloads-mobile.md` (G-A..G-I) · context p
 - [x] T3 Cross-surface consistency (audit theo AS-BUILT): radius landing 14px vs /download `--radius-cell` 12px → quyết thống nhất (task riêng); cell language bx-label/bx-in/bx-foot đồng bộ; tokens chỉ từ tokens.css.
 - [x] T6 A11y + Lighthouse: so baseline (landing 99/96; /download a11y 90/perf 88); heading order mọi trang; P2 epic đã biết (OG meta, nav active-link, iOS cell logo rỗng, "iOS" ×2, fonts render-blocking + contrast) → LIỆT KÊ, KHÔNG fix systemic.
 - [x] T7 RULE 0 browser-verify 3 tầng DOM/VISUAL/FLOW — evidence thật (cache-bust ?v=N sau rebuild; stale dist → tin dist + grep inline `<style>`).
-- [ ] T8 CODE-REVIEWER agent riêng, scope `git log 0a72af7..HEAD` — verdict literal `VERDICT: APPROVED`; commit sau review-start → addendum re-review scoped.
-- [ ] T9 Fixes từ audit (nếu có) + improvements-log.md append learned.
+- [x] T8 CODE-REVIEWER agent riêng, scope `git log 0a72af7..HEAD` — verdict literal `VERDICT: APPROVED`; commit sau review-start → addendum re-review scoped.
+- [x] T9 Fixes từ audit (nếu có) + improvements-log.md append learned.
 
 ## Meta (quy trình — plain list, không checkbox)
 
