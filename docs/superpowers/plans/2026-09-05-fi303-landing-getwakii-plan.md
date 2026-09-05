@@ -21,39 +21,39 @@ SF-4 copy gate trong audit comment.
 
 ## T1 — GetWakii restructure: mini-bento gw-a/gw-b/gw-c
 
-- [ ] Section head giữ `id="get-wakii"` (G-F); kicker/title = `getWakii.kicker/title`;
+- [x] Section head giữ `id="get-wakii"` (G-F); kicker/title = `getWakii.kicker/title`;
       sub = flag-aware `downloads.page.live.sub` / `notLive.sub` (key sẵn, chính xác cả 2 flag)
-- [ ] gw-a (span 6, PRIMARY): label draft "download wakii.desktop"/VI; pill "primary";
+- [x] gw-a (span 6, PRIMARY): label draft "download wakii.desktop"/VI; pill "primary";
       meta asset names (factual, từ `DOWNLOAD_URLS` — pattern SF-2, không version);
       flag=true → btn-primary `DOWNLOAD_URLS.macos` (`desktop.live.btnMacos`) +
       btn-ghost `.windows` (`btnWindows`); flag=false → btn-primary → `/download`
       (draft "all platforms → /download"/VI) + 2 btn-soon dashed không href
       (`btnMacos`/`btnWindows` text) — KHÔNG nút download chết
-- [ ] gw-a bx-foot: flag=true → warn `desktop.live.warnMacos` + `warnWindows` (G-I, b
+- [x] gw-a bx-foot: flag=true → warn `desktop.live.warnMacos` + `warnWindows` (G-I, b
       amber pattern SF-2); flag=false → không foot (note section lo)
-- [ ] gw-b (span 3, SECONDARY from source): label `desktop.notLive.buildFromSource`,
+- [x] gw-b (span 3, SECONDARY from source): label `desktop.notLive.buildFromSource`,
       meta "dev"; copy = `getWakii.sub` (key sẵn, mô tả build); ghost →
       `/docs/getting-started/` (trailing slash) text `hero.ctaGhost`
-- [ ] gw-c (span 3, teaser mobile): label `teaser.title`, meta "ios · android";
+- [x] gw-c (span 3, teaser mobile): label `teaser.title`, meta "ios · android";
       copy `teaser.sub` (claim đúng G-C 3 caps); badges iOS/Android —
       `MOBILE_LIVE && storeUrl` → link store thật, else dashed soon không href
       (cùng điều kiện với MobileConnect = cùng flag state, KHÔNG QR trên landing
       theo hand-off); cta `teaser.cta` → `/download`
-- [ ] Note dưới bento: `DOWNLOADS_LIVE ? getWakii.noteLive : getWakii.note` (wire task)
-- [ ] Entrance: `.reveal` trên head + 3 cell (wire-only, initMotion() sẵn ở Landing.astro)
-- [ ] Responsive: @980 gw-a full + gw-b/c span 6; @720 tất cả full, `.stp`-style
+- [x] Note dưới bento: `DOWNLOADS_LIVE ? getWakii.noteLive : getWakii.note` (wire task)
+- [x] Entrance: `.reveal` trên head + 3 cell (wire-only, initMotion() sẵn ở Landing.astro)
+- [x] Responsive: @980 gw-a full + gw-b/c span 6; @720 tất cả full, `.stp`-style
       không còn; min-width:0 trên cell (grid auto-scale guard)
-- [ ] VI: mọi string mới drafted EN+VI song song (inline) — list vào audit comment cho G-D
+- [x] VI: mọi string mới drafted EN+VI song song (inline) — list vào audit comment cho G-D
 
 Acceptance T1: build xanh; DOM EN+VI đúng 3 cell; flag=false không có `<a>` download
 asset; flag=true (mock) có 2 link `releases/latest/download/…` + warn.
 
 ## T2 — Nav-cta flag-aware (G-H)
 
-- [ ] `Nav.astro`: nav-cta href = `DOWNLOADS_LIVE ? ${prefix}/download :
+- [x] `Nav.astro`: nav-cta href = `DOWNLOADS_LIVE ? ${prefix}/download :
       ${prefix}/docs/getting-started/` (thêm trailing slash trên nhánh docs — rule
       FI-294, line đang sửa); MOBILE_LIVE KHÔNG ảnh hưởng nav-cta
-- [ ] Nav "download" item (SF-1) giữ nguyên → `/download`
+- [x] Nav "download" item (SF-1) giữ nguyên → `/download`
 
 Acceptance T2: mock-flip → nav-cta `/download` cả 2 locale; revert → docs.
 
