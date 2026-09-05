@@ -19,7 +19,7 @@
  */
 import Base from '../../layouts/Base.astro';
 import MobileConnect from './MobileConnect.astro';
-import { DOWNLOADS_LIVE, DOWNLOAD_URLS, REPO_URL } from '../../config';
+import { DOWNLOADS_LIVE, DOWNLOAD_URLS, MOBILE_LIVE, MOBILE_STORE_URLS, REPO_URL } from '../../config';
 import type { DownloadStrings } from '../../i18n/downloads';
 import '../../styles/motion.css';
 
@@ -65,7 +65,7 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
             <div class="bx-body">
               <div class="cell-os-head">
                 <div class="cell-logo">◆</div>
-                <h3>{t.desktop.tabMacos}</h3>
+                <h2>{t.desktop.tabMacos}</h2>
               </div>
               {DOWNLOADS_LIVE ? (
                 <div class="btn-row">
@@ -86,7 +86,7 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
             <div class="bx-body">
               <div class="cell-os-head">
                 <div class="cell-logo">⊞</div>
-                <h3>{t.desktop.tabWindows}</h3>
+                <h2>{t.desktop.tabWindows}</h2>
               </div>
               {DOWNLOADS_LIVE ? (
                 <div class="btn-row">
@@ -105,18 +105,34 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
           <MobileConnect t={t.mobile} />
         </div>
 
-        <!-- iOS soon-cell -->
-        <div class="bx sp4 soon-cell" data-reveal>
+        <!-- iOS cell — soon-cell while mobile is not live; store link once it is
+             (hand-off: "MOBILE_LIVE=true → cell thành link store, agent quyết
+             theo data thật"). Empty iOS URL keeps the honest coming-soon state. -->
+        <div class:list={['bx', 'sp4', !(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && 'soon-cell']} data-reveal>
           <div class="bx-in">
             <div class="bx-label"><span class="t">{t.mobile.badgeIos}</span></div>
             <div class="bx-body">
-              <div class="cell-os-head">
-                <div class="cell-logo dashed"></div>
-                <h3>{t.mobile.badgeIos}</h3>
-              </div>
-              <p class="cell-copy">{t.mobile.notLive.comingSoon}</p>
+              {MOBILE_LIVE && MOBILE_STORE_URLS.ios ? (
+                <>
+                  <div class="cell-os-head">
+                    <div class="cell-logo"></div>
+                    <h2>{t.mobile.badgeIos}</h2>
+                  </div>
+                  <a class="btn btn-primary" href={MOBILE_STORE_URLS.ios}>{t.mobile.badgeIos} →</a>
+                </>
+              ) : (
+                <>
+                  <div class="cell-os-head">
+                    <div class="cell-logo dashed"></div>
+                    <h2>{t.mobile.badgeIos}</h2>
+                  </div>
+                  <p class="cell-copy">{t.mobile.notLive.comingSoon}</p>
+                </>
+              )}
             </div>
-            <div class="bx-foot"><a href={releasesUrl}>{t.mobile.notLive.followUpdates} →</a></div>
+            {!(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && (
+              <div class="bx-foot"><a href={releasesUrl}>{t.mobile.notLive.followUpdates} →</a></div>
+            )}
           </div>
         </div>
 
@@ -268,9 +284,10 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     gap: 16px;
     flex: 1;
   }
-  .bx-body h3 {
+  .bx-body h2 {
     font-size: 15px;
     font-weight: 700;
+    margin: 0;
   }
   .cell-copy {
     font-size: 13px;

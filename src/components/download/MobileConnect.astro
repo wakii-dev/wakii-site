@@ -59,7 +59,7 @@ const releasesUrl = `${REPO_URL}/releases`;
       <div class="mob-side">
         <div class="badges">
           {
-            MOBILE_STORE_URLS.ios ? (
+            MOBILE_LIVE && MOBILE_STORE_URLS.ios ? (
               <a class="badge" href={MOBILE_STORE_URLS.ios}>
                 <span class="os"></span>
                 <span class="bl"><b>{t.badgeIos}</b></span>
@@ -72,7 +72,7 @@ const releasesUrl = `${REPO_URL}/releases`;
             )
           }
           {
-            MOBILE_STORE_URLS.android ? (
+            MOBILE_LIVE && MOBILE_STORE_URLS.android ? (
               <a class="badge" href={MOBILE_STORE_URLS.android}>
                 <span class="os">▶</span>
                 <span class="bl"><b>{t.badgeAndroid}</b></span>
