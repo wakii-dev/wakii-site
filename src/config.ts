@@ -40,14 +40,15 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
  *
  * Flag flips remain USER/MANUAL decisions — flipped by explicit user
  * instruction on 2026-09-05 against release v1.4.198 on wakii-dev/wakii
- * (Android APK followed via the mobile-android-v0.0.48 pre-release).
+ * (Android APK followed via the mobile-android-v0.0.48 pre-release);
+ * URLs re-pinned to v1.4.199 when that became Latest the same day.
  *
  * State at flip:
  *   (i)   repo is PUBLIC ✓,
  *   (ii)  release EXISTS, URLs point at the real assets ✓,
  *   (iii) macOS + Android builds run (user-verified).
  *
- * WINDOWS: linked to the v1.4.198 `orca-windows-setup.exe` asset (user
+ * WINDOWS: linked to the `orca-windows-setup.exe` asset (user
  * instruction 2026-09-05 — the file is live on the release even though
  * the asset name still carries orca branding). An empty string would
  * render the per-OS "soon" cell instead.
@@ -58,8 +59,8 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
 export const DOWNLOADS_LIVE = true;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
-  macos: `${REPO_URL}/releases/download/v1.4.198/Wakii-1.4.198-arm64.dmg`,
-  windows: `${REPO_URL}/releases/download/v1.4.198/orca-windows-setup.exe`,
+  macos: `${REPO_URL}/releases/download/v1.4.199/Wakii-1.4.199-arm64.dmg`,
+  windows: `${REPO_URL}/releases/download/v1.4.199/orca-windows-setup.exe`,
 };
 
 /**
