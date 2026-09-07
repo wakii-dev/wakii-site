@@ -32,7 +32,7 @@ TL;DR:
 Mô hình "chia việc cho nhiều agent" hay bị hiểu thành "mở nhiều agent trong
 cùng một thư mục dự án". Khác nhau ở đó: chia việc là chia danh sách task, còn
 không gian ghi file vẫn chỉ là một. Khi hai agent cùng ghi vào một cây thư mục,
-kết quả phụ thuộc thứ tự sảy ra — ai ghi sau thì thắng, và lịch sử commit trộn
+kết quả phụ thuộc thứ tự xảy ra — ai ghi sau thì thắng, và lịch sử commit trộn
 lẫn công việc của cả hai:
 
 ```ascii

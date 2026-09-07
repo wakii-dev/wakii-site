@@ -53,7 +53,7 @@ Tasks: base-og-contract / rss-feed-contract / og-default-asset / …
 ```
 
 *Source: docs/superpowers/brackets/fi339-blog-features.md, retrieved
-2026-09-07.*
+2026-09-07. SF titles translated from the Vietnamese bracket.*
 
 Each line is an answer. `Tier: 0` means nobody to wait for — it starts as soon
 as the story goes green. `linear: FI-340` ties the block to an issue on Linear,
@@ -83,7 +83,7 @@ tier 0   SF-1 SEO surface + TOC + assets (FI-340)  ← depends on nothing
 ```
 
 *Source: docs/superpowers/brackets/fi339-blog-features.md, retrieved
-2026-09-07.*
+2026-09-07. SF titles translated from the Vietnamese bracket.*
 
 Why this ordering and not another? SF-1 is tier 0 because everything after it
 needs it: a post needs the OG image to share a correct card on social, needs
@@ -104,7 +104,7 @@ survives a scale-up, put next to it a bracket from a different production
 project: the
 [fi245-postgres-production bracket](https://github.com/wakii-dev/hub-store/blob/main/docs/superpowers/brackets/fi245-postgres-production.md)
 in the public hub-store repo — twenty-eight SFs, from Postgres infrastructure
-up to a mobile app. Its first two landmarks, quoted verbatim:
+up to a mobile web app. Its first two landmarks, quoted verbatim:
 
 ```text
 ## SF-1 Postgres infra + seed pipeline
@@ -115,6 +115,7 @@ Tasks: compose-postgres / initdb-2-databases / healthcheck-wiring / …
 
 ## SF-2 Orders Java → Postgres
 Tier: 1
+…
 Depends on: SF-1
 ```
 

@@ -144,7 +144,7 @@ bracket in hub-store was replaced entirely — the file is still in the repo,
 whole, and it opens with these lines (quoted verbatim from the
 Vietnamese-language file):
 
-> "SUPERSEDED 2026-08-31 — gộp vào FI-233"
+> "SUPERSEDED 2026-08-31 — GỘP VÀO MỘT STORY: FI-233"
 >
 > "File này chỉ còn là audit trail (Linear FI-232 Canceled)"
 

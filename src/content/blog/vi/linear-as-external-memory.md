@@ -130,7 +130,7 @@ chiều ngược lại: đánh dấu, không xoá. Bracket
 trong hub-store đã bị thay thế toàn bộ — file vẫn còn nguyên, mở ra là gặp ngay
 hai dòng này:
 
-> "SUPERSEDED 2026-08-31 — gộp vào FI-233"
+> "SUPERSEDED 2026-08-31 — GỘP VÀO MỘT STORY: FI-233"
 >
 > "File này chỉ còn là audit trail (Linear FI-232 Canceled)"
 
