@@ -26,8 +26,9 @@ TL;DR:
 
 Quy trình được tài liệu hóa trong [getting started](/vi/docs/getting-started/)
 gồm đúng các bước: tải app, mở app, nhìn sang activity bar bên phải và bấm icon
-⚡. Đến phần "first run", tài liệu viết đúng một câu đáng nhớ: "There's no step
-5, really." Không phải vì tài liệu lười — vì không còn gì để hướng dẫn nữa.
+⚡. Đến phần lần chạy đầu, tài liệu viết đúng một câu đáng nhớ — "Thật ra không
+có bước 5." ("There's no step 5, really."). Không phải vì tài liệu lười — vì
+không còn gì để hướng dẫn nữa.
 
 Cụ thể: lúc đầu tiên bạn chạy Wakii, workflow kit — gồm skills, định nghĩa agent,
 và các công cụ dòng lệnh `story-*` — tự lắp vào `~/.claude/` trên máy bạn. Bạn
@@ -88,8 +89,8 @@ chạy lại lần thứ hai, lần thứ mười, lần thứ một trăm — t
 như chạy một lần. Ba hệ quả thực dụng:
 
 Một, bạn không sợ làm hỏng gì bằng cách khởi động lại. Config sẵn có của bạn
-trong `~/.claude/` — nếu có — không bị ghi đè bừa; kit "không nhân đôi config
-local của bạn" đúng như getting started đã viết.
+trong `~/.claude/` — nếu có — không bị ghi đè bừa; kit "không bao giờ ghi đè
+config local của bạn" đúng như getting started đã viết.
 
 Hai, khi app cập nhật, kit đi theo. Không có bước "upgrade kit" riêng — bộ máy
 và app luôn cùng một phiên bản, vì chúng được phân phối và sync như một. Không

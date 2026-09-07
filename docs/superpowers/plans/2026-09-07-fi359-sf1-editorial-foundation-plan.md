@@ -32,7 +32,7 @@ Foundation-first (tier 0): toàn bộ pattern dùng chung cấp phát sẵn từ
 - **In scope:** 5 file editorial (topic-matrix 20 hàng · claims-registry greppable · style-guide + frontmatter template + tags vocab · evidence-pack + snapshot D8 + hub-store digest · runbook); lint script `scripts/check-blog-content.mjs` (scope 20 slug mới, seed exempt, draft skip); wiring 1 dòng `package.json` sau parity; pilot `zero-setup-agent-team` VI+EN đi hết pipeline.
 - **Out of scope:** 19 bài còn lại (SF-2/3/4); seeds/schema/pages/RSS/sitemap/i18n/parity script/bare `sf-N.md` packs; taxonomy/hero/readingTime/JSON-LD (FI-349); deploy; matrix-completeness check trong lint (việc SF-5); đổi category enum.
 - **Success criteria (observable — từ context pack ACCEPTANCE):**
-  1. Preview build: `/blog/` + `/vi/blog/` thấy 11 bài (10 seed + pilot ngày 20-08 đầu danh sách), badge + mô tả đúng.
+  1. Preview build: `/blog/` + `/vi/blog/` mỗi listing thấy **6 entry** (5 seed + pilot ngày 20-08); tổng blog = **11 post** (10 seed files = 5 slug × 2 locale + pilot). Listing sort `pubDate` **DESC** (mới nhất đầu) → pilot 08-20 render **CUỐI danh sách** (context pack chữ "đầu danh sách" mâu thuẫn với sort READ-ONLY — đã resolve: verify presence + ngày + badge + mô tả, KHÔNG verify vị trí).
   2. Pilot 2 locale: 900-1400 từ prose (D1), TOC anchors, ASCII diagram, link docs đúng locale, tone như seed.
   3. `pnpm build` xanh (parity + lint mới PASS); bài test sai band/thiếu link/claim cấm → lint CHẶN đúng file (test xong xóa).
   4. Thư mục editorial đủ 5 file: registry phân biệt ALLOWED/FORBIDDEN greppable, matrix 20 hàng đủ cột có angle, snapshot D8 có output lệnh thật.
@@ -78,7 +78,7 @@ Foundation-first (tier 0): toàn bộ pattern dùng chung cấp phát sẵn từ
 ## 6. Risks & unknowns
 
 - **Must verify (đã probe Phase 0):** schema/enum ✓ · DOC_SLUGS 5 slugs ✓ · parity script phong cách ✓ · seeds 5 slug ✓ · skills 21/14 ✓ · releases v1.4.198+199 ✓ · hub-store public ✓ · sibling 7 brackets ✓
-- **Unverified assumptions:** (1) ngày listing sort theo pubDate desc — pilot 08-20 phải đầu danh sách (build verify sẽ chứng minh); (2) lint chỉ chạy khi slug có trong cả 2 locale? — KHÔNG: lint chạy per-file trên slug ∈ 20 mới; parity chạy trước đã bảo đảm pairs, nên bài nửa-cặp không bao giờ tới lint; (3) VI docs trang tồn tại cho cả 5 DOC_SLUGS (context pack khẳng định, SF-5 re-check resolve).
+- **Unverified assumptions:** (1) ngày listing sort theo pubDate **DESC** — pilot 08-20 render CUỐI danh sách (mới nhất đầu); ACCEPTANCE đọc theo presence + ngày + badge, không phải vị trí (plan-critic + code-reviewer đã chốt cách đọc này); (2) lint chỉ chạy khi slug có trong cả 2 locale? — KHÔNG: lint chạy per-file trên slug ∈ 20 mới; parity chạy trước đã bảo đảm pairs, nên bài nửa-cặp không bao giờ tới lint; (3) VI docs trang tồn tại cho cả 5 DOC_SLUGS (đã verify Phase 0).
 - **Rollback:** mỗi task 1 commit — revert đơn lẻ được; lint hỏng build thì gỡ 1 dòng wiring là build sạch lại.
 
 ## Execution tracker (tick sau mỗi commit)
