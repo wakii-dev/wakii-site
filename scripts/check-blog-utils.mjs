@@ -3,7 +3,8 @@
  * Build-time assertion: blog shared utils against the REAL 10 posts
  * (story FI-349 SF-1 demo — "node assert utils" at util level).
  *
- * Imports src/utils/blog.ts directly (node ≥23.6 strips TS types natively;
+ * Imports src/utils/blog.ts directly (node ≥22.18 strips TS types natively
+ * without flags — 23.6+ unflagged; CI pins 22 in ci.yml/deploy.yml;
  * the util module is deliberately self-contained — no astro:content).
  *
  * Asserts, per spec rev 3 §SF-1:
