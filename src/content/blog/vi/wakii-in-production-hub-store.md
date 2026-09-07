@@ -16,7 +16,7 @@ nằm công khai trên GitHub, trong repo `wakii-dev/hub-store`. Bạn không ph
 lời ai: mở từng link, đọc đúng đoạn được trích nguyên văn trong bài, tự kết
 luận. Một ghi chú trung thực: bài ký ngày 04-09 theo lịch đăng, còn các trích
 dẫn và lệnh kiểm dưới đây được thực hiện ngày 07-09 khi bài được viết. Bài đi
-qua bốn chặn: dự án là gì, hành trình qua các bracket, quy mô đọc được từ
+qua bốn chặng: dự án là gì, hành trình qua các bracket, quy mô đọc được từ
 artifact, và vì sao kiểu dẫn chứng này chịu được thời gian.
 
 TL;DR:
@@ -101,13 +101,11 @@ kèm nguyên văn một đoạn trong file, lấy 2026-09-07:
    Mảnh dẫn chứng đắt giá vì quá cụ thể: commit `d107f2f`, 7 trên 7 port, 25
    e2e spec.
 
-6. Story đang chạy là fi338-dispatch-queue. Bracket của nó là file local, chưa
-   lên GitHub main — nên bài này không link bracket, mà link spec design đã có
-   trên main:
-   [specs/2026-09-07-dispatch-queue-design.md](https://github.com/wakii-dev/hub-store/blob/main/docs/superpowers/specs/2026-09-07-dispatch-queue-design.md),
-   với dòng "SF-1 Data & contract foundation" — nền dữ liệu và contract đi
-   trước: migration V15 thêm recipient/read_at vào bảng notification_log,
-   permission keys `dispatch.view/assign`.
+6. Story đang chạy là fi338-dispatch-queue. Artifact của nó — bracket lẫn spec
+   design — vẫn là file local, chưa lên GitHub main tại thời điểm viết, nên bài
+   này không link và không trích dẫn: tiêu chuẩn của bài là mỗi link phải mở
+   được và mỗi trích dẫn phải đối chiếu được. fi338 sẽ được kể khi artifact của
+   nó công khai.
 
 Timeline vẽ lại từ danh sách trên:
 
@@ -125,8 +123,7 @@ fi338-dispatch-queue            đang chạy                   6
                                                     74 SF
 ```
 
-*Nguồn: 6 bracket + 1 spec trên GitHub main `wakii-dev/hub-store`, lấy
-2026-09-07.*
+*Nguồn: 6 bracket trên GitHub main `wakii-dev/hub-store`, lấy 2026-09-07.*
 
 ## Quy mô đọc được từ artifact
 
@@ -143,7 +140,9 @@ từng bracket:
 | fi326-api-docs-swagger (FI-326) | 9 |
 | fi338-dispatch-queue (FI-338, đang chạy) | 6 |
 
-*Nguồn: evidence-pack FI-359 (D3), đối chiếu GitHub main, lấy 2026-09-07.*
+*Nguồn: các bracket công khai trên GitHub main `wakii-dev/hub-store`; riêng
+hàng fi338 (bracket chưa public) lấy từ digest dự án trong evidence-pack story
+FI-359, lấy 2026-09-07.*
 
 Cộng lại: 7+11+28+5+8+9+6 = 74 SF — phép cộng đơn giản, bạn tự làm lại được.
 Bracket duy nhất chưa xuất hiện ở mục trước là fi326, và nó viết theo đúng khuôn
@@ -186,7 +185,7 @@ bài viết ── link ──► file trên GitHub main
         khớp = lời đúng · lệch = file đã đổi
 ```
 
-*Nguồn: cấu trúc của chính bài này — 7 link GitHub, 7 trích dẫn nguyên văn,
+*Nguồn: cấu trúc của chính bài này — 6 link GitHub, 6 trích dẫn nguyên văn,
 2026-09-07.*
 
 Trên blog này, hai bài đi cùng góc nhìn: [case study: chính blog này là một

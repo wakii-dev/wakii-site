@@ -112,13 +112,11 @@ comes with a verbatim passage from the file, retrieved 2026-09-07:
    evidence, because it is so specific: commit `d107f2f`, 7 of 7 ports, 25 e2e
    specs.
 
-6. The running story is fi338-dispatch-queue. Its bracket is a local file, not
-   yet on GitHub main — so this post does not link the bracket; it links the
-   design spec that is on main:
-   [specs/2026-09-07-dispatch-queue-design.md](https://github.com/wakii-dev/hub-store/blob/main/docs/superpowers/specs/2026-09-07-dispatch-queue-design.md),
-   with the line "SF-1 Data & contract foundation" — data and contract first:
-   migration V15 adds recipient/read_at to notification_log, permission keys
-   `dispatch.view/assign`.
+6. The running story is fi338-dispatch-queue. Its artifacts — both the bracket
+   and the design spec — are still local files, not on GitHub main at the time
+   of writing, so this post neither links nor quotes them: the post's standard
+   is that every link must open and every quote must be checkable. fi338 gets
+   its telling when its artifacts go public.
 
 The timeline, redrawn from the list above:
 
@@ -136,7 +134,7 @@ fi338-dispatch-queue            running                     6
                                                     74 SF
 ```
 
-*Source: 6 brackets + 1 spec on GitHub main `wakii-dev/hub-store`, retrieved
+*Source: 6 brackets on GitHub main `wakii-dev/hub-store`, retrieved
 2026-09-07.*
 
 ## Scale you can read from artifacts
@@ -154,8 +152,9 @@ files themselves. The table below counts SFs per bracket:
 | fi326-api-docs-swagger (FI-326) | 9 |
 | fi338-dispatch-queue (FI-338, running) | 6 |
 
-*Source: FI-359 evidence pack (D3), cross-checked against GitHub main,
-retrieved 2026-09-07.*
+*Source: the public brackets on GitHub main `wakii-dev/hub-store`; the fi338
+row (bracket not yet public) comes from the project digest in the FI-359
+evidence pack, retrieved 2026-09-07.*
 
 The sum: 7+11+28+5+8+9+6 = 74 SFs — simple arithmetic you can redo. The one
 bracket not yet shown above is fi326, and it follows the same template:
@@ -200,7 +199,7 @@ this post ── link ──► file on GitHub main
       match = words hold · mismatch = file changed
 ```
 
-*Source: the structure of this post itself — 7 GitHub links, 7 verbatim
+*Source: the structure of this post itself — 6 GitHub links, 6 verbatim
 quotes, 2026-09-07.*
 
 Two posts on this blog share the same angle: [the case study of this very
