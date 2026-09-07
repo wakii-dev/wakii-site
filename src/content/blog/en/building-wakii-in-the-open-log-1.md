@@ -15,9 +15,9 @@ The biggest feature to close: story view on mobile. Pair your phone with the des
 
 ## Release 1.4.199
 
-On September 5th we cut three releases back to back — 1.4.197, 1.4.198, 1.4.199 — small, frequent steps instead of one big version you wait for. 1.4.199 is the current release; the Android build rides along at tag `mobile-android-v0.0.48`. If you're on an older version, the download page has everything.
+On September 5th we cut three releases back to back — 1.4.197, 1.4.198, 1.4.199 — small, frequent steps instead of one big version you wait for. 1.4.199 is the current release; the Android build rides along at tag `mobile-android-v0.0.48`. If you're on an older version, the [download page](/download/) has everything.
 
-## The blog you're reading is itself
+## The blog you're reading is itself a running story
 
 The most meta part of the week: this blog is being built with the exact process it describes. Story FI-339 is running: SF-1 (the SEO surface — OG cards, RSS, a TOC for long posts, bilingual slug checks) is merged; SF-2 is the ten posts you're reading right now — written in Vietnamese first, translated to English, slugs locked identical across both languages; SF-3 will sweep QA across the whole site before the story closes as a single PR.
 

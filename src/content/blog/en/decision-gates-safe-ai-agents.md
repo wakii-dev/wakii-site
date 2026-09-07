@@ -7,7 +7,7 @@ tags: ["gates", "guardrails", "supervised"]
 draft: false
 ---
 
-The question we hear most: "Why not just let the agent run the whole thing?" Wakii's answer: the agent runs the entire doing — but consequential decisions stop at a gate. This post dissects the machinery behind that stop.
+The question we hear most: "Why not just let the agent run the whole thing?" Wakii's answer: the agent does all of the doing — but consequential decisions stop at a gate. This post dissects the machinery behind that stop.
 
 ## What a gate is
 

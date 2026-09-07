@@ -13,7 +13,7 @@ Agents do their best work when they can run long — but consequential decisions
 
 First, pair the phone with your host: open Wakii on desktop, go to the pairing screen and scan the QR code with the mobile app — the host's full state (stories, agents, gates) shows up right after the scan. Pair once per host; the next time you open the app you go straight to the work.
 
-No Wakii on your machine yet? The canonical setup guide lives in [getting started](/docs/getting-started/) — from clone to the ⚡ Superpowers panel in minutes.
+No Wakii on your machine yet? The official setup guide lives in [getting started](/docs/getting-started/) — from clone to the ⚡ Superpowers panel in minutes.
 
 ## Open the Stories tab and read progress
 
