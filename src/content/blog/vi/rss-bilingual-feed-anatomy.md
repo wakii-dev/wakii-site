@@ -53,10 +53,10 @@ ngày xuất bản.
 ```ascii
 getCollection('blog', !draft), sort DESC theo pubDate
 ────────────────────────────────────────────────────
-bài VI ngày 06-09   ┐
-bài EN ngày 06-09   │   mảng posts — MỘT mảng duy nhất
-bài VI ngày 05-09   │   chứa cả hai locale
-bài EN ngày 05-09   ┘
+bài EN ngày 06-09   ┐
+bài VI ngày 06-09   │   mảng posts — MỘT mảng duy nhất
+bài EN ngày 05-09   │   chứa cả hai locale
+bài VI ngày 05-09   ┘
         │
         ▼
   một feed: /rss.xml — items xen kẽ theo ngày

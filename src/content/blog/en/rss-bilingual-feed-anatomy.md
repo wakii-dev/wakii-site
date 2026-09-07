@@ -57,10 +57,10 @@ publication date.
 ```ascii
 getCollection('blog', !draft), sort DESC by pubDate
 ────────────────────────────────────────────────────
-VI post, Sep 06   ┐
-EN post, Sep 06   │   the posts array — ONE array
-VI post, Sep 05   │   holding both locales
-EN post, Sep 05   ┘
+EN post, Sep 06   ┐
+VI post, Sep 06   │   the posts array — ONE array
+EN post, Sep 05   │   holding both locales
+VI post, Sep 05   ┘
         │
         ▼
   one feed: /rss.xml — items interleaved by date
