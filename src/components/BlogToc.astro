@@ -1,0 +1,75 @@
+---
+/**
+ * Blog table of contents — h2 only, rendered when the post has >= 3 h2
+ * (long-form gate). Anchors use the ids Astro's markdown pipeline generates:
+ * `headings[].slug` (from `render()`) equals the id attribute on the
+ * rendered <h2> (verified: `<h2 id="kebab-case">` in dist docs pages).
+ */
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  /** headings array from `await render(entry)` — filtered to h2 here. */
+  headings: Heading[];
+  /** Box label — locale-dependent (EN "Contents" / VI "Nội dung"). */
+  label?: string;
+}
+
+const { headings, label = 'Contents' } = Astro.props;
+const items = headings.filter((h) => h.depth === 2);
+const show = items.length >= 3;
+---
+
+{
+  show && (
+    <nav class="toc" aria-label="toc">
+      <p class="toc-label">{label}</p>
+      <ul>
+        {items.map((h) => (
+          <li>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 0 28px;
+    font-family: var(--font-mono);
+  }
+  .toc-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin: 0 0 10px;
+  }
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc li {
+    margin: 0 0 6px;
+  }
+  .toc li:last-child {
+    margin-bottom: 0;
+  }
+  .toc a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .toc a:hover {
+    color: var(--accent);
+  }
+</style>
