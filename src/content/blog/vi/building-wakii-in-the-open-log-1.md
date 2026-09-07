@@ -11,7 +11,7 @@ draft: false
 
 ## Đã ship: FI-305 — story ngay trên điện thoại
 
-Tính năng lớn nhất vừa khép: story view trên bản mobile. Bạn pair điện thoại với desktop bằng mã QR, mở tab Stories và thấy mọi story đang chạy — sub-feature xếp theo tier, tiến độ từng SF, agent nào đang giữ worktree nào. Decision gates resolve được ngay trên màn hình điện thoại, kèm notification khi gate mở và khi gate đóng. Agent không còn đứng chờ bạn quay lại bàn phím.
+Tính năng lớn nhất vừa khép: story view trên bản mobile. Bạn pair điện thoại với desktop bằng mã QR, mở tab Stories và thấy mọi story đang chạy — sub-feature xếp theo tier, tiến độ từng SF, agent nào đang giữ worktree nào. Trong story detail, bracket đang chạy hiện thật rõ: tier nào đã khép, tier nào đang chạy, gate nào đang chờ. Decision gates resolve được ngay trên màn hình điện thoại, kèm notification khi gate mở và khi gate đóng. Agent không còn đứng chờ bạn quay lại bàn phím.
 
 ## Release 1.4.199
 
@@ -23,6 +23,6 @@ Phần meta nhất của tuần: blog này đang được xây bằng đúng quy
 
 ## Bước tiếp theo
 
-SF-3 hội tụ, story FI-339 khép bằng một PR duy nhất. Sau đó: chuỗi log này tiếp tục, và các story tiếp theo đã xếp hàng chờ.
+SF-3 hội tụ, story FI-339 khép bằng một PR duy nhất. Sau đó: chuỗi log này tiếp tục, và các story tiếp theo đã xếp hàng chờ. Chủ đề cho các log sau đã có sẵn: story workflow trong thực chiến, chi phí thật của việc fork một IDE, và những con số đằng sau bản release đầu tiên.
 
 Muốn thử những điều trên bằng chính tay mình, hướng dẫn [getting started](/docs/getting-started/) đưa bạn từ clone đến ⚡ Superpowers panel trong vài phút.

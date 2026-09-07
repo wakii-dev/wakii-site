@@ -11,7 +11,7 @@ This is the first entry in a periodic series logging the building of Wakii — w
 
 ## Shipped: FI-305 — stories on your phone
 
-The biggest feature to close: story view on mobile. Pair your phone with the desktop over a QR code, open the Stories tab and watch every running story — sub-features stacked by tier, progress per SF, which agent holds which worktree. Decision gates resolve right on the phone, with notifications when a gate opens and when it closes. Agents no longer stand still waiting for you to walk back to the keyboard.
+The biggest feature to close: story view on mobile. Pair your phone with the desktop over a QR code, open the Stories tab and watch every running story — sub-features stacked by tier, progress per SF, which agent holds which worktree. The story detail lays out the live bracket: which tiers have closed, which tier is running, which gate is waiting. Decision gates resolve right on the phone, with notifications when a gate opens and when it closes. Agents no longer stand still waiting for you to walk back to the keyboard.
 
 ## Release 1.4.199
 
@@ -23,6 +23,6 @@ The most meta part of the week: this blog is being built with the exact process 
 
 ## What's next
 
-SF-3 converges, story FI-339 closes as one PR. After that: this log series continues, and the next stories are already in line.
+SF-3 converges, story FI-339 closes as one PR. After that: this log series continues, and the next stories are already in line. Topics for the coming logs are stacked and ready: the story workflow in real combat, the true cost of forking an IDE, and the numbers behind the first release.
 
 To try all of this with your own hands, [getting started](/docs/getting-started/) takes you from clone to the ⚡ Superpowers panel in minutes.

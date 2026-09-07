@@ -11,7 +11,7 @@ Agents do their best work when they can run long — but consequential decisions
 
 ## Step 0 — Pair your phone with your desktop
 
-Before you can read anything, pair the phone with your host. Open Wakii on desktop, go to the pairing screen and scan the QR code with the mobile app — the host's full state (running stories, agents, gates) shows up on your phone right after the scan. Pair once per host; the next time you open the app you go straight to the work.
+First, pair the phone with your host: open Wakii on desktop, go to the pairing screen and scan the QR code with the mobile app — the host's full state (stories, agents, gates) shows up right after the scan. Pair once per host; the next time you open the app you go straight to the work.
 
 No Wakii on your machine yet? The canonical setup guide lives in [getting started](/docs/getting-started/) — from clone to the ⚡ Superpowers panel in minutes.
 
@@ -27,7 +27,7 @@ Everywhere else, the agent keeps running. That's the supervised model: the agent
 
 ## Resolve the gate on the spot
 
-Every gate carries a concrete question. Choice gates list the options — tap to pick one. Free-text gates take a typed answer. Read, hit resolve, confirm — the answer flies back to the agent and the story resumes immediately. Resolving twice, or resolving a closed gate, gets rejected by a guard with an explicit error code; nothing is silently swallowed. A gate-closed notification confirms the wait is over.
+Every gate carries a concrete question. Choice gates list the options — tap to pick one. Free-text gates take a typed answer. Hit resolve, confirm — the answer flies back to the agent and the story resumes. Resolving twice, or resolving a closed gate, gets rejected by a guard with an explicit error code; nothing is silently swallowed. A gate-closed notification confirms the wait is over.
 
 ## What changes when review lives in your pocket
 
