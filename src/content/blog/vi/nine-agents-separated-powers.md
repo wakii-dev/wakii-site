@@ -78,7 +78,7 @@ một case đúng dạng này:
 *Nguồn: `src/content/docs/vi/story-workflow.md` nguyên tắc 2 "Team model tách bạch ba vai", lấy 2026-09-07.*
 
 Case không phải ví dụ minh hoạ. Theo audit trail của story FI-300 — story
-blog features của chính site này — sub-feature đã được executor báo DONE,
+downloads + mobile connect của chính site này — sub-feature đã được executor báo DONE,
 và reviewer độc lập vẫn tìm ra một rule scoped-style đã chết cùng một lỗi
 escape trong đúng phần việc đó. Hai lỗi nằm ở những chỗ tác giả nhìn mãi
 mà không thấy: style nó vừa viết, chuỗi nó vừa escape. Reviewer không giỏi

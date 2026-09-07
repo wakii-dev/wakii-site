@@ -83,7 +83,7 @@ shape:
 *Nguồn: `src/content/docs/en/story-workflow.md` principle 2 "A team with separated powers", lấy 2026-09-07.*
 
 The case is not an illustration. According to the audit trail of story
-FI-300 — the blog-features story of this very site — a sub-feature had been
+FI-300 — the downloads-and-mobile story of this very site — a sub-feature had been
 reported DONE by its executor, and the independent reviewer still found a
 dead scoped-style rule and an escaping issue in exactly that work. Both
 bugs sat where authors stop looking: the style block it had just written,
