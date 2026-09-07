@@ -83,7 +83,7 @@ Foundation-first (tier 0): toàn bộ pattern dùng chung cấp phát sẵn từ
 
 ## Execution tracker (tick sau mỗi commit)
 
-- [ ] T1 topic-matrix.md (20 hàng × 8 cột, D2 pubDate, D6 3/13/4)
+- [x] T1 topic-matrix.md (20 hàng × 8 cột, D2 pubDate, D6 3/13/4)
 - [ ] T2 claims-registry.md (ALLOWED/FORBIDDEN greppable + variants review-only + D8)
 - [ ] T3 style-guide.md (structure + D1 PIN + frontmatter template + tags vocab)
 - [ ] T4 evidence-pack.md (snapshot D8 đầu file + hub-store digest verified)
