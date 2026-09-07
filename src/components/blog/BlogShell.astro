@@ -1,0 +1,198 @@
+---
+/**
+ * Shared blog shell (story FI-349 SF-3 — B+C hybrid hand-off): the sticky
+ * journal rail (identity + vertical category nav + rss meta) beside a
+ * content stream slot. Both surfaces render through it — the /blog/ listing
+ * and every /blog/category/<cat>/ page, EN + VI. Counts come from the page
+ * (draft-filtered, per locale); labels from the SF-1 shared map.
+ */
+import { BLOG_CATEGORIES, categoryLabel, type BlogLocale } from './categories';
+import type { BlogStrings } from './strings';
+
+interface Props {
+  locale: BlogLocale;
+  strings: BlogStrings;
+  /** Rail title without the trailing dot — "blog" on the listing, else the category label */
+  title: string;
+  /** Rail sub-line — listing mission or category descriptor */
+  subtitle: string;
+  /** null = all posts (listing); otherwise the active category */
+  activeCategory: string | null;
+  /** { all: n, tutorial: n, tech: n, 'build-log': n } — draft-filtered, per locale */
+  categoryCounts: Record<string, number>;
+  /** Rail meta first line — "updated 2026-09-07" | "3 entries · newest first" */
+  metaLine: string;
+}
+
+const { locale, strings, title, subtitle, activeCategory, categoryCounts, metaLine } = Astro.props;
+const base = locale === 'vi' ? '/vi/blog' : '/blog';
+---
+<div class="shell">
+  <aside class="rail">
+    <h1 class="r-title">{title}<span class="dot">.</span></h1>
+    <p class="r-sub">{subtitle}</p>
+    <nav class="r-nav" aria-label={strings.categoriesAria}>
+      <a
+        href={`${base}/`}
+        class:list={[activeCategory === null && 'on']}
+        aria-current={activeCategory === null ? 'page' : undefined}
+      >
+        {strings.all}<i>{categoryCounts.all ?? 0}</i>
+      </a>
+      {
+        BLOG_CATEGORIES.map((cat) => (
+          <a
+            href={`${base}/category/${cat}/`}
+            class:list={[activeCategory === cat && 'on']}
+            aria-current={activeCategory === cat ? 'page' : undefined}
+          >
+            {categoryLabel(cat, locale)}<i>{categoryCounts[cat] ?? 0}</i>
+          </a>
+        ))
+      }
+    </nav>
+    <div class="r-meta">
+      {metaLine}<br />
+      <a href="/rss.xml">{strings.rssFeed}</a>
+    </div>
+  </aside>
+  <div class="stream">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .shell {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 60px 24px 96px;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+  }
+  .rail {
+    position: sticky;
+    top: 92px; /* site nav 58px + breathing room */
+  }
+  .r-title {
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0;
+  }
+  .r-title .dot {
+    color: var(--accent);
+  }
+  .r-sub {
+    color: var(--text-dim);
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin: 12px 0 0;
+  }
+  .r-nav {
+    margin-top: 32px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .r-nav a {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 9px 2px 9px 22px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .r-nav a::before {
+    content: '▸';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .r-nav a i {
+    font-style: normal;
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .r-nav a:hover {
+    color: var(--accent);
+  }
+  .r-nav a.on {
+    color: var(--accent);
+  }
+  .r-nav a.on::before {
+    opacity: 1;
+  }
+  .r-meta {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    line-height: 2;
+  }
+  .r-meta a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .r-meta a:hover {
+    color: var(--accent);
+  }
+  .stream {
+    min-width: 0;
+  }
+
+  /* rail collapse — rail becomes a top block, nav lays out as a chip row */
+  @media (max-width: 800px) {
+    .shell {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      padding: 48px 20px 72px;
+    }
+    .rail {
+      position: static;
+      margin-bottom: 36px;
+    }
+    .r-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 2px 24px;
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 20px;
+    }
+    .r-nav a {
+      padding: 6px 0 6px 16px;
+    }
+    .r-meta {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 8px;
+      display: flex;
+      gap: 24px;
+      line-height: 1.8;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .r-nav a,
+    .r-nav a::before,
+    .r-meta a {
+      transition: none;
+    }
+  }
+</style>
