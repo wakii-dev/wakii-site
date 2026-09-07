@@ -1,0 +1,584 @@
+---
+/**
+ * Blog detail layout (FI-349 SF-2) — docs-shell mirror. Direction D7 (spec
+ * rev 3): detail pages look/act like /docs/faq/ — DocsLayout.astro as-built
+ * is the visual reference (READ-ONLY; styles below are copied, not shared).
+ *
+ * This layout OWNS the full article shell (crumb, h1, meta, hero, prose +
+ * BlogToc, related, after-CTA, pager) so the EN/VI route files stay thin
+ * (getStaticPaths + render + <Content /> slot) — locale-conditional markup
+ * is written once here instead of mirrored per locale.
+ *
+ * og contract (PINNED, spec FI-339 rev 2): posts are articles — ogType=
+ * "article" + publishedTime + og:image absolute via new URL(ogImage,
+ * Astro.site) in Base. FI-349 SF-1 wiring: ogImage is the post heroImage
+ * when declared, else the /og-default.png fallback (building-wakii-…-log-1
+ * exercises the fallback on purpose).
+ */
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import BlogToc from '../components/BlogToc.astro';
+import LangSwitcher from '../components/LangSwitcher.astro';
+import '../styles/motion.css';
+import { getCollection } from 'astro:content';
+import { blogLocale, blogSlug } from '../content.config';
+import { postReadingTime, relatedPosts } from '../utils/blog';
+import { CATEGORY_LABELS } from '../i18n/categories';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  /** Full blog entry — locale derives from the id prefix (en/ | vi/). */
+  entry: CollectionEntry<'blog'>;
+  /** headings array from `await render(entry)` — passed straight to BlogToc. */
+  headings: Heading[];
+}
+
+const { entry, headings } = Astro.props;
+const locale = blogLocale(entry.id);
+const slug = blogSlug(entry.id);
+const date = entry.data.pubDate.toISOString().slice(0, 10);
+
+/** Locale strings — VI mirrors EN (no new claims; pre-existing copy kept). */
+const UI: Record<
+  'en' | 'vi',
+  {
+    navLabel: string;
+    pagerLabel: string;
+    contents: string;
+    related: string;
+    readTime: (minutes: number) => string;
+    pitch: string;
+    cta: string;
+    back: string;
+  }
+> = {
+  en: {
+    navLabel: 'Blog navigation',
+    pagerLabel: 'Blog pagination',
+    contents: 'Contents',
+    related: 'Related posts',
+    readTime: (m) => `${m} min read`,
+    pitch: 'Wakii is an agentic IDE with a built-in superpowers team.',
+    cta: 'get wakii',
+    back: '← all posts',
+  },
+  vi: {
+    navLabel: 'Điều hướng blog',
+    pagerLabel: 'Phân trang bài viết',
+    contents: 'Nội dung',
+    related: 'Bài liên quan',
+    readTime: (m) => `${m} phút đọc`,
+    pitch: 'Wakii là IDE agentic với đội AI agent superpowers đi kèm.',
+    cta: 'tải wakii',
+    back: '← tất cả bài viết',
+  },
+};
+const ui = UI[locale];
+
+/**
+ * Sidebar + pager pool — same locale, draft:false (mirrors getStaticPaths of
+ * the route files), newest first. Slug is the secondary sort key so equal
+ * pubDates (the seed has 2 posts/day) order deterministically.
+ */
+const posts = (
+  await getCollection('blog', (b) => b.id.startsWith(`${locale}/`) && !b.data.draft)
+).sort(
+  (a, b) =>
+    b.data.pubDate.getTime() - a.data.pubDate.getTime() ||
+    blogSlug(a.id).localeCompare(blogSlug(b.id)),
+);
+
+const href = (s: string) => (locale === 'vi' ? `/vi/blog/${s}/` : `/blog/${s}/`);
+const listingHref = locale === 'vi' ? '/vi/blog/' : '/blog/';
+
+/**
+ * JSON-LD BlogPosting (spec SF-2) — URLs absolute via new URL(, Astro.site),
+ * same resolution the og contract uses in Base.
+ */
+const postUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: entry.data.title,
+  description: entry.data.description,
+  image: new URL(entry.data.heroImage ?? '/og-default.png', Astro.site).toString(),
+  datePublished: entry.data.pubDate.toISOString(),
+  author: { '@type': 'Organization', name: entry.data.author },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+  url: postUrl,
+};
+
+/** Date pager — "prev" = older (later in the date-desc list), "next" = newer. */
+const idx = posts.findIndex((p) => blogSlug(p.id) === slug);
+const prev = idx >= 0 && idx < posts.length - 1 ? posts[idx + 1] : null;
+const next = idx > 0 ? posts[idx - 1] : null;
+
+/**
+ * LangSwitcher fallback contract: a missing/VI-draft page must link EN, never
+ * a dead /vi/ URL. VI routes come from the same slug contract, but the VI
+ * twin may be a draft or not exist yet — probe the collection instead of
+ * hardcoding true.
+ */
+const viExists =
+  locale === 'vi' ||
+  (await getCollection('blog', (b) => b.id === `vi/${slug}` && !b.data.draft)).length > 0;
+
+/** Related posts — SF-1 fill-chain util (same-locale + draft:false inside). */
+const related = relatedPosts(entry, posts);
+---
+
+<Base
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedTime={entry.data.pubDate.toISOString()}
+  ogImage={entry.data.heroImage ?? '/og-default.png'}
+>
+  <div class="bd-shell">
+    <aside class="bd-sidebar">
+      <div class="bd-eyebrow">~/blog</div>
+      <nav aria-label={ui.navLabel}>
+        <ul>
+          {posts.map((p, i) => {
+            const s = blogSlug(p.id);
+            return (
+              <li>
+                <a href={href(s)} aria-current={s === slug ? 'page' : undefined}>
+                  <span class="bd-idx">{String(i + 1).padStart(2, '0')}</span>
+                  {p.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <div class="bd-lang">
+        <LangSwitcher viExists={viExists} />
+      </div>
+    </aside>
+    <article class="bd-article">
+      <div class="bd-crumb"><a href={listingHref}>~/blog</a>/{slug}</div>
+      <div class="bd-meta">
+        <time datetime={entry.data.pubDate.toISOString()}>{date}</time>
+        <span class="bd-cat">
+          {CATEGORY_LABELS[locale][entry.data.category] ?? entry.data.category}
+        </span>
+        {entry.data.tags.map((tag) => <span class="bd-tag">#{tag}</span>)}
+        <span class="bd-author">{entry.data.author}</span>
+        <span class="bd-read">{ui.readTime(postReadingTime(entry))}</span>
+      </div>
+      <h1>{entry.data.title}</h1>
+      {entry.data.heroImage && (
+        <img
+          class="bd-hero"
+          src={entry.data.heroImage}
+          width={1200}
+          height={630}
+          loading="eager"
+          alt={entry.data.title}
+        />
+      )}
+      <div class="prose">
+        <BlogToc headings={headings} label={ui.contents} />
+        <slot />
+      </div>
+      {related.length > 0 && (
+        <section class="bd-related">
+          <h2 class="bd-related-title">{ui.related}</h2>
+          <ul>
+            {related.map((r) => (
+              <li>
+                <a href={href(blogSlug(r.id))}>
+                  <span class="bd-related-post">{r.data.title}</span>
+                  <time datetime={r.data.pubDate.toISOString()}>
+                    {r.data.pubDate.toISOString().slice(0, 10)}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      <div class="bd-after">
+        <p>{ui.pitch}</p>
+        <a class="bd-cta" href={locale === 'vi' ? '/vi/download/' : '/download/'}>{ui.cta}</a>
+        <a class="bd-back" href={listingHref}>{ui.back}</a>
+      </div>
+      <nav class="bd-pager" aria-label={ui.pagerLabel}>
+        <span class="bd-pager-cell">
+          {prev && (
+            <a class="bd-pager-link" href={href(blogSlug(prev.id))}>
+              <span class="bd-pager-dir">← prev</span>
+              {prev.data.title}
+            </a>
+          )}
+        </span>
+        <span class="bd-pager-cell bd-pager-right">
+          {next && (
+            <a class="bd-pager-link" href={href(blogSlug(next.id))}>
+              <span class="bd-pager-dir">next →</span>
+              {next.data.title}
+            </a>
+          )}
+        </span>
+      </nav>
+    </article>
+  </div>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonld)} />
+</Base>
+
+<script>
+  // Light reveal — fade-in nhẹ per prose block khi scroll (pattern DocsLayout).
+  // Tag TRƯỚC initMotion() (observer quét lúc init). Reduced-motion:
+  // initMotion early-return + .anim gate → static visible. motion.ts dùng
+  // as-is (FI-349 boundary — không đụng core).
+  import { initMotion, revealChildren } from '../components/motion';
+  const article = document.querySelector('.bd-article');
+  if (article) {
+    revealChildren(article, '.prose > *');
+    initMotion();
+  }
+</script>
+
+<style>
+  .bd-shell {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 32px 128px;
+  }
+  .bd-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .bd-eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .bd-eyebrow::before {
+    content: '$ ';
+    color: var(--accent);
+  }
+  /* Sidebar list — copied from DocsLayout (border-left rail, mint current). */
+  .bd-sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-left: 1px solid var(--border);
+  }
+  .bd-sidebar a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 12px;
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-left: 1px solid transparent;
+    margin-left: -1px;
+  }
+  .bd-sidebar a:hover {
+    color: var(--text);
+  }
+  .bd-sidebar a[aria-current='page'] {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .bd-sidebar .bd-idx {
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+  .bd-sidebar a[aria-current='page'] .bd-idx {
+    color: var(--accent-dim);
+  }
+  .bd-lang {
+    font-family: var(--font-display);
+    font-size: 11px;
+  }
+  .bd-article {
+    min-width: 0;
+  }
+  .bd-crumb {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 20px;
+  }
+  .bd-crumb::before {
+    content: '$ cat ';
+    color: var(--accent);
+  }
+  .bd-crumb a {
+    color: var(--text-faint);
+  }
+  .bd-crumb a:hover {
+    color: var(--accent);
+  }
+  /* Meta row — date · category label (plain, no link: SF-4 wires it) ·
+     tags (plain chips, no tag pages in scope) · author · reading time. */
+  .bd-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: baseline;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+  .bd-cat {
+    color: var(--accent);
+  }
+  .bd-tag {
+    color: var(--accent-dim);
+  }
+  .bd-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    margin: 0 0 28px;
+  }
+  /* Related posts — right after the prose (tail order pin: prose → related
+     → after-CTA → pager). */
+  .bd-related {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .bd-related-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0 0 14px;
+  }
+  .bd-related ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bd-related a {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .bd-related-post {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    color: var(--text);
+    min-width: 0;
+  }
+  .bd-related a:hover .bd-related-post {
+    color: var(--accent);
+  }
+  .bd-related time {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--text-faint);
+    flex-shrink: 0;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.5vw, 36px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+  /* Prose (markdown body) — scoped-global vì Content render vào slot.
+     Copied from DocsLayout (docs-shell direction). */
+  .bd-article :global(.prose) {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+  .bd-article :global(.prose h2) {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .bd-article :global(.prose h3) {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--text);
+    margin: 28px 0 8px;
+  }
+  .bd-article :global(.prose p) {
+    margin: 0 0 14px;
+  }
+  .bd-article :global(.prose a) {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .bd-article :global(.prose a:hover) {
+    text-decoration: underline;
+  }
+  .bd-article :global(.prose ul),
+  .bd-article :global(.prose ol) {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+  .bd-article :global(.prose li) {
+    margin-bottom: 6px;
+  }
+  .bd-article :global(.prose code) {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--text);
+  }
+  .bd-article :global(.prose pre) {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 18px;
+  }
+  .bd-article :global(.prose pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .bd-article :global(.prose img) {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  .bd-article :global(.prose blockquote) {
+    border-left: 2px solid var(--accent-dim);
+    margin: 0 0 14px;
+    padding-left: 14px;
+    color: var(--text-faint);
+  }
+  .bd-article :global(.prose hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+  .bd-after {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-display);
+  }
+  .bd-after p {
+    font-size: 13px;
+    color: var(--text-faint);
+    margin: 0 0 12px;
+  }
+  .bd-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg-deep);
+    border-radius: var(--radius-btn);
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 16px;
+  }
+  .bd-back {
+    color: var(--text-faint);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .bd-back:hover {
+    color: var(--accent);
+  }
+  /* Date pager — copied from DocsLayout (← prev / next →, mono links). */  .bd-pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .bd-pager-cell {
+    min-width: 0;
+  }
+  .bd-pager-right {
+    text-align: right;
+  }
+  .bd-pager-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .bd-pager-right .bd-pager-link {
+    align-items: flex-end;
+  }
+  .bd-pager-link:hover {
+    color: var(--accent);
+  }
+  .bd-pager-dir {
+    font-size: 11px;
+    color: var(--accent-dim);
+  }
+  @media (max-width: 800px) {
+    .bd-shell {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 48px 20px 96px;
+    }
+    /* Reading-first on mobile: article lên trên, sidebar (list + lang)
+       xuống dưới (context pack: "sidebar xuống dưới/ẩn hợp lý"). */
+    .bd-sidebar {
+      position: static;
+      order: 2;
+    }
+    .bd-article {
+      order: 1;
+    }
+  }
+  /* Reveal nhẹ hơn bxreveal (28px quá mạnh cho prose) — vẫn transform/opacity
+     only; kill-switch prefers-reduced-motion vẫn thắng. Prose children nhận
+     class .reveal (revealChildren) nên dùng .reveal-in. */
+  .bd-article :global(.reveal-in) {
+    animation: bdreveal 0.45s ease both;
+  }
+  @keyframes bdreveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
