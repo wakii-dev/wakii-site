@@ -88,7 +88,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
 
 ### Tasks (ordered — mỗi task 1 commit, tick `[x]` sau khi xong)
 
-- [ ] **T1 — `long-tasks-bracket-tiers`** (tech · 2026-08-27 · docs-link story-workflow ·
+- [x] **T1 — `long-tasks-bracket-tiers`** (tech · 2026-08-27 · docs-link story-workflow ·
   tags: story-workflow, workflow, linear)
   Angle: "Bracket là bản đồ dự án dài" · "So quy mô hai bracket thật". Evidence: bracket
   FI-339 thật trong repo `docs/superpowers/brackets/fi339-blog-features.md` (3 SF: tier 0
