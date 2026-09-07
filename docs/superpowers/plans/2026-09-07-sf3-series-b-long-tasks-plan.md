@@ -102,7 +102,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   EN "### 5. Tiers and one destination branch". Cross-link: seed
   story-workflow-idea-to-release (đúng locale).
 
-- [ ] **T2 — `parallel-worktrees-isolation`** (tech · 2026-08-28 · docs-link agents-and-kit ·
+- [x] **T2 — `parallel-worktrees-isolation`** (tech · 2026-08-28 · docs-link agents-and-kit ·
   tags: worktree, git, agents)
   Angle: "Mỗi SF một worktree" · "Commit atomic là đơn vị rollback". Evidence: transcript
   `git worktree list` THẬT — RE-CAPTURE lệnh tại thời điểm viết và paste output NGUYÊN VĂN
