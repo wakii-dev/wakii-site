@@ -68,7 +68,7 @@ function heroSvg(title, category) {
   const titleStart = 560 - lines.length * lineHeight - 76;
   const categoryLabels = { tutorial: 'tutorial', tech: 'tech notes', 'build-log': 'build log' };
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <!-- hero ${esc(title)} — brand mono aesthetic (tokens.css: bg #0A0E0D, accent #45E0A8, text #D7E2DD, dim #6B7A74).
+  <!-- hero ${esc(title).replace(/--/g, '—')} — brand mono aesthetic (tokens.css: bg #0A0E0D, accent #45E0A8, text #D7E2DD, dim #6B7A74).
        Re-render: node scripts/render-blog-heroes.mjs -->
   <defs>
     <radialGradient id="glow" cx="30%" cy="34%" r="60%">

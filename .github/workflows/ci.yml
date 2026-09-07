@@ -18,7 +18,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # ≥22.18 — check-blog-utils.mjs imports src/utils/blog.ts and node
+          # strips TS types natively only from 22.18 (23.6 unflagged). Pin 20
+          # failed with ERR_UNKNOWN_FILE_EXTENSION (SF-1 FI-355 review P0).
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
