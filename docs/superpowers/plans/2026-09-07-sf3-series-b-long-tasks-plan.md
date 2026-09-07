@@ -148,7 +148,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   (docs P5). Docs quote §7 "Một PR cho mỗi story" / "One PR per story" ("one clean PR — not
   a dozen interleaved branches"). Cross-link: bài T3 hoặc T1.
 
-- [ ] **T5 — `done-means-evidence`** (tech · 2026-08-31 · docs-link story-workflow · tags: qa,
+- [x] **T5 — `done-means-evidence`** (tech · 2026-08-31 · docs-link story-workflow · tags: qa,
   evidence, story-workflow)
   Angle: "Self-report không counts" · "Verifier làm lại từ đầu". Evidence: case FI-342 7/7
   PASS + 0 fix commit + story-verify exit 0 (đúng docs mô tả, KHÔNG tô); qa-rubric hub-store
