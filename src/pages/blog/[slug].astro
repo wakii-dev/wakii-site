@@ -4,6 +4,7 @@
  */
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import BlogToc from '../../components/BlogToc.astro';
 import { blogSlug } from '../../content.config';
 
 export async function getStaticPaths() {
@@ -15,10 +16,17 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const date = entry.data.pubDate.toISOString().slice(0, 10);
 ---
-<Base title={entry.data.title} description={entry.data.description}>
+{/* og contract: posts are articles — pinned in spec FI-339 rev 2 (og:type + published_time + absolute og:image) */}
+<Base
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedTime={entry.data.pubDate.toISOString()}
+  ogImage="/og-default.png"
+>
   <main class="wrap">
     <div class="crumb"><a href="/blog/">~/blog</a>/{blogSlug(entry.id)}</div>
     <h1>{entry.data.title}</h1>
@@ -27,6 +35,7 @@ const date = entry.data.pubDate.toISOString().slice(0, 10);
       {entry.data.tags.map((tag) => <span class="tag">#{tag}</span>)}
     </div>
     <article class="prose">
+      <BlogToc headings={headings} label="Contents" />
       <Content />
     </article>
     <div class="after">
