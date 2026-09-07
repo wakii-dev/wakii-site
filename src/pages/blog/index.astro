@@ -1,0 +1,58 @@
+---
+/**
+ * EN blog listing — newest first, grouped badge per category.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { blogSlug } from '../../content.config';
+
+const CATEGORY_LABEL: Record<string, string> = {
+  tutorial: 'tutorial',
+  tech: 'tech notes',
+  'build-log': 'build log'
+};
+
+const posts = (await getCollection('blog', (b) => b.id.startsWith('en/') && !b.data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<Base title="Blog" description="Tutorials, tech notes and build logs from the Wakii team — agentic workflows, AI pair-programming and shipping software with AI agents.">
+  <main class="wrap">
+    <div class="crumb">~/blog</div>
+    <h1>blog<span class="dot">.</span></h1>
+    <p class="lede">
+      Tutorials, tech notes and build logs — how Wakii works under the hood and how to get the
+      most out of an agentic IDE.
+    </p>
+    <ul class="posts">
+      {posts.map((post) => (
+        <li>
+          <a href={`/blog/${blogSlug(post.id)}/`}>
+            <span class="badge" data-category={post.data.category}>
+              {CATEGORY_LABEL[post.data.category] ?? post.data.category}
+            </span>
+            <span class="post-title">{post.data.title}</span>
+            <span class="post-desc">{post.data.description}</span>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toISOString().slice(0, 10)}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Base>
+<style>
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 96px; }
+  .crumb { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); margin-bottom: 20px; }
+  h1 { font-family: var(--font-mono); font-size: 40px; margin: 0 0 12px; }
+  h1 .dot { color: var(--accent); }
+  .lede { color: color-mix(in srgb, var(--text) 78%, transparent); margin: 0 0 40px; line-height: 1.6; }
+  .posts { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+  .posts a { display: grid; gap: 6px; text-decoration: none; }
+  .badge { justify-self: start; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 999px; padding: 2px 10px; }
+  .post-title { font-family: var(--font-mono); font-size: 20px; color: var(--text); }
+  .posts a:hover .post-title { color: var(--accent); }
+  .post-desc { color: color-mix(in srgb, var(--text) 78%, transparent); font-size: 14px; line-height: 1.6; }
+  time { color: var(--text-faint); font-size: 12px; font-family: var(--font-mono); }
+</style>

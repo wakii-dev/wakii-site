@@ -19,12 +19,37 @@ const docs = defineCollection({
   }),
 });
 
-export const collections = { docs };
+/**
+ * Blog content — same locale subdirectories strategy as docs (LOCKED i18n:
+ * EN at /blog, VI at /vi/blog). Entry ids like `en/my-post` / `vi/my-post`.
+ */
+const blog = defineCollection({
+  loader: glob({ pattern: ['en/*.md', 'vi/*.md'], base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    /** tutorial | tech | build-log — drives the listing badge. */
+    category: z.enum(['tutorial', 'tech', 'build-log']),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { docs, blog };
 
 export function docLocale(id: string): 'en' | 'vi' {
   return id.startsWith('vi/') ? 'vi' : 'en';
 }
 
 export function docSlug(id: string): string {
+  return id.replace(/^(en|vi)\//, '');
+}
+
+export function blogLocale(id: string): 'en' | 'vi' {
+  return id.startsWith('vi/') ? 'vi' : 'en';
+}
+
+export function blogSlug(id: string): string {
   return id.replace(/^(en|vi)\//, '');
 }

@@ -1,0 +1,64 @@
+---
+/**
+ * VI blog post — single markdown entry rendered as an article.
+ */
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { blogSlug } from '../../../content.config';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('blog', (b) => b.id.startsWith('vi/') && !b.data.draft);
+  return entries.map((entry) => ({
+    params: { slug: blogSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const date = entry.data.pubDate.toISOString().slice(0, 10);
+---
+<Base title={entry.data.title} description={entry.data.description}>
+  <main class="wrap">
+    <div class="crumb"><a href="/vi/blog/">~/blog</a>/{blogSlug(entry.id)}</div>
+    <h1>{entry.data.title}</h1>
+    <div class="meta">
+      <time datetime={entry.data.pubDate.toISOString()}>{date}</time>
+      {entry.data.tags.map((tag) => <span class="tag">#{tag}</span>)}
+    </div>
+    <article class="prose">
+      <Content />
+    </article>
+    <div class="after">
+      <p>Wakii là IDE agentic với đội AI agent superpowers đi kèm.</p>
+      <a class="cta" href="/vi/download/">tải wakii</a>
+      <a class="back" href="/vi/blog/">← tất cả bài viết</a>
+    </div>
+  </main>
+</Base>
+<style>
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 96px; }
+  .crumb { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); margin-bottom: 20px; }
+  .crumb a { color: var(--text-faint); }
+  .crumb a:hover { color: var(--accent); }
+  h1 { font-family: var(--font-mono); font-size: 32px; line-height: 1.25; margin: 0 0 12px; }
+  .meta { display: flex; gap: 12px; align-items: center; font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); margin-bottom: 32px; }
+  .tag { color: var(--accent); }
+  .prose { line-height: 1.75; }
+  .prose :global(h2) { font-family: var(--font-mono); font-size: 22px; margin: 36px 0 12px; }
+  .prose :global(h3) { font-family: var(--font-mono); font-size: 17px; margin: 28px 0 10px; }
+  .prose :global(p) { margin: 0 0 16px; }
+  .prose :global(ul), .prose :global(ol) { margin: 0 0 16px; padding-left: 22px; }
+  .prose :global(li) { margin-bottom: 6px; }
+  .prose :global(code) { font-family: var(--font-mono); font-size: 13px; background: var(--bg-deep); border-radius: 4px; padding: 2px 6px; }
+  .prose :global(pre) { background: var(--bg-deep); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 0 0 16px; }
+  .prose :global(pre code) { padding: 0; background: none; }
+  .prose :global(a) { color: var(--accent); }
+  .prose :global(img) { max-width: 100%; border-radius: 8px; }
+  .prose :global(blockquote) { border-left: 3px solid var(--accent); margin: 0 0 16px; padding: 4px 16px; color: var(--text-faint); }
+  .after { margin-top: 48px; padding-top: 24px; border-top: 1px solid color-mix(in srgb, var(--text) 15%, transparent); font-family: var(--font-mono); }
+  .after p { font-size: 13px; color: var(--text-faint); margin: 0 0 12px; }
+  .cta { display: inline-block; background: var(--accent); color: var(--bg); border-radius: 8px; padding: 8px 16px; text-decoration: none; font-size: 14px; margin-right: 16px; }
+  .back { color: var(--text-faint); font-size: 13px; text-decoration: none; }
+  .back:hover { color: var(--accent); }
+</style>
