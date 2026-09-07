@@ -96,6 +96,10 @@ const posts = (
 const href = (s: string) => (locale === 'vi' ? `/vi/blog/${s}/` : `/blog/${s}/`);
 const listingHref = locale === 'vi' ? '/vi/blog/' : '/blog/';
 
+/** SF-4 wiring: the meta category chip links to its taxonomy page. */
+const categoryHref =
+  locale === 'vi' ? `/vi/blog/category/${entry.data.category}/` : `/blog/category/${entry.data.category}/`;
+
 /**
  * JSON-LD BlogPosting (spec SF-2) — URLs absolute via new URL(, Astro.site),
  * same resolution the og contract uses in Base.
@@ -165,9 +169,9 @@ const related = relatedPosts(entry, posts);
       <div class="bd-crumb"><a href={listingHref}>~/blog</a>/{slug}</div>
       <div class="bd-meta">
         <time datetime={entry.data.pubDate.toISOString()}>{date}</time>
-        <span class="bd-cat">
+        <a class="bd-cat" href={categoryHref}>
           {CATEGORY_LABELS[locale][entry.data.category] ?? entry.data.category}
-        </span>
+        </a>
         {entry.data.tags.map((tag) => <span class="bd-tag">#{tag}</span>)}
         <span class="bd-author">{entry.data.author}</span>
         <span class="bd-read">{ui.readTime(postReadingTime(entry))}</span>
@@ -333,7 +337,7 @@ const related = relatedPosts(entry, posts);
   .bd-crumb a:hover {
     color: var(--accent);
   }
-  /* Meta row — date · category label (plain, no link: SF-4 wires it) ·
+  /* Meta row — date · category link (SF-4: chip → taxonomy page) ·
      tags (plain chips, no tag pages in scope) · author · reading time. */
   .bd-meta {
     display: flex;
@@ -347,6 +351,10 @@ const related = relatedPosts(entry, posts);
   }
   .bd-cat {
     color: var(--accent);
+    text-decoration: none;
+  }
+  .bd-cat:hover {
+    color: var(--text);
   }
   .bd-tag {
     color: var(--accent-dim);
