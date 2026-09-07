@@ -67,13 +67,13 @@ capture time had four lines:
 
 ```bash
 $ git worktree list
-/Users/hoivu/Desktop/projects/wakii-site                           73d0e55 [main]
-/Users/hoivu/orca/workspaces/wakii-site/sf-2-series-a-self-working acfa59b [wakii-dev/sf-2-series-a-self-working]
-/Users/hoivu/orca/workspaces/wakii-site/sf-3-series-b-long-tasks   1462b45 [wakii-dev/sf-3-series-b-long-tasks]
-/Users/hoivu/orca/workspaces/wakii-site/sf-4-series-c-evidence     0f92761 [wakii-dev/sf-4-series-c-evidence]
+~/projects/wakii-site                                   73d0e55 [main]
+~/orca/workspaces/wakii-site/sf-2-series-a-self-working acfa59b [wakii-dev/sf-2-series-a-self-working]
+~/orca/workspaces/wakii-site/sf-3-series-b-long-tasks   1462b45 [wakii-dev/sf-3-series-b-long-tasks]
+~/orca/workspaces/wakii-site/sf-4-series-c-evidence     0f92761 [wakii-dev/sf-4-series-c-evidence]
 ```
 
-*Source: `git worktree list`, retrieved 2026-09-07.*
+*Source: `git worktree list`, retrieved 2026-09-07; home paths shortened to `~`.*
 
 Read by column: each line is a directory on disk, the middle column is the
 checked-out commit, the bracketed column is the branch. The first line is the
@@ -103,7 +103,7 @@ conflict is not "handled", it has no place to happen.
 ```ascii
 one repo — two worktrees — two agents writing two different sets of files
 
-~/Desktop/projects/wakii-site/         branch: main (main checkout)
+~/projects/wakii-site/                 branch: main (main checkout)
 orca/workspaces/wakii-site/
   ├── sf-2-series-a-self-working/      branch: wakii-dev/sf-2-series-a-self-working
   │    agent SF-2 → writes Series A posts only, inside this directory

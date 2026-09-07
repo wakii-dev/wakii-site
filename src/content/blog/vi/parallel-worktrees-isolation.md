@@ -65,13 +65,13 @@ dòng:
 
 ```bash
 $ git worktree list
-/Users/hoivu/Desktop/projects/wakii-site                           73d0e55 [main]
-/Users/hoivu/orca/workspaces/wakii-site/sf-2-series-a-self-working acfa59b [wakii-dev/sf-2-series-a-self-working]
-/Users/hoivu/orca/workspaces/wakii-site/sf-3-series-b-long-tasks   1462b45 [wakii-dev/sf-3-series-b-long-tasks]
-/Users/hoivu/orca/workspaces/wakii-site/sf-4-series-c-evidence     0f92761 [wakii-dev/sf-4-series-c-evidence]
+~/projects/wakii-site                                   73d0e55 [main]
+~/orca/workspaces/wakii-site/sf-2-series-a-self-working acfa59b [wakii-dev/sf-2-series-a-self-working]
+~/orca/workspaces/wakii-site/sf-3-series-b-long-tasks   1462b45 [wakii-dev/sf-3-series-b-long-tasks]
+~/orca/workspaces/wakii-site/sf-4-series-c-evidence     0f92761 [wakii-dev/sf-4-series-c-evidence]
 ```
 
-*Nguồn: `git worktree list`, lấy 2026-09-07.*
+*Nguồn: `git worktree list`, lấy 2026-09-07; đường dẫn home rút gọn về `~`.*
 
 Đọc theo cột: mỗi dòng là một thư mục trên đĩa, cột giữa là commit đang
 checkout, cột trong ngoặc vuông là branch. Dòng đầu là checkout chính trên
@@ -100,7 +100,7 @@ bị "xử lý", nó không có chỗ xảy ra.
 ```ascii
 một repo — hai worktree — hai agent viết hai tập file khác nhau
 
-~/Desktop/projects/wakii-site/         branch: main (checkout chính)
+~/projects/wakii-site/                 branch: main (checkout chính)
 orca/workspaces/wakii-site/
   ├── sf-2-series-a-self-working/      branch: wakii-dev/sf-2-series-a-self-working
   │    agent SF-2 → chỉ ghi bài Series A trong thư mục này
