@@ -41,7 +41,7 @@ Xếp ba timestamp theo thứ tự thời gian, ngày 5/9 trông như sau:
 2026-09-05  (giờ UTC)
 12:47:15Z  v1.4.198                 release desktop
 13:00:31Z  mobile-android-v0.0.48   pre-release Android  (+13 phút)
-19:07:31Z  v1.4.199                 Latest               (+6 giờ 20 phút)
+19:07:31Z  v1.4.199                 Latest               (+6 giờ 07 phút)
 ```
 
 *Nguồn: tính từ ba timestamp trong transcript `gh release list` ở trên.*
@@ -54,7 +54,7 @@ Nhưng nhịp nhanh có giá, và giá đó không trả tại lúc bấm cắt 
 
 ## Bản Android đi đường riêng
 
-Dòng thứ ba của transcript đáng đọc riêng. Nó mang nhãn Pre-release, tag `mobile-android-v0.0.48`, và timestamp 13:00:31Z — chen giữa hai release desktop: sau v1.4.198 đúng 13 phút, trước v1.4.199 khoảng 6 giờ. Mobile không bị chặn bởi nhịp của desktop; nó lên kệ khi bản dựng của nó sẵn sàng, trên một tag có không gian tên riêng.
+Dòng thứ ba của transcript đáng đọc riêng. Nó mang nhãn Pre-release, tag `mobile-android-v0.0.48`, và timestamp 13:00:31Z — chen giữa hai release desktop: sau v1.4.198 khoảng 13 phút, trước v1.4.199 khoảng 6 giờ. Mobile không bị chặn bởi nhịp của desktop; nó lên kệ khi bản dựng của nó sẵn sàng, trên một tag có không gian tên riêng.
 
 Đường ray đó cũng tự mô tả trong config của site:
 
@@ -92,6 +92,6 @@ Mỗi quy ước là một lựa chọn. Cái này chọn tính lặp lại củ
 
 ## Tải bản phù hợp với bạn
 
-Docs [getting started](/vi/docs/getting-started/) mở đầu đúng bằng chuyện này: "Tải bản build hoàn chỉnh tại trang download, hoặc theo dõi releases trên GitHub để biết sớm nhất khi có bản mới (gồm cả Windows)". Còn nếu bạn muốn tự soi nhịp ship như bài này đã làm, transcript ở đầu bài là một lệnh — gõ lại là có kết quả mới nhất.
+Docs [getting started](/vi/docs/getting-started/) mở đầu bằng chuyện này: "Tải bản build hoàn chỉnh tại trang download, hoặc theo dõi releases trên GitHub để biết sớm nhất khi có bản mới (gồm cả Windows)". Còn nếu bạn muốn tự soi nhịp ship như bài này đã làm, transcript ở đầu bài là một lệnh — gõ lại là có kết quả mới nhất.
 
 Tại thời điểm viết, bản mới nhất là v1.4.199. Trang download pin sẵn link cho macOS và Windows — bấm tải là đúng bản đó, không phải đoán.

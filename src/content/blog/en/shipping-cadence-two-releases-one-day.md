@@ -13,7 +13,7 @@ TL;DR:
 
 - A single `gh release list` call against the public repo `wakii-dev/wakii` returns exactly three lines — and all three are stamped 2026-09-05: v1.4.198, pre-release `mobile-android-v0.0.48`, and v1.4.199 (Latest).
 - A fast shipping cadence is not a race goal — it is a consequence: work is split into small sub-features, each passing its own review gate, so once a slice is done it can be cut into a release right away.
-- Android runs on its own track: a separate pre-release tag, never blocked by the desktop cadence.
+- Android runs on its own track: a separate pre-release tag, not queued behind the desktop cadence.
 - Version-named assets: download URLs pin an exact version — a version bump means updating the URL, but in exchange old links never die when a new release ships.
 
 ## The whole release history in one command
@@ -41,7 +41,7 @@ Put the three timestamps in order and September 5th looks like this:
 2026-09-05  (UTC)
 12:47:15Z  v1.4.198                 desktop release
 13:00:31Z  mobile-android-v0.0.48   Android pre-release  (+13 minutes)
-19:07:31Z  v1.4.199                 Latest               (+6 hours 20 minutes)
+19:07:31Z  v1.4.199                 Latest               (+6 hours 7 minutes)
 ```
 
 *Source: computed from the three timestamps in the `gh release list` transcript above.*
@@ -92,6 +92,6 @@ Every convention is a choice. This one picks the reproducibility of an already-d
 
 ## Picking the right build for you
 
-The [getting started](/docs/getting-started/) docs open with exactly this: "Grab the ready-made build from the download page, or follow releases on GitHub to hear about new builds (Windows included) first". And if you want to inspect the shipping cadence the way this post did, the transcript at the top is one command — retype it for the freshest result.
+The [getting started](/docs/getting-started/) docs open with this: "Grab the ready-made build from the download page, or follow releases on GitHub to hear about new builds (Windows included) first". And if you want to inspect the shipping cadence the way this post did, the transcript at the top is one command — retype it for the freshest result.
 
 At the time of writing, the latest release is v1.4.199. The download page pins links for macOS and Windows — click and you get exactly that build, no guessing.
