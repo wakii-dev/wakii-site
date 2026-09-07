@@ -39,3 +39,11 @@
 - Headless Chrome --window-size clamp min-width → báo overflow ảo ở mobile; iframe probe (same-origin, w=390, đo scrollWidth) là reliable.
 - Bash tool strip secret literal khỏi command line → pass secret qua file + $(cat).
 - Vercel preview mặc định bật SSO protection → preview link không xem public được nếu không tắt qua API (PATCH /v9/projects ssoProtection:null).
+
+## 2026-09-07 — Story 5 SF-1 Content infra (FI-355)
+- **Node TS-stripping floor 22.18 vs CI pin**: build-time check script import thẳng `.ts` (node strip types native — tiện, khỏi thêm dep), local node 24 nhìn xanh nhưng CI/deploy pin `node-version: 20` → `ERR_UNKNOWN_FILE_EXTENSION` exit 1 (reviewer reproduce). Floor thật: 22.18 (backport) / 23.6 (unflagged). Pattern: thêm node-script-import-.ts ⇒ sweep TẤT CẢ node pins trong .github/workflows + set `engines.node` machine-readable.
+- **Test-harness shape mismatch**: assert script build entry FLAT (`{category, draft, ...}`) trong khi util expect entry-shape (`{id, data:{...}}`) — TypeError ngay lần chạy đầu (verify trước commit bắt được, chưa kịp commit). Pattern: parse helper phải trả đúng shape consumer expect, không phải shape tiện cho assert.
+- **Multi-session port đụng**: story song song (FI-349 SF-1 + FI-359) cùng máy — ports 4321/4322 bị chiếm, `astro preview` tự nhảy 4323 → KHÔNG hardcode port, đọc log server; `pkill -f "astro preview"` nguy hiểm trúng process session khác (lần này không trúng vì chúng chạy `astro dev`) — kill bằng port/PID riêng.
+- **story-verify B1 `test|spec.` regex** không match `check-blog-utils.mjs` → B1:WARN dù build đã có 2 assertion gates — WARN là precedent bình thường với static site (asserts thay thế), đừng thêm file rỗng chỉ để tắt WARN.
+- **Hero pipeline proven (deterministic)**: SVG template 1200×630 → `chrome --headless=new --screenshot --window-size=1200,630` render ĐÚNG 1200×630 (không dính clamp — clamp chỉ ở window-size nhỏ 390) + IHDR check trong script fail-loud; CVDisplayLink ERROR trên macOS là noise, PNG vẫn written; SVG source commit cạnh PNG cho review + tái tạo (`node scripts/render-blog-heroes.mjs`).
+- **update-ref old-value pin**: `git update-ref refs/heads/<dest> <new> <expected-old>` là guard miễn phí chống race khi story khác cùng đụng repo (dùng kèm 2 guards ancestor + tree sạch theo merge-playbook).
