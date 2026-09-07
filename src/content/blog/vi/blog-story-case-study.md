@@ -11,7 +11,7 @@ Thể loại case study trong bài kỹ thuật có một điểm yếu cố h�
 tác giả vừa là nhân chứng, và độc giả chỉ còn cách tin lời. Bài này chọn hướng
 khác — vì chính blog bạn đang đọc được dựng bằng story workflow, nên mỗi mệnh đề
 dưới đây trỏ được tới một file, một lệnh, hoặc một pull request công khai. Không
-cần tin ai: mở repo, chạy lại ba lệnh ở cuối bài, tự thấy. Bài đi qua bốn chặn —
+cần tin ai: mở repo, chạy lại ba lệnh ở cuối bài, tự thấy. Bài đi qua bốn chặng —
 gate parity sống trong build, contract đọc được trong code, một nhánh đích khép
 bằng một PR, và cách tự kiểm bằng ba lệnh.
 
