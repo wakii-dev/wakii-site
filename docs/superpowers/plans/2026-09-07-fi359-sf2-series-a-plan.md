@@ -43,6 +43,16 @@ Regression surface (không sửa, chỉ phải không phá): parity gate trong b
 
 ## Tasks (7 — tuần tự theo thứ tự matrix; mỗi task xong tick checkbox + commit riêng)
 
+Progress (tick sau mỗi task, coordinator commit tick):
+
+- [x] T1 nine-agents-separated-powers (commit `cd1dda7`)
+- [x] T2 gates-not-trust-rule-zero (commit `51ca77f`)
+- [ ] T3 watchdog-idle-is-not-dead
+- [ ] T4 story-memory-learning-loop
+- [ ] T5 defensive-by-design
+- [ ] T6 controlled-rework-rollback
+- [ ] T7 series-a-consistency-pass
+
 ### Task 1 — `nine-agents-separated-powers` (tech · 2026-08-21 · tags `agents, supervised, workflow`)
 
 - Title VI: "Chín agent, quyền hạn tách rời" · EN: "Nine agents, separated powers".
