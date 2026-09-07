@@ -175,7 +175,7 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
   Không THẤY = không xác nhận. Browser pixel: tab background làm screenshot timeout —
   cần focus; eval luôn chạy.
 
-- [ ] **T9 — independent-review-verdict** (check 9)
+- [x] **T9 — independent-review-verdict** (check 9)
   Dispatch `code-reviewer` trên TOÀN BỘ diff story (dest vs main: 40 md + lint script +
   package.json wiring + **audit script SF-5** — script đã commit trước T9): bug/thể
   thức + phán định risk #4 trùng-góc-nhìn-seed (mỗi bài angle ≥2 H2 mới — cột angle
@@ -183,7 +183,7 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
   variants). Verdict 1 dòng APPROVED / CHANGES-REQUESTED. CHANGES-REQUESTED → comment
   epic chuyển Dev (QA không tự sửa) → re-check sau fix.
 
-- [ ] **T10 — release-readiness-build-smoke** (check 10)
+- [x] **T10 — release-readiness-build-smoke** (check 10)
   Tổng hợp: bảng 10 check × PASS/FAIL/NOTE + danh sách skipped-draft (nếu có) +
   3 cross-check độc lập của coordinator (D1 tay / RSS grep / listing grep) + build
   smoke cuối (re-run `pnpm build` nếu có fix commit giữa chừng) → verdict
