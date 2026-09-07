@@ -51,8 +51,8 @@ selector + prose-style contract), (g) pager `aria-label` + related heading là `
 - [x] 7. related-posts-section-fallback: `relatedPosts(entry, all)` util SF-1; heading `h2` thật locale ("Related posts"/"Bài liên quan") + links title+date; ẩn hoàn toàn khi rỗng; đặt ngay sau prose (trước after-CTA — tail order pin: prose → related → after-CTA → pager).
 - [x] 8. jsonld-blogposting-article: `<script type="application/ld+json" is:inline set:html>` — `@type: BlogPosting`, headline, datePublished (ISO), author `{"@type":"Organization","name":author}`, mainEntityOfPage/url + image ABSOLUTE qua `new URL(, Astro.site)`.
 - [x] 9. light-reveal-prose-children: layout `<script>` — `revealChildren(article, '.prose > *')` + `initMotion()` + import motion.css (đúng pattern DocsLayout; reduced-motion kill-switch giữ nguyên; KHÔNG đụng motion.ts).
-- [ ] 10. route-wiring-en-rewrite-slug-astro: `src/pages/blog/[slug].astro` — rewrite thin: getStaticPaths giữ nguyên (draft filter) + render + `<BlogDetailLayout entry headings><Content /></BlogDetailLayout>`; og contract comment chuyển sang layout.
-- [ ] 11. route-wiring-vi-rewrite-slug-astro: `src/pages/vi/blog/[slug].astro` — mirror EN (path import đúng `../../../`), layout tự xử lý locale strings.
+- [x] 10. route-wiring-en-rewrite-slug-astro: `src/pages/blog/[slug].astro` — rewrite thin: getStaticPaths giữ nguyên (draft filter) + render + `<BlogDetailLayout entry headings><Content /></BlogDetailLayout>`; og contract comment chuyển sang layout.
+- [x] 11. route-wiring-vi-rewrite-slug-astro: `src/pages/vi/blog/[slug].astro` — mirror EN (path import đúng `../../../`), layout tự xử lý locale strings.
 - [ ] 12. responsive-pass: @800 1-col (sidebar xuống dưới qua order), padding mobile; verify @390 no-overflow bằng same-origin iframe probe trên dist preview.
 - [ ] 13. og-contract-regression-check: sau wiring — build xanh + grep dist 10 post pages: `og:type=article`, `article:published_time` khớp pubDate, `og:image` absolute (hero URL 4 posts ×2 locale, `/og-default.png` absolute trên building-wakii ×2), `og:image:width/height` 1200/630 giữ nguyên. Evidence vào audit FI-356 (scripted checker là SF-4).
 
