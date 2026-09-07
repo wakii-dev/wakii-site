@@ -51,7 +51,7 @@ Progress (tick sau mỗi task, coordinator commit tick):
 - [x] T4 story-memory-learning-loop (commit `cb81b45`)
 - [x] T5 defensive-by-design (commit `9d8e816`)
 - [x] T6 controlled-rework-rollback (commit `08af8af`)
-- [ ] T7 series-a-consistency-pass
+- [x] T7 series-a-consistency-pass (commits `32a274b`,`74e13a7`,`efb3b36`)
 
 ### Task 1 — `nine-agents-separated-powers` (tech · 2026-08-21 · tags `agents, supervised, workflow`)
 
