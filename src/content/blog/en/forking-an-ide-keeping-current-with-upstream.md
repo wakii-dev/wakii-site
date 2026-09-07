@@ -5,6 +5,7 @@ pubDate: "2026-09-02"
 category: "tech"
 tags: ["git", "fork", "upstream"]
 draft: false
+heroImage: "/blog/heroes/forking-an-ide-keeping-current-with-upstream.png"
 ---
 
 Wakii is built on Orca, an open-source agentic IDE. Forking is the easy decision; keeping the fork from rotting into a messy clone six months later is the hard part. This post shares how we keep pace with upstream while shipping our own direction non-stop.
