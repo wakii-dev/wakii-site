@@ -108,12 +108,13 @@ Quy ước chung mọi bài: frontmatter 6 field theo template; VI viết trư�
 
 | # | Task | Deps | Tick | Exit criteria |
 |---|------|------|------|---------------|
-| T1 | post #15 `blog-story-case-study` VI+EN | — | ☐ | 2 file, band đạt, lint xanh, build xanh, commit `feat(blog): …` |
-| T2 | post #16 `wakii-in-production-hub-store` VI+EN (flagship, ≥3 GitHub link + quote) | T1 | ☐ | như T1 + ACCEPTANCE #16 |
-| T3 | post #17 `og-article-contract-anatomy` VI+EN | T2 | ☐ | như T1 + trích code đúng file |
-| T4 | post #18 `rss-bilingual-feed-anatomy` VI+EN | T3 | ☐ | như T1 + trích code đúng file |
-| T5 | post #19 `skills-catalog-tour` VI+EN (số re-extract) | T4 | ☐ | như T1 + con số kèm nguồn + ngày |
-| T6 | post #20 `building-wakii-in-the-open-log-2` VI+EN | T5 | ☐ | như T1 + không lặp log-1, không 197 |
+| T1 | post #15 `blog-story-case-study` VI+EN | — | ☑ `e1da8f5` (VI 1038/EN 1050 từ) | 2 file, band đạt, lint xanh, build xanh, commit `feat(blog): …` |
+| T2 | post #16 `wakii-in-production-hub-store` VI+EN (flagship, ≥3 GitHub link + quote) | T1 | ☑ `9a06c15` (VI 1235/EN 1262 từ, 7 GitHub link + quote) | như T1 + ACCEPTANCE #16 |
+| T3 | post #17 `og-article-contract-anatomy` VI+EN | T2 | ☑ `6b8e9d6` (VI 1029/EN 1014 từ) | như T1 + trích code đúng file |
+| T4 | post #18 `rss-bilingual-feed-anatomy` VI+EN | T3 | ☑ `9798d21` (VI 1218/EN 1181 từ) | như T1 + trích code đúng file |
+| T5 | post #19 `skills-catalog-tour` VI+EN (số re-extract) | T4 | ☑ `046bd7b` (VI 1383/EN 1450 từ, grep 20/13) | như T1 + con số kèm nguồn + ngày |
+| T6 | post #20 `building-wakii-in-the-open-log-2` VI+EN | T5 | ☑ `ee0ad48` (VI 1131/EN 1142 từ; release-list thật) | như T1 + không lặp log-1, không 197 |
+| — | review-fix G1: `526b646` (#16 bỏ link 404 fi338-spec — pack sai "trên main"; 7→6 link) + `97124b3` (#15 typo chặng; G1 re-review APPROVED) | — | ☑ | — |
 | T7 | **claims double-pass** (reviewer độc lập): từng claim/con số/link/quote trong 12 file đối chiếu registry + pack + file nguồn; scan cả variants review-only. **Ghi chú nguồn T5:** số skills dùng quy tắc đọc-tại-thời-điểm — file nguồn 09-07 = **20/13** GHI ĐÈ snapshot 21/14 trong pack (drift đã flag Linear); KHÔNG re-flag | T6 | ☐ | verdict APPROVED / CHANGES-REQUESTED (+bullet) — CR → fix (coordinator sở hữu fix loop) → re-review |
 | T8 | **consistency pass** (reviewer độc lập): frontmatter parity VI/EN, ngày/category khớp matrix, ≥2 H2 mới so seed (mỗi bài), cross-link chỉ bài đã tồn tại + đúng locale, không trùng góc nhìn seed, TOC ≥3 H2, lint+build xanh, 4 dòng ACCEPTANCE | T7 | ☐ | verdict APPROVED / CHANGES-REQUESTED |
 
