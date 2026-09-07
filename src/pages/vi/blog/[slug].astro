@@ -19,13 +19,16 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const date = entry.data.pubDate.toISOString().slice(0, 10);
 ---
-{/* og contract: posts are articles — pinned in spec FI-339 rev 2 (og:type + published_time + absolute og:image) */}
+{/* og contract: posts are articles — pinned in spec FI-339 rev 2 (og:type + published_time +
+    absolute og:image via new URL(ogImage, Astro.site) in Base). FI-349 SF-1: ogImage is the
+    post heroImage when declared, else the /og-default.png fallback. Rev-2 carve-out: Base
+    gains an optional ogImageAlt prop (additive — unchanged behavior when not passed). */}
 <Base
   title={entry.data.title}
   description={entry.data.description}
   ogType="article"
   publishedTime={entry.data.pubDate.toISOString()}
-  ogImage="/og-default.png"
+  ogImage={entry.data.heroImage ?? '/og-default.png'}
 >
   <main class="wrap">
     <div class="crumb"><a href="/vi/blog/">~/blog</a>/{blogSlug(entry.id)}</div>
