@@ -99,6 +99,16 @@ const HOME = process.env.HOME || process.env.USERPROFILE || '/nonexistent-home';
 const scrub = (s) => String(s).split(HOME).join('~');
 const out = (s = '') => console.log(scrub(s));
 
+/* Security (P1, security-audit 2026-09-08): uncaught crashes print raw stderr
+ * with absolute local paths — and this script's stdout/stderr gets pasted into
+ * Linear as audit evidence. Route EVERY uncaught failure through the scrubber. */
+const failHard = (err) => {
+  console.error(scrub((err && (err.stack || err.message)) || err));
+  process.exit(1);
+};
+process.on('uncaughtException', failHard);
+process.on('unhandledRejection', failHard);
+
 const CHECKS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const fails = Object.fromEntries(CHECKS.map((c) => [c, []]));
 const notes = Object.fromEntries(CHECKS.map((c) => [c, []]));
@@ -565,8 +575,11 @@ for (const path of [...githubArtifacts.keys()].sort()) {
 }
 
 /* spot-check exactly 3 sample links via GitHub contents API:
-   top-2 most-linked hub-store paths (deterministic) + the fi338 spec drift probe. */
+   top-2 most-linked hub-store paths (deterministic) + the fi338 spec drift probe.
+   Allowlist (P2, security-audit 2026-09-08): only repo-relative paths under
+   docs/superpowers/ may be interpolated into the API URL, whatever a post links. */
 const spot = [...githubArtifacts.entries()]
+  .filter(([p]) => p.startsWith('docs/superpowers/'))
   .sort((a, b) => (b[1].count - a[1].count) || a[0].localeCompare(b[0]))
   .slice(0, 2).map(([p]) => p);
 const FI338_SPEC = 'docs/superpowers/specs/2026-09-07-dispatch-queue-design.md';
@@ -737,6 +750,10 @@ out('\n--- T7: listings (EN/VI) + frontmatter-vs-topic-matrix 20/20 (D2/D6) ---'
 const rel = await releasesProbe;
 if (rel.error) {
   note('T3', `releases drift probe unavailable (network): ${rel.error} — manual: gh release list --repo wakii-dev/wakii --limit 6 vs snapshot ${Object.entries(SNAPSHOT.releases).map(([t, d]) => `${t}@${d.slice(0, 10)}`).join(' ')}`);
+} else if (!Array.isArray(rel.json)) {
+  /* P1 fix (security-audit 2026-09-08): rate-limit/403 returns an object —
+     .map on it used to throw uncaught and leak paths via stderr. */
+  note('T3', `releases probe returned non-array (rate-limit or API change) — manual: gh release list --repo wakii-dev/wakii --limit 6 vs snapshot ${Object.entries(SNAPSHOT.releases).map(([t, d]) => `${t}@${d.slice(0, 10)}`).join(' ')}`);
 } else {
   const tags = rel.json.map((r) => `${r.tag_name} ${r.published_at}`);
   out(`    releases probe (api.github.com, top ${rel.json.length}): ${tags.join(' | ')}`);
