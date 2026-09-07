@@ -115,7 +115,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   Docs-link: agents-and-kit (task-executor "Implement task trong worktree biệt lập, commit
   atomic" — VI nguyên văn bảng vai). Cross-link: bài T1.
 
-- [ ] **T3 — `linear-as-external-memory`** (tutorial · 2026-08-29 · docs-link story-workflow ·
+- [x] **T3 — `linear-as-external-memory`** (tutorial · 2026-08-29 · docs-link story-workflow ·
   tags: linear, story-workflow, workflow)
   Angle: "Bộ nhớ ngoài cho đội agent" · "Audit comment tái tạo được". Evidence: cấu trúc
   body sub-issue THẬT — chép NGUYÊN VĂN field thật, KHÔNG bịa field. Hai nguồn đối chiếu:
