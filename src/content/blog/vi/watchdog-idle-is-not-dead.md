@@ -119,8 +119,6 @@ thái đáng tin, và resume từ đó không phải vá víu: nó là tiếp t�
 còn là hy vọng.
 
 Nguyên tắc đầy đủ — ba tầng kiểm, phục hồi bằng input, hai case thật —
-nằm trong docs [story workflow](/vi/docs/story-workflow/). Bài
-[gates, not trust](/vi/blog/gates-not-trust-rule-zero/) là mảnh ghép còn
-lại: gate là nơi một sub-feature có thể kẹt lại, và watchdog là cơ chế
-nhận ra điều đó kịp thời. Còn nếu bạn chạy story dài qua đêm: watchdog là
-phần workflow bạn không nhìn thấy nhưng nhờ đó được ngủ.
+nằm trong docs [story workflow](/vi/docs/story-workflow/). Còn nếu bạn
+chạy story dài qua đêm: watchdog là phần workflow bạn không nhìn thấy
+nhưng nhờ đó được ngủ.

@@ -127,9 +127,6 @@ continuing a chain that is already green. Without atomic commits, the idea
 of a last-known-good state is just a hope.
 
 The full principle — the three-layer check, waking with input, both real
-cases — lives in the [story workflow](/docs/story-workflow/) docs. The
-[gates, not trust](/blog/gates-not-trust-rule-zero/) post is the remaining
-piece of the picture: gates are where a sub-feature can wedge, and the
-watchdog is what notices in time. And if you run long stories overnight:
-the watchdog is the part of the workflow you never see, and sleep because
-of.
+cases — lives in the [story workflow](/docs/story-workflow/) docs. And if
+you run long stories overnight: the watchdog is the part of the workflow
+you never see, and sleep because of.
