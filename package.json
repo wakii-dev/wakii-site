@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/check-blog-slug-parity.mjs && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
