@@ -23,7 +23,7 @@ Khi log #1 đăng, blog này có 10 bài: 5 slug × 2 locale — bộ seed gồm
 ```ascii
 seed (FI-341)     5 slug  × 2 locale = 10 posts
 story FI-359     20 slug  × 2 locale = 40 file
-khi story khép   25 slug  × 2 locale = 30 posts
+khi story khép   25 slug, tính theo bài  = 30 posts (10 + 20)
 ```
 
 *Nguồn: evidence-pack story FI-359, §Numbers snapshot (rows 5 + 7), lấy 2026-09-07.*

@@ -23,7 +23,7 @@ When log #1 was published, this blog had 10 posts: 5 slugs × 2 locales — the 
 ```ascii
 seed (FI-341)     5 slugs  × 2 locales = 10 posts
 story FI-359     20 slugs  × 2 locales = 40 files
-when story ends  25 slugs  × 2 locales = 30 posts
+when story ends  25 slugs, counted in posts = 30 posts (10 + 20)
 ```
 
 *Source: FI-359 evidence pack, §Numbers snapshot (rows 5 + 7), retrieved 2026-09-07.*
