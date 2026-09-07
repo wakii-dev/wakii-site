@@ -159,7 +159,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   niềm tin" / EN '"The agent says it works" is not evidence'. Cross-link: pilot
   zero-setup-agent-team hoặc seed decision-gates-safe-ai-agents.
 
-- [ ] **T6 — `convergence-qa-last-tier`** (tech · 2026-09-01 · docs-link story-workflow ·
+- [x] **T6 — `convergence-qa-last-tier`** (tech · 2026-09-01 · docs-link story-workflow ·
   tags: qa, story-workflow, workflow)
   Angle: "Tier cuối không viết gì mới" · "Explained diff cũng phải giải thích". Evidence:
   FI-342 explained-diff — commit `9d4d460` = SITE_URL wakii.dev→wakii.xyz (owner confirm
