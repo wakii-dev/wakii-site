@@ -109,7 +109,7 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
 
 ### Tasks (ordered — map 1:1 với 10 check của pack)
 
-- [ ] **T1 — lint-parity-green-all-30** (check 1)
+- [x] **T1 — lint-parity-green-all-30** (check 1)
   `pnpm build` trên worktree (branch = base dest `b02979b`). Exit criteria: exit 0;
   parity log **"25 posts × 2 locales"**; lint **"40 new-slug files checked,
   0 skipped-draft, 5 seeds exempt"**, 0 fail, warn >1400 được phép (liệt kê nếu có);
@@ -118,12 +118,12 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
   dist unique slug (25/locale, 0 trùng) → no-op note. (Build đã chạy lúc Phase 3:
   exit 0, WARN KHÔNG tái hiện — flag SF-3 resolved-as-no-op, chốt lại lần chạy này.)
 
-- [ ] **T2 — word-band-sweep-20-new** (check 2)
+- [x] **T2 — word-band-sweep-20-new** (check 2)
   Script D1: body sau frontmatter, strip fenced (fence-lẻ = lỗi), đếm `\s+` split.
   Bảng 20 bài × 2 locale: VI 900–1400 (1400–1470 = WARN + yêu cầu lý do trong bài;
   >1470 FAIL), EN ≥800. Seeds miễn (liệt kê tên, không đếm).
 
-- [ ] **T3 — claims-sweep-vs-snapshot-d8** (check 3)
+- [x] **T3 — claims-sweep-vs-snapshot-d8** (check 3)
   (a) Grep FORBIDDEN literal (8 cụm) trên 40 file mới — 0 hit (lint đã chặn, sweep
   xác nhận lại); grep variants review-only (list cụm paraphrase trong registry) — 0 hit.
   (b) Số-liệu-in-bài vs snapshot D8: skills 21/14 · releases v1.4.198/199 + Android
@@ -132,7 +132,7 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
   re-extract `src/data/skills.ts` (đếm entry + public:true) và `gh api hub-store` —
   khác snapshot → GHI CHÚ drift (không fail). Kết quả: bảng claim × bài × verdict.
 
-- [ ] **T4 — links-resolve-locale-e2e-no-dead-anchor** (check 4)
+- [x] **T4 — links-resolve-locale-e2e-no-dead-anchor** (check 4)
   **Scope enforce = 40 FILE MỚI (20 slug × 2).** Seeds: inventory read-only — link
   nào lệch rule chỉ NOTE (VI seed `/docs/` là grandfathered FI-341, KHÔNG fail).
   Trên 40 file mới: `/docs/<slug>/` từ EN post, `/vi/docs/<slug>/` từ VI post
@@ -144,28 +144,28 @@ script, không spawn 6 worker); T8 ∥ T9 chạy được song song sau khi scri
   spec `2026-09-07-dispatch-queue-design.md` — drift memory) → 200 = PASS,
   404-có-quote = ghi chú.
 
-- [ ] **T5 — rss-expected-live-items-contract** (check 5)
+- [x] **T5 — rss-expected-live-items-contract** (check 5)
   Script parse `dist/rss.xml`: item count = expected-live = **50 − slug-draft×2**
   (1 feed bilingual — mỗi slug sống contribute 2 items EN+VI; 0 draft hiện tại →
   kỳ vọng 50; ít hơn → khớp danh sách skipped-draft được flag); mỗi `<guid>`
   absolute đúng locale (`/blog/` vs `/vi/blog/`); KHÔNG có `<language>`; `<pubDate>`
   khớp frontmatter từng item. Contract FI-339 SF-1 pinned.
 
-- [ ] **T6 — sitemap-hreflang-full** (check 6)
+- [x] **T6 — sitemap-hreflang-full** (check 6)
   Script parse `dist/sitemap-*.xml`: đủ URL posts live + 2 listings; 3 slug mẫu × 2
   locale (chọn zero-setup-agent-team · convergence-qa-last-tier ·
   wakii-in-production-hub-store): hreflang pair đủ 2 chiều (en/vi) + x-default +
   canonical đúng; grep dist HTML 3 bài mới: `og:type` = article + `og:published_time`
   khớp pubDate frontmatter (contract FI-339 rev 2).
 
-- [ ] **T7 — listing-en-vi-render-live-count + frontmatter-vs-matrix 20/20** (check 7)
+- [x] **T7 — listing-en-vi-render-live-count + frontmatter-vs-matrix 20/20** (check 7)
   Script parse `dist/blog/index.html` + `dist/vi/blog/index.html`: **25 bài live mỗi
   listing** (25 slug × 1 locale), sort pubDate desc, badge category + ngày hiển thị
   khớp frontmatter, không slug trùng, không draft lộ, không ngày tương lai. Đối chiếu
   20 bài mới vs `topic-matrix.md`: slug + category + pubDate khớp 20/20 — sai 1 hàng
   = FAIL (gate máy D2/D6).
 
-- [ ] **T8 — browser-walkthrough-en-vi-rule0** (check 8 — Rule 0 3 tầng, coordinator
+- [x] **T8 — browser-walkthrough-en-vi-rule0** (check 8 — Rule 0 3 tầng, coordinator
   TỰ làm qua Orca browser, không giao agent)
   Serve `dist/` (preview local). Tầng 1 DOM: eval đếm card listing EN = live-count,
   VI = live-count. Tầng 2 VISUAL: screenshot 2 listing + 3 bài mẫu (pilot
