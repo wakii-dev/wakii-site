@@ -44,7 +44,7 @@ still run?
 A real convergence story in the public hub-store repo — a spec titled verbatim
 "SF-11 FE Convergence — Audit viewer + Export UI + Mobile + Harmonize — Design"
 ([link](https://github.com/wakii-dev/hub-store/blob/main/docs/superpowers/specs/2026-09-03-sf11-fe-convergence-design.md))
-— defines this tier's posture in the very first line of its problem section:
+— defines this tier's posture in the closing line of its problem section:
 
 > "Đây là công việc FE lắp ráp + hội tụ trên contracts BE ĐÓNG BĂNG
 > (READ-ONLY services/**)."
@@ -67,7 +67,7 @@ spec pins the boundary the same way:
 (Translation: "Do not change business logic / API shape / proto / compose /
 realm JSON (services/** READ-ONLY).")
 
-*Source: same SF-11 spec, Scope Out section, retrieved 2026-09-07.*
+*Source: same SF-11 spec, "Out (boundary)" section, retrieved 2026-09-07.*
 
 This boundary is not administrative busywork. If the last tier may edit
 contracts, it is no longer proving what was built — it is building more, and
@@ -178,7 +178,7 @@ existing specs : stay green, unmodified    ← behavioral baseline of the frozen
 new specs      : added for audit + export  ← assembly only, old ones untouched
 ```
 
-*Source: diagram built from the E2E section and Scope Out of the SF-11 spec
+*Source: diagram built from the E2E section and Out (boundary) of the SF-11 spec
 (quoted above), retrieved 2026-09-07.*
 
 This mechanism is not one project's habit — the workflow docs pin it as law:

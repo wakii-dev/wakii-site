@@ -51,6 +51,9 @@ The docs' separated-powers principle states the reason plainly:
 
 > "the **developer** implements but never approves its own work"
 
+*Source: src/content/docs/en/story-workflow.md, section "A team with separated
+powers", retrieved 2026-09-07.*
+
 and the accompanying explanation: the bugs that survive a round of self-review
 are exactly the ones the writer could not see. The checking sequence of a task
 therefore stacks like this:

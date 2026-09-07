@@ -40,7 +40,7 @@ Một convergence story thật trong repo công khai hub-store — spec mang ti�
 nguyên văn "SF-11 FE Convergence — Audit viewer + Export UI + Mobile +
 Harmonize — Design"
 ([link](https://github.com/wakii-dev/hub-store/blob/main/docs/superpowers/specs/2026-09-03-sf11-fe-convergence-design.md))
-— định nghĩa tư thế của tier này ngay câu đầu phần problem:
+— định nghĩa tư thế của tier này ngay câu chốt phần problem:
 
 > "Đây là công việc FE lắp ráp + hội tụ trên contracts BE ĐÓNG BĂNG
 > (READ-ONLY services/**)."
@@ -57,7 +57,7 @@ hướng đó:
 > "KHÔNG đổi business logic / API shape / proto / compose / realm JSON
 > (services/** READ-ONLY)."
 
-*Nguồn: cùng spec SF-11, mục Scope Out, lấy 2026-09-07.*
+*Nguồn: cùng spec SF-11, mục "Out (boundary)", lấy 2026-09-07.*
 
 Boundary này không phải thủ tục hành chính. Nếu tier cuối được sửa contract,
 nó không còn đang chứng minh cái đã xây — nó đang xây thêm, và phép kiểm mất
@@ -160,7 +160,7 @@ specs hiện hữu : stay green, không sửa      ← baseline hành vi của v
 specs mới      : thêm cho audit + export    ← chỉ lắp thêm, không đụng cái cũ
 ```
 
-*Nguồn: sơ đồ dựng theo phần E2E và Scope Out của spec SF-11 (trích ở trên),
+*Nguồn: sơ đồ dựng theo phần E2E và Out (boundary) của spec SF-11 (trích ở trên),
 lấy 2026-09-07.*
 
 Cơ chế này không phải thói quen của một dự án — docs của workflow chốt thành

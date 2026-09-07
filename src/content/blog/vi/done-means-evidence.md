@@ -48,6 +48,9 @@ Nguyên tắc tách ba vai trong docs nói thẳng vì sao phải vậy:
 
 > "**developer** implement nhưng không tự duyệt việc mình làm"
 
+*Nguồn: src/content/docs/vi/story-workflow.md, mục "Team model tách bạch ba
+vai", lấy 2026-09-07.*
+
 và phần giải thích đi kèm: bug sống sót qua một lượt tự review chính là những
 bug người viết không nhìn thấy được. Ba vai trong sơ đồ kiểm của một task vì
 thế xếp nhau thế này:
