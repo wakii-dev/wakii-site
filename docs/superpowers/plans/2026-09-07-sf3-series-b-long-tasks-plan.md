@@ -170,7 +170,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   KÈM quote "SF-11 FE Convergence — Audit viewer + Export UI + Mobile + Harmonize — Design".
   Docs quote tier principle (tier boundary = merge point). Cross-link: bài T5.
 
-- [ ] **T7 — `shipping-cadence-two-releases-one-day`** (build-log · 2026-09-02 · docs-link
+- [x] **T7 — `shipping-cadence-two-releases-one-day`** (build-log · 2026-09-02 · docs-link
   getting-started · tags: release, build-log, wakii)
   Angle: "Nhịp ship và giá của nó" · "Assets version-named nghĩa là gì". Evidence: releases
   verify LIVE 2026-09-07 `gh release list --repo wakii-dev/wakii`: v1.4.199 Latest
