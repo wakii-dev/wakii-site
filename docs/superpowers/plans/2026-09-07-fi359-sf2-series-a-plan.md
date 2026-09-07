@@ -49,8 +49,8 @@ Progress (tick sau mỗi task, coordinator commit tick):
 - [x] T2 gates-not-trust-rule-zero (commit `51ca77f`)
 - [x] T3 watchdog-idle-is-not-dead (commit `d5001e8`)
 - [x] T4 story-memory-learning-loop (commit `cb81b45`)
-- [ ] T5 defensive-by-design
-- [ ] T6 controlled-rework-rollback
+- [x] T5 defensive-by-design (commit `9d8e816`)
+- [x] T6 controlled-rework-rollback (commit `08af8af`)
 - [ ] T7 series-a-consistency-pass
 
 ### Task 1 — `nine-agents-separated-powers` (tech · 2026-08-21 · tags `agents, supervised, workflow`)
