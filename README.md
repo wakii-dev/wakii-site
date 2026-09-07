@@ -6,13 +6,13 @@
 
 [![CI](https://github.com/wakii-dev/wakii-site/actions/workflows/ci.yml/badge.svg)](https://github.com/wakii-dev/wakii-site/actions/workflows/ci.yml)
 [![Deploy to Vercel](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/wakii-dev/wakii-site/actions/workflows/deploy.yml)
-[![Web](https://img.shields.io/badge/web-wakii.dev-45E0A8?logo=safari&logoColor=45E0A8)](https://wakii.dev)
+[![Web](https://img.shields.io/badge/web-wakii.xyz-45E0A8?logo=safari&logoColor=45E0A8)](https://wakii.xyz)
 [![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=BC52EE)](https://astro.build)
 [![Release](https://img.shields.io/github/v/release/wakii-dev/wakii)](https://github.com/wakii-dev/wakii/releases)
 
 <img src=".github/assets/hero.png" alt="Wakii landing page — “Your IDE just hired a team” headline with a terminal showing the Wakii pipeline: plan, parallel agents, verify gates, one clean PR" width="100%">
 
-**[wakii.dev](https://wakii.dev)** · [Docs](https://wakii.dev/docs/getting-started/) · [Skills](https://wakii.dev/skills/) · [Roadmap](https://wakii.dev/roadmap/) · [Download](https://wakii.dev/download/)
+**[wakii.xyz](https://wakii.xyz)** · [Docs](https://wakii.xyz/docs/getting-started/) · [Skills](https://wakii.xyz/skills/) · [Roadmap](https://wakii.xyz/roadmap/) · [Download](https://wakii.xyz/download/)
 
 This repository holds the source of the official website — built with
 [Astro](https://astro.build), deployed on Vercel, bilingual
@@ -27,7 +27,7 @@ This repository holds the source of the official website — built with
 - **Bilingual by design** — every page ships in English and Tiếng Việt
   (`/vi/*` mirror), strings sourced from `src/i18n/`.
 - **The kit, in the open** — 21 built-in skills, 13 documented in the public
-  [skills catalog](https://wakii.dev/skills/) with commands and internals.
+  [skills catalog](https://wakii.xyz/skills/) with commands and internals.
 - **Dark bento design system** — custom design tokens (`src/styles/tokens.css`)
   and a shared motion layer, no UI framework.
 
@@ -93,7 +93,7 @@ public/            # static assets
 
 The site deploys to **Vercel** via GitHub Actions (`deploy.yml`, production on
 push to `main`; `ci.yml` runs the build check on every PR). Canonical
-production URL: `https://wakii.dev` — sitemap and `robots.txt` derive from
+production URL: `https://wakii.xyz` — sitemap and `robots.txt` derive from
 `SITE_URL` in `src/config.ts`.
 
 > `REPO_URL` points to the public product repo
