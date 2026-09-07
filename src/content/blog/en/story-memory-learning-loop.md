@@ -7,7 +7,7 @@ tags: ["memory", "story-workflow", "workflow"]
 draft: false
 ---
 
-The tenth story knows things the first story paid to learn. Not because
+A later story should know what the first story paid to learn. Not because
 some agent has a great memory — an agent's memory lives and dies with its
 session — but because the workflow runs a loop: capture lessons where they
 arise, attach their provenance, and hand them to the next sub-feature.

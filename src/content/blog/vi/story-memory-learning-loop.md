@@ -7,7 +7,7 @@ tags: ["memory", "story-workflow", "workflow"]
 draft: false
 ---
 
-Story thứ mười biết những điều mà story thứ nhất phải trả giá mới học
+Một story sau nên biết những điều mà story đầu tiên phải trả giá mới học
 được. Không phải vì agent nào đó có trí nhớ tốt — trí nhớ của một agent
 sống hết phiên làm việc rồi tắt — mà vì workflow có một vòng lặp: ghi bài
 học tại chỗ phát sinh, gắn kèm nguồn gốc, và trao chúng cho sub-feature
