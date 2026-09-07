@@ -45,7 +45,7 @@ Quyết định đã probe (recorded):
 - [x] 7. category-route-vi-x3-empty-state: `src/pages/vi/blog/category/[category].astro` — mirror VI (title "Chuyên mục: <label>", breadcrumb Home=/vi/ "Trang chủ", empty VI).
 - [x] 8. jsonld-blog-collectionpage + jsonld-breadcrumblist (assert): dist grep cả 2 type trên 8 surface (2 listing + 6 category), URL absolute, breadcrumb chain 3 node đúng thứ tự, VI mirror đúng URL locale.
 - [x] 9. responsive-pass: @390 zero-overflow bằng same-origin iframe probe (headless Chrome ngoài, window-size clamp nên iframe trong dist preview) trên /blog/ + category + VI; rail collapse @800 + span collapse @980/640 verify DOM; screenshots pixel evidence.
-- [ ] 10. Final: `pnpm build` xanh (parity + utils gate + astro, 31→37 pages) + Rule 0 3 tầng demo trọn (DOM: canonical/hreflang/JSON-LD/links; VISUAL: screenshots so prototype; FLOW: /blog/ → category chip/nav → taxonomy page → post → breadcrumb về listing) + nhánh hiếm probe tạm uncommitted (featured img variant; empty-state category 0 posts) → revert sạch + code-reviewer độc lập toàn diff, fix P0/P1 trước merge.
+- [x] 10. Final: `pnpm build` xanh (parity + utils gate + astro, 31→37 pages) + Rule 0 3 tầng demo trọn (DOM: canonical/hreflang/JSON-LD/links; VISUAL: screenshots so prototype; FLOW: /blog/ → category chip/nav → taxonomy page → post → breadcrumb về listing) + nhánh hiếm probe tạm uncommitted (featured img variant; empty-state category 0 posts) → revert sạch + code-reviewer độc lập toàn diff, fix P0/P1 trước merge.
 
 Meta steps (không checkbox — chạy sau task 10):
 
