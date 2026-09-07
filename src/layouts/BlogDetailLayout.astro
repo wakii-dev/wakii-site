@@ -229,7 +229,9 @@ const related = relatedPosts(entry, posts);
       </nav>
     </article>
   </div>
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonld)} />
+  {/* JSON.stringify does not escape "<" — a future title/description holding
+      "</script>" could terminate the element early. Escape it (review P2). */}
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonld).replace(/</g, '\\u003c')} />
 </Base>
 
 <script>
@@ -515,7 +517,8 @@ const related = relatedPosts(entry, posts);
   .bd-back:hover {
     color: var(--accent);
   }
-  /* Date pager — copied from DocsLayout (← prev / next →, mono links). */  .bd-pager {
+  /* Date pager — copied from DocsLayout (← prev / next →, mono links). */
+  .bd-pager {
     display: flex;
     justify-content: space-between;
     gap: 16px;
