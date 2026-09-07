@@ -10,17 +10,15 @@ draft: false
 In any agent's progress report, the most dangerous sentence is "it works
 now". Not because the agent lies — because that is a claim, not evidence,
 and a story that runs on claims collects every bug at the very end. The
-Wakii story workflow handles this with machinery: promises replaced by
-gates. Work has to pass gates — tools doing the checking, not people doing
-the believing — before it counts as done. This post walks each layer: the
-five gates that run on every sub-feature, the six B0–B5 checks that run on
-the whole story, the five verdicts that settle it, and Rule 0 — the gate
-that demands opening a browser and seeing the result.
-
-The [decision gates](/blog/decision-gates-safe-ai-agents/) post told the
-human layer of this machinery — the forks where an agent stops and waits
-for you to choose. This post is the machine layer: the gates the workflow
-itself raises to check a story before anyone calls it done.
+[decision gates](/blog/decision-gates-safe-ai-agents/) post told the human
+layer of the machinery fighting that — the forks where an agent stops and
+waits for you to choose; this post is the machine layer: promises replaced
+by gates, the gates the workflow itself raises to check a story before
+anyone calls it done. Work has to pass gates — tools doing the checking,
+not people doing the believing — before it counts as done. This post walks
+each layer: the five gates that run on every sub-feature, the six B0–B5
+checks that run on the whole story, the five verdicts that settle it, and
+Rule 0 — the gate that demands opening a browser and seeing the result.
 
 TL;DR:
 

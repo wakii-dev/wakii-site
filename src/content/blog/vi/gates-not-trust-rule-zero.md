@@ -10,16 +10,14 @@ draft: false
 Trong báo cáo tiến độ của bất kỳ agent nào, câu nguy hiểm nhất là "nó chạy
 rồi". Không phải vì agent nói dối — mà vì đó là lời khẳng định, không phải
 bằng chứng; và một story tin vào lời khẳng định sẽ gom hết lỗi ở câu cuối.
-Story workflow của Wakii xử lý vấn đề này bằng cơ chế: thay lời hứa bằng
-cổng. Công việc phải vượt các gate — máy kiểm, không phải người tin — trước
-khi được tính Done. Bài này đi vào từng tầng cổng: năm gates chạy trên mỗi
-sub-feature, sáu cổng B0–B5 kiểm trên cả story, năm verdict kết luận, và
-Rule 0 — cổng đòi mở browser nhìn thấy kết quả.
-
 Bài [decision gates](/vi/blog/decision-gates-safe-ai-agents/) đã kể tầng
-con người của cơ chế này — những ngã rẽ mà agent dừng lại chờ bạn chọn.
-Bài này là tầng máy: những cổng mà chính workflow dựng lên để kiểm story
-trước khi được gọi là xong.
+con người của cơ chế này — những ngã rẽ mà agent dừng lại chờ bạn chọn;
+bài này là tầng máy: thay lời hứa bằng cổng, những cổng mà chính workflow
+dựng lên để kiểm story trước khi được gọi là xong. Công việc phải vượt các
+gate — máy kiểm, không phải người tin — trước khi được tính Done. Bài này
+đi vào từng tầng cổng: năm gates chạy trên mỗi sub-feature, sáu cổng B0–B5
+kiểm trên cả story, năm verdict kết luận, và Rule 0 — cổng đòi mở browser
+nhìn thấy kết quả.
 
 TL;DR:
 
