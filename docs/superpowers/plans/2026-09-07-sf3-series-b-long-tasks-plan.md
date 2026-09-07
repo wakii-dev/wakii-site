@@ -181,7 +181,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   a version bump means updating these lines.") + URL thật pin v1.4.199. Cadence = hệ quả
   workflow (SF nhỏ merge được verify nhanh). Cross-link: seed building-wakii-in-the-open-log-1.
 
-- [ ] **T8 — series-b consistency pass** (không file nội dung mới trừ fix nhỏ)
+- [x] **T8 — series-b consistency pass** (không file nội dung mới trừ fix nhỏ)
   Đọc chéo 7 bài × 2 locale: (1) tone nhất quán kỹ sản; (2) MỖI bài có ≥1 cross-link bài đã
   tồn tại đúng locale; (3) không 2 bài dùng cùng evidence chính (đối chiếu bảng trên);
   ngoại lệ theo matrix: FI-342 là evidence dùng chung T5 (khía cạnh verdict 7/7 PASS +
