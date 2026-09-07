@@ -1,27 +1,41 @@
-# Context pack — FI-339 SF-3: Convergence QA toàn site
+# SF-3 Context Pack — Listing + category taxonomy redesign (DESIGN-FIRST)
 
-Source spec: `docs/superpowers/specs/2026-09-07-blog-features.md` (rev 2). SF-1 (SEO surface) + SF-2 (10 posts) đã merged vào story branch. Việc này = QA regression TOÀN SITE + blog contracts + browser check trước khi owner merge.
+> Đọc file này THAY VÌ tự tổng hợp từ bracket + epic + comments. Epic spec: `docs/superpowers/specs/2026-09-07-blog-redesign-design.md`. Bracket: `docs/superpowers/brackets/fi349-blog-redesign.md`.
 
-## Spec slice
-**Baseline regression (chính xác theo nhóm tag):** build dist từ **main TRƯỚC story branch** (commit `fae770d^` tức `65715ac` — hoặc main tip trước story merge) làm baseline; so với dist story branch. Expected diff: THÊM og:*/twitter:card/article:published_time + RSS autodiscovery link trên mọi page. Bất biến (fail nếu khác): **canonical** (self-referencing per locale), **hreflang en/vi/x-default**, **noindex của 404** — trên 5 surfaces: landing `/` + `/vi/`, `/download/` + `/vi/download/`, 1 docs page sample (vd `/docs/getting-started/`), 404.
-**Blog contracts 100%:** mọi 10 post pages: `og:image` absolute `https://wakii.xyz/og-default.png`, `og:type=article` + `article:published_time`, `twitter:card=summary_large_image`, `og:url`=canonical, `og:image:width/height/alt`; listing pages: `og:type=website`; RSS autodiscovery present.
-**Browser check:** serve dist (`pnpm preview` hoặc tương đương) → mở `/blog/` + `/vi/blog/` + 1 post trong Orca tab — listing hiển thị 5 posts đúng badge/category, post đọc hết bài không vỡ layout, TOC box hiển thị đầu article, dark/light ổn.
-**Final build:** `pnpm build` pass clean (parity script green non-vacuous 10/10).
+## Spec slice (chỉ phần SF-3 chịu trách nhiệm)
 
-## Touch map
-- Chủ yếu ĐỌC/VERIFY: dist output, browser, git
-- Fix-loop: sửa code/content phát hiện lỗi → commit vào story branch (theo đúng lỗi, atomic)
-- KHÔNG đụng: content.config.ts, astro.config.mjs, Nav.astro, vercel.json
+0. **DESIGN-FIRST (trước mọi code)**: designer agent — 3 hướng HTML draft → USER CHỌN (gate bắt buộc, không豁免) → hand-off `docs/superpowers/designs/<sf-slug>-direction.md` (tokens/structure/behavior). Brand: dark #0A0E0D + mint #45E0A8, mono display + sans body, tokens.css authority. Chỉ sau gate mới launch dev.
+1. **BlogListing component dùng chung** (`src/components/blog/BlogListing.astro` hoặc tương tự): render danh sách posts (prop: posts + locale + strings) — diệt 95% duplication giữa EN/VI index (P0 flag). Pin LangSwitcher trên listing + category pages.
+2. Listing index EN+VI redesign theo direction: category chips/nav (label từ SF-1 map — tutorial/tech notes/build log · hướng dẫn/kỹ thuật/nhật ký xây dựng), link → taxonomy routes; hero/thumbnail nếu direction có (từ heroImage, fallback không hiện).
+3. Taxonomy routes from-enum: `getStaticPaths` derive từ 3 category values (`tutorial|tech|build-log`) — 6 pages: `/blog/category/<cat>/` ×3 + `/vi/blog/category/<cat>/` ×3. Route rỗng (tương lai 0 posts) → empty-state "No posts yet — check back soon." / "Chưa có bài viết — quay lại sau nhé." (route vẫn tồn tại, indexable).
+4. JSON-LD: `Blog` (blogPost array) trên /blog/ + `BreadcrumbList` (Home → Blog → Category) trên category pages — URLs absolute.
+5. Title/description pages: "Blog" / "Chuyên mục: <label>" pattern; VI copy theo strings spec (user-approve tại verify gate).
+6. Responsive pass @390 no-overflow.
 
-## ACCEPTANCE (evidence: diff output + browser screenshots/notes)
-- Regression diff: chỉ có expected additions (og/rss lines), canonical/hreflang/noindex bất biến trên cả 5 surfaces — in diff vào report
-- 10 post pages: đủ og contract (grep từng trang, 10/10 pass)
-- Browser: /blog/ + /vi/blog/ + ≥1 post hiển thị đúng (dark + light, mobile width 390px check nhanh)
-- `pnpm build` cuối: pass, parity 10/10, sitemap 10 URLs, RSS 10 items
-- Report tổng hợp pass/fail từng dòng ACCEPTANCE spec (7 success criteria) gửi Epic comment
+## Touch map (files SF-3 tạo/sở hữu)
 
-## Boundary
-- KHÔNG tự set FI-339 Done — báo verdict, PM xử lý
-- KHÔNG deploy/merge — merge là human gate
-- Lỗi content (typos/facts) → list ra, fix qua SF-2 path (content commit), không sửa l Süd trong QA
-- KHÔNG mở scope mới (mobile nav hamburger, category pages… = out-of-scope spec)
+- `src/components/blog/*` — W (mới: listing shared component)
+- `src/pages/blog/index.astro` — W (redesign, hiện sở hữu SF-3)
+- `src/pages/vi/blog/index.astro` — W (redesign)
+- `src/pages/blog/category/[category].astro` — W (mới, getStaticPaths from-enum)
+- `src/pages/vi/blog/category/[category].astro` — W (mới)
+- `docs/superpowers/designs/<sf-slug>-direction.md` — W (hand-off designer)
+- `src/layouts/BlogDetailLayout.astro`, `src/pages/blog/[slug].astro` (SF-2) — READ-ONLY trong tier này; wire category-link vào detail meta = SF-4
+- `src/i18n/*` category map (SF-1) — READ (adopt vào pages)
+- `src/utils` readingtime/related (SF-1) — READ nếu listing hiển thị reading time
+
+## ACCEPTANCE (user-visible)
+
+- Vào /blog/ (EN) và /vi/blog/ (VI): thấy listing redesigned theo direction đã chọn — đủ 5 posts mới nhất, badge category nhìn được.
+- Bấm category chip/nav → sang trang category (vd /blog/category/tech/) thấy đúng 3 bài tech (EN) / đúng bài VI; breadcrumb Home → Blog → Category hiển thị; bấm ngược về listing được.
+- LangSwitcher trên listing + category pages chuyển EN↔VI đúng trang tương ứng.
+- View-source: JSON-LD Blog trên listing, BreadcrumbList trên category; canonical/hreflang đúng mỗi route.
+- Mobile 390px không overflow.
+
+## Boundary (KHÔNG làm)
+
+- KHÔNG wire category-link vào detail meta-row (SF-4 — cross-SF wiring, tránh collision `[slug].astro` với SF-2 đang song song).
+- KHÔNG đụng detail layout/pages (SF-2 sở hữu trong tier này).
+- KHÔNG đổi schema, RSS, astro.config.
+- KHÔNG tự chọn direction thay user — gate bắt buộc.
+- KHÔNG đụng scripts/* (SF-1/SF-4 sở hữu).

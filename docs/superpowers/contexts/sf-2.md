@@ -1,34 +1,42 @@
-# Context pack — FI-339 SF-2: Seed content 10 posts
+# SF-2 Context Pack — Detail page redesign (docs shell)
 
-Source spec: `docs/superpowers/specs/2026-09-07-blog-features.md` (rev 2). SF-1 đã có: OG contract + RSS contract + TOC component + parity script. Việc này = NỘI DUNG.
+> Đọc file này THAY VÌ tự tổng hợp từ bracket + epic + comments. Epic spec: `docs/superpowers/specs/2026-09-07-blog-redesign-design.md`. Bracket: `docs/superpowers/brackets/fi349-blog-redesign.md`.
 
-## Spec slice
-10 posts = 5 topics × en/vi, cùng slug, VI source-first (EN translated). Frontmatter đúng schema (content.config.ts): title, description (bắt buộc — SEO), pubDate (quá khứ thật), category enum `tutorial|tech|build-log`, tags, `draft: false`. Mỗi post link sang ≥1 docs page chính tắc (anti-cannibalization — docs giữ how-to chính tắc, blog giữ trải nghiệm/workflow). ≥2 posts (EN) có ≥3 h2 (TOC render). Tone: kỹ thuật thân thiện, thuật ngữ giữ tiếng Anh, code-first. Voice nhất quán ~/wakii. terminal aesthetic.
+## Spec slice (chỉ phần SF-2 chịu trách nhiệm)
 
-**5 topics (slug · category · nội dung cốt):**
-1. `review-ai-agents-from-your-phone` · tutorial · mở app → Host → Stories → story detail (SF tiers/progress) → pending gates → resolve (choice/free-text + confirm) → agent tiếp tục; gộp phần pairing (quét QR từ desktop) làm bước 0; material: FI-305 thật, emulator screenshots
-2. `story-workflow-idea-to-release` · tech · bracket → tier → DAG → SF agents → gates → merge → PR; tier ladder SVG concept; material: FI-305 end-to-end
-3. `decision-gates-safe-ai-agents` · tech · gate là gì, pending guard (`gate_not_pending`/`gate_not_found`/`invalid_resolution`), notification gate-open/closed, tại sao supervised > autonomous
-4. `forking-an-ide-keeping-current-with-upstream` · tech · fork-sync ff-only main, story branches song song upstream, xung đột và chiến lược; material: wakii-dev practice thật
-5. `building-wakii-in-the-open-log-1` · build-log · log #1: FI-305 shipped (mobile story view + gates + notifications), release 1.4.199, next: blog đang đọc chính nó
+1. Tạo **BlogDetailLayout** (`src/layouts/BlogDetailLayout.astro`) mirror DocsLayout as-built (`src/layouts/DocsLayout.astro` — READ-ONLY reference, đừng sửa nó): grid `220px + 1fr` max 1080px, sticky sidebar trái, article phải, mobile 1-col @800px.
+2. Sidebar trái: danh sách posts của locale (date desc, `draft: false`, current post highlight `aria-current='page'` theo style docs: border-left accent), eyebrow `~/blog`, LangSwitcher dưới sidebar.
+3. Prev/next pager theo ngày (older/newer), same-locale, draft-filtered — style như `docs-pager` (← prev / next →).
+4. Meta row trên h1: date · category **label thuần** (KHÔNG link — SF-4 wire) · tags chips (plain, không link) · author · reading-time (util SF-1).
+5. Hero: `heroImage` có → `<img src width=1200 height=630 loading="eager">` đầu article; không → bỏ qua hero block (fallback og đã xử lý ở SF-1).
+6. BlogToc giữ nguyên (đầu vào `headings` từ `render()` — contract) trong article.
+7. Related posts section cuối: util SF-1, render title+date links, ẩn khi rỗng.
+8. JSON-LD `<script type="application/ld+json">` BlogPosting: headline/datePublished/author/@type + URLs absolute.
+9. Light reveal per prose block: `revealChildren(article, '.prose > *')` + `initMotion()` (pattern DocsLayout script tag).
+10. Route wiring EN+VI: rewrite `src/pages/blog/[slug].astro` + `vi` twin dùng layout mới; GIỮ nguyên contracts: og article FI-339 (ogType/publishedTime/ogImage từ SF-1 wiring) + URL shape + getStaticPaths draft filter.
+11. After-CTA "get wakii" giữ như layout cũ (cuối article).
+12. Responsive pass @390: sidebar xuống dưới/ẩn hợp lý, no overflow (iframe probe pattern).
 
-Mỗi post: 350-500 từ, ≥1 link `/docs/...` chính tắc, khép bằng CTA download.
+## Touch map (files SF-2 tạo/sở hữu)
 
-## Touch map
-- `src/content/blog/vi/<slug>.md` ×5 + `src/content/blog/en/<slug>.md` ×5 — tạo mới (thư mục có thể phải mkdir)
-- KHÔNG đụng code (SF-1 đã xong toàn bộ surface); KHÔNG đụng docs content có sẵn
+- `src/layouts/BlogDetailLayout.astro` — W (mới)
+- `src/pages/blog/[slug].astro` + `src/pages/vi/blog/[slug].astro` — W (rewrite dùng layout mới)
+- `src/pages/blog/index.astro`, `src/pages/vi/blog/index.astro`, `src/pages/blog/category/*` — READ-ONLY (SF-3 sở hữu)
+- `src/layouts/DocsLayout.astro` — READ-ONLY (reference mẫu)
+- `src/utils` (readingtime/related từ SF-1) — READ (import)
+- `src/components/LangSwitcher.astro`, `BlogToc.astro` — READ (import, không sửa)
 
-## ACCEPTANCE (grep/browser trên dist sau build)
-- `dist/blog/index.html`: 5 posts (đúng title + category badge + date); `dist/vi/blog/index.html`: 5 posts
-- `dist/blog/<slug>/index.html` ×5 + `dist/vi/blog/<slug>/index.html` ×5 tồn tại
-- `dist/sitemap-0.xml`: đúng 10 URL blog (5×/blog/ + 5×/vi/blog/)
-- `dist/rss.xml`: 10 items, guid = URL tuyệt đối (unique 2 locale), không `<language>`
-- `dist/blog/story-workflow-idea-to-release/index.html` + `dist/blog/forking-an-ide-.../`: mỗi bài ≥3 `<h2 id=` (TOC render)
-- Mỗi post HTML chứa ≥1 link `/docs/`
-- Slug parity script green non-vacuous (10/10)
+## ACCEPTANCE (user-visible)
 
-## Boundary
-- KHÔNG sửa code/page/styles (bug surface → rollback-fixer, không tự vá trong content task)
-- KHÔNG dùng pubDate tương lai (không có scheduler — hiện ngay + sort lên đầu)
-- KHÔNG đặt slug mới ngoài 5 slugs đã chốt trong spec (vĩnh viễn)
-- KHÔNG viết bài trùng intent hẹp với docs pages
+- Mở 1 post bất kỳ (EN + VI): thấy shell giống /docs/faq/ — sidebar trái list posts (post đang đọc highlight mint), bài viết phải, light reveal khi scroll.
+- Thấy đầy đủ: ngày · category · tags · author · thời gian đọc; hero ảnh hiện với post có hero; post không hero vẫn sạch.
+- Bấm prev/next đọc bài liền kề; cuối bài thấy "Related" dẫn sang post cùng chủ đề; LangSwitcher EN↔VI giữ đúng bài đang đọc.
+- View-source: JSON-LD BlogPosting có headline/datePublished/author; og:type=article + og:image absolute (hero hoặc og-default).
+- Mobile 390px: không overflow, sidebar hợp lý.
+
+## Boundary (KHÔNG làm)
+
+- KHÔNG đụng listing/category pages (SF-3), KHÔNG wire category-link trong meta (SF-4 — meta chỉ label thuần).
+- KHÔNG sửa DocsLayout/Base (trừ ogImageAlt SF-1 đã làm), KHÔNG đổi schema (SF-1), KHÔNG đổi RSS.
+- KHÔNG thêm tag pages (tags = chips).
+- KHÔNG đụng motion.ts core (dùng initMotion/revealChildren as-is).

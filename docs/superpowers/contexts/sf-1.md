@@ -1,30 +1,39 @@
-# Context pack — FI-339 SF-1: SEO surface + TOC + assets
+# SF-1 Context Pack — Content infra: schema + shared utils
 
-Source spec: `docs/superpowers/specs/2026-09-07-blog-features.md` (rev 2). Phase0 verified bằng build probe — routing/hreflang/sitemap đã hoạt động, work này là SEO surface + TOC + assets.
+> Đọc file này THAY VÌ tự tổng hợp từ bracket + epic + comments. Epic spec: `docs/superpowers/specs/2026-09-07-blog-redesign-design.md`. Bracket: `docs/superpowers/brackets/fi349-blog-redesign.md`.
 
-## Spec slice
-Base.astro OG contract PINNED: `og:title` (theo page title), `og:description` (theo page description), `og:url` (= canonical), `og:image` = **URL tuyệt đối** `new URL(ogImage, Astro.site)` bắt đầu `https://wakii.xyz`, `og:type` qua prop (`website` mặc định / `article` khi post truyền), `article:published_time` (prop optional, post truyền), `twitter:card` = `summary_large_image`, `og:image:width=1200` + `height=630` + `alt`. Optional props: `ogImage` (default `/og-default.png`), `ogType` (default `website`), `publishedTime`. RSS autodiscovery `<link rel="alternate" type="application/rss+xml" href="/rss.xml">`. `rss.xml.js`: **omit `<language>` hoàn toàn**, refactor dùng helper `blogSlug` (đã export trong content.config.ts — file đang inline regex), guid tường minh = URL tuyệt đối (tự unique 2 locale). `og-default.png` 1200×630 <300KB (commit kèm SVG nguồn; og:image trỏ PNG). `BlogToc.astro`: từ `render().headings` lọc depth 2 (h2), render khi ≥3 items, inline box đầu article, `<nav aria-label="toc">`, anchor link khớp id Astro sinh (verified `<h2 id=` có sẵn trong dist). Slug-parity: `scripts/check-blog-slug-parity.mjs` so sánh slug set en ≡ vi trong `src/content/blog/`, chain vào `pnpm build` (`node scripts/... && astro build` — package.json chỉ có build: astro build), lệch → exit 1. README: chỉ site-domain links `wakii.dev`→`wakii.xyz`, giữ github links.
+## Spec slice (chỉ phần SF-1 chịu trách nhiệm)
 
-## Touch map (verified phase0)
-- `src/layouts/Base.astro` — sửa head + thêm props (blast radius 21+ pages: canonical/hreflang hiện tại đã render đúng, KHÔNG được đụng logic đó)
-- `src/pages/rss.xml.js` — sửa (hiện `<language>en-vi</language>` sai + inline regex + 0 items)
-- `src/components/BlogToc.astro` — tạo mới (DocsLayout không có TOC — không duplicate)
-- `scripts/check-blog-slug-parity.mjs` — tạo mới; `package.json` — sửa script `build`
-- `public/og-default.svg` + `public/og-default.png` — tạo mới (public/ hiện chỉ có favicon/logo/wakii-icon svg)
-- `README.md` — sửa domain links
-- **KHÔNG đụng:** content.config.ts (schema đủ), astro.config.mjs, Nav.astro, vercel.json, robots.txt.ts, blog [slug] pages (wiring ở task riêng — og article props truyền từ page vào Base qua props)
+1. `src/content.config.ts` schema blog mở rộng: `heroImage: z.string().optional()`, `author: z.string().default('Wakii team')` — mọi field optional/default ⇒ 10 posts cũ zero migration. KHÔNG đổi `category` enum (đã dùng đủ 3 giá trị), KHÔNG đụng docs collection.
+2. `readingTime` computed util (không phải frontmatter): WPM EN 200 / VI 160; làm tròn lên; min 1 phút. Input: markdown content string; expose hàm nhận entry trả số phút.
+3. `related` computed util: same-category → fallback shared-tags (≥1 tag chung) → fallback latest-same-locale; max 3; same-locale BẮT BUỘC; ẩn khi rỗng. Lọc `draft: false` ở mọi query.
+4. OG per-post wiring: detail posts truyền `ogImage = heroImage` khi có, fallback `/og-default.png` — absolute qua `new URL(ogImage, Astro.site)` (contract FI-339 rev 2 — xem pin `[slug].astro` line ~22).
+5. `Base.astro` thêm prop optional `ogImageAlt` (default giữ hành vi hiện tại `"${SITE_NAME} — ${SITE_TAGLINE}"`) — carve-out additive DUY NHẤT được phép trên Base; KHÔNG đụng width/height hardcode 1200/630.
+6. Hero assets: 4 PNG 1200×630 mint-brand (#45E0A8 trên #0A0E0D, mono wordmark) tại `public/blog/heroes/<slug>.png` cho 4 posts (đủ 3 category); post `building-wakii-in-the-open-log-1` CỐ Ý không hero → exercise fallback. VI mirror dùng chung hero EN. Pipeline đã proven: SVG template → headless Chrome `--default-background-color=00000000` → PNG.
+7. `scripts/check-blog-slug-parity.mjs`: mở rộng check schema-parity (EN/VI cùng frontmatter fields mới) — KHÔNG đụng category routes (SF-4).
+8. Update comment contract trong `[slug].astro` (ghi rev-2 carve-out ogImageAlt) — docs-comment task.
 
-## ACCEPTANCE (grep/browser trên dist sau build)
-- `dist/index.html` + `dist/vi/index.html` + 1 docs page + `dist/blog/index.html` + `dist/vi/blog/index.html`: có `og:title/description/url/image` + `twitter:card=summary_large_image` + RSS autodiscovery link; `og:image` = `https://wakii.xyz/og-default.png` (absolute); canonical + hreflang các page này **bất biến** so với trước
-- `dist/blog/index.html` + `dist/vi/blog/index.html`: `og:type=website`
-- `dist/rss.xml`: không chứa `<language>`, channel valid (0 items OK — posts thuộc SF-2)
-- `scripts/check-blog-slug-parity.mjs` chạy green với 0 posts; negative check: thêm slug lệch tạm → build FAIL (verify tay rồi bỏ)
-- `dist/og-default.png` tồn tại <300KB; SVG nguồn trong git
-- README không còn `wakii.dev` (site-domain), github links giữ nguyên
+## Touch map (files SF-1 tạo/sở hữu)
 
-## Boundary
-- KHÔNG thêm field image vào blog schema (ogImage prop là đủ — iteration này mọi page dùng default)
-- KHÔNG đụng canonical/hreflang logic có sẵn của Base.astro (đã verified render đúng)
-- KHÔNG đụng astro.config.mjs / Nav.astro / vercel.json
-- KHÔNG wire og article props vào [slug] pages ở SF này (task `wire-...` làm — cùng SF nhưng task riêng)
-- KHÔNG tạo posts (SF-2)
+- `src/content.config.ts` — W (schema)
+- `src/layouts/Base.astro` — W (CHỈ thêm ogImageAlt prop; còn lại READ-ONLY — contracts)
+- `src/pages/blog/[slug].astro` + `src/pages/vi/blog/[slug].astro` — W nhỏ (ogImage wiring + comment) — chú ý SF-2 sẽ rewrite CHỖ LỚN còn lại, giữ wiring nhỏ và tách bạch
+- `scripts/check-blog-slug-parity.mjs` — W (schema parity)
+- `public/blog/heroes/*` — W (4 PNG mới)
+- `src/utils/*` hoặc inline trong content.config — W (readingtime/related utils; đặt chỗ SF-2/3 import được)
+- `src/pages/vi/blog/index.astro`, `src/pages/blog/index.astro` — READ-ONLY (SF-3 sở hữu)
+- `src/i18n/*` — W (category label map EN/VI — CHỈ tạo map, không adopt vào pages)
+
+## ACCEPTANCE (user-visible)
+
+- Build pass 31→31 pages (không route mới ở tier này), parity gate pass.
+- View-source 1 post có hero: `<meta property="og:image" content="https://wakii.xyz/blog/heroes/<slug>.png">` absolute; post không hero: og-default absolute.
+- Node assertion utils: readingTime(vi post) > 0 và ≥ EN cùng post (WPM 160 < 200); related("Building Wakii…", build-log) rỗng → fallback latest-same-locale 3 items.
+- 4 hero PNG tồn tại đúng 1200×630, đúng brand mint/dark.
+
+## Boundary (KHÔNG làm)
+
+- KHÔNG redesign layout detail/listing (SF-2/SF-3) — chỉ og wiring nhỏ trong [slug].astro.
+- KHÔNG tạo category routes (SF-3), KHÔNG JSON-LD (SF-2/3), KHÔNG wire category-link vào meta (SF-4).
+- KHÔNG astro:assets/image pipeline (Decision D5 — public path only).
+- KHÔNG sửa astro.config.mjs (i18n LOCKED), KHÔNG đổi RSS.
