@@ -47,8 +47,8 @@ Progress (tick sau mỗi task, coordinator commit tick):
 
 - [x] T1 nine-agents-separated-powers (commit `cd1dda7`)
 - [x] T2 gates-not-trust-rule-zero (commit `51ca77f`)
-- [ ] T3 watchdog-idle-is-not-dead
-- [ ] T4 story-memory-learning-loop
+- [x] T3 watchdog-idle-is-not-dead (commit `d5001e8`)
+- [x] T4 story-memory-learning-loop (commit `cb81b45`)
 - [ ] T5 defensive-by-design
 - [ ] T6 controlled-rework-rollback
 - [ ] T7 series-a-consistency-pass
