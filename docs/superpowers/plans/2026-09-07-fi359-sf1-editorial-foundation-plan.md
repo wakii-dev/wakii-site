@@ -89,5 +89,5 @@ Foundation-first (tier 0): toàn bộ pattern dùng chung cấp phát sẵn từ
 - [x] T4 evidence-pack.md (snapshot D8 đầu file + hub-store digest verified)
 - [x] T5 scripts/check-blog-content.mjs (6 nhóm check + test 2 chiều 2 mode)
 - [x] T6 package.json wiring 1 dòng sau parity
-- [ ] T7 runbook.md (8 bước per-post + D4 + D7)
+- [x] T7 runbook.md (8 bước per-post + D4 + D7)
 - [ ] T8 pilot zero-setup-agent-team VI+EN (lint xanh + build xanh)
