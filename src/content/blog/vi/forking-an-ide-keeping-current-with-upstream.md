@@ -5,6 +5,7 @@ pubDate: "2026-09-02"
 category: "tech"
 tags: ["git", "fork", "upstream"]
 draft: false
+heroImage: "/blog/heroes/forking-an-ide-keeping-current-with-upstream.png"
 ---
 
 Wakii xây trên Orca — một agentic IDE mã nguồn mở. Fork là quyết định dễ; giữ cho fork không trở thành một bản sao bỏ đi sau sáu tháng mới là phần khó. Bài này chia sẻ cách chúng tôi giữ nhịp với upstream mà vẫn phát triển hướng riêng không ngừng.

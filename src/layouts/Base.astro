@@ -19,6 +19,12 @@ interface Props {
   ogType?: 'website' | 'article';
   /** article:published_time — ISO timestamp; blog post pages pass it. */
   publishedTime?: string;
+  /**
+   * og:image:alt carve-out (spec FI-349 rev 2 — ADDITIVE): per-post alt text
+   * for the hero tile. Default keeps the previous behavior unchanged —
+   * `${SITE_NAME} — ${SITE_TAGLINE}`.
+   */
+  ogImageAlt?: string;
 }
 
 const {
@@ -28,6 +34,7 @@ const {
   ogImage = '/og-default.png',
   ogType = 'website',
   publishedTime,
+  ogImageAlt = `${SITE_NAME} — ${SITE_TAGLINE}`,
 } = Astro.props;
 
 /**
@@ -71,7 +78,7 @@ const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE_NAME} — ${SITE_TAGLINE}`} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} blog`} href="/rss.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

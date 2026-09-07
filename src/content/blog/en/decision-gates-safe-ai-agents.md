@@ -5,6 +5,7 @@ pubDate: "2026-09-03"
 category: "tech"
 tags: ["gates", "guardrails", "supervised"]
 draft: false
+heroImage: "/blog/heroes/decision-gates-safe-ai-agents.png"
 ---
 
 The question we hear most: "Why not just let the agent run the whole thing?" Wakii's answer: the agent does all of the doing — but consequential decisions stop at a gate. This post dissects the machinery behind that stop.

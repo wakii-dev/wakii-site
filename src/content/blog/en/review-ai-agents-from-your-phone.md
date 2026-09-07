@@ -5,6 +5,7 @@ pubDate: "2026-09-06"
 category: "tutorial"
 tags: ["mobile", "stories", "gates"]
 draft: false
+heroImage: "/blog/heroes/review-ai-agents-from-your-phone.png"
 ---
 
 Agents do their best work when they can run long — but consequential decisions still need a human. The friction is in the handoff: you can't babysit a screen all day, yet every time an agent stops to wait, the whole story stalls. The Wakii mobile build closes exactly that gap — story view and decision gates, on your phone.

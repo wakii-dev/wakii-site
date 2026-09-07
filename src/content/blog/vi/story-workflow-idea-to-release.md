@@ -5,6 +5,7 @@ pubDate: "2026-09-04"
 category: "tech"
 tags: ["story-workflow", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/story-workflow-idea-to-release.png"
 ---
 
 Mỗi feature lớn của Wakii được chạy như một story: bắt đầu từ một dòng ý tưởng, kết thúc bằng một PR được merge. Không phải ẩn dụ đẹp — đây là pipeline thật với bracket, tier, DAG, agent riêng từng phần và gate ở những ngã rẽ thật. Bài này đi hết con đường đó.
