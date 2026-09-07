@@ -11,13 +11,13 @@ Agent làm việc tốt nhất khi được chạy dài, nhưng quyết định 
 
 ## Bước 0 — Pair điện thoại với desktop
 
-Trước tiên, ghép nối điện thoại với host: mở Wakii trên desktop, vào màn pairing và quét mã QR bằng app trên điện thoại — mọi state của host (stories, agents, gates) hiện lên ngay sau khi quét. Pair một lần cho mỗi host, các lần mở sau vào thẳng việc chính.
+Trước tiên, ghép nối điện thoại với host: mở Wakii trên desktop, vào màn pairing và quét mã QR bằng app trên điện thoại — stories và decision gates của host hiện lên ngay sau khi quét.
 
 Chưa có Wakii trên máy? Hướng dẫn cài đặt chính tắc nằm trong [getting started](/docs/getting-started/) — từ clone đến khi thấy ⚡ Superpowers panel chỉ mất vài phút.
 
 ## Mở tab Stories và đọc tiến độ
 
-Trên điện thoại: chọn host, mở tab **Stories**. Mỗi story đang chạy hiện thành một dòng gọn; chạm vào để vào màn detail — sub-feature (SF) xếp theo tier, tiến độ từng SF, agent nào giữ worktree nào. Năm giây là biết story đang khỏe hay đang kẹt, không cần SSH hay terminal từ xa.
+Trên điện thoại: chọn host, mở tab **Stories**. Mỗi story đang chạy hiện thành một dòng gọn; chạm vào để vào màn detail — sub-feature (SF) xếp theo tier, tiến độ từng SF. Năm giây là biết story đang khỏe hay đang kẹt, không cần SSH hay terminal từ xa.
 
 ## Pending gates: chỗ agent dừng chờ bạn
 

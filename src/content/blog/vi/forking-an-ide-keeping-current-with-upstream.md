@@ -7,7 +7,7 @@ tags: ["git", "fork", "upstream"]
 draft: false
 ---
 
-Wakii xây trên Orca — một agentic IDE mã nguồn mở. Fork là quyết định dễ; giữ cho fork không biến thành bản sao mục rác sau sáu tháng mới là phần khó. Bài này chia sẻ cách chúng tôi giữ nhịp với upstream mà vẫn phát triển hướng riêng không ngừng.
+Wakii xây trên Orca — một agentic IDE mã nguồn mở. Fork là quyết định dễ; giữ cho fork không trở thành một bản sao bỏ đi sau sáu tháng mới là phần khó. Bài này chia sẻ cách chúng tôi giữ nhịp với upstream mà vẫn phát triển hướng riêng không ngừng.
 
 ## Vì sao fork thay vì chờ upstream
 

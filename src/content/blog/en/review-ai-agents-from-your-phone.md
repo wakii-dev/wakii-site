@@ -11,13 +11,13 @@ Agents do their best work when they can run long — but consequential decisions
 
 ## Step 0 — Pair your phone with your desktop
 
-First, pair the phone with your host: open Wakii on desktop, go to the pairing screen and scan the QR code with the mobile app — the host's full state (stories, agents, gates) shows up right after the scan. Pair once per host; the next time you open the app you go straight to the work.
+First, pair the phone with your host: open Wakii on desktop, go to the pairing screen and scan the QR code with the mobile app — the host's stories and decision gates show up right after the scan.
 
 No Wakii on your machine yet? The official setup guide lives in [getting started](/docs/getting-started/) — from clone to the ⚡ Superpowers panel in minutes.
 
 ## Open the Stories tab and read progress
 
-On your phone: pick your host, open the **Stories** tab. Every running story shows up as a compact row. Tap one for the detail view: sub-features (SFs) stacked by tier, each SF's progress, which agent holds which worktree. Five seconds is enough to tell whether a story is healthy or stuck — no SSH, no remote terminal.
+On your phone: pick your host, open the **Stories** tab. Every running story shows up as a compact row. Tap one for the detail view: sub-features (SFs) stacked by tier, each SF's progress. Five seconds is enough to tell whether a story is healthy or stuck — no SSH, no remote terminal.
 
 ## Pending gates: where the agent stops for you
 

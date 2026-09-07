@@ -11,7 +11,7 @@ This is the first entry in a periodic series logging the building of Wakii — w
 
 ## Shipped: FI-305 — stories on your phone
 
-The biggest feature to close: story view on mobile. Pair your phone with the desktop over a QR code, open the Stories tab and watch every running story — sub-features stacked by tier, progress per SF, which agent holds which worktree. The story detail lays out the live bracket: which tiers have closed, which tier is running, which gate is waiting. Decision gates resolve right on the phone, with notifications when a gate opens and when it closes. Agents no longer stand still waiting for you to walk back to the keyboard.
+The biggest feature to close: story view on mobile. Pair your phone with the desktop over a QR code, open the Stories tab and watch every running story — sub-features stacked by tier, progress per SF. The story detail lays out the live bracket: which tiers have closed, which tier is running, which gate is waiting. Decision gates resolve right on the phone, with notifications when a gate opens and when it closes. Agents no longer stand still waiting for you to walk back to the keyboard.
 
 ## Release 1.4.199
 

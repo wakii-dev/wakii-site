@@ -11,13 +11,13 @@ draft: false
 
 ## Đã ship: FI-305 — story ngay trên điện thoại
 
-Tính năng lớn nhất vừa khép: story view trên bản mobile. Bạn pair điện thoại với desktop bằng mã QR, mở tab Stories và thấy mọi story đang chạy — sub-feature xếp theo tier, tiến độ từng SF, agent nào đang giữ worktree nào. Trong story detail, bracket đang chạy hiện thật rõ: tier nào đã khép, tier nào đang chạy, gate nào đang chờ. Decision gates resolve được ngay trên màn hình điện thoại, kèm notification khi gate mở và khi gate đóng. Agent không còn đứng chờ bạn quay lại bàn phím.
+Tính năng lớn nhất vừa khép: story view trên bản mobile. Bạn pair điện thoại với desktop bằng mã QR, mở tab Stories và thấy mọi story đang chạy — sub-feature xếp theo tier, tiến độ từng SF. Trong story detail, bracket đang chạy hiện thật rõ: tier nào đã khép, tier nào đang chạy, gate nào đang chờ. Decision gates resolve được ngay trên màn hình điện thoại, kèm notification khi gate mở và khi gate đóng. Agent không còn đứng chờ bạn quay lại bàn phím.
 
 ## Release 1.4.199
 
 Ngày 5/9 chúng tôi cắt ba release liên tiếp — 1.4.197, 1.4.198, 1.4.199 — nhịp nhỏ và thường xuyên thay vì một bản lớn phải chờ đợi. 1.4.199 là release hiện tại; bản dựng Android đi kèm ở tag `mobile-android-v0.0.48`. Nếu bạn đang dùng bản cũ, trang download có đầy đủ.
 
-## Blog bạn đang đọc chính nó
+## Blog bạn đang đọc là một story đang chạy
 
 Phần meta nhất của tuần: blog này đang được xây bằng đúng quy trình mà nó miêu tả. Story FI-339 đang chạy: SF-1 (SEO surface — OG cards, RSS, TOC cho bài dài, kiểm tra slug song ngữ) đã merged; SF-2 chính là mười bài viết bạn đang đọc — viết tiếng Việt trước, dịch sang tiếng Anh, slug khóa cứng giống hệt nhau ở hai ngôn ngữ; SF-3 sẽ quét QA toàn site trước khi story khép lại thành một PR.
 
