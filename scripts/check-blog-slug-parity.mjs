@@ -15,8 +15,11 @@
  * 0 posts in BOTH locales is a pass (vacuous) — seeding (SF-2) makes the
  * check non-vacuous.
  *
- * Category ROUTES parity is NOT checked here — that is the SF-4 `--dist`
- * mode (routes exist only after SF-3 lands).
+ * Category ROUTES parity (story FI-349 SF-4): with `--dist` the src checks
+ * above run first, then every BLOG_CATEGORIES route must exist in dist/
+ * (EN + VI, all-or-nothing). Routes only exist post-build, so this mode is
+ * a verify-step, NOT part of the build gate (`pnpm build` keeps running the
+ * src-only pass; without the flag behaviour is unchanged).
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -83,3 +86,29 @@ if (schemaDrift.length > 0) {
 console.log(
   `✓ blog slug parity OK (${en.length} post${en.length === 1 ? '' : 's'} × 2 locales, schema fields heroImage/author in sync)`
 );
+
+// ── --dist: category ROUTES exist in the build output (SF-4, all-or-nothing) ──
+if (process.argv.includes('--dist')) {
+  const distDir = join(root, 'dist');
+  // Derive from the label map — the one-directional source categories.ts
+  // itself uses (BLOG_CATEGORIES = Object.keys(CATEGORY_LABELS.en)).
+  // Importing categories.ts here breaks: its `from '../../i18n/categories'`
+  // is extensionless (fine for Astro/Vite, unresolvable by bare node ESM).
+  const { CATEGORY_LABELS } = await import(new URL('../src/i18n/categories.ts', import.meta.url));
+  const categories = Object.keys(CATEGORY_LABELS.en);
+
+  const missing = [];
+  for (const cat of categories) {
+    for (const route of [`blog/category/${cat}/index.html`, `vi/blog/category/${cat}/index.html`]) {
+      if (!existsSync(join(distDir, ...route.split('/')))) missing.push(route);
+    }
+  }
+
+  if (missing.length > 0) {
+    console.error('✗ blog category routes FAILED (dist/):');
+    for (const route of missing) console.error(`  missing dist/${route}`);
+    process.exit(1);
+  }
+  const total = categories.length * 2;
+  console.log(`✓ blog category routes OK (${total}/${total} present in dist/)`);
+}
