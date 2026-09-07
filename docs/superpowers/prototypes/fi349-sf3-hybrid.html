@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog — Wakii</title>
+<meta name="description" content="Tutorials, tech notes and build logs from the Wakii team — agentic workflows, AI pair-programming and shipping software with AI agents.">
+<link rel="canonical" href="https://wakii.xyz/blog/">
+<link rel="alternate" hreflang="en" href="https://wakii.xyz/blog/">
+<link rel="alternate" hreflang="vi" href="https://wakii.xyz/vi/blog/">
+<link rel="alternate" type="application/rss+xml" title="Wakii Blog" href="https://wakii.xyz/rss.xml">
+<!-- SURFACE 2 head variant (category page): title "Category: tech notes — Wakii" ·
+     canonical https://wakii.xyz/blog/category/tech/ + hreflang pair · same meta pattern -->
+<!--
+  FI-349 SF-3 · FINAL DIRECTION — "B+C HYBRID" (user pick 2026-09-07:
+  B "Bento Dispatch" + C "Journal Rail" merged — not a single direction)
+  =====================================================================
+  = rail trái sticky của C (category nav dọc + RSS)⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯
+  + content phải dùng hệ bento của B (featured 8-col + grid 12-col)
+  Binding hand-off: docs/superpowers/designs/fi349-sf3-direction.md
+
+  One design system, two surfaces in this file:
+    surface 1 — /blog/                (featured + 4 cells)
+    surface 2 — /blog/category/tech/  (same shell, filtered: sp6+sp6+sp12 wide)
+  Category nav → in-file anchors for demo; production hrefs
+  /blog/category/{tutorial,tech,build-log}/ (+ /vi mirror).
+
+  Assumptions / placeholders (not production data):
+  · reading times sample (production: computed, WPM EN 200, ceil, min 1)
+  · post links # (production: /blog/<slug>/); LangSwitcher static (/vi mirror)
+  · hero band = brand-abstract fallback; production: heroImage PNG 1200x630 khi post có
+  · deks là sample copy (production: post.description frontmatter)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ==== tokens — bound from src/styles/tokens.css (authority, do not rename) ==== */
+:root{
+  --font-display:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --font-mono:var(--font-display);
+  --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+  --bg:#0A0E0D; --bg-raised:#101614; --bg-card:#131A17;
+  --border:#1E2A26; --border-strong:#2B4234;
+  --accent:#45E0A8; --accent-dim:#2A6B52; --accent-soft:rgba(69,224,168,.1);
+  --text:#D7E2DD; --text-dim:#6B7A74; --text-faint:#5A7163;
+  --warn:#E8A33D; --warn-soft:rgba(232,163,61,.12);
+  --bg-deep:#04140D; --panel:#0D1310;
+  --radius-cell:12px; --radius:8px; --radius-btn:6px;
+  --bento-gap:18px;
+}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--font-sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+::selection{background:var(--accent);color:var(--bg-deep)}
+
+/* ==== prototype chrome (NOT production) ==== */
+.proto-note{background:var(--warn-soft);border-bottom:1px dashed rgba(232,163,61,.4);color:var(--warn);font:500 11.5px/1.7 var(--font-mono);padding:9px 16px;text-align:center;letter-spacing:.02em}
+.proto-note a{color:var(--warn)}
+
+/* ==== site nav (replica of Nav.astro) ==== */
+nav.gnav{border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50}
+.nwrap{max-width:1240px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:58px;gap:20px}
+.logo{font-family:var(--font-mono);font-weight:700;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text);white-space:nowrap}
+.logo .dot{color:var(--accent)}
+.logo .prompt{color:var(--text-faint);font-weight:400}
+.nlinks{display:flex;gap:26px;align-items:center;font-family:var(--font-mono);font-size:13px;margin-left:auto}
+.nlinks a{color:var(--text-dim);text-decoration:none}
+.nlinks a::before{content:'./';color:var(--text-faint)}
+.nlinks a:hover,.nlinks a.on{color:var(--accent)}
+.ncta{border:1px solid var(--accent);color:var(--accent) !important;padding:7px 16px;border-radius:var(--radius)}
+.ncta::before{content:'$ ' !important;color:var(--text-faint)}
+.ncta:hover{background:var(--accent);color:var(--bg-deep) !important}
+.ncta:hover::before{color:var(--bg-deep)}
+.lang{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);white-space:nowrap}
+.lang b{color:var(--accent);font-weight:500}
+.lang a{color:var(--text-dim);text-decoration:none}
+.lang a:hover{color:var(--accent)}
+.lang .sep{margin:0 7px;color:var(--border-strong)}
+
+/* ==== hybrid shell: sticky rail + bento stream ==== */
+.shell{max-width:1160px;margin:0 auto;padding:60px 24px 96px;display:grid;grid-template-columns:280px minmax(0,1fr);gap:64px;align-items:start}
+.surface-divider{background:var(--panel);border-block:1px solid var(--border);color:var(--warn);font:500 11.5px/1.6 var(--font-mono);padding:12px 16px;text-align:center;letter-spacing:.03em}
+footer{border-top:1px solid var(--border);padding:40px 0;font-size:12.5px;color:var(--text-faint)}
+.fwrap{max-width:1240px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.fwrap .fl b{color:var(--text-dim);font-weight:500}
+.fwrap .fl b .dot{color:var(--accent)}
+.fwrap a{color:var(--text-dim);text-decoration:none}
+.fwrap a:hover{color:var(--accent)}
+.fnlinks{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fnlinks a::before{content:'./';color:var(--text-faint)}
+
+/* ==== rail (from C — Journal) ==== */
+.rail{position:sticky;top:92px}
+.r-title{font-family:var(--font-mono);font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;margin:0}
+.r-title .dot{color:var(--accent)}
+.r-sub{color:var(--text-dim);font-size:13.5px;line-height:1.65;margin:12px 0 0}
+.r-nav{margin-top:32px;padding-top:14px;border-top:1px solid var(--border);display:flex;flex-direction:column}
+.r-nav a{position:relative;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 2px 9px 22px;font-family:var(--font-mono);font-size:13.5px;color:var(--text-dim);text-decoration:none;transition:color .2s}
+.r-nav a::before{content:'▸';position:absolute;left:4px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--accent);opacity:0;transition:opacity .2s}
+.r-nav a i{font-style:normal;font-size:11.5px;color:var(--text-faint)}
+.r-nav a:hover{color:var(--accent)}
+.r-nav a.on{color:var(--accent)}
+.r-nav a.on::before{opacity:1}
+.r-meta{margin-top:24px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);line-height:2}
+.r-meta a{color:var(--text-dim);text-decoration:none}
+.r-meta a:hover{color:var(--accent)}
+
+/* ==== stream head ==== */
+.stream{min-width:0}
+.crumb{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);margin:0 0 20px}
+.crumb a{color:var(--text-dim);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.crumb .cur{color:var(--accent)}
+.s-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.lede{color:color-mix(in srgb,var(--text) 78%,transparent);font-size:16.5px;line-height:1.65;margin:0;max-width:56ch}
+.head-meta{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);white-space:nowrap;padding-bottom:6px}
+
+/* ==== bento grid (from B — Dispatch; class names mirror shipped kit) ==== */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--bento-gap)}
+.sp4{grid-column:span 4}.sp6{grid-column:span 6}.sp8{grid-column:span 8}.sp12{grid-column:span 12}
+.bx{display:block;text-decoration:none;min-width:0}
+.bx-in{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:var(--radius-cell);height:100%;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+@media (hover:hover){
+  .bx:hover .bx-in{transform:translateY(-3px);border-color:#35543F;box-shadow:0 14px 34px rgba(69,224,168,.10)}
+}
+.bx-label{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 18px;background:var(--panel);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:11.5px}
+.bx-label .name{color:var(--text-dim)}
+.bx-label .name::before{content:'▸ ';color:var(--accent-dim)}
+.bx:hover .bx-label .name::before{color:var(--accent)}
+.bx-label .dt{color:var(--text-faint);font-size:11px;white-space:nowrap}
+.bx-body{padding:22px 20px;flex:1;display:flex;flex-direction:column}
+.bx-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-top:1px dashed var(--border-strong);font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint)}
+.bx-foot .go{color:var(--text-dim);white-space:nowrap}
+.bx-foot .go i{font-style:normal;color:var(--accent);display:inline-block;transition:transform .25s}
+.bx:hover .bx-foot .go{color:var(--accent)}
+.bx:hover .bx-foot .go i{transform:translateX(4px)}
+.p-title{font-family:var(--font-mono);font-weight:500;font-size:17.5px;line-height:1.42;letter-spacing:-.01em;color:var(--text);transition:color .2s}
+.bx:hover .p-title{color:var(--accent)}
+.p-desc{color:color-mix(in srgb,var(--text) 70%,transparent);font-size:13.5px;line-height:1.62;margin-top:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bx-body .p-desc{flex:1}
+
+/* featured cell */
+.sp8 .p-title{font-size:26px;font-weight:600;line-height:1.3}
+.sp8 .p-desc{font-size:15px;-webkit-line-clamp:3}
+.hero-band{position:relative;height:216px;margin:0 0 20px;border-radius:var(--radius);overflow:hidden;background:
+  linear-gradient(rgba(69,224,168,.045) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(69,224,168,.045) 1px,transparent 1px),
+  #0C110F;
+  background-size:56px 56px,56px 56px,auto}
+.hero-band::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,transparent 25%,rgba(4,20,13,.72) 100%);pointer-events:none}
+.hero-band .glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:800;font-size:92px;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px var(--accent-dim)}
+.hero-band .tag{position:absolute;left:16px;bottom:12px;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);letter-spacing:.06em;z-index:1}
+.hero-band .pulse{position:absolute;right:16px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--accent);z-index:1;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(69,224,168,.45)}55%{box-shadow:0 0 0 9px rgba(69,224,168,0)}}
+
+/* wide cell (category page, last post) */
+.bx--wide .bx-body{flex-direction:row;align-items:center;justify-content:space-between;gap:28px}
+.bx--wide .p-title{font-size:20px}
+.bx--wide .p-desc{margin-top:8px;max-width:58ch;-webkit-line-clamp:2}
+.bx--wide .wmeta{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);text-align:right;white-space:nowrap;line-height:1.9}
+.bx:hover .wmeta .go{color:var(--accent)}
+.bx:hover .wmeta .go i{transform:translateX(4px)}
+.bx--wide .wmeta .go i{font-style:normal;color:var(--accent);display:inline-block;transition:transform .25s}
+
+/* empty state (category không có posts — production renders this branch) */
+.bx--empty .bx-in{border-style:dashed;opacity:.75}
+.bx--empty .bx-body{align-items:center;justify-content:center;text-align:center;padding:44px 20px}
+.bx--empty .e-title{font-family:var(--font-mono);font-size:16px;color:var(--text-dim)}
+.bx--empty .e-hint{font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);margin-top:8px}
+
+/* entrance stagger — CSS only (production: motion util data-reveal) */
+.bx{animation:rise .5s ease-out backwards}
+.bx:nth-child(2){animation-delay:.06s}.bx:nth-child(3){animation-delay:.12s}
+.bx:nth-child(4){animation-delay:.18s}.bx:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+
+/* ==== responsive ==== */
+@media (max-width:900px){
+  .nlinks a:not(.ncta){display:none}
+}
+@media (max-width:980px){
+  .sp8,.sp12{grid-column:span 12}
+  .sp4,.sp6{grid-column:span 6}
+}
+/* rail collapse @800 — rail thành block trên cùng, nav xếp ngang (chips row) */
+@media (max-width:800px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0;padding:48px 20px 72px}
+  .rail{position:static;margin-bottom:36px}
+  .r-nav{flex-direction:row;flex-wrap:wrap;gap:2px 24px;border-top:0;padding-top:0;margin-top:20px}
+  .r-nav a{padding:6px 0 6px 16px}
+  .r-meta{border-top:0;padding-top:0;margin-top:8px;display:flex;gap:24px;line-height:1.8}
+  .s-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .head-meta{padding-bottom:0}
+}
+@media (max-width:640px){
+  .grid{gap:14px}
+  .sp4,.sp6,.sp8,.sp12{grid-column:span 12}
+  .hero-band{height:160px}
+  .hero-band .glyph{font-size:60px}
+  .bx--wide .bx-body{flex-direction:column;align-items:flex-start}
+  .bx--wide .wmeta{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="proto-note">prototype · FI-349 SF-3 · FINAL — B+C hybrid (bento stream + journal rail) · surface 1: /blog/ · surface 2: /blog/category/tech/ → <a href="#surface-2">jump</a> · not production</div>
+
+<!-- ============================== SURFACE 1 · /blog/ ============================== -->
+<section id="surface-1">
+<nav class="gnav">
+  <div class="nwrap">
+    <a class="logo" href="#"><span class="prompt">~/</span>wakii<span class="dot">.</span></a>
+    <div class="nlinks">
+      <a href="#">features</a><a href="#">workflow</a><a href="#">download</a><a href="#">faq</a>
+      <a href="#">skills</a><a href="#">roadmap</a><a href="#" class="on">blog</a><a href="#" class="ncta">get wakii</a>
+    </div>
+    <div class="lang"><b>en</b><span class="sep">|</span><a href="#" title="/vi/blog/">vi</a></div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- rail: identity + category nav (production hrefs /blog/category/<cat>/) -->
+  <aside class="rail">
+    <h1 class="r-title">blog<span class="dot">.</span></h1>
+    <p class="r-sub">Field notes from building an agentic IDE — in the open.</p>
+    <nav class="r-nav" aria-label="Categories">
+      <a class="on" href="#" aria-current="page">all<i>5</i></a>
+      <a href="#surface-2" title="/blog/category/tech/">tech notes<i>3</i></a>
+      <a href="#" title="/blog/category/tutorial/">tutorial<i>1</i></a>
+      <a href="#" title="/blog/category/build-log/">build log<i>1</i></a>
+    </nav>
+    <div class="r-meta">
+      updated 2026-09-07<br>
+      <a href="#" title="/rss.xml">rss feed →</a>
+    </div>
+  </aside>
+
+  <main class="stream">
+    <div class="s-head">
+      <p class="lede">Tutorials, tech notes and build logs — how Wakii works under the hood and how to get the most out of an agentic IDE.</p>
+      <p class="head-meta">5 posts · newest first</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- featured: newest post, hero band placeholder for SF-1 heroImage -->
+      <a class="bx sp8" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">build log</span><span class="dt">2026-09-07</span></span>
+          <span class="bx-body">
+            <span class="hero-band"><span class="pulse"></span><span class="glyph">#1</span><span class="tag">build log · entry 001</span></span>
+            <span class="p-title">Building Wakii in the open — log #1</span>
+            <span class="p-desc">Kicking off a public build log: what ships, what breaks, and what we learn while developing Wakii in the open.</span>
+          </span>
+          <span class="bx-foot"><span>4 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp4" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tutorial</span><span class="dt">2026-09-06</span></span>
+          <span class="bx-body">
+            <span class="p-title">Reviewing AI agents from your phone: Stories and decision gates in your pocket</span>
+            <span class="p-desc">Approve decision gates, watch stories run, and send tasks to your agents — the whole loop from a phone screen.</span>
+          </span>
+          <span class="bx-foot"><span>5 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp4" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-04</span></span>
+          <span class="bx-body">
+            <span class="p-title">The story workflow: from a one-line idea to a merged PR</span>
+            <span class="p-desc">How a one-line idea becomes an impact analysis, a plan, parallel subtasks and a single merged PR.</span>
+          </span>
+          <span class="bx-foot"><span>7 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp4" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-03</span></span>
+          <span class="bx-body">
+            <span class="p-title">Decision gates: why Wakii's AI agents always stop to ask</span>
+            <span class="p-desc">Why Wakii's agents stop and ask before acting — and how explicit gates keep an autonomous team on rails.</span>
+          </span>
+          <span class="bx-foot"><span>6 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp4" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-02</span></span>
+          <span class="bx-body">
+            <span class="p-title">Forking an IDE while keeping up with upstream: lessons from Wakii</span>
+            <span class="p-desc">Lessons from maintaining a fork of a fast-moving upstream: what to own, what to inherit, and how to rebase without pain.</span>
+          </span>
+          <span class="bx-foot"><span>8 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+    </div>
+  </main>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Blog","name":"Wakii Blog","url":"https://wakii.xyz/blog/","blogPost":[
+ {"@type":"BlogPosting","headline":"Building Wakii in the open — log #1","datePublished":"2026-09-07","url":"https://wakii.xyz/blog/building-in-the-open-log-1/"},
+ {"@type":"BlogPosting","headline":"Reviewing AI agents from your phone: Stories and decision gates in your pocket","datePublished":"2026-09-06","url":"https://wakii.xyz/blog/reviewing-agents-from-your-phone/"},
+ {"@type":"BlogPosting","headline":"The story workflow: from a one-line idea to a merged PR","datePublished":"2026-09-04","url":"https://wakii.xyz/blog/story-workflow/"},
+ {"@type":"BlogPosting","headline":"Decision gates: why Wakii's AI agents always stop to ask","datePublished":"2026-09-03","url":"https://wakii.xyz/blog/decision-gates/"},
+ {"@type":"BlogPosting","headline":"Forking an IDE while keeping up with upstream: lessons from Wakii","datePublished":"2026-09-02","url":"https://wakii.xyz/blog/forking-an-ide-upstream-lessons/"}
+]}
+</script>
+
+<footer>
+  <div class="fwrap">
+    <div class="fl"><b>wakii<span class="dot">.</span></b> — open-source agentic IDE, forked from <a href="#" rel="noopener">orca</a> (MIT). Superpowers kit: <a href="#" rel="noopener">superpowers by Jesse Vincent</a> (MIT). exit code 0. © Wakii.</div>
+    <div class="fnlinks"><a href="#">github</a><span>·</span><a href="#">download</a><span>·</span><a href="#">guide</a><span>·</span><a href="#">skills</a><span>·</span><a href="#">roadmap</a><span>·</span><a href="#">orca upstream</a></div>
+  </div>
+</footer>
+</section>
+
+<div class="surface-divider" id="surface-2">— surface 2 · /blog/category/tech/ · cùng shell, lọc sẵn —</div>
+
+<!-- ======================= SURFACE 2 · /blog/category/tech/ ======================= -->
+<section>
+<nav class="gnav">
+  <div class="nwrap">
+    <a class="logo" href="#surface-1"><span class="prompt">~/</span>wakii<span class="dot">.</span></a>
+    <div class="nlinks">
+      <a href="#surface-1">features</a><a href="#surface-1">workflow</a><a href="#surface-1">download</a><a href="#surface-1">faq</a>
+      <a href="#surface-1">skills</a><a href="#surface-1">roadmap</a><a href="#surface-1" class="on">blog</a><a href="#surface-1" class="ncta">get wakii</a>
+    </div>
+    <div class="lang"><b>en</b><span class="sep">|</span><a href="#" title="/vi/blog/category/tech/">vi</a></div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <aside class="rail">
+    <h1 class="r-title">tech notes<span class="dot">.</span></h1>
+    <p class="r-sub">How Wakii works under the hood — architecture, agents and the decisions in between.</p>
+    <nav class="r-nav" aria-label="Categories">
+      <a href="#surface-1">all<i>5</i></a>
+      <a class="on" href="#" aria-current="page">tech notes<i>3</i></a>
+      <a href="#" title="/blog/category/tutorial/">tutorial<i>1</i></a>
+      <a href="#" title="/blog/category/build-log/">build log<i>1</i></a>
+    </nav>
+    <div class="r-meta">
+      3 entries · newest first<br>
+      <a href="#" title="/rss.xml">rss feed →</a>
+    </div>
+  </aside>
+
+  <main class="stream">
+    <p class="crumb"><a href="#surface-1" title="/blog/">~/blog</a> <span>/</span> <span class="cur">tech</span></p>
+
+    <div class="grid">
+
+      <a class="bx sp6" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-04</span></span>
+          <span class="bx-body">
+            <span class="p-title">The story workflow: from a one-line idea to a merged PR</span>
+            <span class="p-desc">How a one-line idea becomes an impact analysis, a plan, parallel subtasks and a single merged PR.</span>
+          </span>
+          <span class="bx-foot"><span>7 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp6" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-03</span></span>
+          <span class="bx-body">
+            <span class="p-title">Decision gates: why Wakii's AI agents always stop to ask</span>
+            <span class="p-desc">Why Wakii's agents stop and ask before acting — and how explicit gates keep an autonomous team on rails.</span>
+          </span>
+          <span class="bx-foot"><span>6 min read</span><span class="go">read <i>→</i></span></span>
+        </span>
+      </a>
+
+      <a class="bx sp12 bx--wide" href="#">
+        <span class="bx-in">
+          <span class="bx-label"><span class="name">tech notes</span><span class="dt">2026-09-02</span></span>
+          <span class="bx-body">
+            <span>
+              <span class="p-title" style="display:block">Forking an IDE while keeping up with upstream: lessons from Wakii</span>
+              <span class="p-desc" style="display:block">Lessons from maintaining a fork of a fast-moving upstream: what to own, what to inherit, and how to rebase without pain.</span>
+            </span>
+            <span class="wmeta">8 min read<br><span class="go" style="color:var(--text-dim)">read <i>→</i></span></span>
+          </span>
+        </span>
+      </a>
+
+      <!-- empty-state branch demo (chỉ render khi category 0 posts — production only) -->
+      <!--
+      <div class="bx sp12 bx--empty">
+        <div class="bx-in">
+          <div class="bx-body">
+            <span class="e-title">No posts yet — check back soon.</span>
+            <span class="e-hint">← all posts · rss feed</span>
+          </div>
+        </div>
+      </div>
+      -->
+
+    </div>
+  </main>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"Home","item":"https://wakii.xyz/"},
+ {"@type":"ListItem","position":2,"name":"Blog","item":"https://wakii.xyz/blog/"},
+ {"@type":"ListItem","position":3,"name":"tech notes","item":"https://wakii.xyz/blog/category/tech/"}
+]}
+</script>
+
+<footer>
+  <div class="fwrap">
+    <div class="fl"><b>wakii<span class="dot">.</span></b> — open-source agentic IDE, forked from <a href="#" rel="noopener">orca</a> (MIT). Superpowers kit: <a href="#" rel="noopener">superpowers by Jesse Vincent</a> (MIT). exit code 0. © Wakii.</div>
+    <div class="fnlinks"><a href="#">github</a><span>·</span><a href="#">download</a><span>·</span><a href="#">guide</a><span>·</span><a href="#">skills</a><span>·</span><a href="#">roadmap</a><span>·</span><a href="#">orca upstream</a></div>
+  </div>
+</footer>
+</section>
+
+</body>
+</html>
