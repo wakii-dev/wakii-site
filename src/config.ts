@@ -14,9 +14,9 @@ export const REPO_URL = 'https://github.com/wakii-dev/wakii';
 
 /**
  * Canonical site URL (sitemap, robots.txt, OG base).
- * PLACEHOLDER — SF-4 pre-publish confirms the production domain.
+ * Production domain — confirmed by owner 2026-09-07 (wakii.xyz, not .dev).
  */
-export const SITE_URL = 'https://wakii.dev';
+export const SITE_URL = 'https://wakii.xyz';
 
 export const SITE_NAME = 'wakii';
 
