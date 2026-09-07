@@ -47,3 +47,8 @@
 - **story-verify B1 `test|spec.` regex** không match `check-blog-utils.mjs` → B1:WARN dù build đã có 2 assertion gates — WARN là precedent bình thường với static site (asserts thay thế), đừng thêm file rỗng chỉ để tắt WARN.
 - **Hero pipeline proven (deterministic)**: SVG template 1200×630 → `chrome --headless=new --screenshot --window-size=1200,630` render ĐÚNG 1200×630 (không dính clamp — clamp chỉ ở window-size nhỏ 390) + IHDR check trong script fail-loud; CVDisplayLink ERROR trên macOS là noise, PNG vẫn written; SVG source commit cạnh PNG cho review + tái tạo (`node scripts/render-blog-heroes.mjs`).
 - **update-ref old-value pin**: `git update-ref refs/heads/<dest> <new> <expected-old>` là guard miễn phí chống race khi story khác cùng đụng repo (dùng kèm 2 guards ancestor + tree sạch theo merge-playbook).
+
+## SF-3 (FI-357) learnings — 2026-09-07
+- **Rare-branch probe pattern (mutate→shoot→revert)**: verify nhánh hiếm không commit được dữ liệu (featured hero-img khi post thật không có hero; empty-state khi không category rỗng) — sed tạm frontmatter → `pnpm build` → orca eval+screenshot → `git checkout -- src/content/blog/` → rebuild sạch. Bằng chứng visual thật, working tree không bẩn, parity gate vẫn serve (mutate cả EN+VI khi field có schema-parity). Sẽ tái dùng ở SF-4 QA.
+- **Orca browser CLI flags (refine)**: `orca eval` dùng `--expression` (KHÔNG positional/`--expr`); `orca screenshot` KHÔNG có `--path` — chỉ `--json` → decode `result.data` base64 (pattern đã ghi 2026-09-07 — flag name là phần mới). `orca linear status set` vẫn `--id X --to Y`.
+- **i18n count strings**: hàm đếm trong strings map (`${n} posts`) cần singular guard ngay từ đầu — reviewer bắt "1 entries" render thật trên category 1-post; EN phải tested N=1, VI bất biến.
