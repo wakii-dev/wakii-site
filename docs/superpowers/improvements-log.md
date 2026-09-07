@@ -39,3 +39,8 @@
 - Headless Chrome --window-size clamp min-width → báo overflow ảo ở mobile; iframe probe (same-origin, w=390, đo scrollWidth) là reliable.
 - Bash tool strip secret literal khỏi command line → pass secret qua file + $(cat).
 - Vercel preview mặc định bật SSO protection → preview link không xem public được nếu không tắt qua API (PATCH /v9/projects ssoProtection:null).
+
+## 2026-09-08 — SF-2 / FI-361 (ritual, đã xử lý — resolved)
+- **`orca linear comment add` pipe sang jq chết giữa chừng → double-post**: jq không có trên máy → pipe fail SAU khi orca đã post; retry tạo comment trùng (CLI không có delete). Rule: KHÔNG pipe orca output; verify sau bằng `orca linear issue <id> --comments --json` và parse `result.comments` (KHÔNG phải `result.issue.comments` — path khác → "0 comments" ảo), có latency vài giây. [resolved — pattern ghi memory]
+- **orca exec eval — zero-quote-glyph rule mở rộng**: source JS phải chứa 0 ký tự quote, KỂ CẢ string format kiểu `join(' | ')`; `#` trong CSS attribute selector (`a[href^=#]`) KHÔNG hợp lệ → selector phải build runtime kèm charcode 34. Node generator sinh JS (S() encoder + Q runtime-quote) hoạt động lần đầu sau fix. [resolved — pattern ghi memory]
+- **Generator eval flow chuẩn cho blog walkthrough**: `goto` trên page cũ thay vì tạo tab mới (tab create không auto-target); clickexact `a[href="<url>"]` cho nav link; TOC jump proof = click → decodeURIComponent(hash) → scrollIntoView instant → so scrollY==offsetTop. [resolved — dùng lại SF-3/4/5]
