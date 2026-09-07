@@ -138,7 +138,7 @@ build lần cuối. Review độc lập: code-reviewer rolling trên nhóm commi
   nguyên văn "Plan được bẻ thành task nhỏ và publish lên Linear dưới dạng subtask, nên
   tiến độ cả team nhìn thấy — không chôn trong chat log." Cross-link: bài T2.
 
-- [ ] **T4 — `one-branch-one-pr`** (tech · 2026-08-31 · docs-link story-workflow · tags: git,
+- [x] **T4 — `one-branch-one-pr`** (tech · 2026-08-31 · docs-link story-workflow · tags: git,
   story-workflow, workflow)
   Angle: "PR là bằng chứng tổng" · "Merge-ngược an toàn". Evidence: 2 PR #1 thật — wakii-site
   PR #1 "FI-339: Blog features — tutorials, tech notes, build logs (en/vi)" merge `3d9a7c3`
