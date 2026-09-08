@@ -158,7 +158,7 @@ Tổng hợp các chốt:
 | Renderer đang có IPC dở dang | hoãn quit một nhịp rồi mới cài | `updater-download-install.ts` |
 | macOS installer chưa sẵn sàng | theo dõi trạng thái, thoát sau | `updater-mac-install.ts` |
 | Linux do package manager quản lý | chặn download, trả lỗi có mã | `updater-download-install.ts` |
-| App đang serve headless | hoãn cài, giữ phiên chạy | `serve-update-handoff.ts` |
+| App đang serve headless | hoãn cài, giữ phiên chạy | `updater-install-execution.ts` |
 
 *Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 

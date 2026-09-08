@@ -158,7 +158,7 @@ The gates, summarized:
 | Renderer has an IPC reply in flight | defer quit a tick, then install | `updater-download-install.ts` |
 | macOS installer not ready yet | track state, quit after | `updater-mac-install.ts` |
 | Linux install owned by package manager | block download, coded error | `updater-download-install.ts` |
-| App serving headless | defer install, keep the session | `serve-update-handoff.ts` |
+| App serving headless | defer install, keep the session | `updater-install-execution.ts` |
 
 *Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
