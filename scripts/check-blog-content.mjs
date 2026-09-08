@@ -5,8 +5,9 @@
  * FI-359 D5 where the scope was a hard-coded 20-slug list).
  *
  * Scope: derived, not hard-coded. The planned manifest = every slug parsed
- * from BOTH matrix tables (topic-matrix.md batch-1 + topic-matrix-batch2.md
- * batch-2, same row regex, 64 slugs total). A slug is checked only when its
+ * from ALL THREE matrix tables (topic-matrix.md batch-1 FI-359 +
+ * topic-matrix-batch2.md batch-2 FI-373 + topic-matrix-batch3.md batch-3
+ * FI-383, same row regex, 114 slugs total). A slug is checked only when its
  * file exists in the tree, so a mid-story worktree stays green (partial pass
  * by design — matrix completeness is the convergence SF's job, not lint's).
  *
@@ -54,11 +55,13 @@ const SEED_SLUGS = [
   'building-wakii-in-the-open-log-1',
 ];
 
-/** Planned scope = both matrix tables parsed with the same row regex
- *  (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs → 64 non-seed).
- *  slug -> { n, cat, pubDate, file }. Missing file = config error (exit 1),
- *  never a silent scope shrink. */
-const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md'];
+/** Planned scope = all three matrix tables parsed with the same row regex
+ *  (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs · batch-3 FI-383:
+ *  50 slugs → 114 non-seed). slug -> { n, cat, pubDate, file } — `file`
+ *  records the matrix ORIGIN (drives batch-3-only checks like the "Wakii
+ *  learns" marker). Missing file = config error (exit 1), never a silent
+ *  scope shrink. */
+const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md', 'topic-matrix-batch3.md'];
 const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
 function plannedSlugs() {
   const planned = new Map();
