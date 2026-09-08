@@ -86,6 +86,10 @@ ghi ngày probe thật của mình ("theo GitHub API ngày N" — claims-registr
 · `deep-dive-modelcontextprotocol-registry` · `deep-dive-zed-industries-zed` ·
 `deep-dive-tabbyml-tabby` · `deep-dive-janhq-jan` gọi "công khai trên GitHub",
 KHÔNG "open-source"/"mã nguồn mở" (scoped FORBIDDEN — claims-registry).
+Probe 2026-09-08 thấy thêm 2 repo NOASSERTION ngoài 6 † pin:
+`charmbracelet/crush` + `neovim/neovim` (tổng 8 none/NOASSERTION) — scoped
+FORBIDDEN chỉ enforce 6 slug theo pin D8; bài 2 slug kia VẪN viết
+license-safe (review-enforced) đến khi coordinator ACK mở scope.
 Hai license đặc biệt khác đã biết từ spec: microsoft/autogen = CC-BY-4.0,
 helix-editor/helix = MPL-2.0. Các dòng "probe khi research": SF sở hữu chạy
 `bash scripts/probe-repos.sh` và điền license thật + ngày vào digest trước

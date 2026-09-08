@@ -116,10 +116,12 @@ Mỗi evidence block trong bài ghi nguồn + ngày lấy.
    (probe bằng `bash scripts/probe-repos.sh`, ngày ghi trong digest của repo
    tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).
    Không ngày = không đăng (giống tinh thần D8).
-2. **License-safe**: repo có license `none`/`NOASSERTION` (đúng 6 slug †
-   trong scoped FORBIDDEN ở trên) → gọi **"công khai trên GitHub"** — KHÔNG
-   được gọi "open-source" hay "mã nguồn mở" (lint + audit cùng FAIL trên
-   đúng 6 slug đó; bài khác dùng hai cụm này tự do).
+2. **License-safe**: repo có license `none`/`NOASSERTION` → gọi **"công khai
+   trên GitHub"** — KHÔNG được gọi "open-source" hay "mã nguồn mở". Scoped
+   enforcement (lint + audit cùng FAIL) CHỈ trên đúng 6 slug † pin D8 ở trên;
+   probe 2026-09-08 thấy thêm `charmbracelet/crush` + `neovim/neovim` =
+   NOASSERTION NGOÀI scope — bài của 2 slug này vẫn viết license-safe
+   (review-enforced), chờ coordinator ACK mở scope trước khi enforce máy.
 3. **Paraphrase license-safe**: tả cơ chế/kiến trúc bằng lời của mình; quote
    nguyên văn (README/docs/release notes) chỉ nên ngắn (**≤25 từ**), PHẢI có
    attribution (tên repo/người nói) + link nguồn. Không dịch ngược quote để

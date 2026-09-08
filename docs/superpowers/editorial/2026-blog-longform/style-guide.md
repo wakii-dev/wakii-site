@@ -138,9 +138,10 @@ Template (VI — EN mirror cùng nghĩa, heading như trên):
   (`github.com/<owner>/<repo>/blob/<sha>/...`) ngay cạnh.
 - **Mọi số third-party** (stars/releases/commits) kèm "theo GitHub API ngày
   N" — probe bằng `bash scripts/probe-repos.sh`, ngày chạy là ngày N.
-- **License none/NOASSERTION** (đúng 6 slug † trong matrix) → gọi "công khai
-  trên GitHub", KHÔNG "open-source"/"mã nguồn mở" — scoped FORBIDDEN,
-  lint + audit cùng chặn.
+- **License none/NOASSERTION** → gọi "công khai trên GitHub", KHÔNG
+  "open-source"/"mã nguồn mở". Machine-chặn scoped trên đúng 6 slug †
+  (matrix); `charmbracelet/crush` + `neovim/neovim` cũng NOASSERTION (probe
+  09-08) nhưng ngoài scope pin — vẫn license-safe, xem claims-registry rule 2.
 
 ## 10. ADOPT issue body rubric (FI-383 D5)
 
