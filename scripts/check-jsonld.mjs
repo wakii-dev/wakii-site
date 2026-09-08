@@ -186,6 +186,37 @@ for (const abs of htmlFiles) {
   }
 }
 
+/* Strict coverage — batch-3 (story FI-383 SF-6, Linear FI-389): every matrix
+ * row MUST have its EN+VI source file on disk (100 files). The convergence
+ * audit treats a missing batch-2/3 row as a NOTE (mid-story expectation);
+ * here it is a HARD failure — SF-6 is the convergence gate against silent
+ * scope shrink (pack `fi383-sf-6.md` acceptance #1, T7 pendingRows == 0). */
+{
+  const matrixPath = join(root, 'docs', 'superpowers', 'editorial', '2026-blog-longform', 'topic-matrix-batch3.md');
+  if (!existsSync(matrixPath)) {
+    fail('src/content/blog', `strict coverage: batch-3 matrix missing at ${relative(root, matrixPath)}`);
+  } else {
+    const slugRe = /^\|\s*\d+\s*\|\s*`([a-z0-9-]+)`\s*\|/gm;
+    const slugs = [...readFileSync(matrixPath, 'utf8').matchAll(slugRe)].map((m) => m[1]);
+    if (slugs.length !== 50) {
+      fail('src/content/blog', `strict coverage: batch-3 matrix parsed ${slugs.length} rows, want 50`);
+    }
+    const missing = [];
+    for (const slug of slugs) {
+      for (const locale of ['en', 'vi']) {
+        if (!existsSync(join(root, 'src', 'content', 'blog', locale, `${slug}.md`))) {
+          missing.push(`${locale}/${slug}.md`);
+        }
+      }
+    }
+    if (missing.length > 0) {
+      fail('src/content/blog', `strict coverage: ${missing.length} batch-3 file(s) missing — ${missing.join(', ')}`);
+    } else {
+      console.log(`✓ strict coverage OK (batch-3: ${slugs.length} slugs × 2 locales = ${slugs.length * 2} files present)`);
+    }
+  }
+}
+
 if (failures.length > 0) {
   console.error(`✗ check-jsonld FAILED (${failures.length} violation${failures.length === 1 ? '' : 's'}):`);
   for (const f of failures) console.error(f);
