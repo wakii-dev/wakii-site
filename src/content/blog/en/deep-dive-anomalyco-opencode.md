@@ -38,7 +38,7 @@ Three surfaces, one core: the same session-tool-permission loop runs in the term
 
 ## Vendor independence as an architectural decision
 
-The README introduces the project in one sentence: "The open source AI coding agent." (source: README of anomalyco/opencode, retrieved 2026-09-08). Short, but the "open source" there pairs with an MIT license — per the GitHub API on 2026-09-08 — so you can read every layer, including the one most products hide: how the harness picks its model.
+The README introduces the project in one sentence: "The open source AI coding agent." (source: [README of anomalyco/opencode @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/README.md), retrieved 2026-09-08). Short, but the "open source" there pairs with an MIT license — per the GitHub API on 2026-09-08 — so you can read every layer, including the one most products hide: how the harness picks its model.
 
 The answer lives in `provider/provider.ts`: the model catalog and provider metadata load through a `ModelsDev` module — an open model database at models.dev, owned by no vendor. The file even carries comments handling real-world details like region prefixes (`us.`, `eu.`) and each vendor's model naming quirks.
 
@@ -46,6 +46,8 @@ The answer lives in `provider/provider.ts`: the model catalog and provider metad
 // packages/opencode/src/provider/provider.ts
 import { ModelsDev } from "@opencode-ai/core/models-dev"
 ```
+
+(source: [provider/provider.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/provider/provider.ts))
 
 In other words: supporting a new provider is not code written in this repo, it is data updated in a shared catalog. That is how a vendor-independent terminal agent keeps its model-coverage speed without bloating the codebase — and part of why this project tops the harness group in the 50-project map.
 
@@ -62,7 +64,7 @@ const readonlyExternalDirectory = {
 } satisfies Record<string, "allow" | "ask" | "deny">
 ```
 
-(source: agent/agent.ts at commit d6855b6). Three levels — allow/ask/deny: every external directory defaults to "ask", while whitelisted areas — skill directories, the temp dir, the truncate tool's glob — are pre-"allow"ed. A role that needs to write code gets more; a role meant to only read is stopped at the permission layer, before the LLM has a chance to "forget".
+(source: [agent/agent.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/agent/agent.ts)). Three levels — allow/ask/deny: every external directory defaults to "ask", while whitelisted areas — skill directories, the temp dir, the truncate tool's glob — are pre-"allow"ed. A role that needs to write code gets more; a role meant to only read is stopped at the permission layer, before the LLM has a chance to "forget".
 
 | Agent | Default permissions | Used for |
 |---|---|---|
@@ -81,7 +83,7 @@ const TOOL_OUTPUT_MAX_CHARS = 2_000
 const PRUNE_PROTECTED_TOOLS = ["skill"]
 ```
 
-(source: session/compaction.ts at commit d6855b6). Read directly: when pruning, keep at least 20,000 tokens; a protected zone of 40,000 tokens; tool output is cut at 2,000 characters; the output of the skill tool is exempt from pruning. Compaction policy becomes something you can review, argue about, and regression-test — not the emergent behavior of a long prompt.
+(source: [session/compaction.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/session/compaction.ts)). Read directly: when pruning, keep at least 20,000 tokens; a protected zone of 40,000 tokens; tool output is cut at 2,000 characters; the output of the skill tool is exempt from pruning. Compaction policy becomes something you can review, argue about, and regression-test — not the emergent behavior of a long prompt.
 
 ## Shipping cadence: 10 releases in 15 days
 
@@ -102,13 +104,13 @@ Release cadence says more about the process inside than any manifesto does. The 
 
 Ten releases from August 21 to September 4, three of those days (Aug 21, Aug 28, Sep 4) shipping two releases. For a repo at 205,815 stars (as of 2026-09-08), this cadence means the release pipeline is automated to the point of shipping on nearly every working day — the same family of cadence as claude-code at the top of the group, and the opposite of aider frozen at the bottom.
 
+Agent separation of powers in Wakii's kit is covered in [agents & kit](/docs/agents-and-kit/); long-running stories and the watchdog live in [story workflow](/docs/story-workflow/).
+
 ## What Wakii learns
 
 - **ADOPT** — explicit per-agent permission profiles. Wakii already has worktree isolation and the "the doer never approves its own work" principle in its 9-agent team; the concrete proposal: declare a permission profile next to each agent definition in the kit (code-reviewer and verifier: deny edit; task-executor: allow within the worktree) so the separation of powers is machine-checkable, not only prompted. Evidence: the build/plan table and the `readonlyExternalDirectory` ruleset above.
 - **DIRECTION** — measurable compaction thresholds. Wakii's watchdog auto-resumes long stories from the last good state; as multi-day stories become more common, an explicit 20,000/40,000-token compaction policy is a direction worth bringing into the kit rather than letting each agent improvise.
 - **WATCH** — ACP (Agent Client Protocol). OpenCode ships a complete ACP service for external editors to plug into; this is a strategic decision under active watch. The condition to re-evaluate: once ACP covers the editor layer broadly, revisit standardizing the agent-editor interface.
-- **N/A** — the BETA desktop app and a README in 22 languages: distribution problems of a 205,815-star project, not Wakii's problems at this stage.
-
-Agent separation of powers in Wakii's kit is covered in [agents & kit](/docs/agents-and-kit/); long-running stories and the watchdog live in [story workflow](/docs/story-workflow/).
+- **N/A** — the BETA desktop app and a README in 22 languages (as of 2026-09-08): distribution problems of a 205,815-star project, not Wakii's problems at this stage.
 
 To run this do-and-decide separation on your own machine, grab Wakii and start with [getting started](/docs/getting-started/) — let the agents run, you keep the deciding.

@@ -34,11 +34,11 @@ Mở cây repo tại commit d6855b6, thư mục `packages/` liệt kê hơn 30 m
     xếp chỗ mặc định       DMG/EXE/AppImage          editor cắm vào
 ```
 
-Ba mặt, một lõi: cùng một vòng session-tool-permission chạy trong cả terminal lẫn editor. Điểm đáng chú ý là mặt thứ ba — thư mục `acp/` chứa một service Agent Client Protocol hoàn chỉnh (`session.ts`, `permission.ts`, `tool.ts`, `usage.ts`), nghĩa là OpenCode phục vụ được như backend agent cho editor bên ngoài chứ không đóng kín trong TUI của chính nó. Thư mục `worktree/` cũng xuất hiện ngay ở tầng lõi — isolation cây làm việc là công dân hạng nhất, không phải tính typu vào sau.
+Ba mặt, một lõi: cùng một vòng session-tool-permission chạy trong cả terminal lẫn editor. Điểm đáng chú ý là mặt thứ ba — thư mục `acp/` chứa một service Agent Client Protocol hoàn chỉnh (`session.ts`, `permission.ts`, `tool.ts`, `usage.ts`), nghĩa là OpenCode phục vụ được như backend agent cho editor bên ngoài chứ không đóng kín trong TUI của chính nó. Thư mục `worktree/` cũng xuất hiện ngay ở tầng lõi — isolation cây làm việc là công dân hạng nhất, không phải tính năng gắn vào sau.
 
 ## Độc lập vendor là quyết định kiến trúc
 
-README tự giới thiệu một câu: "The open source AI coding agent." (nguồn: README của anomalyco/opencode, lấy ngày 2026-09-08). Câu ngắn, nhưng chữ "open source" ở đây đi cùng license MIT — theo GitHub API ngày 2026-09-08 — nên bạn đọc được mọi tầng, kể cả tầng hay được giấu: cách harness chọn mô hình.
+README tự giới thiệu một câu: "The open source AI coding agent." (nguồn: [README của anomalyco/opencode @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/README.md), lấy ngày 2026-09-08). Câu ngắn, nhưng chữ "open source" ở đây đi cùng license MIT — theo GitHub API ngày 2026-09-08 — nên bạn đọc được mọi tầng, kể cả tầng hay được giấu: cách harness chọn mô hình.
 
 Câu trả lời nằm trong `provider/provider.ts`: catalog mô hình và metadata provider được nạp qua module `ModelsDev` — cơ sở dữ liệu mô hình mở tại models.dev, không thuộc nhà cung cấp nào. Trong file còn thấy comment xử lý chi tiết thực tế như prefix vùng (`us.`, `eu.`) hay cách đặt tên model của từng vendor.
 
@@ -46,6 +46,8 @@ Câu trả lời nằm trong `provider/provider.ts`: catalog mô hình và metad
 // packages/opencode/src/provider/provider.ts
 import { ModelsDev } from "@opencode-ai/core/models-dev"
 ```
+
+(nguồn: [provider/provider.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/provider/provider.ts))
 
 Nói cách khác: việc hỗ trợ một provider mới không phải là viết code riêng trong repo, mà là dữ liệu cập nhật ở catalog chung. Đó là lý do một agent terminal độc lập vendor giữ được tốc độ hỗ trợ mô hình mới mà không phình codebase — và đó cũng là lý do dự án này đứng đầu nhóm harness trong bản đồ 50 dự án.
 
@@ -62,7 +64,7 @@ const readonlyExternalDirectory = {
 } satisfies Record<string, "allow" | "ask" | "deny">
 ```
 
-(nguồn: agent/agent.ts tại commit d6855b6). Ba mức allow/ask/deny: mọi thư mục ngoài mặc định "ask", riêng các vùng whitelist — thư mục skill, thư mục temp, glob của tool truncate — được "allow" sẵn. Vai nào đó cần ghi code thì cấp thêm; vai chỉ đọc thì chặn ở tầng permission, trước khi LLM kịp "quên".
+(nguồn: [agent/agent.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/agent/agent.ts)). Ba mức allow/ask/deny: mọi thư mục ngoài mặc định "ask", riêng các vùng whitelist — thư mục skill, thư mục temp, glob của tool truncate — được "allow" sẵn. Vai nào đó cần ghi code thì cấp thêm; vai chỉ đọc thì chặn ở tầng permission, trước khi LLM kịp "quên".
 
 | Agent | Quyền mặc định | Dùng cho |
 |---|---|---|
@@ -81,7 +83,7 @@ const TOOL_OUTPUT_MAX_CHARS = 2_000
 const PRUNE_PROTECTED_TOOLS = ["skill"]
 ```
 
-(nguồn: session/compaction.ts tại commit d6855b6). Đọc trực tiếp: khi prune, giữ tối thiểu 20.000 token; vùng bảo vệ 40.000 token; output của tool bị cắt ở 2.000 ký tự; riêng output của tool skill được miễn prune. Chính sách compaction trở thành thứ có thể review, tranh luận, và regression-test — chứ không phải hành vi emergent của một prompt dài.
+(nguồn: [session/compaction.ts @ d6855b6](https://github.com/anomalyco/opencode/blob/d6855b6/packages/opencode/src/session/compaction.ts)). Đọc trực tiếp: khi prune, giữ tối thiểu 20.000 token; vùng bảo vệ 40.000 token; output của tool bị cắt ở 2.000 ký tự; riêng output của tool skill được miễn prune. Chính sách compaction trở thành thứ có thể review, tranh luận, và regression-test — chứ không phải hành vi emergent của một prompt dài.
 
 ## Nhịp ship: 10 release trong 15 ngày
 
@@ -102,13 +104,13 @@ Cadence release nói nhiều về quy trình bên trong hơn bất kỳ tuyên b
 
 10 release từ 21-08 đến 04-09, trong đó ba ngày (21-08, 28-08, 04-09) có tới hai release. Với một repo 205.815★ (ngày 2026-09-08), nhịp này nghĩa là quy trình phát hành đã tự động hoá tới mức cho ra bản mới gần như mỗi ngày làm việc — cùng họ cadence với claude-code ở đầu bảng, và ngược hẳn với aider đứng đóng băng cuối bảng.
 
+Phần phân quyền agent trong kit của Wakii nằm trong [agents & kit](/vi/docs/agents-and-kit/); cơ chế story dài và watchdog nằm trong [story workflow](/vi/docs/story-workflow/).
+
 ## Wakii học được gì
 
 - **ADOPT** — permission profile tường minh theo agent. Wakii đã có worktree isolation và nguyên tắc "người làm không tự duyệt" trong đội 9 agent; đề xuất cụ thể: khai permission profile cạnh định nghĩa từng agent trong kit (code-reviewer và verifier: deny edit; task-executor: allow trong phạm vi worktree) để phân quyền được kiểm tra bằng máy, không chỉ trông vào system prompt. Evidence: bảng build/plan và ruleset `readonlyExternalDirectory` ở trên.
 - **DIRECTION** — compaction có ngưỡng đo được. Watchdog của Wakii auto-resume story dài từ last good state; khi story nhiều ngày thành phổ biến hơn, chính sách context kiểu 20.000/40.000 token tường minh là hướng đáng đưa vào kit thay vì để mỗi agent tự xử lý.
 - **WATCH** — ACP (Agent Client Protocol). OpenCode ship một ACP service hoàn chỉnh để editor bên ngoài cắm vào; đây là quyết định strategic đang theo dõi. Điều kiện đổi: khi ACP phủ đủ tầng editor, đánh giá lại việc chuẩn hoá lớp agent-editor.
-- **N/A** — desktop app BETA và README 22 ngôn ngữ: bài toán phân phối đa nền tảng của một dự án 205.815★, chưa phải bài toán của Wakii ở giai đoạn này.
-
-Phần phân quyền agent trong kit của Wakii nằm trong [agents & kit](/vi/docs/agents-and-kit/); cơ chế story dài và watchdog nằm trong [story workflow](/vi/docs/story-workflow/).
+- **N/A** — desktop app BETA và README 22 ngôn ngữ (ngày 2026-09-08): bài toán phân phối đa nền tảng của một dự án 205.815★, chưa phải bài toán của Wakii ở giai đoạn này.
 
 Muốn chạy quy trình tách quyền làm–quyết kiểu này trên máy của bạn, tải Wakii và bắt đầu từ [getting started](/vi/docs/getting-started/) — để agent chạy, bạn giữ quyền quyết.

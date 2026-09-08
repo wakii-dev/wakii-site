@@ -19,7 +19,7 @@ TL;DR:
 
 ## One command, three layers underneath
 
-Installation is one line: `curl -fsSL https://ollama.com/install.sh | sh`. The README then promises exactly what this post verifies: running `ollama` gets you "prompted to run a model or connect Ollama to your existing agents" — or you can go straight to `ollama run gemma4`. Three things happen under the hood:
+Installation is one line: `curl -fsSL https://ollama.com/install.sh | sh`. The README then promises exactly what this post verifies: running `ollama` gets you "prompted to run a model or connect Ollama to your existing agents" ([README @ 83ed7d9](https://github.com/ollama/ollama/blob/83ed7d9/README.md)) — or you can go straight to `ollama run gemma4`. Three things happen under the hood:
 
 ```
 ollama run gemma4
@@ -55,7 +55,7 @@ That is the repo's philosophy in one line: report the machine's real limits inst
 
 ## 2026: from model server to agent launchpad
 
-The README describes the repo as "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models" — but the newest part matters most to anyone building agents. The command `ollama launch claude` does two things: if Claude Code is missing, it asks for confirmation and installs it; if present, it just sets environment variables and spawns it. The entire "wire" fits in one function:
+The README describes the repo as "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models" ([README @ 83ed7d9](https://github.com/ollama/ollama/blob/83ed7d9/README.md)) — but the newest part matters most to anyone building agents. The command `ollama launch claude` does two things: if Claude Code is missing, it asks for confirmation and installs it; if present, it just sets environment variables and spawns it. The entire "wire" fits in one function:
 
 ```go
 // modelEnvVars returns Claude Code env vars that route all model tiers through Ollama.

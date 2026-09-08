@@ -19,7 +19,7 @@ TL;DR:
 
 ## Một lệnh, ba tầng bên dưới
 
-Cài đặt là một dòng: `curl -fsSL https://ollama.com/install.sh | sh`. Sau đó README hứa đúng thứ mà cả bài này kiểm chứng: chạy `ollama` là được "prompted to run a model or connect Ollama to your existing agents" — hoặc gõ thẳng `ollama run gemma4`. Ba chuyện xảy ra dưới mui xe:
+Cài đặt là một dòng: `curl -fsSL https://ollama.com/install.sh | sh`. Sau đó README hứa đúng thứ mà cả bài này kiểm chứng: chạy `ollama` là được "prompted to run a model or connect Ollama to your existing agents" ([README @ 83ed7d9](https://github.com/ollama/ollama/blob/83ed7d9/README.md)) — hoặc gõ thẳng `ollama run gemma4`. Ba chuyện xảy ra dưới mui xe:
 
 ```
 ollama run gemma4
@@ -55,7 +55,7 @@ Mỗi request đi qua struct `LlmRequest`, và scheduler ghi rõ trong code nh�
 
 ## 2026: từ model server thành launchpad cho agent
 
-README mô tả repo là "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models" — nhưng phần mới nhất mới đáng chú ý với người làm agent. Lệnh `ollama launch claude` làm hai chuyện: nếu máy chưa có Claude Code, nó hỏi xác nhận rồi tự cài; nếu đã có, nó chỉ set environment variables rồi spawn. Toàn bộ "wire" nằm gọn trong một hàm:
+README mô tả repo là "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models" ([README @ 83ed7d9](https://github.com/ollama/ollama/blob/83ed7d9/README.md)) — nhưng phần mới nhất mới đáng chú ý với người làm agent. Lệnh `ollama launch claude` làm hai chuyện: nếu máy chưa có Claude Code, nó hỏi xác nhận rồi tự cài; nếu đã có, nó chỉ set environment variables rồi spawn. Toàn bộ "wire" nằm gọn trong một hàm:
 
 ```go
 // modelEnvVars returns Claude Code env vars that route all model tiers through Ollama.
