@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 /**
- * Build-time assertion: blog content rules for the 20 NEW longform slugs
- * (story FI-359, decision D5).
+ * Build-time assertion: blog content rules for EVERY non-seed longform slug
+ * (manifest all-non-seed — story FI-373 SF-1, decision DEC-4; lineage:
+ * FI-359 D5 where the scope was a hard-coded 20-slug list).
  *
- * Scope: ONLY the 20 new slugs listed in NEW_SLUGS. The 5 SEED_SLUGS are the
- * frozen exclusion list — seeds are exempt from the word band and the locale
- * docs-link rule (their 350-500 word band is the approved FI-341 standard).
- * A slug is checked only when its file exists in the tree, so a mid-story
- * worktree stays green (partial pass by design — matrix completeness is
- * SF-5's job, not lint's).
+ * Scope: derived, not hard-coded. The planned manifest = every slug parsed
+ * from BOTH matrix tables (topic-matrix.md batch-1 + topic-matrix-batch2.md
+ * batch-2, same row regex, 64 slugs total). A slug is checked only when its
+ * file exists in the tree, so a mid-story worktree stays green (partial pass
+ * by design — matrix completeness is the convergence SF's job, not lint's).
  *
- * Checks per new-slug file:
+ *   - seed file (5 SEED_SLUGS, frozen) → exempt, as before;
+ *   - non-seed file whose slug IS planned → full checks below;
+ *   - non-seed file whose slug is NOT planned → REPORTED as "outside-matrix"
+ *     (stdout, counted in the summary) but NOT enforced — adding slugs is an
+ *     editorial-docs decision via the coordinator, lint never silently skips.
+ *
+ * Checks per planned non-seed file:
  *   1. Word band (decision D1 — body after frontmatter, fenced code blocks
  *      excluded, split on /\s+/): VI 900-1400 (warn >1400, fail >1470),
  *      EN floor 800. `draft: true` → "skipped-draft" (band + docs-link
@@ -26,7 +32,9 @@
  *      hygiene; all seeds pass it, so it cannot fail on frozen files).
  *
  * The forbidden list is parsed from the registry at run time — the registry
- * is the single source of truth, the script never duplicates it.
+ * is the single source of truth, the script never duplicates it. Same for the
+ * matrix tables: a missing matrix file is a config error (exit 1), never a
+ * silent scope shrink.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -34,16 +42,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const blogDir = join(root, 'src', 'content', 'blog');
-const registryPath = join(
-  root,
-  'docs',
-  'superpowers',
-  'editorial',
-  '2026-blog-longform',
-  'claims-registry.md',
-);
+const kitDir = join(root, 'docs', 'superpowers', 'editorial', '2026-blog-longform');
+const registryPath = join(kitDir, 'claims-registry.md');
 
-/** Frozen scope (story FI-359) — mirrors topic-matrix.md. Never edit casually. */
+/** Frozen scope (story FI-341 seeds) — never edit casually. */
 const SEED_SLUGS = [
   'review-ai-agents-from-your-phone',
   'story-workflow-idea-to-release',
@@ -51,28 +53,35 @@ const SEED_SLUGS = [
   'forking-an-ide-keeping-current-with-upstream',
   'building-wakii-in-the-open-log-1',
 ];
-const NEW_SLUGS = [
-  'zero-setup-agent-team',
-  'nine-agents-separated-powers',
-  'gates-not-trust-rule-zero',
-  'watchdog-idle-is-not-dead',
-  'story-memory-learning-loop',
-  'defensive-by-design',
-  'controlled-rework-rollback',
-  'long-tasks-bracket-tiers',
-  'parallel-worktrees-isolation',
-  'linear-as-external-memory',
-  'one-branch-one-pr',
-  'done-means-evidence',
-  'convergence-qa-last-tier',
-  'shipping-cadence-two-releases-one-day',
-  'blog-story-case-study',
-  'wakii-in-production-hub-store',
-  'og-article-contract-anatomy',
-  'rss-bilingual-feed-anatomy',
-  'skills-catalog-tour',
-  'building-wakii-in-the-open-log-2',
-];
+
+/** Planned scope = both matrix tables parsed with the same row regex
+ *  (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs → 64 non-seed).
+ *  slug -> { n, cat, pubDate, file }. Missing file = config error (exit 1),
+ *  never a silent scope shrink. */
+const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md'];
+const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
+function plannedSlugs() {
+  const planned = new Map();
+  for (const file of MATRIX_FILES) {
+    const path = join(kitDir, file);
+    if (!existsSync(path)) {
+      console.error(`✗ blog content FAILED: matrix file missing at ${path} — lint scope cannot be derived (config error, not a content error)`);
+      process.exit(1);
+    }
+    const src = readFileSync(path, 'utf8');
+    let rows = 0;
+    for (const m of src.matchAll(MATRIX_ROW)) {
+      planned.set(m[2], { n: Number(m[1]), cat: m[3], pubDate: m[4], file });
+      rows += 1;
+    }
+    if (rows === 0) {
+      console.error(`✗ blog content FAILED: matrix file ${file} parsed 0 rows — table format drifted (expected \`| N | \`slug\` | cat | pubDate |\`)`);
+      process.exit(1);
+    }
+  }
+  return planned;
+}
+const PLANNED = plannedSlugs();
 
 /** Mirror of DOC_SLUGS in src/config.ts (this script cannot import TS). */
 const DOC_SLUGS = ['getting-started', 'superpowers-panel', 'story-workflow', 'agents-and-kit', 'faq'];
@@ -171,7 +180,7 @@ function parseTags(value) {
   return { tags: items };
 }
 
-function checkNewSlugFile(locale, slug, content, phrases, errors, warnings, skips) {
+function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skips) {
   const rel = `${locale}/${slug}.md`;
   const fileErrors = [];
   const { frontmatter, body, fmlError } = splitFrontmatter(content);
@@ -249,6 +258,7 @@ const phrases = forbiddenPhrases();
 const errors = [];
 const warnings = [];
 const skips = [];
+const outside = [];
 let checked = 0;
 
 for (const locale of ['en', 'vi']) {
@@ -265,15 +275,23 @@ for (const locale of ['en', 'vi']) {
 
   for (const f of files) {
     const slug = f.replace(/\.md$/, '');
-    if (!NEW_SLUGS.includes(slug)) continue; // seeds + out-of-matrix slugs: out of scope
+    if (SEED_SLUGS.includes(slug)) continue; // frozen seeds: exempt
+    if (!PLANNED.has(slug)) {
+      // Not a seed, not in either matrix table — reported, never enforced
+      // (DEC-4: "quên append = bài ngoài gate" must stay impossible; a new
+      // slug belongs to the editorial docs, added via the coordinator).
+      outside.push(`${locale}/${f}`);
+      continue;
+    }
     checked += 1;
     const content = readFileSync(join(dir, f), 'utf8');
-    checkNewSlugFile(locale, slug, content, phrases, errors, warnings, skips);
+    checkPlannedFile(locale, slug, content, phrases, errors, warnings, skips);
   }
 }
 
 for (const s of skips) console.log(`  ◦ skipped-draft: ${s}`);
 for (const w of warnings) console.log(`  ⚠ ${w}`);
+for (const o of outside) console.log(`  ⚠ outside-matrix (reported, not enforced): ${o}`);
 
 if (errors.length > 0) {
   console.error('✗ blog content FAILED (src/content/blog/):');
@@ -286,6 +304,7 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `✓ blog content OK (${checked} new-slug file${checked === 1 ? '' : 's'} checked, ` +
-    `${skips.length} skipped-draft, ${SEED_SLUGS.length} seeds exempt)`
+  `✓ blog content OK (${checked} manifest file${checked === 1 ? '' : 's'} checked of ${PLANNED.size} planned slugs, ` +
+    `${skips.length} skipped-draft, ${SEED_SLUGS.length} seeds exempt, ` +
+    `${outside.length} outside-matrix (reported))`
 );
