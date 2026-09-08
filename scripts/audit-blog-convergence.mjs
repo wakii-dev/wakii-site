@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /**
- * Convergence audit — story FI-373 SF-1 (Linear FI-374). Lineage: built in
+ * Convergence audit — story FI-373 SF-1 (Linear FI-374); refreshed for batch-3
+ * story FI-383 SF-1 (Linear FI-384): third matrix table + wants 20/44/50/114 +
+ * owner mapping batch-3 + scoped FORBIDDEN T3(a). Lineage: built in
  * FI-359 SF-5 (Linear FI-364), checks 2-7 carried over; scope widened from a
- * hard-coded 20-slug list to the all-non-seed manifest (both matrix tables).
+ * hard-coded 20-slug list to the all-non-seed manifest (all matrix tables).
  *
  * Machine sweep (the CỨNG frame). Contract sources pinned in the header of each check below:
  *   T2 — style-guide §2 D1 word-band algorithm (PINNED, verbatim)
@@ -14,7 +16,7 @@
  *   T4 — link/locale/anchor rules (style-guide §6, D4) resolved against dist/
  *   T5 — RSS contract (FI-339 SF-1): bilingual feed, guid absolute per locale, no <language>
  *   T6 — sitemap + hreflang pair + OG article contract (FI-339 rev 2)
- *   T7 — listings live-count + frontmatter vs BOTH matrix tables (D2/D6 + DEC-6 policy a)
+ *   T7 — listings live-count + frontmatter vs ALL THREE matrix tables (D2/D6 + DEC-6 policy a)
  *
  * READ-ONLY over src/ and dist/ — report goes to STDOUT only (never writes any
  * file). Zero-dependency: node:fs / node:path / node:url + global fetch only.
@@ -48,9 +50,10 @@ const SEED_SLUGS = [
   'building-wakii-in-the-open-log-1',
 ];
 
-/* Planned scope = BOTH matrix tables parsed with the same row regex
- * (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs → 64 non-seed).
- * No hard-coded slug list — matrix files are the single source of truth. */
+/* Planned scope = ALL THREE matrix tables parsed with the same row regex
+ * (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs · batch-3 FI-383:
+ * 50 slugs → 114 non-seed). No hard-coded slug list — matrix files are the
+ * single source of truth. */
 const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
 function parseMatrix(file) {
   const src = readFileSync(join(KIT, file), 'utf8');
@@ -60,7 +63,8 @@ function parseMatrix(file) {
 }
 const BATCH1 = parseMatrix('topic-matrix.md');
 const BATCH2 = parseMatrix('topic-matrix-batch2.md');
-const PLANNED = new Map([...BATCH1, ...BATCH2]);
+const BATCH3 = parseMatrix('topic-matrix-batch3.md');
+const PLANNED = new Map([...BATCH1, ...BATCH2, ...BATCH3]);
 
 /* Category set derived from the matrix rows (single source — sitemap T6 +
  * category pages T7 read the same list; hard-coding it in N places was the
@@ -69,11 +73,14 @@ const CATEGORIES = [...new Set([...PLANNED.values()].map((r) => r.cat))];
 
 /** Owning dev SF: batch-1 (FI-359) by matrix row index (#1-7 SF-2, #8-14 SF-3,
  *  #15-20 SF-4); batch-2 (FI-373) by facet prefix (skills/features/guides/
- *  arch+oss+logs). */
+ *  arch+oss+logs); batch-3 (FI-383) by row index (#1-12 SF-2/FI-385,
+ *  #13-22 SF-3/FI-386, #23-36 SF-4/FI-387, #37-50 SF-5/FI-388). */
 function owner(slug) {
   if (SEED_SLUGS.includes(slug)) return 'seed';
   const b1 = BATCH1.get(slug);
   if (b1) return b1.n <= 7 ? 'SF-2/FI-361' : b1.n <= 14 ? 'SF-3/FI-362' : 'SF-4/FI-363';
+  const b3 = BATCH3.get(slug);
+  if (b3) return b3.n <= 12 ? 'SF-2/FI-385' : b3.n <= 22 ? 'SF-3/FI-386' : b3.n <= 36 ? 'SF-4/FI-387' : 'SF-5/FI-388';
   if (slug.startsWith('skill-')) return 'SF-2/FI-375';
   if (slug.startsWith('feature-')) return 'SF-3/FI-376';
   if (slug.startsWith('guide-')) return 'SF-4/FI-377';
@@ -222,7 +229,7 @@ const seedPosts = [...posts.values()].filter((p) => p.isSeed)
 const draftSlugs = [...new Set([...posts.values()].filter((p) => p.draft).map((p) => p.slug))].sort();
 
 out('=== convergence audit — FI-373 SF-1 (checks 2-7; lineage FI-359 SF-5) ===');
-out(`scope: manifest all-non-seed — ${PLANNED.size} planned slugs (batch-1 ${BATCH1.size} + batch-2 ${BATCH2.size}) x 2 locales; ` +
+out(`scope: manifest all-non-seed — ${PLANNED.size} planned slugs (batch-1 ${BATCH1.size} + batch-2 ${BATCH2.size} + batch-3 ${BATCH3.size}) x 2 locales; ` +
   `${newPosts.length} files present/enforced; ${SEED_SLUGS.length} seed slugs (FI-341) = inventory-only`);
 out(`draft slugs (D7 fallback): ${draftSlugs.length === 0 ? 'none' : draftSlugs.join(', ')}`);
 out('seeds (exempt inventory): ' + SEED_SLUGS.join(' · '));
@@ -929,14 +936,16 @@ out(`\n--- T7: listings (EN/VI) + frontmatter-vs-matrix ${PLANNED.size}/${PLANNE
     }
   }
 
-  // matrix gate — BOTH tables (already parsed up top; no per-table re-read here).
+  // matrix gate — ALL THREE tables (already parsed up top; no per-table re-read).
   // Batch-1: a row without files is a REGRESSION (those posts shipped with
-  // FI-359) → FAIL. Batch-2: a row without files is EXPECTED mid-story →
-  // NOTE "pending (owner SF-x)"; rows with files get the same enforcement.
-  out(`matrix rows parsed: batch-1 ${BATCH1.size} (want 20) + batch-2 ${BATCH2.size} (want 44) = ${PLANNED.size} (want 64)`);
+  // FI-359) → FAIL. Batch-2 + batch-3: rows without files are EXPECTED
+  // mid-story → NOTE "pending (owner SF-x)"; rows with files get the same
+  // enforcement.
+  out(`matrix rows parsed: batch-1 ${BATCH1.size} (want 20) + batch-2 ${BATCH2.size} (want 44) + batch-3 ${BATCH3.size} (want 50) = ${PLANNED.size} (want 114)`);
   if (BATCH1.size !== 20) fail('T7', `topic-matrix.md: parsed ${BATCH1.size} rows, want 20`);
   if (BATCH2.size !== 44) fail('T7', `topic-matrix-batch2.md: parsed ${BATCH2.size} rows, want 44`);
-  if (PLANNED.size !== 64) fail('T7', `combined matrix: ${PLANNED.size} unique slugs, want 64 (slug collision between tables?)`);
+  if (BATCH3.size !== 50) fail('T7', `topic-matrix-batch3.md: parsed ${BATCH3.size} rows, want 50`);
+  if (PLANNED.size !== 114) fail('T7', `combined matrix: ${PLANNED.size} unique slugs, want 114 (slug collision between tables?)`);
   let okRows = 0;
   const matrixFails = [];
   const pendingRows = [];
@@ -957,7 +966,7 @@ out(`\n--- T7: listings (EN/VI) + frontmatter-vs-matrix ${PLANNED.size}/${PLANNE
     if (bad.length) matrixFails.push(`#${row.n} ${slug}: ${bad.join('; ')}`);
     else okRows += 1;
   }
-  out(`matrix gate: slug + category + pubDate match ${okRows}/${PLANNED.size}; batch-2 pending (NOTE): ${pendingRows.length}`);
+  out(`matrix gate: slug + category + pubDate match ${okRows}/${PLANNED.size}; batch-2/batch-3 pending (NOTE): ${pendingRows.length}`);
   for (const f of matrixFails) fail('T7', `matrix mismatch — ${f}`);
   for (const p of pendingRows) note('T7', `matrix row ${p}`);
   // extra slugs not in matrix/seeds
