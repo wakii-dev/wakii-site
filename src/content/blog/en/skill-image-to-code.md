@@ -58,7 +58,7 @@ The goal is:
 
 *Source: ~/.claude/skills/image-to-code/SKILL.md, §26 "Design-to-code copy discipline", retrieved 2026-09-08.*
 
-And a shorter line at the very top of the document: "The image is the design source. The code is the translation layer." In the kit's real workflow the role is named explicitly: when a sub-feature must build a new component from a design capture, the workflow points straight at this skill.
+And a shorter line in section 2 of the document: "The image is the design source. The code is the translation layer." In the kit's real workflow the role is named explicitly: when a sub-feature must build a new component from a design capture, the workflow points straight at this skill.
 
 ```
 Component mới: `image-to-code` với capture làm fidelity target.

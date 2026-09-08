@@ -95,6 +95,8 @@ src/Button.tsx:18 - input lacks label
 src/Button.tsx:55 - animation missing prefers-reduced-motion
 src/Button.tsx:67 - transition: all → list properties
 
+…
+
 ## src/Card.tsx
 
 ✓ pass
@@ -128,4 +130,4 @@ Chạy cùng, không thay thế — đó là phân công lao động trong một
 
 Ba điều một skill review nên có: nguyên văn đọc được, chạy được offline, kết quả kiểm lại được. web-design-guidelines đáp ứng cả ba — rules là file trong máy, nguồn gốc ghi trong Provenance, mỗi finding có `file:line`. Bản đồ cả catalog nằm trong bài [tour kỹ năng public của Wakii](/vi/blog/skills-catalog-tour/); lớp phán xét thẩm mỹ có ngữ cảnh kể ở bài [skill /design-taste-frontend](/vi/blog/skill-design-taste-frontend/). Muốn đọc vị đội agent load những skill này lúc nào, trang docs [agents and kit](/vi/docs/agents-and-kit/) liệt kê đủ.
 
-Kit nằm ở repo public MIT `github.com/wakii-dev/wakii` — cả SKILL.md lẫn file rules vendored đọc được nguyên văn. Tải Wakii, để agent build UI của bạn, rồi đọc bộ quy tắc đó trước khi nhấn ship: đó là những lỗi mà ảnh chụp không thấy được, giờ có một lớp review chuyên nhiệm.
+Kit tự cài vào `~/.claude/` trên máy bạn — cả SKILL.md lẫn file rules vendored đọc được nguyên văn tại đó. Tải Wakii, để agent build UI của bạn, rồi đọc bộ quy tắc đó trước khi nhấn ship: đó là những lỗi mà ảnh chụp không thấy được, giờ có một lớp review chuyên nhiệm.

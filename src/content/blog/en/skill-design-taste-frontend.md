@@ -128,4 +128,4 @@ That is also the right way to read the phrase "machine-checkable is not the same
 
 The Wakii design kit holds six skills covering the whole UI lifecycle (at the time of writing, 2026-09-08), and this post opened one book on the shelf. The [skills catalog tour](/blog/skills-catalog-tour/) walks the full catalog; the step that happens before the audit — asking about intent before building — is told in [skill /brainstorm](/blog/skill-brainstorm/). For how the agent team loads these skills, the [agents and kit](/docs/agents-and-kit/) docs page covers the team.
 
-Every public skill in the kit is a SKILL.md file in the MIT repo `github.com/wakii-dev/wakii`, including the 1,200-line file quoted throughout this post. Download Wakii, let the agent finish building your page, then read the skill's scrutiny rules before you press ship.
+Every public skill in the kit is a SKILL.md file that installs into `~/.claude/` on your machine — readable in full, including the 1,200-line file quoted throughout this post. Download Wakii, let the agent finish building your page, then read the skill's scrutiny rules before you press ship.

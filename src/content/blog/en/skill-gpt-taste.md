@@ -91,7 +91,7 @@ Structure (landing — asymmetric 12-col bento per direction-d3-bento.html)
 Spacing on an 8px rhythm; section padding 96–128px; bento gap 16–20px.
 ```
 
-*Source: docs/superpowers/designs/sf1-direction.md, taken 2026-09-08.*
+*Source: docs/superpowers/designs/sf1-direction.md, taken 2026-09-08 — block translated from the Vietnamese original.*
 
 An asymmetric 12-column bento, 16-20px gaps, 96-128px section padding — the same core move as /gpt-taste: aesthetics written as verifiable specs, not retrofitted inspiration.
 

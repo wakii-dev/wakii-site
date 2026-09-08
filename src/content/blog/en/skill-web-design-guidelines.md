@@ -95,6 +95,8 @@ src/Button.tsx:18 - input lacks label
 src/Button.tsx:55 - animation missing prefers-reduced-motion
 src/Button.tsx:67 - transition: all → list properties
 
+…
+
 ## src/Card.tsx
 
 ✓ pass
@@ -128,4 +130,4 @@ Alongside, not instead — that is the division of labor inside one review round
 
 Three things a review skill should have: a readable source, offline operation, and results you can re-check. web-design-guidelines has all three — the rules are a local file, the origin is written in Provenance, and every finding carries a `file:line`. The map of the full catalog is in the [skills catalog tour](/blog/skills-catalog-tour/); the context-aware aesthetic layer is told in [skill /design-taste-frontend](/blog/skill-design-taste-frontend/). For how the agent team loads these skills and when, the [agents and kit](/docs/agents-and-kit/) docs page covers the team.
 
-The kit lives in the MIT public repo `github.com/wakii-dev/wakii` — both the SKILL.md and the vendored rules file are readable in full. Download Wakii, let the agents build your UI, then read the rulebook before you ship: those are the failures a screenshot can't show, and now a dedicated review layer checks for them.
+The kit installs itself into `~/.claude/` on your machine — both the SKILL.md and the vendored rules file are readable in full there. Download Wakii, let the agents build your UI, then read the rulebook before you ship: those are the failures a screenshot can't show, and now a dedicated review layer checks for them.

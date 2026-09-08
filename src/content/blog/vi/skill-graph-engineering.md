@@ -105,7 +105,7 @@ FI-359 — 5 plan file, một diamond
   mỗi SF = một plan file + một worktree riêng
 ```
 
-*Nguồn: 5 file FI-359 trong docs/superpowers/plans/ (tổng thư mục có nhiều hơn), trong đó 2 file mang số Linear của SF (FI-362, FI-363), lấy 2026-09-08.*
+*Nguồn: 5 file FI-359 trong docs/superpowers/plans/ (tổng thư mục có nhiều hơn), cả năm đều mang số Linear (FI-360…FI-364) — FI-362 và FI-363 nằm ngay trong tên file, lấy 2026-09-08.*
 
 Đội chín agent đến từ đâu, kit tự cài thế nào: docs [agents & kit](/vi/docs/agents-and-kit/). Muốn đọc chín vai ở góc quyền hạn, bài [Chín agent, quyền hạn tách rời](/vi/blog/nine-agents-separated-powers/) đã mổ xẻ; toàn cảnh catalog kỹ năng có trong [bài tour kỹ năng](/vi/blog/skills-catalog-tour/); cách plan file viết cho người không có ngữ cảnh nằm ở [bài viết plan cho Linear](/vi/blog/skill-writing-plans-linear/).
 

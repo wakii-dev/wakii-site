@@ -77,7 +77,7 @@ The caps bind in autonomous mode too — the common misreading is that autonomou
 
 ## Principles that bind across phases
 
-The skill carries eight numbered principles with two invariants above them. What separates them from wall-poster advice is two things: an explicit precedence order, and a map binding each principle to each phase — which ones hold tight, which ones fire only on a token. The precedence stack, verbatim:
+The skill carries seven numbered principles (2-8) with two invariants above them. What separates them from wall-poster advice is two things: an explicit precedence order, and a map binding each principle to each phase — which ones hold tight, which ones fire only on a token. The precedence stack, verbatim:
 
 > Prime Directive > Phase-Ordering Invariant > Principles (2-8) > Workflow phase instructions > Examples/templates.
 
@@ -95,7 +95,7 @@ The Prime Directive sits on top: "Do not guess. If anything is unclear, you MUST
 
 The example comes from the previous story: FI-359, the story that wrote this site's 20 longform blog posts; its SF-3 was a seven-post series. Review did not pile up at the end: following the rolling review the skill writes into law — split tasks into groups of four to five related items, and the moment a group finishes, an independent code-reviewer reads its diff while the executor writes the next group — the series came back CHANGES-REQUESTED three times, across three different groups. Each time: fix, re-review, and only an APPROVED group got merged. Reviewer separated from executor, doing exactly its job.
 
-Within the same SF, the destination branch moved mid-flight once — another SF merged first. The next merge was blocked: the ancestor check found the destination branch was no longer an ancestor of the working branch, and the update was refused rather than overwritten. Re-merge the destination, merge again, and the merge loop ran clean. That guard lives in the story process rather than in this skill — but the philosophy is the same: check the condition before writing.
+Within the same SF, the destination branch moved mid-flight twice — once another SF's merge landed first, once a docs commit touched the ref between merge and update. The next merge was blocked: the ancestor check found the destination branch was no longer an ancestor of the working branch, and the update was refused rather than overwritten. Re-merge the destination, merge again, and the merge loop ran clean. That guard lives in the story process rather than in this skill — but the philosophy is the same: check the condition before writing.
 
 And one example in flight: this post is a task of SF-2, story FI-373 — born in its own worktree, about to go through group review, then merged after the ancestor guard. The diagram at the top is not a concept sketch; you are reading a node in the middle of it.
 

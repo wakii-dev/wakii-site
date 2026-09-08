@@ -38,7 +38,7 @@ Type `/brainstorm` with an idea, and the first thing it does is not ask you anyt
          → tạo worktree linked to issue (nếu chọn tạo mới)
 ```
 
-*Nguồn: ~/.claude/skills/brainstorm/SKILL.md, section "Flow" — retrieved 2026-09-08.*
+*Nguồn: ~/.claude/skills/brainstorm/SKILL.md, section "Flow" — retrieved 2026-09-08; inline quote translated from the Vietnamese source.*
 
 Step one of Phase 1 is exploring project context, and the source states this requirement strictly: read the actual files, related code, recent git log and current architecture — and "if unsure about behavior → read the code, don't guess." The skill even names its tool for the job: codegraph, to query symbols, walk call paths and measure impact before proposing an approach. The logic is simple: good questions only come from real context. An agent that asks "where do you want the new page" without opening the router is wasting your time — asking about something it could have read itself.
 

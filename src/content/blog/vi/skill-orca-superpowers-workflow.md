@@ -77,7 +77,7 @@ Các cap bấm cả chế độ autonomous — dễ hiểu sai là tưởng nó 
 
 ## Principles ràng buộc mọi phase
 
-Skill có tám principles đánh số và hai invariant đứng trên. Khác danh chí vàng treo tường ở hai thứ: thứ tự ưu tiên tường minh, và bản đồ gắn principle vào phase — cái nào bám chặt, cái nào chỉ bật theo token. Thứ tự ưu tiên, nguyên văn:
+Skill có bảy principles đánh số (2-8) và hai invariant đứng trên. Khác danh chí vàng treo tường ở hai thứ: thứ tự ưu tiên tường minh, và bản đồ gắn principle vào phase — cái nào bám chặt, cái nào chỉ bật theo token. Thứ tự ưu tiên, nguyên văn:
 
 > Prime Directive > Phase-Ordering Invariant > Principles (2-8) > Workflow phase instructions > Examples/templates.
 
@@ -95,7 +95,7 @@ Prime Directive đặt lên đỉnh: "Do not guess. If anything is unclear, you 
 
 Ví dụ lấy từ story FI-359 — 20 bài blog longform của chính site này; SF-3 là series bảy bài. Review không dồn về cuối: theo rolling review mà skill ghi thành luật — chia tasks nhóm bốn-năm việc cùng đường, nhóm nào xong, code-reviewer độc lập soi diff ngay, song song với nhóm kế — series bị trả CHANGES-REQUESTED ba lần ở ba nhóm khác nhau. Mỗi lần: fix, re-review, APPROVED mới được merge. Reviewer tách khỏi executor, và làm đúng việc của nó.
 
-Cũng trong SF đó, nhánh đích từng nhích giữa chừng vì một SF khác merge trước. Lần merge sau bị chặn: ancestor-check thấy nhánh đích không còn là tổ tiên của nhánh làm việc — cập nhật bị từ chối thay vì ghi đè. Re-merge nhánh đích, merge lại, loop chạy tiếp sạch. Guard đó thuộc quy trình story — nhưng cùng triết lý: kiểm tra điều kiện trước khi ghi.
+Cũng trong SF đó, nhánh đích từng nhích giữa chừng hai lần — một lần vì một SF khác merge trước, một lần vì một commit docs chạm ref giữa lúc merge và lúc cập nhật. Lần merge sau bị chặn: ancestor-check thấy nhánh đích không còn là tổ tiên của nhánh làm việc — cập nhật bị từ chối thay vì ghi đè. Re-merge nhánh đích, merge lại, loop chạy tiếp sạch. Guard đó thuộc quy trình story — nhưng cùng triết lý: kiểm tra điều kiện trước khi ghi.
 
 Và ví dụ đang chạy: bài này là một task của SF-2, story FI-373 — sinh ra trong worktree riêng, sẽ qua review theo nhóm, rồi merge sau ancestor-guard. Bạn đang đọc một node giữa dòng của chính sơ đồ đó.
 
