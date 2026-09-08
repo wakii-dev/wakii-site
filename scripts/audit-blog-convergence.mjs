@@ -59,6 +59,11 @@ const BATCH1 = parseMatrix('topic-matrix.md');
 const BATCH2 = parseMatrix('topic-matrix-batch2.md');
 const PLANNED = new Map([...BATCH1, ...BATCH2]);
 
+/* Category set derived from the matrix rows (single source — sitemap T6 +
+ * category pages T7 read the same list; hard-coding it in N places was the
+ * drift risk a batch-3 category would hit). */
+const CATEGORIES = [...new Set([...PLANNED.values()].map((r) => r.cat))];
+
 /** Owning dev SF: batch-1 (FI-359) by matrix row index (#1-7 SF-2, #8-14 SF-3,
  *  #15-20 SF-4); batch-2 (FI-373) by facet prefix (skills/features/guides/
  *  arch+oss+logs). */
@@ -742,7 +747,13 @@ out('\n--- T6: sitemap + hreflang pair + OG article contract (FI-339 rev 2) ---'
     if (!locs.has(u)) missingUrls.push(u);
   }
   for (const l of [`${SITE_URL}/blog/`, `${SITE_URL}/vi/blog/`]) if (!locs.has(l)) missingUrls.push(l);
-  out(`sitemap-0.xml: ${locs.size} urls; missing required: ${missingUrls.length === 0 ? 'none' : missingUrls.length}`);
+  // SF-6: the taxonomy routes belong in the sitemap too (posts + listings + categories).
+  for (const cat of CATEGORIES) {
+    for (const u of [`${SITE_URL}/blog/category/${cat}/`, `${SITE_URL}/vi/blog/category/${cat}/`]) {
+      if (!locs.has(u)) missingUrls.push(u);
+    }
+  }
+  out(`sitemap-0.xml: ${locs.size} urls; missing required (posts + listings + 6 category): ${missingUrls.length === 0 ? 'none' : missingUrls.length}`);
   for (const u of missingUrls) fail('T6', `dist/sitemap-0.xml: missing URL ${u}`);
 
   // Full sweep (FI-373 SF-1): the SAMPLES hard-code is gone — every present
@@ -772,6 +783,35 @@ out('\n--- T6: sitemap + hreflang pair + OG article contract (FI-339 rev 2) ---'
     if (ogType !== 'article') probs.push(`og:type=${ogType || 'MISSING'} (want article)`);
     const pub = (html.match(/<meta property="(?:article|og):published_time" content="([^"]*)"/) || [])[1];
     if (!pub || pub.slice(0, 10) !== p.pubDate) probs.push(`published_time=${pub || 'MISSING'} != frontmatter ${p.pubDate}`);
+    // SF-6 supplemental: og:image per-post — absolute on site origin, hero per
+    // frontmatter else /og-default.png (Base.astro pinned contract FI-339 rev 2).
+    const ogImg = (html.match(/<meta property="og:image" content="([^"]*)"/) || [])[1];
+    let wantImg;
+    try {
+      wantImg = new URL(unquote(p.fml.heroImage || '') || '/og-default.png', SITE_URL).toString();
+    } catch {
+      // frontmatter is author-controlled; a malformed ABSOLUTE value must not
+      // abort the audit mid-T6 (security-audit P2 2026-09-08) — report + skip.
+      probs.push(`frontmatter heroImage unparseable as URL: "${unquote(p.fml.heroImage || '')}"`);
+      continue;
+    }
+    if (ogImg !== wantImg) probs.push(`og:image=${ogImg || 'MISSING'} (want ${wantImg})`);
+    // SF-6 supplemental: related-posts dist invariants (the "25 old posts"
+    // contract, enforced on every present post — output intentionally changes
+    // as the pool grows): ≥1 related, same-locale links, every link resolves
+    // to a live non-draft route (draft leak = route exists + frontmatter draft).
+    const relMatch = html.match(/<section class="bd-related"[\s\S]*?<\/section>/);
+    const relSeg = relMatch ? relMatch[0] : '';
+    const relHrefs = [...relSeg.matchAll(/href="(\/(?:vi\/)?blog\/([a-z0-9-]+)\/)"/g)];
+    if (relHrefs.length === 0) probs.push('related section empty (invariant: ≥1 related)');
+    for (const rh of relHrefs) {
+      const hrefLocale = rh[1].startsWith('/vi/') ? 'vi' : 'en';
+      if (hrefLocale !== p.locale) probs.push(`related link cross-locale: ${rh[1]}`);
+      if (!routeExists(rh[1])) probs.push(`related link has no dist route: ${rh[1]}`);
+      const rp = posts.get(`${hrefLocale}/${rh[2]}`);
+      if (!rp) probs.push(`related link has no content file: ${rh[1]}`);
+      else if (rp.draft) probs.push(`related link draft leak: ${rh[1]}`);
+    }
     if (probs.length) {
       for (const pr of probs) {
         const msg = `${p.locale}/${p.slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): ${pr}`;
@@ -839,6 +879,38 @@ out(`\n--- T7: listings (EN/VI) + frontmatter-vs-matrix ${PLANNED.size}/${PLANNE
     }
     if (probs.length) for (const pr of probs) fail('T7', `listing ${locale}: ${pr}`);
     else out(`listing ${locale}: badges + dates match frontmatter, no drafts, no future dates outside matrix, pubDate DESC — OK`);
+  }
+
+  // SF-6 supplemental: the 6 category pages — card count must equal the
+  // non-draft frontmatter category total for that locale, no dupes, and every
+  // card genuinely belongs to the category (count-honesty, not just markup).
+  for (const cat of CATEGORIES) {
+    for (const locale of ['en', 'vi']) {
+      const file = locale === 'vi' ? DIST('vi', 'blog', 'category', cat, 'index.html') : DIST('blog', 'category', cat, 'index.html');
+      if (!existsSync(file)) {
+        fail('T7', `category page missing: dist/${locale === 'vi' ? 'vi/' : ''}blog/category/${cat}/`);
+        continue;
+      }
+      const html = readFileSync(file, 'utf8');
+      const allCards = [];
+      for (const m of html.matchAll(/<a class="bx[^"]*" href="(\/(?:vi\/)?blog\/([a-z0-9-]+)\/)"([\s\S]*?)<\/a>/g)) {
+        allCards.push({ href: m[1], slug: m[2] });
+      }
+      // a cross-locale card link is a locale leak — counted out of catCards but never silent
+      const crossLocale = allCards.filter((c) => c.href.startsWith('/vi/') !== (locale === 'vi'));
+      const catCards = allCards.filter((c) => c.href.startsWith('/vi/') === (locale === 'vi')).map((c) => c.slug);
+      const expected = [...posts.values()].filter((p) => p.locale === locale && !p.draft && p.category === cat).length;
+      const dupes = catCards.filter((s, i) => catCards.indexOf(s) !== i);
+      const foreign = [...new Set(catCards.filter((s) => {
+        const cp = posts.get(`${locale}/${s}`);
+        return !cp || cp.category !== cat;
+      }))];
+      out(`category ${cat} (${locale}): ${catCards.length} cards (want ${expected}), dupes: ${dupes.length === 0 ? 'none' : dupes.join(',')}${foreign.length ? `, foreign: ${foreign.join(',')}` : ''}`);
+      if (catCards.length !== expected) fail('T7', `category page ${locale}/${cat}: ${catCards.length} cards, want ${expected} (non-draft frontmatter total)`);
+      if (dupes.length) fail('T7', `category page ${locale}/${cat}: duplicate cards ${dupes.join(', ')}`);
+      for (const s of foreign) fail('T7', `category page ${locale}/${cat}: card ${s} does not belong to category ${cat}`);
+      for (const c of crossLocale) fail('T7', `category page ${locale}/${cat}: cross-locale card link ${c.href} (locale leak)`);
+    }
   }
 
   // matrix gate — BOTH tables (already parsed up top; no per-table re-read here).

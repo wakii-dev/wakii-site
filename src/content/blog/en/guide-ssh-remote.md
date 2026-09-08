@@ -12,7 +12,8 @@ that take forty minutes, datasets at scale, a toolchain that exists on exactly
 one dedicated box. SSH worktrees solve this counterintuitively — the Wakii
 runtime stays on your laptop, the UI stays the UI you know; only the heavy
 work crosses the SSH link to the other machine. And this is a shipped feature,
-not a roadmap line: the highlights of release 1.4.198 name it outright. This
+not a roadmap line: the highlights of release 1.4.198 (published 2026-09-05)
+name it outright. This
 post walks from adding a host to fixing a remote that is missing its
 toolchain.
 
