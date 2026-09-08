@@ -144,7 +144,7 @@ src/pages/index.astro (EN, 10 dòng) · src/pages/vi/index.astro (VI, 9 dòng)
 
 *Nguồn: đường dẫn thực trong repo công khai wakii-dev/wakii-site; số dòng đếm trên worktree, lấy 2026-09-08.*
 
-Trang chủ là wrapper mỏng: 10 dòng cho EN, 9 dòng cho VI, đều chỉ bọc Landing component và bơm đúng bộ chuỗi. Cùng bộ token đó chảy xuống cả blog lẫn docs — layout chi tiết bài viết `src/layouts/BlogDetailLayout.astro` cũng nằm trong số 17 chỗ `min-width: 0` nói trên. Tại thời điểm viết, blog có 25 slug × 2 locale = 50 file (snapshot 2026-09-08) và tất cả hiển thị trên cùng một nền token — con số bạn tự đếm lại bằng `ls src/content/blog/en`.
+Trang chủ là wrapper mỏng: 10 dòng cho EN, 9 dòng cho VI, đều chỉ bọc Landing component và bơm đúng bộ chuỗi. Cùng bộ token đó chảy xuống cả blog lẫn docs — layout chi tiết bài viết `src/layouts/BlogDetailLayout.astro` cũng nằm trong số 17 chỗ `min-width: 0` nói trên. Tại snapshot 2026-09-08 — sau batch longform đầu, trước batch hiện tại — blog có 25 slug × 2 locale = 50 file và tất cả hiển thị trên cùng một nền token.
 
 Một thay đổi token vì vậy không có đường tắt: nó đi qua chuỗi build công khai của repo — parity gate → utility gate → content lint → astro build. Bài [log 2 của chuỗi xây Wakii](/vi/blog/building-wakii-in-the-open-log-2/) đã mổ chuỗi đó từng lớp; ở đây chỉ cần nói thêm rằng chính tính một-một-của-token là thứ khiến chuỗi ấy đủ ngắn để tin.
 

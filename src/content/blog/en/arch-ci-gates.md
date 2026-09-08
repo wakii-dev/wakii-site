@@ -32,7 +32,7 @@ One more thing worth noticing: this chain is not a frozen relic. It grows whenev
 
 ## CI reruns that same chain, on another machine
 
-The site's workflow file — `.github/workflows/ci.yml` — is thin enough to quote almost in full:
+The site's workflow file — `.github/workflows/ci.yml` — is thin enough to quote nearly in full — two `with:` blocks elided:
 
 ```yaml
 name: CI

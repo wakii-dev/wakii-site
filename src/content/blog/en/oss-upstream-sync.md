@@ -22,8 +22,8 @@ The first thing to look at is the remote map of the local clone:
 
 ```text
 $ git remote -v
-origin      https://github.com/VuHoi/orca-1.git (fetch)
-origin      https://github.com/VuHoi/orca-1.git (push)
+origin      https://github.com/<personal-mirror>/orca-1.git (fetch)
+origin      https://github.com/<personal-mirror>/orca-1.git (push)
 upstream    https://github.com/stablyai/orca.git (fetch)
 upstream    https://github.com/stablyai/orca.git (push)
 wakii-dev   https://github.com/wakii-dev/wakii.git (fetch)

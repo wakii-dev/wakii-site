@@ -31,7 +31,7 @@ Open `src/styles/tokens.css` and the first thing you see is not a color value �
  */
 ```
 
-*Nguồn: src/styles/tokens.css, lines 1-8, retrieved 2026-09-08.*
+*Source: src/styles/tokens.css, lines 1-8, retrieved 2026-09-08.*
 
 The contract has three layers: an approved design file (`sf1-direction.md`), a token file that pins final values, and a rename ban for every component that consumes them later. The pinned values read directly from the file:
 
@@ -46,7 +46,7 @@ The contract has three layers: an approved design file (`sf1-direction.md`), a t
 --wrap: 1240px;
 ```
 
-*Nguồn: src/styles/tokens.css, retrieved 2026-09-08.*
+*Source: src/styles/tokens.css, retrieved 2026-09-08.*
 
 The detail worth noticing is the "hand-off" comments. The design file approved a range — bento cell radius 8-12px, bento gap 16-20px — and the token file pinned one value inside that range: 12px and 18px, with the original range noted right above the line. Anyone reading the code later can trace each value back to a design decision. The site is also dark-only: there is no light/dark toggle, and the declaration sits in the first lines of the global stylesheet:
 
@@ -57,7 +57,7 @@ html {
 }
 ```
 
-*Nguồn: src/styles/global.css, lines 11-14, retrieved 2026-09-08.*
+*Source: src/styles/global.css, lines 11-14, retrieved 2026-09-08.*
 
 `body` takes its background from `var(--bg)` and its text color from `var(--text)` — even the `::selection` recolors to match the accent. No component gets to invent a color code.
 
@@ -79,7 +79,7 @@ The landing "bento" lives in exactly one component: `src/components/landing/Bent
 .bx-f { grid-column: 10 / 13; }
 ```
 
-*Nguồn: src/components/landing/Bento.astro, retrieved 2026-09-08.*
+*Source: src/components/landing/Bento.astro, retrieved 2026-09-08.*
 
 Those six `grid-column` lines draw the entire layout:
 
@@ -96,7 +96,7 @@ Those six `grid-column` lines draw the entire layout:
         └────────┴──────────────┴────┘
 ```
 
-*Nguồn: diagram built from the grid-column values in src/components/landing/Bento.astro, retrieved 2026-09-08.*
+*Source: diagram built from the grid-column values in src/components/landing/Bento.astro, retrieved 2026-09-08.*
 
 Cell A spans 8 columns and 2 rows — that is the bracket canvas, the lead character. The bottom row is split among three cells at three different widths: 5, 4 and 3 columns. No media query touches this layout layer; "deliberate asymmetry" is just arithmetic over grid tracks, and the gap between cells is literally one token: `var(--bento-gap)`.
 
@@ -112,7 +112,7 @@ Inside cell A sits the bracket canvas — an SVG board with a fixed 680×400 coo
 }
 ```
 
-*Nguồn: src/components/landing/Bento.astro, lines 130-134, retrieved 2026-09-08.*
+*Source: src/components/landing/Bento.astro, lines 130-134, retrieved 2026-09-08.*
 
 `min-width: 0` alone only unlocks shrinking — the picture would still break if nothing squeezed the content. That part belongs to BracketCanvas: a script measures the container's real width and scales the whole board by that ratio:
 
@@ -121,7 +121,7 @@ const s = Math.min(1, outer.clientWidth / 680);
 board.style.transform = `scale(${s.toFixed(4)})`;
 ```
 
-*Nguồn: src/components/mockups/BracketCanvas.astro, scaleAll function, retrieved 2026-09-08.*
+*Source: src/components/mockups/BracketCanvas.astro, scaleAll function, retrieved 2026-09-08.*
 
 That pair is why you will not find a 390px breakpoint anywhere in `src/` — grep source files only (*.astro, *.ts, *.css), excluding `src/content/`, and `390` returns zero lines. At 1020px, the component's single media query collapses the grid to one column; below that, the board scales itself to the width left over after the 32px side padding of `.wrap`. The `min-width: 0` pattern is not unique to Bento either: a grep across `src/` counts 17 occurrences at the time of writing, from PostCard to DocsLayout. It is a lesson that was paid for with a broken layout, then written down as a repo-wide convention.
 
@@ -142,9 +142,9 @@ src/components/landing/*.astro + src/layouts/*.astro
 src/pages/index.astro (EN, 10 lines) · src/pages/vi/index.astro (VI, 9 lines)
 ```
 
-*Nguồn: real paths in the public repo wakii-dev/wakii-site; line counts taken in the worktree, retrieved 2026-09-08.*
+*Source: real paths in the public repo wakii-dev/wakii-site; line counts taken in the worktree, retrieved 2026-09-08.*
 
-The homepage is a thin wrapper: 10 lines for EN, 9 for VI, each just wrapping the Landing component and injecting the right string pack. The same token set flows down into blog and docs — the post detail layout `src/layouts/BlogDetailLayout.astro` is among the 17 `min-width: 0` spots mentioned above. At the time of writing, the blog holds 25 slugs × 2 locales = 50 files (snapshot 2026-09-08), and all of them render on the same token foundation — a number you can recount with `ls src/content/blog/en`.
+The homepage is a thin wrapper: 10 lines for EN, 9 for VI, each just wrapping the Landing component and injecting the right string pack. The same token set flows down into blog and docs — the post detail layout `src/layouts/BlogDetailLayout.astro` is among the 17 `min-width: 0` spots mentioned above. At the 2026-09-08 snapshot — after the first longform batch, before the current one — the blog held 25 slugs × 2 locales = 50 files, and all of them render on the same token foundation.
 
 A token change therefore has no shortcut: it goes through the repo's public build chain — parity gate → utility gate → content lint → astro build. The post [log 2 of the building-in-the-open series](/blog/building-wakii-in-the-open-log-2/) dissects that chain layer by layer; here it is enough to add that the one-place-ness of tokens is what keeps that chain short enough to trust.
 

@@ -31,7 +31,7 @@ All movement on the site — reveal on scroll, tilt on hover, parallax between c
 *                                    descendants with [data-depth] translate
 ```
 
-*Nguồn: src/components/motion.ts, lines 6-13, retrieved 2026-09-08.*
+*Source: src/components/motion.ts, lines 6-13, retrieved 2026-09-08.*
 
 A component that wants to move just stamps an attribute — nobody writes custom keyframes for their cell. The landing page boots the util inside a script tag; other layouts call `revealChildren()` to tag elements for reveal before init.
 
@@ -43,7 +43,7 @@ const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
 if (RM.matches || !finePointer.matches) return;
 ```
 
-*Nguồn: src/components/motion.ts, lines 23-25, retrieved 2026-09-08.*
+*Source: src/components/motion.ts, lines 23-25, retrieved 2026-09-08.*
 
 Users with reduced motion enabled, or touch devices without a fine pointer, get a fully static page. The mechanism that guarantees this is packed into one class: `initMotion()` only adds `html.anim` when every condition passes, and `motion.css` only hides elements inside the `.anim` scope. No JavaScript means no `.anim`, and nothing gets hidden. The last line of defense is in `global.css`: a `prefers-reduced-motion` media query neutralizes all animations with `animation: none !important`, and `motion.css` itself states in its header comment that it "must respect it, never override it".
 
@@ -60,7 +60,7 @@ initMotion()
   └─ scroll → rAF ticking → [data-depth] translate3d (3-speed parallax)
 ```
 
-*Nguồn: diagram built from src/components/motion.ts + src/styles/motion.css, retrieved 2026-09-08.*
+*Source: diagram built from src/components/motion.ts + src/styles/motion.css, retrieved 2026-09-08.*
 
 The last step is the subtle one. After a cell has revealed, the handler cleans up both the class and the `data-reveal` attribute. The reason sits in the file's own comment: if you only remove the class but keep the attribute, the selector `.anim [data-reveal] { opacity: 0 }` re-applies right after animationend — every attribute-based cell (download, skills bento, workflow gates, FAQ) fades out the moment it finished appearing. The comment credits this to a Rule 0 finding from story FI-304: a bug caught by clicking through the real page, not by reading code.
 
@@ -80,7 +80,7 @@ i18n: {
 },
 ```
 
-*Nguồn: astro.config.mjs, retrieved 2026-09-08.*
+*Source: astro.config.mjs, retrieved 2026-09-08.*
 
 The site is Astro 5 with static output (`^5.12.0` in `package.json` at the time of writing), so that config decays into a static URL tree after build:
 
@@ -94,7 +94,7 @@ wakii.xyz  (SITE_URL — src/config.ts)
 └── /vi/docs/<slug>/         VI docs
 ```
 
-*Nguồn: src/pages/ tree of the repo, retrieved 2026-09-08.*
+*Source: src/pages/ tree of the repo, retrieved 2026-09-08.*
 
 From that tree, `src/layouts/Base.astro` emits the SEO signals for every page: a self-referencing canonical per locale, and an hreflang cluster — `en` / `vi` / `x-default` — cross-linking the pair. The comment in the file records the decision: a non-self canonical can cause the whole hreflang cluster to be ignored. The same file holds a sharper contract: if a VI page is missing, its hreflang still points at the mapped VI URL — because VI routes are generated from the same slug contract, a missing VI page means the slug is missing in both locales, which is a contract violation, not a fallback. The domain itself has a single source: the `SITE_URL` constant in `src/config.ts`, which `src/pages/robots.txt.ts` uses to generate the Sitemap line — no domain is hardcoded in scattered places.
 
@@ -111,7 +111,7 @@ For the downloads page the contract tightens further. The head of `src/i18n/down
 * add new keys here — a missing key is flagged to epic FI-300
 ```
 
-*Nguồn: src/i18n/downloads.ts, lines 4-5, retrieved 2026-09-08.*
+*Source: src/i18n/downloads.ts, lines 4-5, retrieved 2026-09-08.*
 
 The frozen key set has a reason: every flag-conditional key carries both a `live` and a `notLive` variant, so a flag flip can never surface unreviewed copy. Adding keys casually would break that mechanism — which is why the ban is written as a code comment, not left to trust.
 
