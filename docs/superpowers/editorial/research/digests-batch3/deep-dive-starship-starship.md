@@ -24,7 +24,7 @@
 - Feature list (README bullets): Fast · Customizable ("configure every aspect of your prompt") · Universal ("works on any shell, on any operating system") · Intelligent ("shows relevant information at a glance") · Feature rich · Easy.
 - Prerequisites: một Nerd Font cài trong terminal (README, ví dụ FiraCode Nerd Font).
 - Cài: một binary (cargo/homebrew/…), setup = gọi `init` script trong rc của shell.
-- Metadata gh api 2026-09-08: 59.816★ · 2.654 forks · ISC · Rust · pushed 2026-09-07 · không archived.
+- Metadata gh api 2026-09-08: 59.816★ (drift nhẹ từ probe 59815 sáng cùng ngày) · 2.654 forks · ISC · Rust · pushed 2026-09-07 · không archived.
 
 ## Architecture (đọc code @ HEAD `864500b26904cd3cc01fc2a19d3ad068bd1517a2`, probe 2026-09-08)
 

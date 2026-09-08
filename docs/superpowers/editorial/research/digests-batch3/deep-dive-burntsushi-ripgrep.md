@@ -41,6 +41,6 @@
 
 ## Wakii grading (style-guide §8)
 
-- **ADOPT — kỷ luật benchmark trung thực kèm cliffs**: README đặt bảng thắng ngay cạnh bảng case xấu ("Beware of performance cliffs" — rg 15.5s trên pattern không literal, `rg the` 6.9s vì 83 triệu match). Pattern áp được ngay: mọi claim hiệu năng trong docs/blog Wakii kèm bảng giới hạn (khi nào chậm, vì sao) — cùng tinh thần claims-registry: không chỉcite case đẹp.
+- **ADOPT — kỷ luật benchmark trung thực kèm cliffs**: README đặt bảng thắng ngay cạnh bảng case xấu ("Beware of performance cliffs" — rg 15.5s trên pattern không literal, `rg the` 6.9s vì 83 triệu match). Pattern áp được ngay: mọi claim hiệu năng trong docs/blog Wakii kèm bảng giới hạn (khi nào chậm, vì sao) — cùng tinh thần claims-registry: không chỉ cite case đẹp.
 - **DIRECTION — tách concern mức crate**: 11 crate mỗi cái một vai trò, import qua ranh giới rõ (`globset` không biết `printer` tồn tại). Áp cho kit Wakii khi công cụ lớn lên: tách util theo concern thay vì script monolith — chưa làm ngay vì kit hiện còn nhỏ.
 - **WATCH — năng lực theo feature-flag**: PCRE2 là build feature riêng (binary có/không PCRE2), FAQ ghi rõ đánh đổi chậm hơn. Wakii: các năng nặng (inference cục bộ, MCP chạy local) có thể đi theo model "bật-thêm" thay vì nhét core — theo dõi trước khi quyết.
