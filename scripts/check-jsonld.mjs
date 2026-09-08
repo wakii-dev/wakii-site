@@ -201,6 +201,9 @@ for (const abs of htmlFiles) {
     if (slugs.length !== 50) {
       fail('src/content/blog', `strict coverage: batch-3 matrix parsed ${slugs.length} rows, want 50`);
     }
+    if (new Set(slugs).size !== slugs.length) {
+      fail('src/content/blog', 'strict coverage: duplicate slug rows in batch-3 matrix');
+    }
     const missing = [];
     for (const slug of slugs) {
       for (const locale of ['en', 'vi']) {

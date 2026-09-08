@@ -26,9 +26,9 @@ trên `wakii-dev/wakii`.
 ## Không file (draft còn lại — lý do)
 
 - **aaif-goose-goose** (injection boundary trong workflow docs) — docs-guardrail, tier dưới 10 đã chọn; đề xuất lẻ không gộp được.
-- **anthropics-claude-code** phần silent-failure-hunter — đã trích bổ trợ trong issue #8.
+- **anthropics-claude-code** phần silent-failure-hunter — đã trích bổ trợ trong wakii#21.
 - **ast-grep-ast-grep** + **openai-openai-agents-python** (gate máy exit-code) — story-verify + audit scripts hiện có đã hiện thực pattern; không đề xuất mới đáng issue.
-- **charmbracelet-crush** phần presence/multi-select gates — DIRECTION, ngoài ADOPT chính (issue #7 chỉ ADOPT focus-aware).
+- **charmbracelet-crush** phần presence/multi-select gates — DIRECTION, ngoài ADOPT chính (wakii#20 chỉ ADOPT focus-aware).
 - **crewaiinc-crewai** (role interpolation per-run) — lớp nội suy chưa có use case thật trong kit.
 - **exo-explore-exo** (self-registration UDP) — mô hình mạng device-level, không khớp surface Wakii hiện có.
 - **ggml-org-llama-cpp** (understand-before-merge convention) — nguyên tắc quy trình, đã hiện thực bằng review chain + gates.
@@ -36,13 +36,13 @@ trên `wakii-dev/wakii`.
 - **hkuds-nanobot** (đếm surface bằng script) — audit scripts hiện có đã làm đúng pattern.
 - **janhq-jan** (privacy-by-architecture) — kiến trúc local-first, không khớp product cloud IDE.
 - **junegunn-fzf** (fuzzy filter contract) — CLI UX pattern, không có surface đích cụ thể trong kit hiện tại.
-- **microsoft-mcp-for-beginners** (docs curriculum) — docs tier; overlap issue #10 về surface cũ/mới.
+- **microsoft-mcp-for-beginners** (docs curriculum) — docs tier; overlap wakii#23 về surface cũ/mới.
 - **microsoft-mcp-for-beginners** / **punkpeye-awesome-mcp-servers** (legend schema cho listing) — blog listing hiện dùng category filter; đề xuất trình bày, không phải enhancement product.
 - **ollama-ollama** (report real number / return 0) — nguyên tắc giá trị, đã hiện thực trong audit snapshot contract (không nguồn = không đăng).
 - **OpenHands-OpenHands** ("not responsible for" boundary docs) — docs-only, gọn nhưng tier dưới; có thể file sau nếu product muốn.
 - **vllm-project-vllm** (speculative decoding / KV reuse) — N/A surface Wakii (không tự host model).
 - **zed-industries-zed** (kênh -pre trước stable) — release-cadence cho product desktop, chưa có pipeline release đủ dày để áp.
-- **anomalyco-opencode** phần subagent `@general` — gộp trong issue #2 evidence chính.
+- **anomalyco-opencode** phần subagent `@general` — gộp trong wakii#15 evidence chính.
 
 ## Kết quả
 
