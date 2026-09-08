@@ -8,7 +8,7 @@
 - repo: anthropics/claude-code
 - facet: harness
 - stars @ 2026-09-08: 144416
-- license (GitHub API 2026-09-08): 2026-09-06
+- license (GitHub API 2026-09-08): none († — gọi "công khai trên GitHub", KHÔNG "open-source")
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

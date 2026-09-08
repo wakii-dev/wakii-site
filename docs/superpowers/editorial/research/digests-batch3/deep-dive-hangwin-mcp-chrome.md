@@ -8,7 +8,7 @@
 - repo: hangwin/mcp-chrome
 - facet: mcp
 - stars @ 2026-09-08: 12393
-- license (GitHub API 2026-09-08): 2026-01-06
+- license (GitHub API 2026-09-08): MIT
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

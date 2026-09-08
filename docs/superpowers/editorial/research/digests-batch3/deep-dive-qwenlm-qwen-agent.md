@@ -8,7 +8,7 @@
 - repo: QwenLM/Qwen-Agent
 - facet: multi-agent
 - stars @ 2026-09-08: 17073
-- license (GitHub API 2026-09-08): 2026-03-04
+- license (GitHub API 2026-09-08): Apache-2.0
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

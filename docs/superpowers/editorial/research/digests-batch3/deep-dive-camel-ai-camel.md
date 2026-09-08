@@ -8,7 +8,7 @@
 - repo: camel-ai/camel
 - facet: multi-agent
 - stars @ 2026-09-08: 17685
-- license (GitHub API 2026-09-08): 2026-09-07
+- license (GitHub API 2026-09-08): Apache-2.0
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

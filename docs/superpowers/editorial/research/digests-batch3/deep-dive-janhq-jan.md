@@ -8,7 +8,7 @@
 - repo: janhq/jan
 - facet: inference
 - stars @ 2026-09-08: 44380
-- license (GitHub API 2026-09-08): 2026-09-08
+- license (GitHub API 2026-09-08): NOASSERTION († — gọi "công khai trên GitHub", KHÔNG "open-source")
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

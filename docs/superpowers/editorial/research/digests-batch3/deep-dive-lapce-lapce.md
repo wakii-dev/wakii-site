@@ -8,7 +8,7 @@
 - repo: lapce/lapce
 - facet: editors
 - stars @ 2026-09-08: 38834
-- license (GitHub API 2026-09-08): 2026-09-08
+- license (GitHub API 2026-09-08): Apache-2.0
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

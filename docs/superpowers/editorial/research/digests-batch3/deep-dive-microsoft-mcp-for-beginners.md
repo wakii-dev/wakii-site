@@ -8,7 +8,7 @@
 - repo: microsoft/mcp-for-beginners
 - facet: mcp
 - stars @ 2026-09-08: 17169
-- license (GitHub API 2026-09-08): 2026-09-03
+- license (GitHub API 2026-09-08): MIT
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

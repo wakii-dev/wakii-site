@@ -8,7 +8,7 @@
 - repo: CopilotKit/OpenBot
 - facet: editors
 - stars @ 2026-09-08: 4448
-- license (GitHub API 2026-09-08): 2026-09-07
+- license (GitHub API 2026-09-08): MIT
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)

@@ -8,7 +8,7 @@
 - repo: modelcontextprotocol/servers
 - facet: mcp
 - stars @ 2026-09-08: 90153
-- license (GitHub API 2026-09-08): 2026-09-03
+- license (GitHub API 2026-09-08): NOASSERTION († — gọi "công khai trên GitHub", KHÔNG "open-source")
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 
 ## TODO — điền khi research (SF sở hữu)
