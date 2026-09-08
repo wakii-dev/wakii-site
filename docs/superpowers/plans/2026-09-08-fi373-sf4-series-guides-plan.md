@@ -220,10 +220,10 @@ graphState: ready
 - [x] T10 guide-troubleshooting (matrix #31)
 - [x] T11 hero render flagship
 - [x] T12 consistency pass (lint + links + claims + build + tone checklist)
-- [ ] Rule 0 browser 3 tầng PASS
-- [ ] code-reviewer APPROVED (2 nhóm)
-- [ ] security-audit sạch
-- [ ] verifier PASS từng dòng ACCEPTANCE
+- [x] Rule 0 browser 3 tầng PASS
+- [x] code-reviewer APPROVED (2 nhóm)
+- [x] security-audit sạch
+- [x] verifier PASS từng dòng ACCEPTANCE
 - [ ] merge đích + audit comment FI-377
-- [ ] story-verify sf-4 sạch
-- [ ] FI-377 Done
+- story-verify sf-4: gate chạy SAU merge — verdict ghi trong audit comment (gate action, không phải task plan).
+- FI-377 Done: set sau khi story-verify xanh (Linear state change, không phải task plan).
