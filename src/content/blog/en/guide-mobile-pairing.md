@@ -18,8 +18,8 @@ TL;DR:
 
 - The Android app installs by sideloading the APK from GitHub Releases —
   release `mobile-android-v0.0.48`, tagged Pre-release.
-- Pairing: the desktop shows a QR, the phone scans it — done once, the desktop
-  is the source of truth.
+- Pairing: the desktop shows a QR, the phone scans it — the four abilities
+  below all hang off that pairing.
 - Four things work right away: the story view (SFs by tier + progress), gate
   resolution (option or free-text, confirmed before sending), gate
   open/closed notifications, and guard codes that block duplicate actions.
@@ -82,12 +82,6 @@ scan the QR. There is a shortcut: a deep link from the desktop jumps straight
 into the app's pairing screen. Throughout this step, keep the desktop
 reachable on the path you chose — LAN or a private network.
 
-One sentence in the docs sets expectations exactly, quoted verbatim:
-
-> "Pairing is one-time and the desktop is always the source of truth."
-
-*Source: mobile companion docs, opening paragraph, retrieved 2026-09-08.*
-
 The phone is a remote control for the desktop you already have — not a second
 copy running on its own. That is also why every scenario below reads the same
 in reverse: the real work still happens on the desktop.
@@ -136,7 +130,7 @@ phone](/blog/review-ai-agents-from-your-phone/) is the record of a first time.
 |---|---|
 | Pairing fails | Check that phone and desktop are signed into the same account |
 | The QR code "died" | Pairing codes expire after a few minutes — generate a fresh one and scan again |
-| Desktop closed or offline | Connection drops temporarily — reopen the desktop and the phone reconnects |
+| Desktop closed or offline | The phone has nothing to reach — reopen the desktop, then retry from the hosts list |
 
 *Source: mobile companion docs, Troubleshooting section (excerpted, trimmed),
 retrieved 2026-09-08.*
@@ -145,14 +139,14 @@ The most important part, quoted verbatim:
 
 > "Pairing fails — make sure your desktop and phone are signed into the same
 > Orca account. Pairing codes expire after a few minutes; generate a fresh one
-> if it's been sitting on the screen. … Closing the desktop app drops the
-> connection; reopen desktop and the phone reconnects automatically."
+> if it's been sitting on the screen."
 
 *Source: mobile companion docs, Troubleshooting section, retrieved
 2026-09-08.*
 
-Read the last line carefully: a dropped connection is a temporary state, not a
-bug to reinstall anything over — reopen the desktop and the link heals itself.
+A dead pairing is a reachability problem before it is anything worse: is the
+desktop app actually open? Reopen it, generate a fresh code, and retry the
+scan before concluding anything heavier.
 
 The full install and first-run context for the desktop lives on the [getting
 started](/docs/getting-started/) page. To run one complete loop: set up the

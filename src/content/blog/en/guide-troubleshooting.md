@@ -109,7 +109,7 @@ An SSH target connects, lists files, but terminals never open: the remote is
 missing the toolchain to compile the native module (make, a C++ compiler,
 python3). The install commands per distro family are in the docs, along with
 the most-skipped detail: "Reconnect after installing tools so Orca can
-reinstall native modules." Install, then RECONNECT — nine out of ten "I
+reinstall native modules." Install, then RECONNECT — most "I
 installed them and it still doesn't work" cases skipped that. The full SSH
 target walkthrough is in the [SSH worktrees](/blog/guide-ssh-remote/) post.
 

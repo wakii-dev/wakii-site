@@ -101,9 +101,6 @@ Notes:
   Tailscale, SSH-forward, or reverse-proxy endpoint.
   Use --mobile-pairing to print a mobile-scoped pairing QR/link instead of the default
   runtime-environment pairing link.
-Examples:
-  $ orca serve --port 6768 --pairing-address 100.64.1.20
-  $ orca serve --pairing-address 100.64.1.20 --mobile-pairing
 ```
 
 *Nguồn: `orca serve --help`, lấy 2026-09-08; luồng đầy đủ trong docs remote

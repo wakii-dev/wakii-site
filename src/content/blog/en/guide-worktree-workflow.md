@@ -126,7 +126,7 @@ something small that each worktree must own like `.env` → copy.
 
 ## Six CLI commands that cover daily life
 
-The everyday commands, quoted from `orca --help`:
+The everyday commands — flags from `orca --help`, descriptions summarized:
 
 | Command | What it does |
 |---|---|
@@ -137,7 +137,7 @@ The everyday commands, quoted from `orca --help`:
 | `orca worktree rm` | delete a worktree (`--force` if needed; `--run-hooks` to run hooks) |
 | `orca worktree ps` | live overview: which worktrees have terminals running |
 
-*Source: quoted from `orca --help`, retrieved 2026-09-08.*
+*Source: flags from `orca --help`, description wording summarized, retrieved 2026-09-08.*
 
 ## Plain git still lives here
 

@@ -116,7 +116,7 @@ không copy lại. Quy tắc chọn nhanh: thứ khổng lồ build lại đư�
 
 ## Sáu lệnh CLI đủ sống
 
-Bảng lệnh thường dùng, trích từ `orca --help`:
+Bảng lệnh thường dùng — flag trích từ `orca --help`, phần mô tả là tóm lược:
 
 | Lệnh | Việc |
 |---|---|
@@ -127,7 +127,7 @@ Bảng lệnh thường dùng, trích từ `orca --help`:
 | `orca worktree rm` | xóa worktree (`--force` nếu cần; `--run-hooks` để chạy hooks) |
 | `orca worktree ps` | tổng quan live: worktree nào đang có terminal chạy |
 
-*Nguồn: trích `orca --help`, lấy 2026-09-08.*
+*Nguồn: flag trích `orca --help`, phần mô tả tóm lược, lấy 2026-09-08.*
 
 ## Git thuần vẫn sống
 

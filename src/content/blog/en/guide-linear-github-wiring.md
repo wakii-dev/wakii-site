@@ -112,7 +112,7 @@ first half of that rule, automated.
 
 ## Status sync is opt-in: no agent changes state on your behalf
 
-The docs put a callout right on the Linear page, quoted verbatim:
+The docs put a callout right on the Linear page:
 
 > "Linear status sync (moving an issue to 'In Progress' when a worktree is
 > created) is opt-in per team."

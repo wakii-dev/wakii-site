@@ -17,7 +17,7 @@ TL;DR:
 
 - App Android cài bằng APK sideload từ GitHub Releases — bản
   `mobile-android-v0.0.48`, nhãn Pre-release.
-- Ghép đôi: desktop hiện QR, phone quét — làm một lần, desktop là nguồn truth.
+- Ghép đôi: desktop hiện QR, phone quét — bốn việc dưới đây đều treo vào cặp đôi đó.
 - Bốn việc làm được ngay: story view (SF theo tier + progress), duyệt gate
   (option hoặc free-text, confirm trước khi gửi), thông báo gate mở/khép, guard
   codes chặn thao tác trùng.
@@ -78,12 +78,6 @@ deep link từ desktop mở thẳng vào màn pairing của app. Trong suốt b�
 giữ desktop ở trạng thái đạt được trên đường nối bạn chọn — LAN hoặc mạng
 riêng.
 
-Một câu trong docs định hướng đúng kỳ vọng, trích nguyên văn:
-
-> "Pairing is one-time and the desktop is always the source of truth."
-
-*Nguồn: docs mobile companion, đoạn mở đầu, truy 2026-09-08.*
-
 Phone là điều khiển từ xa cho desktop bạn đã có — không phải bản sao thứ hai
 chạy riêng. Đó cũng là lý do mọi cảnh dùng dưới đây đều đọc được ngược lại:
 việc thật vẫn xảy ra trên desktop.
@@ -131,7 +125,7 @@ tiên.
 |---|---|
 | Pairing không xong | Kiểm tra phone và desktop đang đăng nhập cùng account |
 | Mã QR "chết" | Pairing code hết hạn sau vài phút — tạo mã mới trên desktop và quét lại |
-| Desktop đóng hoặc mất mạng | Mất nối tạm thời — mở lại desktop, phone tự nối lại |
+| Desktop đóng hoặc mất mạng | Phone không còn đầu nối — mở lại desktop, rồi thử lại từ danh sách máy |
 
 *Nguồn: docs mobile companion, mục Troubleshooting (trích có rút gọn), truy
 2026-09-08.*
@@ -140,13 +134,12 @@ Trích nguyên văn phần quan trọng nhất:
 
 > "Pairing fails — make sure your desktop and phone are signed into the same
 > Orca account. Pairing codes expire after a few minutes; generate a fresh one
-> if it's been sitting on the screen. … Closing the desktop app drops the
-> connection; reopen desktop and the phone reconnects automatically."
+> if it's been sitting on the screen."
 
 *Nguồn: docs mobile companion, mục Troubleshooting, truy 2026-09-08.*
 
-Đọc kỹ dòng cuối: rớt nối là trạng thái tạm, không phải lỗi cần cài lại gì —
-mở lại desktop là đường nối tự hồi.
+Cặp đôi chết thì xử như bài toán reachability trước: desktop đã mở thật chưa?
+Mở lại, tạo code mới, quét thử lại — rồi mới kết luận nặng hơn.
 
 Toàn bộ bối cảnh cài đặt và lần chạy đầu của desktop nằm trong trang [getting
 started](/vi/docs/getting-started/). Còn để thử trọn một vòng: dựng cặp đôi,

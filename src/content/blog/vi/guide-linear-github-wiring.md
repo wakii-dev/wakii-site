@@ -103,7 +103,7 @@ chứng minh từ góc quy trình — phép nối issue-sang-worktree ở đây 
 
 ## Status sync là opt-in: agent không tự đổi state thay bạn
 
-Docs đặt một callout ngay trong trang Linear, trích nguyên văn:
+Docs đặt một callout ngay trong trang Linear:
 
 > "Linear status sync (moving an issue to 'In Progress' when a worktree is
 > created) is opt-in per team."

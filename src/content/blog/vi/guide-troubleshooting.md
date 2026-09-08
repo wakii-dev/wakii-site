@@ -102,7 +102,7 @@ Terminal SSH nối được, list file được, nhưng terminal không mở: m�
 toolchain để compile module native (make, trình dịch C++, python3). Lệnh cài
 theo từng họ distro và — chi tiết dễ bỏ sót nhất — docs ghi: "Reconnect
 after installing tools so Orca can reinstall native modules." Cài xong phải
-KẾT NỐI LẠI; chín trên mười ca "cài rồi mà vẫn không mở" là chưa nối lại.
+KẾT NỐI LẠI; đa số ca "cài rồi mà vẫn không mở" là chưa nối lại.
 Đầy đủ hơn về SSH target thì bài [SSH
 worktree](/vi/blog/guide-ssh-remote/) đi từ đầu.
 
