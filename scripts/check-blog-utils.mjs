@@ -114,19 +114,26 @@ for (const current of all) {
     `${current.id}: draft leaked into related`,
   );
 }
-// Pinned case: the only build-log post, no shared tags → latest-same-locale ×3.
-const bLog = en.find((p) => p.id === 'en/building-wakii-in-the-open-log-1');
+// Fallback chain — synthetic entry guarantees the deepest path deterministically:
+// unique category + no shared tags + oldest pubDate → must fall through to
+// latest-same-locale ×3. (Was pinned to 'building-wakii-in-the-open-log-1'
+// "the only build-log post" — stale since FI-359 added log-2 + build-log
+// case studies; the util itself was behaving correctly.)
+const bLog = {
+  id: 'en/__synthetic-fallback-probe__',
+  data: { category: '__unique-cat__', tags: ['__no-such-tag__'], draft: false, pubDate: new Date('2000-01-01') },
+};
 const rel = relatedPosts(bLog, all).map((r) => r.id);
 const latestThree = en
-  .filter((p) => p.id !== bLog.id)
+  .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate - a.data.pubDate)
   .slice(0, 3)
   .map((p) => p.id);
 assert(
   JSON.stringify(rel) === JSON.stringify(latestThree),
-  `building-wakii fallback: expected latest-3 ${JSON.stringify(latestThree)}, got ${JSON.stringify(rel)}`,
+  `fallback chain: expected latest-3 ${JSON.stringify(latestThree)}, got ${JSON.stringify(rel)}`,
 );
-console.log(`  building-wakii (build-log, no shared tags) → ${rel.join(', ')}`);
+console.log(`  synthetic fallback probe (unique cat, no shared tags) → ${rel.join(', ')}`);
 
 // ── author default ──────────────────────────────────────────────────────
 console.log('author default:');
@@ -139,7 +146,7 @@ assert(
   /author:\s*z\.string\(\)\.default\('Wakii team'\)/.test(configSrc),
   'content.config.ts must keep author: z.string().default(\'Wakii team\')',
 );
-console.log('  10/10 posts omit author → schema default "Wakii team" (literal pinned in content.config.ts)');
+console.log(`  ${all.length}/${all.length} posts omit author → schema default "Wakii team" (literal pinned in content.config.ts)`);
 
 if (failures > 0) {
   console.error(`✗ blog utils FAILED (${failures} assertion${failures === 1 ? '' : 's'})`);

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/check-blog-slug-parity.mjs && node scripts/check-blog-utils.mjs && astro build",
+    "build": "node scripts/check-blog-slug-parity.mjs && node scripts/check-blog-utils.mjs && node scripts/check-blog-content.mjs && astro build",
     "check:blog-utils": "node scripts/check-blog-utils.mjs",
     "check:blog-parity:dist": "node scripts/check-blog-slug-parity.mjs --dist",
     "check:jsonld": "node scripts/check-jsonld.mjs",
