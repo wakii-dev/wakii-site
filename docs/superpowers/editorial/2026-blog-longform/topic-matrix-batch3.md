@@ -27,7 +27,7 @@
 > Mỗi bài batch-3 PHẢI có section marker `## Wakii học được gì` (VI) /
 > `## What Wakii learns` (EN) — level `##` exact, lint-enforced scoped theo
 > matrix này (spec D4). Facet phân bổ theo rows: harness 10 · multi-agent 10 ·
-> mcp 7 · editors 8 · inference 5 · terminal 6 · misc 4 = 50.
+> mcp 7 · editors 9 · inference 5 · terminal 6 · misc 3 = 50.
 > Owner: rows **1-12 → SF-2/FI-385 · 13-22 → SF-3/FI-386 · 23-36 → SF-4/FI-387 ·
 > 37-50 → SF-5/FI-388**.
 
@@ -98,7 +98,7 @@
 | 46 | `deep-dive-anywhere-labs-dsh-desktop` | tech | 2026-10-23 | misc | no | anywhere-labs/dsh-desktop | DSH Desktop: điều phối agent trên desktop |
 | 47 | `deep-dive-copilotkit-openbot` | tech | 2026-10-24 | editors | no | CopilotKit/OpenBot | OpenBot: chat bot mã mẫu của CopilotKit |
 | 48 | `deep-dive-hisn00w-asu-skills` | tech | 2026-10-24 | misc | no | Hisn00w/ASu-skills | ASu-skills: bộ skill cộng đồng cho agent |
-| 49 | `deep-dive-yetone-cumora` | tech | 2026-10-25 | misc | no | yetone/cumora | Cumora: góc nhìn một repo AI đang lên |
+| 49 | `deep-dive-yetone-cumora` | tech | 2026-10-25 | editors | no | yetone/cumora | Cumora: góc nhìn một repo AI đang lên |
 | 50 | `deep-dive-leonxlnx-unlazy` | tech | 2026-10-25 | misc | no | Leonxlnx/unlazy | unlazy: tối ưu lazy-load ảnh |
 
 ## Quy tắc tiêu thụ matrix (cho SF-2/3/4/5)
