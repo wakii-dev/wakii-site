@@ -25,7 +25,9 @@
  *      kebab and forbidden-phrase checks still apply).
  *   2. ≥1 docs link in prose: EN `](/docs/<slug>/)`, VI `](/vi/docs/<slug>/)`,
  *      slug ∈ DOC_SLUGS.
- *   3. Frontmatter: 6 required fields, types per src/content.config.ts.
+ *   3. Frontmatter: 6 required fields, types per src/content.config.ts;
+ *      pubDate must equal the slug's matrix row date (normalized YYYY-MM-DD,
+ *      FI-383 — wrong scheduled dates are caught at content time, not QA).
  *   4. Forbidden phrases from claims-registry.md (## FORBIDDEN section,
  *      one literal per `- ` line, case-insensitive) — grepped on the FULL
  *      file (claims can hide in title/description too). Scoped entries
@@ -231,6 +233,13 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
       if (!unquote(fields.description)) fileErrors.push('frontmatter: `description` must be a non-empty string');
       const date = new Date(unquote(fields.pubDate));
       if (Number.isNaN(date.valueOf())) fileErrors.push(`frontmatter: \`pubDate\` not parseable ("${fields.pubDate}")`);
+      // pubDate-vs-matrix (FI-383 SF-1): normalized YYYY-MM-DD must equal the
+      // slug's own matrix row (frontmatter format is `"YYYY-MM-DD"`-quoted in
+      // all 128 existing files — verified before adding the check).
+      const pub = unquote(fields.pubDate);
+      if (row && pub.slice(0, 10) !== row.pubDate) {
+        fileErrors.push(`frontmatter: pubDate "${pub}" != matrix row "${row.pubDate}"`);
+      }
       if (!CATEGORY_ENUM.includes(unquote(fields.category))) {
         fileErrors.push(`frontmatter: \`category\` "${fields.category}" not in ${CATEGORY_ENUM.join(' | ')}`);
       }
