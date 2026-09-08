@@ -21,8 +21,8 @@ TL;DR:
 
 - DeepCode: 16,499 stars, MIT license, pushed 2026-09-06 — a research-born repo
   with real activity (per GitHub API on 2026-09-08).
-- Paper2Code: seven specialist agents under one central orchestrator, from
-  paper/URL to verified runnable code.
+- Paper2Code: seven specialist roles, one of them the central orchestrator,
+  from paper/URL to verified runnable code.
 - The pipeline has a hard gate: a missing plan file halts the whole pipeline,
   and an unreviewed plan does not reach the code-writing phase.
 - The README carries a News section that reads like an engineering log per

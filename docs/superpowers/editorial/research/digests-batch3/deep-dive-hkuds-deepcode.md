@@ -8,6 +8,8 @@
 - repo: HKUDS/DeepCode
 - facet: multi-agent
 - stars @ 2026-09-08: 16499
+- forks @ 2026-09-08: 2151 · created 2025-05-14 (bài cite 2 số này — backfill
+  sau re-review G3)
 - license (GitHub API 2026-09-08): MIT
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh`)
 

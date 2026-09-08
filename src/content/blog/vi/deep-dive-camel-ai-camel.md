@@ -111,6 +111,8 @@ class BaseBenchmark(ABC):
     ):
 ```
 
+Nguồn: [camel/benchmarks/base.py](https://github.com/camel-ai/camel/blob/8c791b7b9cf7deab56cb5a92818c34499af9097f/camel/benchmarks/base.py), HEAD ngày 2026-09-08.
+
 Bốn thuộc tính: tên, thư mục dữ liệu, nơi ghi kết quả, số process song song. Một benchmark mới chỉ cần cắm vào khuôn này. Với một repo mà sản phẩm là dữ liệu sinh ra, benchmark chính là đồng hồ đo của dây chuyền: pipeline mới phải đối chiếu số trên bộ đo chuẩn, không tự chấm. README gọi rõ mục tiêu của cộng đồng là "finding the scaling laws of agents" — tìm định luật scale của agent ([README](https://github.com/camel-ai/camel), ngày 2026-09-08) — mục tiêu như vậy buộc mọi thí nghiệm phải đo được trên cùng một thước.
 
 ## Dataset là sản phẩm, phát hành ra công chúng

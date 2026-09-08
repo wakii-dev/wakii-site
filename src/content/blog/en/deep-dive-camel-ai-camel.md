@@ -111,6 +111,8 @@ class BaseBenchmark(ABC):
     ):
 ```
 
+Source: [camel/benchmarks/base.py](https://github.com/camel-ai/camel/blob/8c791b7b9cf7deab56cb5a92818c34499af9097f/camel/benchmarks/base.py), HEAD retrieved 2026-09-08.
+
 Four attributes: name, data directory, results destination, parallel process count. A new benchmark just plugs into this frame. For a repo whose product is generated data, the benchmark is the assembly line's gauge: a new data-generation pipeline must compare its numbers on the standard instrument, not grade itself. The README states the community's goal plainly: "finding the scaling laws of agents" ([README](https://github.com/camel-ai/camel), retrieved 2026-09-08) — a goal like that forces every experiment onto the same ruler.
 
 ## The dataset is the product, published for everyone

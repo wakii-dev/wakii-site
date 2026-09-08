@@ -19,8 +19,8 @@ TL;DR:
 
 - DeepCode: 16.499 sao, license MIT, pushed 2026-09-06 — repo gốc nghiên cứu
   nhưng activity thật (theo GitHub API ngày 2026-09-08).
-- Paper2Code: bảy agent chuyên trách dưới một orchestrator trung tâm, từ
-  paper/URL tới code có verification.
+- Paper2Code: bảy vai trò chuyên trách, một trong số đó là orchestrator trung
+  tâm, từ paper/URL tới code có verification.
 - Pipeline có cổng chặn cứng: thiếu file plan thì dừng cả pipeline, chưa có
   người duyệt plan thì chưa sang phase viết code.
 - README có mục News đọc như nhật ký kỹ thuật theo từng merge — pattern đáng
