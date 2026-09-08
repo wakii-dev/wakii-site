@@ -12,7 +12,7 @@
 ## ALLOWED
 
 - 9 agents đủ tên: **phase0-impact-analyst, spec-critic, plan-critic, task-executor, designer, code-reviewer, verifier, security-audit, rollback-fixer** — nguồn: `src/content/docs/en/agents-and-kit.md` ("The 9-agent story team").
-- Skills kit: **21 tổng / 14 public** theo snapshot D8 ngày 2026-09-07 (`src/data/skills.ts`, `public: true` ×14) — bài viết PHẢI ghi kèm "tại thời điểm viết"; con số KHÔNG pin vào contract, quy tắc đọc-tại-thời-điểm là pin (skills từng 13→14 — drift thật).
+- Skills kit: **20 tổng / 13 public** theo snapshot D8 ngày 2026-09-08 (`src/data/skills.ts`, `public: true` ×13 — đếm TRONG mảng `export const skills`, không grep whole-file) — bài viết PHẢI ghi kèm "tại thời điểm viết"; con số KHÔNG pin vào contract, quy tắc đọc-tại-thời-điểm là pin. ⚠ Snapshot FI-359 (21/14 @ 2026-09-07) là ĐẾM SAI pattern, không phải content đổi — phân tích gốc ở `## Drift-note — skills 21/14 → 20/13` bên dưới.
 - **24 story-* CLIs** trong kit (`~/.claude/bin/story-*`) — verified `ls ~/.claude/bin | grep '^story-'` ngày 2026-09-07 (25 match − 1 file .html).
 - Zero-setup: kit tự cài lần đầu vào `~/.claude/` (skills + agent definitions + story-* CLIs), **idempotent**, không đụng config sẵn — nguồn: docs getting-started §5 "First run — nothing to set up".
 - Superpowers panel đúng 2 tab: **⚡ Workflow** + **🌳 Story** — nguồn: docs superpowers-panel.
@@ -67,6 +67,25 @@
 - KHÔNG bịa screenshot/transcript: ASCII diagram + transcript phải đi từ vật liệu
   thật trong `evidence-pack.md`.
 
+## Verify-shipped — batch-2 features (2026-09-08)
+
+> DEC-8: 8 bài features (SF-3) CHỈ được claim theo NHÃN dưới đây. Đối chiếu
+> code orca local (READ-ONLY) + release v1.4.199 (`gh release view`).
+> Nhãn: **SHIPPED** = có code + nằm trong release notes ≤ v1.4.199 ·
+> **MAIN-ONLY** = code trên main orca nhưng chưa nằm release nào ·
+> **ROADMAP** = không tìm thấy code/notes. Audit T3 parse section này
+> (dòng `- feature-<tên> — <NHÃN> — ...`); `PENDING-VERIFY` = placeholder
+> chưa verify — bài features KHÔNG ĐƯỢC viết khi còn placeholder.
+
+- feature-terminal-splits — SHIPPED — evidence: orca commit `c558d7e083` (#17601, trong tag v1.4.198 + v1.4.199) + v1.4.198 notes "Everything new from stablyai/orca — parallel worktrees, terminal splits, …"
+- feature-ssh-worktrees — SHIPPED — evidence: orca commit `278f9ee876` (#17946 ssh MFA, trong tag v1.4.198 + v1.4.199) + v1.4.198 notes "GitHub & Linear native, SSH worktrees, mobile companion"
+- feature-design-mode — SHIPPED — evidence: orca `docs/site/content/docs/browser/design-mode.mdx` (docs trang riêng) + feature-wall tile-05 "Embedded browser + Design Mode" + commit `216cabb9f0` (#463 — từ v1.4.0, nằm trong tag v1.4.198/v1.4.199 qua upstream sync)
+- feature-ai-diff-annotation — SHIPPED — evidence: orca `src/renderer/src/components/diff-comments/DiffCommentCard.tsx` + `pull-request-page/files/inline-comments.ts` (nằm trong tag v1.4.199) + feature-wall tile-08 "Inline review, back to the agent"
+- feature-emulator-android — SHIPPED — evidence: tag v1.4.199 chứa `skills/orca-emulator-android/SKILL.md` + `mobile/scripts/start-emulator.mjs` + `docs/assets/orca-mobile-emulator.gif`; desktop backend `src/main/emulator/android-emulator-backend.ts` trên main SAU v1.4.199 (bài chỉ được claim phần skill + emulator runtime đã ship)
+- feature-computer-use-native — SHIPPED — evidence: v1.4.198 notes "macOS arm64 is being rebuilt … to include the computer-use native module" + orca module `src/main/computer/` + commit `787766bfcf` (CI "full chain with computer-use, DMG to release") + commit `66dfdc456f` (từ v1.4.186)
+- feature-per-workspace-env — SHIPPED — evidence: orca commit `24d7f6b790` (#7908 "Align per-workspace environment toggle", từ v1.4.130) + `45370a5987` (skill `orca-per-workspace-env`) — cả hai trong tag v1.4.198/v1.4.199
+- feature-notification-keyboard — SHIPPED — evidence: v1.4.199 notes "Notification routing: gate-open/gate-closed đủ routing fields, tap → đúng màn" (FI-305/309) + orca commit `7b9529da22` (#16271 keyboard shortcut, từ v1.4.193, trong tag v1.4.198/v1.4.199)
+
 ## Quy tắc snapshot D8 (pin từ epic spec)
 
 Số liệu trong bài **re-extract ĐỐI CHIẾU SNAPSHOT** (`evidence-pack.md`
@@ -74,3 +93,30 @@ Số liệu trong bài **re-extract ĐỐI CHIẾU SNAPSHOT** (`evidence-pack.md
 so với snapshot tại thời điểm viết: ghi số theo SNAPSHOT + ngày chụp trong bài
 ("tại thời điểm viết"). Drift phát hiện ở QA (SF-5) = ghi chú, không fail.
 Mỗi evidence block trong bài ghi nguồn + ngày lấy.
+
+## Drift-note — skills 21/14 → 20/13 (FI-373 SF-1, probe 2026-09-08)
+
+**Ground truth: 20 tổng / 13 public.** Đếm chuẩn = TRONG mảng `export const
+skills` của `src/data/skills.ts` (dòng 30–251): `id: '` ×20, `public: true`
+×13. Header của chính file (dòng 3) cũng ghi "the 20 skills".
+
+**Gốc vấn đề: PATTERN ĐẾM SAI, không phải content đổi.** `src/data/skills.ts`
+chỉ có 1 commit nội dung (`7dcdef9`, nhánh FI-359 — `178d12e` cùng change);
+20/13 không bao giờ là 21/14. Hai grep whole-file sinh đúng cặp số sai:
+
+- Pattern sinh **21**: `grep -c 'id:' src/data/skills.ts` → 21 match, vì dính
+  thêm dòng **`src/data/skills.ts:16`** — `  id: string;` (khai báo field của
+  interface `Skill`, không phải entry).
+- Pattern sinh **14**: `grep -c 'public: true'` (hoặc `grep -ci`) whole-file →
+  14 match, vì dính thêm dòng **`src/data/skills.ts:8`** — comment header
+  `` * `public: true` = catalog-worthy; … `` chứa literal y hệt pattern.
+
+Snapshot D8 lần chụp 2026-09-07 dùng pattern whole-file như trên → ghi 21/14.
+Các bài batch-1 đã viết đúng theo nguồn (cite 20/13 kèm "tại thời điểm viết")
+— chỉ snapshot và audit `SNAPSHOT` object bị lệch; cả hai đã refresh
+2026-09-08. `src/data/roadmap.ts` không góp số nào (0 match `id:`/`public`).
+
+**Flag (ngoài scope SF-1):** `README.md` đang stale — dòng 29 "21 built-in
+skills, 13 documented", dòng 67 "skills.ts (21-skill catalog)", dòng 81–82
+"13 of 21". Cần fix "21" → "20" ở 3 chỗ — qua coordinator, KHÔNG sửa trong
+SF-1.

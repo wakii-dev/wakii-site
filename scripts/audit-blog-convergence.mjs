@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 /**
- * Convergence audit — story FI-359 SF-5 (Linear FI-364).
+ * Convergence audit — story FI-373 SF-1 (Linear FI-374). Lineage: built in
+ * FI-359 SF-5 (Linear FI-364), checks 2-7 carried over; scope widened from a
+ * hard-coded 20-slug list to the all-non-seed manifest (both matrix tables).
  *
- * Machine sweep for checks 2-7 of docs/superpowers/contexts/fi359-longform-sf-5.md
- * (the CỨNG frame). Contract sources pinned in the header of each check below:
+ * Machine sweep (the CỨNG frame). Contract sources pinned in the header of each check below:
  *   T2 — style-guide §2 D1 word-band algorithm (PINNED, verbatim)
  *   T3 — claims-registry ## FORBIDDEN parse + variants + evidence-pack §Numbers snapshot D8
+ *        + ## Verify-shipped labels (DEC-8, batch-2 feature posts)
  *   T4 — link/locale/anchor rules (style-guide §6, D4) resolved against dist/
  *   T5 — RSS contract (FI-339 SF-1): bilingual feed, guid absolute per locale, no <language>
  *   T6 — sitemap + hreflang pair + OG article contract (FI-339 rev 2)
- *   T7 — listings live-count + frontmatter vs topic-matrix 20/20 (D2/D6 gate)
+ *   T7 — listings live-count + frontmatter vs BOTH matrix tables (D2/D6 + DEC-6 policy a)
  *
  * READ-ONLY over src/ and dist/ — report goes to STDOUT only (never writes any
  * file). Zero-dependency: node:fs / node:path / node:url + global fetch only.
@@ -22,7 +24,7 @@
  *
  * Exit code 0 only if every enforceable check has zero FAIL lines.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,7 +36,7 @@ const KIT = join(root, 'docs', 'superpowers', 'editorial', '2026-blog-longform')
 const SITE_URL = 'https://wakii.xyz';
 const TODAY = new Date().toISOString().slice(0, 10);
 
-/** Frozen scope (story FI-359) — mirrors scripts/check-blog-content.mjs. */
+/** Frozen scope (story FI-341 seeds) — mirrors scripts/check-blog-content.mjs. */
 const SEED_SLUGS = [
   'review-ai-agents-from-your-phone',
   'story-workflow-idea-to-release',
@@ -42,35 +44,33 @@ const SEED_SLUGS = [
   'forking-an-ide-keeping-current-with-upstream',
   'building-wakii-in-the-open-log-1',
 ];
-const NEW_SLUGS = [
-  'zero-setup-agent-team', // 1
-  'nine-agents-separated-powers', // 2
-  'gates-not-trust-rule-zero', // 3
-  'watchdog-idle-is-not-dead', // 4
-  'story-memory-learning-loop', // 5
-  'defensive-by-design', // 6
-  'controlled-rework-rollback', // 7
-  'long-tasks-bracket-tiers', // 8
-  'parallel-worktrees-isolation', // 9
-  'linear-as-external-memory', // 10
-  'one-branch-one-pr', // 11
-  'done-means-evidence', // 12
-  'convergence-qa-last-tier', // 13
-  'shipping-cadence-two-releases-one-day', // 14
-  'blog-story-case-study', // 15
-  'wakii-in-production-hub-store', // 16
-  'og-article-contract-anatomy', // 17
-  'rss-bilingual-feed-anatomy', // 18
-  'skills-catalog-tour', // 19
-  'building-wakii-in-the-open-log-2', // 20
-];
-/** Owning dev SF per matrix order: #1-7 SF-2, #8-14 SF-3, #15-20 SF-4. */
+
+/* Planned scope = BOTH matrix tables parsed with the same row regex
+ * (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs → 64 non-seed).
+ * No hard-coded slug list — matrix files are the single source of truth. */
+const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
+function parseMatrix(file) {
+  const src = readFileSync(join(KIT, file), 'utf8');
+  const rows = new Map();
+  for (const m of src.matchAll(MATRIX_ROW)) rows.set(m[2], { n: Number(m[1]), cat: m[3], pubDate: m[4] });
+  return rows;
+}
+const BATCH1 = parseMatrix('topic-matrix.md');
+const BATCH2 = parseMatrix('topic-matrix-batch2.md');
+const PLANNED = new Map([...BATCH1, ...BATCH2]);
+
+/** Owning dev SF: batch-1 (FI-359) by matrix row index (#1-7 SF-2, #8-14 SF-3,
+ *  #15-20 SF-4); batch-2 (FI-373) by facet prefix (skills/features/guides/
+ *  arch+oss+logs). */
 function owner(slug) {
-  const i = NEW_SLUGS.indexOf(slug);
-  if (i === -1) return 'seed';
-  if (i < 7) return 'SF-2/FI-361';
-  if (i < 14) return 'SF-3/FI-362';
-  return 'SF-4/FI-363';
+  if (SEED_SLUGS.includes(slug)) return 'seed';
+  const b1 = BATCH1.get(slug);
+  if (b1) return b1.n <= 7 ? 'SF-2/FI-361' : b1.n <= 14 ? 'SF-3/FI-362' : 'SF-4/FI-363';
+  if (slug.startsWith('skill-')) return 'SF-2/FI-375';
+  if (slug.startsWith('feature-')) return 'SF-3/FI-376';
+  if (slug.startsWith('guide-')) return 'SF-4/FI-377';
+  if (slug.startsWith('arch-') || slug.startsWith('oss-') || /^building-wakii-in-the-open-log-[34]$/.test(slug)) return 'SF-5/FI-378';
+  return 'unowned';
 }
 
 /** Mirror of DOC_SLUGS in src/config.ts. */
@@ -79,10 +79,13 @@ const DOC_SLUGS = ['getting-started', 'superpowers-panel', 'story-workflow', 'ag
 /* D1 band, style-guide §2 (PIN). */
 const VI_MIN = 900, VI_WARN = 1400, VI_HARD = 1470, EN_MIN = 800;
 
-/* Snapshot D8 (evidence-pack.md §Numbers snapshot — chụp 2026-09-07). */
+/* Snapshot D8 (evidence-pack.md §Numbers snapshot — chụp 2026-09-08, FI-373
+ * SF-1 refresh; the 21/14 capture of 2026-09-07 was a counting-pattern error,
+ * see claims-registry ## Drift-note). Releases re-verified unchanged. */
 const SNAPSHOT = {
-  skillsTotal: 21,
-  skillsPublic: 14,
+  snapshotDate: '2026-09-08',
+  skillsTotal: 20,
+  skillsPublic: 13,
   releases: {
     'v1.4.199': '2026-09-05T19:07:31Z',
     'v1.4.198': '2026-09-05T12:47:15Z',
@@ -171,15 +174,15 @@ function forbiddenPhrases() {
   return phrases;
 }
 
-/* ---------- content inventory ---------- */
+/* ---------- content inventory — readdir, not a slug list (FI-373 SF-1) ---------- */
 const posts = new Map(); // key `${locale}/${slug}` -> { locale, slug, content, fml, body, isSeed }
 for (const locale of ['en', 'vi']) {
-  for (const slug of [...NEW_SLUGS, ...SEED_SLUGS]) {
-    const p = join(BLOG(locale), `${slug}.md`);
-    if (!existsSync(p)) {
-      if (NEW_SLUGS.includes(slug)) fail('T7', `missing content file: src/content/blog/${locale}/${slug}.md (matrix slug)`);
-      continue;
-    }
+  const dir = BLOG(locale);
+  if (!existsSync(dir)) continue;
+  const files = readdirSync(dir).filter((f) => f.endsWith('.md')).sort();
+  for (const f of files) {
+    const slug = f.replace(/\.md$/, '');
+    const p = join(dir, f);
     const content = readFileSync(p, 'utf8');
     const { frontmatter, body, fmlError } = splitFrontmatter(content);
     if (fmlError) fail('T7', `src/content/blog/${locale}/${slug}.md: frontmatter error: ${fmlError}`);
@@ -199,16 +202,16 @@ const seedPosts = [...posts.values()].filter((p) => p.isSeed)
   .sort((a, b) => (a.slug + a.locale).localeCompare(b.slug + b.locale));
 const draftSlugs = [...new Set([...posts.values()].filter((p) => p.draft).map((p) => p.slug))].sort();
 
-out('=== convergence audit — FI-359 SF-5 (checks 2-7 of fi359-longform-sf-5.md) ===');
-out(`scope: ${NEW_SLUGS.length} new slugs x 2 locales = ${newPosts.length} enforced files; ` +
-  `${SEED_SLUGS.length} seed slugs (FI-341) = inventory-only`);
+out('=== convergence audit — FI-373 SF-1 (checks 2-7; lineage FI-359 SF-5) ===');
+out(`scope: manifest all-non-seed — ${PLANNED.size} planned slugs (batch-1 ${BATCH1.size} + batch-2 ${BATCH2.size}) x 2 locales; ` +
+  `${newPosts.length} files present/enforced; ${SEED_SLUGS.length} seed slugs (FI-341) = inventory-only`);
 out(`draft slugs (D7 fallback): ${draftSlugs.length === 0 ? 'none' : draftSlugs.join(', ')}`);
 out('seeds (exempt inventory): ' + SEED_SLUGS.join(' · '));
 
 /* ================================================================
  * T2 — D1 word band sweep (style-guide §2, PINNED algorithm)
  * ================================================================ */
-out('\n--- T2: D1 word-band sweep (40 new files; seeds exempt) ---');
+out(`\n--- T2: D1 word-band sweep (${newPosts.length} non-seed files; seeds exempt) ---`);
 out('slug | locale | words | verdict');
 const viWarnRows = [];
 for (const p of newPosts) {
@@ -241,7 +244,7 @@ for (const p of newPosts) {
 /* ================================================================
  * T3 — claims sweep vs snapshot D8
  * ================================================================ */
-out('\n--- T3: claims sweep vs snapshot D8 (evidence-pack §Numbers, 2026-09-07) ---');
+out(`\n--- T3: claims sweep vs snapshot D8 (evidence-pack §Numbers, ${SNAPSHOT.snapshotDate}) ---`);
 
 /* (a) FORBIDDEN literals — exact lint parse, full file, case-insensitive. */
 const phrases = forbiddenPhrases();
@@ -256,7 +259,7 @@ for (const p of newPosts) {
     }
   }
 }
-out(`(a) forbidden-phrase hits on 40 new files: ${t3aHits} (expect 0)`);
+out(`(a) forbidden-phrase hits on ${newPosts.length} non-seed files: ${t3aHits} (expect 0)`);
 
 /* (b) review-only variants — lint skips these, SF-5 sweep catches them. */
 const LITERAL_VARIANTS = [
@@ -294,7 +297,7 @@ for (const p of newPosts) {
   if (n1 > 0) { t3bHits += n1; fail('T3', `src/content/blog/${p.locale}/${p.slug}.md: "sync" within 5 words of "state/phone" x${n1} (review-only variant) [${owner(p.slug)}]`); }
   if (n2 > 0) { t3bHits += n2; fail('T3', `src/content/blog/${p.locale}/${p.slug}.md: "worktree" within 5 words of "phone/điện thoại" x${n2} (review-only variant) [${owner(p.slug)}]`); }
 }
-out(`(b) review-only variant hits on 40 new files: ${t3bHits} (expect 0)`);
+out(`(b) review-only variant hits on ${newPosts.length} non-seed files: ${t3bHits} (expect 0)`);
 
 /* (c) number citations vs snapshot. Scan body (frontmatter is listing meta,
        not a claim block). Window = ±chars around each occurrence.
@@ -327,8 +330,11 @@ const FAMILIES = [
         const w = body.slice(Math.max(0, m.index - 80), m.index + 80);
         if (/skill/i.test(w)) {
           const v = m[1];
-          const driftNarrative = v === '13' && /(→|->|trước|từng|before|was|nay|giờ|now|then)/i.test(w);
-          rows.push({ idx: m.index, claim: `skills=${v}`, ok: v === '21' || v === '14' || driftNarrative, ctx: w.replace(/\s+/g, ' ').trim().slice(0, 140) });
+          // Snapshot refresh 2026-09-08 (FI-373 SF-1): allowed values are
+          // 20/13. 21/14 are now the documented drift narrative — the generic
+          // badMatch branch below handles them (dated-source marker → NOTE
+          // per D8; no marker → FAIL).
+          rows.push({ idx: m.index, claim: `skills=${v}`, ok: v === '20' || v === '13', ctx: w.replace(/\s+/g, ' ').trim().slice(0, 140) });
         }
       }
       return rows;
@@ -415,7 +421,7 @@ const FAMILIES = [
     },
   },
 ];
-out('(c) number citations vs snapshot D8 (body scan, 40 new files):');
+out(`(c) number citations vs snapshot D8 (body scan, ${newPosts.length} non-seed files):`);
 out('file | family | n | class | matches-snapshot | dated-source');
 for (const p of newPosts) {
   for (const fam of FAMILIES) {
@@ -448,6 +454,90 @@ for (const p of newPosts) {
       }
     }
   }
+}
+
+/* (c2) verify-shipped family — batch-2 feature posts (SF-3) may only claim the
+   label recorded in claims-registry ## Verify-shipped (DEC-8). Registry lines:
+   `- feature-<name> — <SHIPPED|MAIN-ONLY|ROADMAP> — evidence...`; PENDING-VERIFY
+   = placeholder, skipped (no feature post may exist while pending). A canonical
+   uppercase label in the SAME SENTENCE as a `feature-<name>` mention (nearest
+   label wins) must MATCH the registry or it is a FAIL — a matching label is
+   compliant and silent (review P1 2026-09-08: never fail a correct claim);
+   soft VI/EN phrasings ("đã ship" / "trên main" / "roadmap") mismatching the
+   registry are a NOTE (false-positive bar stays low — content SFs get
+   hard-blocked on canonical labels only). A mention with NO label in its
+   sentence is skipped entirely (bare mention). */
+function verifyShippedLabels() {
+  const src = readFileSync(join(KIT, 'claims-registry.md'), 'utf8');
+  const start = src.match(/^## Verify-shipped[^\n]*$/m); // heading may carry a suffix (date/scope)
+  if (!start) return new Map(); // section becomes mandatory with SF-3 (FI-376)
+  const rest = src.slice(start.index + start[0].length);
+  const end = rest.indexOf('\n## ');
+  const section = end === -1 ? rest : rest.slice(0, end);
+  const labels = new Map();
+  for (const line of section.split('\n')) {
+    const m = line.trim().match(/^- feature-([a-z0-9-]+)\s*—\s*([A-Z-]+)/);
+    if (m) labels.set(m[1], m[2]);
+  }
+  return labels;
+}
+{
+  const labels = verifyShippedLabels();
+  const enforced = [...labels.entries()].filter(([, l]) => l !== 'PENDING-VERIFY');
+  out(`(c2) verify-shipped labels parsed from claims-registry.md: ${labels.size} entries, ${enforced.length} verified (PENDING-VERIFY skipped: ${labels.size - enforced.length})`);
+  const CANON = /\b(SHIPPED|MAIN-ONLY|ROADMAP)\b/g;
+  const SOFT = /(đã ship|trên main|roadmap)/gi;
+  const NORMALIZE = { 'đã ship': 'SHIPPED', 'trên main': 'MAIN-ONLY', roadmap: 'ROADMAP' };
+  let vsClaims = 0, vsBare = 0;
+  for (const p of newPosts) {
+    for (const [name, label] of enforced) {
+      const re = new RegExp(`feature-${name}(?![a-z0-9-])`, 'g');
+      for (const m of p.body.matchAll(re)) {
+        // Canon AND soft claims are sentence-scoped within the line (markdown
+        // paragraphs are single lines; two feature sentences on one line must
+        // not borrow each other's label — review P1/P2 2026-09-08). The ±120
+        // window is context-print only. A soft candidate whose text IS an
+        // exact uppercase canonical word ("ROADMAP") is skipped — /i would
+        // otherwise re-read a neighbour's canonical label as a soft phrase.
+        const lineStart = p.body.lastIndexOf('\n', m.index) + 1;
+        const nl = p.body.indexOf('\n', m.index);
+        const line = p.body.slice(lineStart, nl === -1 ? p.body.length : nl);
+        const off = m.index - lineStart;
+        const segs = [];
+        let last = 0;
+        for (const sm of line.matchAll(/[.!?;]+(?=\s|$)/g)) {
+          segs.push([last, sm.index + sm[0].length]);
+          last = sm.index + sm[0].length;
+        }
+        segs.push([last, line.length]);
+        const seg = segs.find(([a, b]) => off >= a && off < b) || [0, line.length];
+        const segText = line.slice(seg[0], seg[1]);
+        let canon = null, best = Infinity;
+        for (const cm of segText.matchAll(CANON)) {
+          const d = Math.abs(seg[0] + cm.index - off);
+          if (d < best) { best = d; canon = cm; }
+        }
+        let soft = null;
+        if (!canon) {
+          for (const sm of segText.matchAll(SOFT)) {
+            if (/^(SHIPPED|MAIN-ONLY|ROADMAP)$/.test(sm[0])) continue;
+            soft = sm;
+            break;
+          }
+        }
+        const w = p.body.slice(Math.max(0, m.index - 120), m.index + 120);
+        if (!canon && !soft) { vsBare += 1; continue; } // bare mention — no claim made
+        const claimed = canon ? canon[1] : NORMALIZE[soft[1].toLowerCase()];
+        if (claimed === label) continue; // compliant claim — silent (P1: fail mismatch only)
+        vsClaims += 1;
+        const rel = `src/content/blog/${p.locale}/${p.slug}.md`;
+        const msg = `${rel}: feature-${name} claimed "${claimed}" but registry Verify-shipped says "${label}" — context: "${w.replace(/\s+/g, ' ').trim().slice(0, 140)}" [${owner(p.slug)}]`;
+        if (canon) fail('T3', msg);
+        else note('T3', msg);
+      }
+    }
+  }
+  out(`(c2) verify-shipped label mismatches: ${vsClaims} (FAIL/NOTE above), bare mentions skipped: ${vsBare}`);
 }
 
 /* (d) drift probes at QA time — NOTES only, never FAIL. */
@@ -577,9 +667,10 @@ for (const path of [...githubArtifacts.keys()].sort()) {
 /* spot-check exactly 3 sample links via GitHub contents API:
    top-2 most-linked hub-store paths (deterministic) + the fi338 spec drift probe.
    Allowlist (P2, security-audit 2026-09-08): only repo-relative paths under
-   docs/superpowers/ may be interpolated into the API URL, whatever a post links. */
+   docs/superpowers/ may be interpolated into the API URL, whatever a post links
+   (`..` rejected — URL normalization would strip the prefix after it). */
 const spot = [...githubArtifacts.entries()]
-  .filter(([p]) => p.startsWith('docs/superpowers/'))
+  .filter(([p]) => p.startsWith('docs/superpowers/') && !p.includes('..'))
   .sort((a, b) => (b[1].count - a[1].count) || a[0].localeCompare(b[0]))
   .slice(0, 2).map(([p]) => p);
 const FI338_SPEC = 'docs/superpowers/specs/2026-09-07-dispatch-queue-design.md';
@@ -605,8 +696,10 @@ out('\n--- T5: RSS contract (dist/rss.xml, FI-339 SF-1) ---');
 {
   const xml = readFileSync(DIST('rss.xml'), 'utf8');
   const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => m[1]);
-  const expectedLive = 50 - draftSlugs.length * 2;
-  out(`items: ${items.length} (expected-live = 50 - draft-slugs x2 = ${expectedLive})`);
+  // derived from inventory (FI-373 SF-1) — every present, non-draft post file,
+  // both locales; no literal count to go stale when the matrix grows.
+  const expectedLive = [...posts.values()].filter((p) => !p.draft).length;
+  out(`items: ${items.length} (expected-live = derived from inventory: ${expectedLive} non-draft files; draft slugs: ${draftSlugs.length})`);
   if (items.length !== expectedLive) fail('T5', `rss item count ${items.length} != expected-live ${expectedLive} (draft slugs: ${draftSlugs.join(', ') || 'none'})`);
   const langs = (xml.match(/<language>/g) || []).length;
   out(`<language> elements: ${langs} (contract: 0)`);
@@ -639,7 +732,6 @@ out('\n--- T5: RSS contract (dist/rss.xml, FI-339 SF-1) ---');
 
 /* T6 — sitemap + hreflang + OG */
 out('\n--- T6: sitemap + hreflang pair + OG article contract (FI-339 rev 2) ---');
-const SAMPLES = ['zero-setup-agent-team', 'convergence-qa-last-tier', 'wakii-in-production-hub-store'];
 {
   const sxml = readFileSync(DIST('sitemap-0.xml'), 'utf8');
   const locs = new Set([...sxml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
@@ -653,49 +745,75 @@ const SAMPLES = ['zero-setup-agent-team', 'convergence-qa-last-tier', 'wakii-in-
   out(`sitemap-0.xml: ${locs.size} urls; missing required: ${missingUrls.length === 0 ? 'none' : missingUrls.length}`);
   for (const u of missingUrls) fail('T6', `dist/sitemap-0.xml: missing URL ${u}`);
 
-  for (const slug of SAMPLES) {
-    for (const locale of ['en', 'vi']) {
-      const p = posts.get(`${locale}/${slug}`);
-      const htmlPath = locale === 'vi' ? DIST('vi', 'blog', slug, 'index.html') : DIST('blog', slug, 'index.html');
-      if (!p || !existsSync(htmlPath)) { fail('T6', `dist HTML missing for sample ${locale}/${slug}`); continue; }
-      const html = readFileSync(htmlPath, 'utf8');
-      const href = new Map([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => [m[1], m[2]]));
-      const selfUrl = locale === 'vi' ? `${SITE_URL}/vi/blog/${slug}/` : `${SITE_URL}/blog/${slug}/`;
-      const twinUrl = locale === 'vi' ? `${SITE_URL}/blog/${slug}/` : `${SITE_URL}/vi/blog/${slug}/`;
-      const probs = [];
-      if (href.get('en') !== (locale === 'en' ? selfUrl : twinUrl)) probs.push(`hreflang en=${href.get('en') || 'MISSING'}`);
-      if (href.get('vi') !== (locale === 'vi' ? selfUrl : twinUrl)) probs.push(`hreflang vi=${href.get('vi') || 'MISSING'}`);
-      if (!href.has('x-default')) probs.push('hreflang x-default MISSING');
-      const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
-      if (canon !== selfUrl) probs.push(`canonical=${canon || 'MISSING'} (want self ${selfUrl})`);
-      const ogType = (html.match(/<meta property="og:type" content="([^"]*)"/) || [])[1];
-      if (ogType !== 'article') probs.push(`og:type=${ogType || 'MISSING'} (want article)`);
-      const pub = (html.match(/<meta property="(?:article|og):published_time" content="([^"]*)"/) || [])[1];
-      if (!pub || pub.slice(0, 10) !== p.pubDate) probs.push(`published_time=${pub || 'MISSING'} != frontmatter ${p.pubDate}`);
-      if (probs.length) for (const pr of probs) fail('T6', `${locale}/${slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): ${pr}`);
-      else out(`sample ${locale}/${slug}: hreflang en+vi+x-default 2-way pair, canonical self, og:type article, published_time=${pub.slice(0, 10)} — OK`);
+  // Full sweep (FI-373 SF-1): the SAMPLES hard-code is gone — every present
+  // post in both locales gets the hreflang/canonical/og/published_time check.
+  // Non-seed = enforce (FAIL); seeds stay inventory-only (deviation → NOTE).
+  let t6Ok = 0;
+  for (const p of [...posts.values()].sort((a, b) => (a.slug + a.locale).localeCompare(b.slug + b.locale))) {
+    if (p.draft) continue; // drafts render no dist page (lint still checks metadata)
+    const htmlPath = p.locale === 'vi' ? DIST('vi', 'blog', p.slug, 'index.html') : DIST('blog', p.slug, 'index.html');
+    if (!existsSync(htmlPath)) {
+      const msg = `${p.locale}/${p.slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): dist HTML missing (build stale or page dropped)`;
+      if (p.isSeed) note('T6', `seed ${msg}`);
+      else fail('T6', msg);
+      continue;
+    }
+    const html = readFileSync(htmlPath, 'utf8');
+    const href = new Map([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => [m[1], m[2]]));
+    const selfUrl = p.locale === 'vi' ? `${SITE_URL}/vi/blog/${p.slug}/` : `${SITE_URL}/blog/${p.slug}/`;
+    const twinUrl = p.locale === 'vi' ? `${SITE_URL}/blog/${p.slug}/` : `${SITE_URL}/vi/blog/${p.slug}/`;
+    const probs = [];
+    if (href.get('en') !== (p.locale === 'en' ? selfUrl : twinUrl)) probs.push(`hreflang en=${href.get('en') || 'MISSING'}`);
+    if (href.get('vi') !== (p.locale === 'vi' ? selfUrl : twinUrl)) probs.push(`hreflang vi=${href.get('vi') || 'MISSING'}`);
+    if (!href.has('x-default')) probs.push('hreflang x-default MISSING');
+    const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+    if (canon !== selfUrl) probs.push(`canonical=${canon || 'MISSING'} (want self ${selfUrl})`);
+    const ogType = (html.match(/<meta property="og:type" content="([^"]*)"/) || [])[1];
+    if (ogType !== 'article') probs.push(`og:type=${ogType || 'MISSING'} (want article)`);
+    const pub = (html.match(/<meta property="(?:article|og):published_time" content="([^"]*)"/) || [])[1];
+    if (!pub || pub.slice(0, 10) !== p.pubDate) probs.push(`published_time=${pub || 'MISSING'} != frontmatter ${p.pubDate}`);
+    if (probs.length) {
+      for (const pr of probs) {
+        const msg = `${p.locale}/${p.slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): ${pr}`;
+        if (p.isSeed) note('T6', `seed ${msg}`);
+        else fail('T6', msg);
+      }
+    } else {
+      t6Ok += 1;
     }
   }
+  out(`T6 full sweep: ${t6Ok} post pages OK (hreflang en+vi+x-default 2-way pair, canonical self, og:type article, published_time == frontmatter); seeds included — a seed deviation would appear as a NOTE above`);
 }
 
 /* T7 — listings + matrix gate */
-out('\n--- T7: listings (EN/VI) + frontmatter-vs-topic-matrix 20/20 (D2/D6) ---');
+out(`\n--- T7: listings (EN/VI) + frontmatter-vs-matrix ${PLANNED.size}/${PLANNED.size} (D2/D6 + DEC-6 policy a) ---`);
 {
   for (const [locale, file] of [['en', DIST('blog', 'index.html')], ['vi', DIST('vi', 'blog', 'index.html')]]) {
     const html = readFileSync(file, 'utf8');
     const cards = [];
-    for (const m of html.matchAll(/<a href="(\/(?:vi\/)?blog\/([a-z0-9-]+)\/)"([\s\S]*?)<\/a>/g)) {
+    // Listing markup since the FI-349 redesign integration: card anchor is
+    // `<a class="bx…" href="/blog/<slug>/">`; category is a DISPLAY LABEL in
+    // span.name (EN "tutorial" / "tech notes" / "build log", VI "hướng dẫn" /
+    // "kỹ thuật" / "nhật ký xây dựng"); the date is the visible text of
+    // span.dt (no <time datetime> attribute anymore).
+    const CARD_LABELS = {
+      tutorial: 'tutorial', 'tech notes': 'tech', 'build log': 'build-log',
+      'hướng dẫn': 'tutorial', 'kỹ thuật': 'tech', 'nhật ký xây dựng': 'build-log',
+    };
+    for (const m of html.matchAll(/<a class="bx[^"]*" href="(\/(?:vi\/)?blog\/([a-z0-9-]+)\/)"([\s\S]*?)<\/a>/g)) {
       const isVi = m[1].startsWith('/vi/');
       if (isVi !== (locale === 'vi')) continue; // other-locale hrefs are not this listing's cards
-      const cat = (m[3].match(/data-category="([a-z-]+)"/) || [])[1] || 'MISSING';
-      const dt = (m[3].match(/<time datetime="([^"]+)"/) || [])[1] || 'MISSING';
-      const visible = (m[3].match(/<time[^>]*>\s*([^<]*?)\s*<\/time>/) || [])[1] || '';
-      cards.push({ slug: m[2], cat, dt, visible });
+      const label = (m[3].match(/<span class="name"[^>]*>\s*([^<]*?)\s*<\/span>/) || [])[1] || 'MISSING';
+      const cat = Object.prototype.hasOwnProperty.call(CARD_LABELS, label) ? CARD_LABELS[label] : label;
+      const dt = (m[3].match(/<span class="dt"[^>]*>\s*([^<]*?)\s*<\/span>/) || [])[1] || 'MISSING';
+      cards.push({ slug: m[2], cat, dt });
     }
     const slugs = cards.map((c) => c.slug);
     const dupes = slugs.filter((s, i) => slugs.indexOf(s) !== i);
-    out(`dist${locale === 'vi' ? '/vi' : ''}/blog/index.html: ${cards.length} cards, dupes: ${dupes.length === 0 ? 'none' : dupes.join(',')}`);
-    if (cards.length !== 25) fail('T7', `listing ${locale} has ${cards.length} cards, want 25 (25 slug x 1 locale)`);
+    // live-derived expectation (FI-373 SF-1): non-draft slugs present in THIS locale
+    const expectedCards = [...posts.values()].filter((p) => p.locale === locale && !p.draft).length;
+    out(`dist${locale === 'vi' ? '/vi' : ''}/blog/index.html: ${cards.length} cards (want ${expectedCards}, derived from inventory), dupes: ${dupes.length === 0 ? 'none' : dupes.join(',')}`);
+    if (cards.length !== expectedCards) fail('T7', `listing ${locale} has ${cards.length} cards, want ${expectedCards} (derived: non-draft slugs present in ${locale}/)`);
     if (dupes.length) fail('T7', `listing ${locale} duplicate slugs: ${dupes.join(', ')}`);
     const probs = [];
     let prev = null;
@@ -704,31 +822,44 @@ out('\n--- T7: listings (EN/VI) + frontmatter-vs-topic-matrix 20/20 (D2/D6) ---'
       if (!p) { probs.push(`card ${c.slug} has no content file`); continue; }
       if (p.draft) probs.push(`draft leaked into listing: ${c.slug}`);
       if (c.cat !== p.category) probs.push(`card ${c.slug} category ${c.cat} != frontmatter ${p.category}`);
-      if (c.dt.slice(0, 10) !== p.pubDate) probs.push(`card ${c.slug} datetime ${c.dt.slice(0, 10)} != frontmatter ${p.pubDate}`);
-      if (c.visible && c.visible !== p.pubDate) probs.push(`card ${c.slug} visible date "${c.visible}" != frontmatter ${p.pubDate}`);
-      if (c.dt.slice(0, 10) > TODAY) probs.push(`card ${c.slug} future date ${c.dt.slice(0, 10)}`);
+      if (c.dt.slice(0, 10) !== p.pubDate) probs.push(`card ${c.slug} date ${c.dt.slice(0, 10)} != frontmatter ${p.pubDate}`);
+      // DEC-6 policy (a): a future date is legitimate when it equals the
+      // post's matrix row (scheduled announce); only a future date that does
+      // NOT match its matrix pubDate is a FAIL.
+      if (c.dt.slice(0, 10) > TODAY) {
+        const row = PLANNED.get(c.slug);
+        if (!row || p.pubDate !== row.pubDate) {
+          probs.push(`card ${c.slug} future date ${c.dt.slice(0, 10)} — pubDate not matching its matrix row (policy a: future only with scheduled matrix date)`);
+        } else {
+          note('T7', `card ${c.slug} future date ${row.pubDate} == matrix #${row.n} — scheduled (matrix #${row.n}) — policy (a)`);
+        }
+      }
       if (prev && c.dt > prev) probs.push(`sort violation at ${c.slug}: ${c.dt} after ${prev} (want pubDate DESC)`);
       prev = c.dt;
     }
     if (probs.length) for (const pr of probs) fail('T7', `listing ${locale}: ${pr}`);
-    else out(`listing ${locale}: badges + dates match frontmatter, no drafts, no future dates, pubDate DESC — OK`);
+    else out(`listing ${locale}: badges + dates match frontmatter, no drafts, no future dates outside matrix, pubDate DESC — OK`);
   }
 
-  // matrix gate — parse rows `| N | \`slug\` | cat | pubDate |`
-  const matrixSrc = readFileSync(join(KIT, 'topic-matrix.md'), 'utf8');
-  const rows = new Map();
-  for (const m of matrixSrc.matchAll(/^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm)) {
-    rows.set(m[2], { n: Number(m[1]), cat: m[3], pubDate: m[4] });
-  }
-  out(`topic-matrix rows parsed: ${rows.size} (want 20)`);
-  if (rows.size !== 20) fail('T7', `topic-matrix.md: parsed ${rows.size} rows, want 20`);
+  // matrix gate — BOTH tables (already parsed up top; no per-table re-read here).
+  // Batch-1: a row without files is a REGRESSION (those posts shipped with
+  // FI-359) → FAIL. Batch-2: a row without files is EXPECTED mid-story →
+  // NOTE "pending (owner SF-x)"; rows with files get the same enforcement.
+  out(`matrix rows parsed: batch-1 ${BATCH1.size} (want 20) + batch-2 ${BATCH2.size} (want 44) = ${PLANNED.size} (want 64)`);
+  if (BATCH1.size !== 20) fail('T7', `topic-matrix.md: parsed ${BATCH1.size} rows, want 20`);
+  if (BATCH2.size !== 44) fail('T7', `topic-matrix-batch2.md: parsed ${BATCH2.size} rows, want 44`);
+  if (PLANNED.size !== 64) fail('T7', `combined matrix: ${PLANNED.size} unique slugs, want 64 (slug collision between tables?)`);
   let okRows = 0;
   const matrixFails = [];
-  for (const slug of NEW_SLUGS) {
-    const row = rows.get(slug);
-    if (!row) { matrixFails.push(`${slug}: no matrix row`); continue; }
+  const pendingRows = [];
+  for (const [slug, row] of PLANNED) {
     const en = posts.get(`en/${slug}`);
     const vi = posts.get(`vi/${slug}`);
+    if (!en && !vi) {
+      if (BATCH1.has(slug)) matrixFails.push(`#${row.n} ${slug}: EN+VI files missing (batch-1 regression guard)`);
+      else pendingRows.push(`#${row.n} ${slug} — pending (owner ${owner(slug)})`);
+      continue;
+    }
     const bad = [];
     for (const [tag, p] of [['EN', en], ['VI', vi]]) {
       if (!p) { bad.push(`${tag} file missing`); continue; }
@@ -738,11 +869,12 @@ out('\n--- T7: listings (EN/VI) + frontmatter-vs-topic-matrix 20/20 (D2/D6) ---'
     if (bad.length) matrixFails.push(`#${row.n} ${slug}: ${bad.join('; ')}`);
     else okRows += 1;
   }
-  out(`matrix gate: slug + category + pubDate match ${okRows}/${NEW_SLUGS.length}`);
+  out(`matrix gate: slug + category + pubDate match ${okRows}/${PLANNED.size}; batch-2 pending (NOTE): ${pendingRows.length}`);
   for (const f of matrixFails) fail('T7', `matrix mismatch — ${f}`);
+  for (const p of pendingRows) note('T7', `matrix row ${p}`);
   // extra slugs not in matrix/seeds
   for (const p of posts.values()) {
-    if (!NEW_SLUGS.includes(p.slug) && !SEED_SLUGS.includes(p.slug)) note('T7', `file outside matrix+seeds: ${p.locale}/${p.slug}.md`);
+    if (!PLANNED.has(p.slug) && !SEED_SLUGS.includes(p.slug)) note('T7', `file outside matrix+seeds: ${p.locale}/${p.slug}.md`);
   }
 }
 
