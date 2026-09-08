@@ -126,6 +126,18 @@ Template (VI — EN mirror cùng nghĩa, heading như trên):
   lan cho đủ ô là anti-pattern. Strategic forks/ACP → ghi WATCH trong bài,
   decision lớn flag epic (spec D4).
 
+### 8.1 Template lock — batch-3 pilot (FI-385)
+
+Pilot SF-2 (12 repo lớn, matrix rows 1-12) chạy đúng khung §1 + §8 + §10
+không cần đổi shape — template CHỐT cho SF-3/4/5 (ACK coordinator trên
+FI-385). Ba tinh chỉnh vận hành rút từ pilot, áp cho phần còn lại batch-3:
+
+1. **Quote/code third-party**: attribution + link blob/tree LIỀN KỀ quote
+   (không để link ở câu khác) — review pilot đã bắt bài thiếu.
+2. **Thứ tự §1 không đảo**: đoạn nối docs đứng TRƯỚC section grading.
+3. **Band từ VI**: nhắm ≤1390 để trim không chạm vùng WARN 1400 (pilot có
+   1 bài 1407 — WARN chấp nhận kèm flag, QA SF-6 trim).
+
 ## 9. Trích dẫn repo third-party (batch-3)
 
 - Chuẩn gốc: `claims-registry.md` §Third-party claims — batch-3 (FI-383).
