@@ -208,18 +208,18 @@ graphState: ready
 
 ## Checklist hoàn tất SF (tick khi xong)
 
-- [ ] T1 guide-install-update (matrix #22)
-- [ ] T2 guide-first-story-end-to-end (matrix #23, flagship)
-- [ ] T3 guide-mobile-pairing (matrix #24)
-- [ ] T4 guide-ssh-remote (matrix #25)
-- [ ] T5 guide-custom-skill-101 (matrix #26)
-- [ ] T6 guide-cloud-relay (matrix #27)
-- [ ] T7 guide-worktree-workflow (matrix #28)
-- [ ] T8 guide-linear-github-wiring (matrix #29)
-- [ ] T9 guide-multi-session-ports (matrix #30)
-- [ ] T10 guide-troubleshooting (matrix #31)
-- [ ] T11 hero render flagship
-- [ ] T12 consistency pass (lint + links + claims + build + tone checklist)
+- [x] T1 guide-install-update (matrix #22)
+- [x] T2 guide-first-story-end-to-end (matrix #23, flagship)
+- [x] T3 guide-mobile-pairing (matrix #24)
+- [x] T4 guide-ssh-remote (matrix #25)
+- [x] T5 guide-custom-skill-101 (matrix #26)
+- [x] T6 guide-cloud-relay (matrix #27)
+- [x] T7 guide-worktree-workflow (matrix #28)
+- [x] T8 guide-linear-github-wiring (matrix #29)
+- [x] T9 guide-multi-session-ports (matrix #30)
+- [x] T10 guide-troubleshooting (matrix #31)
+- [x] T11 hero render flagship
+- [x] T12 consistency pass (lint + links + claims + build + tone checklist)
 - [ ] Rule 0 browser 3 tầng PASS
 - [ ] code-reviewer APPROVED (2 nhóm)
 - [ ] security-audit sạch
