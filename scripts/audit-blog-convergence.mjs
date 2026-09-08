@@ -413,7 +413,10 @@ const FAMILIES = [
     },
   },
   {
-    id: 'clis=24', drift: false, find: (body) => {
+    // preBatch3 (FI-383 SF-1): \b24\b collides with version numbers / CLI
+    // output quoted in batch-3 deep-dives — the family describes the WAKII
+    // kit inventory (batch-1/2 claims), so skip it on batch-3 slugs.
+    id: 'clis=24', preBatch3: true, drift: false, find: (body) => {
       const rows = [];
       for (const m of body.matchAll(/\b24\b/g)) {
         const w = body.slice(Math.max(0, m.index - 80), m.index + 80);
@@ -425,7 +428,10 @@ const FAMILIES = [
     },
   },
   {
-    id: 'seed-posts=10', drift: false, find: (body) => {
+    // preBatch3 (FI-383 SF-1): \b10\b matches the "10" inside batch-3 dates
+    // ("2026-10-01" beside "bài") → a seed-posts claim that is really a date
+    // fragment. Family describes batch-1 seed inventory — skip batch-3 slugs.
+    id: 'seed-posts=10', preBatch3: true, drift: false, find: (body) => {
       const rows = [];
       for (const m of body.matchAll(/\b10\b/g)) {
         const w = body.slice(Math.max(0, m.index - 80), m.index + 80);
@@ -453,6 +459,7 @@ out(`(c) number citations vs snapshot D8 (body scan, ${newPosts.length} non-seed
 out('file | family | n | class | matches-snapshot | dated-source');
 for (const p of newPosts) {
   for (const fam of FAMILIES) {
+    if (fam.preBatch3 && BATCH3.has(p.slug)) continue; // FI-383: inventory families describe batch-1/2 claims only
     const rows = fam.find(p.body).map((r) => ({
       ...r,
       cls: classifyOccurrence(p.body, r.idx),
