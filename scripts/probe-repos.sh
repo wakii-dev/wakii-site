@@ -90,7 +90,7 @@ done <<< "$REPOS"
 
 echo "----"
 echo "summary: $TOTAL repos probed | archived: $ARCHIVED | license none/NOASSERTION: $NO_LIC | probe errors: $FAILS"
-echo "convention: cite every number as \"theo GitHub API ngày $(date +%F)\" — claims-registry.md §Third-party claims; † slugs (license none/NOASSERTION) are never \"open-source\""
+echo "convention: cite every number as \"theo GitHub API ngày $(date +%F)\" — claims-registry.md §Third-party claims; † = the 6 pinned slugs (machine scope); EVERY none/NOASSERTION repo is never \"open-source\""
 if [ "$FAILS" -gt 0 ]; then
   echo "✗ $FAILS repo row(s) failed/invalid — evidence incomplete (check network/gh auth or the matrix cells), re-run" >&2
   exit 1

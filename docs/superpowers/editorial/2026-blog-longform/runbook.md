@@ -133,9 +133,10 @@ owner range theo header matrix `topic-matrix-batch3.md`):
    lý do (style-guide §8).
 4. **Claims third-party** — mọi số kèm "theo GitHub API ngày N"; quote
    ngắn (≤25 từ) có attribution + link; trích code kèm link commit/tree;
-   license none/NOASSERTION (đúng 6 slug † trong matrix) → gọi "công khai
-   trên GitHub", KHÔNG "open-source"/"mã nguồn mở"
-   (claims-registry §Third-party claims — batch-3).
+   license none/NOASSERTION → gọi "công khai trên GitHub", KHÔNG
+   "open-source"/"mã nguồn mở" — 8 repo thật (probe 09-08); machine-chặn
+   scoped trên 6 slug † pin, crush + neovim license-safe review-enforced
+   (claims-registry §Third-party claims — batch-3, rule 2).
 5. **ADOPT draft** (khi grade ADOPT) vào
    `docs/superpowers/editorial/research/adopt-drafts/` theo rubric
    style-guide §10 — KHÔNG tự file issue; SF-6 file tập trung sau review.
