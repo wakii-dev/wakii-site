@@ -38,7 +38,7 @@ pub enum Device {
 }
 ```
 
-(trích rút gọn từ `crates/tabby/src/main.rs` — nguồn: github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/crates/tabby/src/main.rs, theo GitHub API ngày 2026-09-08)
+(trích rút gọn từ [crates/tabby/src/main.rs @ 21b29048](https://github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/crates/tabby/src/main.rs), theo GitHub API ngày 2026-09-08)
 
 Comment trong code tự nói thành phần nào làm gì: "Starts the api endpoint for IDE / Editor extensions". Client VS Code, Vim và IntelliJ — nằm ở thư mục `clients/` — nối vào endpoint đó chứ không nhúng model vào editor. Kiến trúc này tách ba lớp rành mạch: model chạy ở server, giao diện ở editor, hợp đồng giữa hai bên là HTTP.
 
@@ -75,7 +75,7 @@ crates/
 └── ...               # 13 crate nữa trong workspace
 ```
 
-(nguồn: Cargo.toml workspace + cây thư mục crates/, theo GitHub API ngày 2026-09-08 — github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/Cargo.toml)
+(nguồn: [Cargo.toml workspace @ 21b29048](https://github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/Cargo.toml) + cây thư mục crates/, theo GitHub API ngày 2026-09-08)
 
 Server expose đúng các route cần: completions, chat completions, health, setting — tài liệu API tự sinh bằng utoipa kèm Swagger UI. Cấu trúc này cho phép đội vận hành cắm Tabby vào hệ thống sẵn có qua hợp đồng API thay vì phải UI của dự án.
 
@@ -85,7 +85,7 @@ Một quan sát vận hành, ghi kèm ngày cho trung thực: theo GitHub API ng
 
 GitHub API trả về nhãn license NOASSERTION cho repo này — tức máy dò không khớp được một chuẩn SPDX duy nhất. Không phải repo không có license; mà là license của nó dài hơn một nhãn. File LICENSE khai rõ kiểu phân chia theo thư mục, trích nguyên văn: 'Content outside of the above mentioned directories or restrictions above is available under the "Apache 2.0" license as defined below' — tức phần ngoài thư mục ee/ theo Apache 2.0, còn thư mục ee/ theo license riêng tại ee/LICENSE.
 
-(nguồn: file LICENSE của TabbyML/tabby — github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/LICENSE, theo GitHub API ngày 2026-09-08)
+(nguồn: file [LICENSE @ 21b29048](https://github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/LICENSE) của TabbyML/tabby, theo GitHub API ngày 2026-09-08)
 
 Thư mục ee/ đó không phải chi tiết nhỏ: nó chứa tabby-webserver, tabby-db, tabby-schema — các crate phần doanh nghiệp của workspace, và trong code, tính năng này được gate bằng cargo feature riêng. Vì thế cách gọi đúng trong bài này là: dự án công khai trên GitHub, với điều khoản sử dụng phân theo thư mục — không gộp vào một nhãn duy nhất. Bài học khái quát cho bất kỳ ai chọn công cụ theo license: nhãn trên trang repo là phỏng đoán của máy; khi điều khoản ảnh hưởng tới quyết định triển khai, đọc file gốc.
 

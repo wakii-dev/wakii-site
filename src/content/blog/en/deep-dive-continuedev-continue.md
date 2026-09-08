@@ -38,7 +38,7 @@ export function convertYamlRuleToContinueRule(rule: Rule): RuleWithSource {
 }
 ```
 
-(excerpted from `core/config/yaml/yamlToContinueConfig.ts` — source: github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts, per the GitHub API on 2026-09-08)
+(excerpted from [core/config/yaml/yamlToContinueConfig.ts @ 5522c6f4](https://github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts), per the GitHub API on 2026-09-08)
 
 A rule carries `globs` — which files it applies to; `alwaysApply` — active by default or only when invoked; `invokable` — whether it counts as an action or just as context. That is the line between a "real rule" and a "wish list note": a rule that declares no scope has no authority over any code. Most agent tooling describes rules in prose; Continue forces rules into a schema, and because of that the machine can read them — check them, lint them, diff them.
 
@@ -56,7 +56,7 @@ if ("command" in config) {
 const { type, url, apiKey, requestOptions } = config;
 ```
 
-(same file as above, excerpted — source: github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts)
+(same file as above, excerpted — source: [yamlToContinueConfig.ts @ 5522c6f4](https://github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts))
 
 The teachable detail here: the agent calls tools by name and never needs to know whether behind that name sits a child process on the machine or an HTTPS endpoint. The local/remote boundary becomes an operations concern — who runs it, where — rather than something the agent has to think about. When a tool changes how it is deployed, only its config entry changes; the rest of the workflow stays untouched.
 
@@ -73,7 +73,7 @@ The healthiest signal for this pattern sits in the repo itself: Continue checks 
 └── rules/
 ```
 
-(source: repo root tree, per the GitHub API on 2026-09-08 — github.com/continuedev/continue/tree/main/.continue)
+(source: [repo root tree `.continue/`](https://github.com/continuedev/continue/tree/main/.continue), per the GitHub API on 2026-09-08)
 
 Running your own invention on yourself has two consequences. First, every change to the project's own agent behavior goes through a pull request — with a diff, a reviewer, and history. Second, the config schema gets exercised continuously by the pickiest users available — the team that builds it. A tool that declares agents via files but refuses to live on those files is selling something it does not use.
 

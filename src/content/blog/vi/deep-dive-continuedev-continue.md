@@ -38,7 +38,7 @@ export function convertYamlRuleToContinueRule(rule: Rule): RuleWithSource {
 }
 ```
 
-(trích rút gọn từ `core/config/yaml/yamlToContinueConfig.ts` — nguồn: github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts, theo GitHub API ngày 2026-09-08)
+(trích rút gọn từ [core/config/yaml/yamlToContinueConfig.ts @ 5522c6f4](https://github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts), theo GitHub API ngày 2026-09-08)
 
 Một rule có `globs` — phạm vi file nó áp dụng; có `alwaysApply` — bật sẵn hay phải gọi mới chạy; có `invokable` — có được coi là một hành động hay chỉ là ngữ cảnh. Đây là ranh giới giữa "rule thật sự" và "ghi chú mong muốn": rule không khai phạm vi thì không có quyền phủ lên code nào. Phần lớn công cụ agent hiện nay mô tả rule bằng văn xuôi; Continue ép rule vào schema, và nhờ thế máy đọc được — kiểm tra, lint, diff.
 
@@ -56,7 +56,7 @@ if ("command" in config) {
 const { type, url, apiKey, requestOptions } = config;
 ```
 
-(cùng file trên, rút gọn — nguồn: github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts)
+(cùng file trên, rút gọn — nguồn: [yamlToContinueConfig.ts @ 5522c6f4](https://github.com/continuedev/continue/blob/5522c6f44ca0ac3528b37244818fbfa39b5af470/core/config/yaml/yamlToContinueConfig.ts))
 
 Chi tiết đáng học ở đây: agent gọi tool theo tên và không cần biết phía sau là một process con trên máy hay một endpoint HTTPS. Ranh giới cục bộ/xa dần chỉ còn là chuyện vận hành — ai chạy nó, ở đâu — chứ không đòi sửa cách agent nghĩ. Khi một tool đổi hình thức triển khai, chỉ entry config đổi; phần còn lại của quy trình giữ nguyên.
 
@@ -73,7 +73,7 @@ Dấu hiệu sức khỏe của pattern này nằm ngay ở repo gốc: Continue
 └── rules/
 ```
 
-(nguồn: cây thư mục gốc repo, theo GitHub API ngày 2026-09-08 — github.com/continuedev/continue/tree/main/.continue)
+(nguồn: [cây thư mục gốc repo `.continue/`](https://github.com/continuedev/continue/tree/main/.continue), theo GitHub API ngày 2026-09-08)
 
 Việc tự dùng đúng cấu trúc mình phát minh cho workflow của chính mình có hai hệ quả. Một: mọi thay đổi hành vi agent của dự án đi qua pull request — có diff, có người duyệt, có lịch sử. Hai: schema config bị kiểm thử liên tục bởi người dùng khó tính nhất — chính đội phát triển. Công cụ khai agent bằng file mà không tự sống trên file đó thì đang bán thứ mình không dùng.
 
