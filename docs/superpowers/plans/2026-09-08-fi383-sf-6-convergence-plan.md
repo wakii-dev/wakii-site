@@ -19,8 +19,8 @@
 - [x] T10 `adopt-issues-file-converged` — đọc `research/adopt-drafts/` (43 drafts) + grading distribution trong bài; selection ADOPT-trước-DIRECTION (kỳ vọng ~5-10) → file issues lên `wakii-dev/wakii` label `enhancement`, body = rubric SF-1 (inline evidence + retrieval dates + upstream links + link bài post; ghi rõ window 404 ngắn trước story merge — build-in-public chấp nhận). Comment link mỗi issue lên FI-389.
 - [x] T11 `probe-recheck-gone-renamed-archived` — `bash scripts/probe-repos.sh` exit 0; GONE/renamed/archived mới → draft:true hoặc escalate coordinator note; kết quả so bản research.
 - [x] T12 `browser-walkthrough-en-vi` — Rule 0 3 tầng: DOM (listing 120 posts + JSON-LD + og per-post) / VISUAL (screenshot listing + category + detail EN+VI) / FLOW (/blog/ → category → post → related → lang-switch). Mobile-390 spot-check theo contract SF-3.
-- [ ] T13 `independent-review-verdict` — code-reviewer ĐỘC LẬP trên diff SF-6 (scripts + plan + digest/adopt changes) — CHANGES-REQUESTED → fix → re-review APPROVED; security-audit surface: ADOPT issue bodies + probe-recheck + third-party claims.
-- [ ] T14 `release-readiness-build-smoke` — `pnpm build` sạch exit 0 (240 post pages) + toàn bộ audits exit 0 lần cuối trên dist mới → MERGE dest `story/fi383-blog-batch3` no-ff (ancestor-guard CAS; conflict improvements-log giữ CẢ HAI) → build merged tree TRƯỚC push → audit comment merge-hash lên FI-389 → `~/.claude/bin/story-verify sf-6` sạch → FI-389 Done.
+- [x] T13 `independent-review-verdict` — code-reviewer ĐỘC LẬP trên diff SF-6 (scripts + plan + digest/adopt changes) — CHANGES-REQUESTED → fix → re-review APPROVED; security-audit surface: ADOPT issue bodies + probe-recheck + third-party claims.
+- [x] T14 `release-readiness-build-smoke` — `pnpm build` sạch exit 0 (240 post pages) + toàn bộ audits exit 0 lần cuối trên dist mới → MERGE dest `story/fi383-blog-batch3` no-ff (ancestor-guard CAS; conflict improvements-log giữ CẢ HAI) → build merged tree TRƯỚC push → audit comment merge-hash lên FI-389 → `~/.claude/bin/story-verify sf-6` sạch → FI-389 Done.
 
 ## Acceptance (từ pack)
 
