@@ -93,3 +93,30 @@ Số liệu trong bài **re-extract ĐỐI CHIẾU SNAPSHOT** (`evidence-pack.md
 so với snapshot tại thời điểm viết: ghi số theo SNAPSHOT + ngày chụp trong bài
 ("tại thời điểm viết"). Drift phát hiện ở QA (SF-5) = ghi chú, không fail.
 Mỗi evidence block trong bài ghi nguồn + ngày lấy.
+
+## Drift-note — skills 21/14 → 20/13 (FI-373 SF-1, probe 2026-09-08)
+
+**Ground truth: 20 tổng / 13 public.** Đếm chuẩn = TRONG mảng `export const
+skills` của `src/data/skills.ts` (dòng 30–251): `id: '` ×20, `public: true`
+×13. Header của chính file (dòng 3) cũng ghi "the 20 skills".
+
+**Gốc vấn đề: PATTERN ĐẾM SAI, không phải content đổi.** `src/data/skills.ts`
+chỉ có 1 commit nội dung (`7dcdef9`, nhánh FI-359 — `178d12e` cùng change);
+20/13 không bao giờ là 21/14. Hai grep whole-file sinh đúng cặp số sai:
+
+- Pattern sinh **21**: `grep -c 'id:' src/data/skills.ts` → 21 match, vì dính
+  thêm dòng **`src/data/skills.ts:16`** — `  id: string;` (khai báo field của
+  interface `Skill`, không phải entry).
+- Pattern sinh **14**: `grep -c 'public: true'` (hoặc `grep -ci`) whole-file →
+  14 match, vì dính thêm dòng **`src/data/skills.ts:8`** — comment header
+  `` * `public: true` = catalog-worthy; … `` chứa literal y hệt pattern.
+
+Snapshot D8 lần chụp 2026-09-07 dùng pattern whole-file như trên → ghi 21/14.
+Các bài batch-1 đã viết đúng theo nguồn (cite 20/13 kèm "tại thời điểm viết")
+— chỉ snapshot và audit `SNAPSHOT` object bị lệch; cả hai đã refresh
+2026-09-08. `src/data/roadmap.ts` không góp số nào (0 match `id:`/`public`).
+
+**Flag (ngoài scope SF-1):** `README.md` đang stale — dòng 29 "21 built-in
+skills, 13 documented", dòng 67 "skills.ts (21-skill catalog)", dòng 81–82
+"13 of 21". Cần fix "21" → "20" ở 3 chỗ — qua coordinator, KHÔNG sửa trong
+SF-1.
