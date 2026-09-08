@@ -1,36 +1,58 @@
 #!/usr/bin/env node
 /**
- * Hero tile pipeline (story FI-349 SF-1): SVG template per post → headless
- * Chrome screenshot → public/blog/heroes/<slug>.png (1200×630, brand mint on
- * dark — same DNA as public/og-default.svg).
+ * Hero tile pipeline (story FI-349 SF-1; parameterized FI-373 SF-1): SVG
+ * template per post → headless Chrome screenshot → public/blog/heroes/<slug>.png
+ * (1200×630, brand mint on dark — same DNA as public/og-default.svg).
  *
  * - SVG sources are committed next to the PNGs so the tiles stay reviewable
  *   and re-renderable; the PNG is the canonical asset referenced by
  *   frontmatter `heroImage` (public path — spec D5, no astro:assets).
  * - `building-wakii-in-the-open-log-1` deliberately has NO hero: it exercises
  *   the og-default fallback path (spec SF-1 pin).
- * - VI mirrors share the EN hero — 4 PNGs total.
+ * - VI mirrors share the EN hero — only src/content/blog/en/ is scanned.
+ *
+ * Hero set is DERIVED, not hard-coded (FI-373 SF-1): every EN post whose
+ * frontmatter declares `heroImage: "/blog/heroes/<slug>.png"` with <slug>
+ * exactly matching its filename gets a tile. New batch-2 flagships join by
+ * adding the frontmatter line — no script edit. Values not matching
+ * `/blog/heroes/<own-slug>.png` are ignored here (content config decides
+ * what is a valid public path; this pipeline only renders its own convention).
  *
  * Usage: node scripts/render-blog-heroes.mjs [--check]
  *   --check  verify existing PNG dimensions without re-rendering (IHDR read).
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, 'public', 'blog', 'heroes');
+const enDir = join(root, 'src', 'content', 'blog', 'en');
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const CHECK_ONLY = process.argv.includes('--check');
 
-/** Posts that get a hero — building-wakii-in-the-open-log-1 stays hero-less (fallback demo). */
-const HERO_SLUGS = [
-  'decision-gates-safe-ai-agents',
-  'forking-an-ide-keeping-current-with-upstream',
-  'review-ai-agents-from-your-phone',
-  'story-workflow-idea-to-release',
-];
+/** Derived hero set: EN posts whose `heroImage` targets their own slug's PNG
+ *  (strict value match — prevents a copy-pasted path from silently rendering
+ *  the wrong tile). Sorted for stable --check output. */
+function heroSlugs() {
+  const slugs = [];
+  for (const f of readdirSync(enDir)) {
+    if (!f.endsWith('.md')) continue;
+    const slug = f.replace(/\.md$/, '');
+    const raw = readFileSync(join(enDir, f), 'utf8');
+    const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!fm) continue;
+    const hero = fm[1].match(/^heroImage:\s*"?(.*?)"?\s*$/m);
+    if (hero && hero[1].trim() === `/blog/heroes/${slug}.png`) slugs.push(slug);
+  }
+  return slugs.sort();
+}
+const HERO_SLUGS = heroSlugs();
+if (HERO_SLUGS.length === 0) {
+  console.error('✗ no EN post declares heroImage: "/blog/heroes/<own-slug>.png" — nothing to render');
+  process.exit(1);
+}
 
 function readTitleAndCategory(slug) {
   const raw = readFileSync(join(root, 'src', 'content', 'blog', 'en', `${slug}.md`), 'utf8');
