@@ -105,7 +105,7 @@ FI-359 — 5 plan files, one diamond
   each SF = one plan file + one isolated worktree
 ```
 
-*Source: the 5 FI-359 plan files in docs/superpowers/plans/ (the directory holds more), all five carrying Linear IDs (FI-360…FI-364) — FI-362 and FI-363 sit right in the filenames, retrieved 2026-09-08.*
+*Source: the 5 FI-359 plan files in docs/superpowers/plans/ (the directory holds more), all five carrying Linear IDs (FI-360…FI-364) — FI-363 even sits in the filename, retrieved 2026-09-08.*
 
 Where the nine agents come from and how the kit installs itself: the [agents & kit docs](/docs/agents-and-kit/). For the nine roles read through the lens of separated powers — why the writer never approves their own work — [Nine agents, separated powers](/blog/nine-agents-separated-powers/) covers it; the full public-skill catalog tour is in [a tour of the skills catalog](/blog/skills-catalog-tour/); how a plan file gets written for someone with no context is in [writing plans for Linear](/blog/skill-writing-plans-linear/).
 
