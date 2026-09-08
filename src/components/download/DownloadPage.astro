@@ -107,6 +107,22 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
           <MobileConnect t={t.mobile} />
         </div>
 
+        <!-- Nightly (issue #2) — rolling pre-release for power users; stable above stays the default -->
+        <div class="bx sp12" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">{t.desktop.nightly.title}</span><span class="meta">nightly</span></div>
+            <div class="bx-body">
+              <p class="nightly-desc">{t.desktop.nightly.desc}</p>
+              <div class="btn-row">
+                <a class="btn btn-ghost" href={`${REPO_URL}/releases/nightly`} rel="noopener">
+                  {t.desktop.nightly.btn}
+                </a>
+              </div>
+              <div class="bx-foot"><b>{t.desktop.nightly.warn}</b></div>
+            </div>
+          </div>
+        </div>
+
         <!-- iOS cell — soon-cell while mobile is not live; store link once it is
              (hand-off: "MOBILE_LIVE=true → cell thành link store, agent quyết
              theo data thật"). Empty iOS URL keeps the honest coming-soon state. -->
@@ -168,6 +184,7 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
 </Base>
 
 <style>
+  .nightly-desc { font-size: 14px; line-height: 1.6; margin: 0 0 12px; }
   /* ---- hero (canvas = grid-bg mask, như /skills) ---- */
   .dl-hero {
     padding: 76px 0 8px;

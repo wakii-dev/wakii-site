@@ -45,6 +45,12 @@ export interface DownloadStrings {
       buildFromSource: string;
       followReleases: string;
     };
+    nightly: {
+      title: string;
+      desc: string;
+      btn: string;
+      warn: string;
+    };
   };
   mobile: {
     label: string;
@@ -107,6 +113,12 @@ export const en: DownloadStrings = {
       note: 'Installers are not available yet — for now, Wakii is built from source. It takes a few minutes and always matches the docs.',
       buildFromSource: 'build from source',
       followReleases: 'follow releases on github',
+    },
+    nightly: {
+      title: 'Nightly build — for power users',
+      desc: 'Rolling daily build from the development branch. May break at any time — stable channel remains the default.',
+      btn: 'grab the nightly',
+      warn: 'Unstable by design — report anything odd as an issue.',
     },
   },
   mobile: {
@@ -171,6 +183,12 @@ export const vi: DownloadStrings = {
       note: 'Bản cài chưa có — hiện tại Wakii được build từ mã nguồn. Mất vài phút và luôn khớp với docs.',
       buildFromSource: 'build từ mã nguồn',
       followReleases: 'theo dõi releases trên github',
+    },
+    nightly: {
+      title: 'Bản build hằng ngày — cho power users',
+      desc: 'Build rolling hằng ngày từ nhánh phát triển. Có thể hỏng bất cứ lúc nào — kênh stable vẫn là mặc định.',
+      btn: 'tải bản nightly',
+      warn: 'Không ổn định do thiết kế — gặp gì lạ thì lập issue nhé.',
     },
   },
   mobile: {
