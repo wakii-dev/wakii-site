@@ -82,7 +82,7 @@ Wakii cũng đi theo hướng tách môi trường khỏi máy cá nhân: mỗi 
 ## Wakii học được gì
 
 - **ADOPT** — kỷ luật "một concern một patch có tên": lớp `patches/` của code-server cho thấy delta fork giữ được giá rẻ khi từng mảnh nhỏ, có tên tự tả và độc lập nhau. Wakii là fork của Orca; đề xuất cụ thể: duy trì một inventory delta fork theo concern (tên + lý do + file đụng) trong repo, dùng làm checklist re-validate từng mục mỗi lần sync upstream — thay vì đối chiếu cả đống commit lẫn lộn.
-- **DIRECTION** — editor chạy cạnh worktree: Wakii đã có SSH worktrees và story view trên mobile; mô hình code-server gợi ý bước đủ: IDE trỏ thẳng vào host nơi worktree và agent đang sống. Chưa làm ngay vì đây là thay đổi surface lớn, cần decision riêng.
+- **DIRECTION** — editor chạy cạnh worktree: Wakii đã có SSH worktrees (desktop) và story view trên mobile; mô hình code-server gợi ý bước đủ: IDE trỏ thẳng vào host nơi worktree và agent đang sống. Chưa làm ngay vì đây là thay đổi surface lớn, cần decision riêng.
 - **WATCH** — heartbeat file cho liveness: một marker file ghi nhịp 60s rẻ hơn việc poll nhiều nguồn; watchdog của Wakii hiện kiểm ba lớp (commits gần đây, terminal output, trạng thái Linear). Xem lại pattern này khi session agent chạy trên remote host, nơi poll terminal trở nên đắt.
 
 Wakii là agentic IDE với một đội agent có sẵn, cài xong là chạy — nếu bạn muốn xem đội đó chia việc ra sao, [docs agents-and-kit](/vi/docs/agents-and-kit/) là điểm bắt đầu tốt.

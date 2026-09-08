@@ -75,7 +75,7 @@ crates/
 └── ...               # 13 crate nữa trong workspace
 ```
 
-(nguồn: Cargo.toml workspace + cây thư mục crates/, theo GitHub API ngày 2026-09-08 — github.com/TabbyML/tabby/blob/main/Cargo.toml)
+(nguồn: Cargo.toml workspace + cây thư mục crates/, theo GitHub API ngày 2026-09-08 — github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/Cargo.toml)
 
 Server expose đúng các route cần: completions, chat completions, health, setting — tài liệu API tự sinh bằng utoipa kèm Swagger UI. Cấu trúc này cho phép đội vận hành cắm Tabby vào hệ thống sẵn có qua hợp đồng API thay vì phải UI của dự án.
 
@@ -83,7 +83,7 @@ Một quan sát vận hành, ghi kèm ngày cho trung thực: theo GitHub API ng
 
 ## Đọc license khi GitHub báo NOASSERTION
 
-GitHub API trả về nhãn license NOASSERTION cho repo này — tức máy dò không khớp được một chuẩn SPDX duy nhất. Không phải repo không có license; mà là license của nó dài hơn một nhãn. File LICENSE khai rõ kiểu phân chia theo thư mục, trích nguyên văn: "Content outside of the above mentioned directories or restrictions above is available under the 'Apache 2.0' license" — tức phần ngoài thư mục ee/ theo Apache 2.0, còn thư mục ee/ theo license riêng tại ee/LICENSE.
+GitHub API trả về nhãn license NOASSERTION cho repo này — tức máy dò không khớp được một chuẩn SPDX duy nhất. Không phải repo không có license; mà là license của nó dài hơn một nhãn. File LICENSE khai rõ kiểu phân chia theo thư mục, trích nguyên văn: 'Content outside of the above mentioned directories or restrictions above is available under the "Apache 2.0" license as defined below' — tức phần ngoài thư mục ee/ theo Apache 2.0, còn thư mục ee/ theo license riêng tại ee/LICENSE.
 
 (nguồn: file LICENSE của TabbyML/tabby — github.com/TabbyML/tabby/blob/21b29048d7bcf6b94f9f482f2d0fd05efadfd19f/LICENSE, theo GitHub API ngày 2026-09-08)
 
@@ -95,7 +95,7 @@ Nối về product của chúng ta: Wakii đứng ở đâu trên trục "code c
 
 ## Wakii học được gì
 
-- **ADOPT** — vệ sinh thư mục dữ liệu cục bộ: Tabby set permission 0o700 cho thư mục gốc dữ liệu ngay khi khởi động (evidence ở section một). Wakii giữ state cục bộ của pairing, story và index — rà lại các thư mục đó để khóa còn lại mỗi owner là việc nhỏ, đáng làm, không đổi hành vi nào khác.
+- **ADOPT** — vệ sinh thư mục dữ liệu cục bộ: Tabby set permission 0o700 cho thư mục gốc dữ liệu ngay khi khởi động (evidence ở section một). Wakii giữ state cục bộ cho pairing và story — rà lại các thư mục đó để khóa 0o700 theo owner là việc nhỏ, đáng làm, không đổi hành vi nào khác.
 - **DIRECTION** — giữ tầng agent tách rời endpoint model: kiến trúc hiện tại của Wakii đã tách orchestration khỏi inference; hướng đi là kiểm chứng một kịch bản endpoint nội bộ (tự host) chạy được end-to-end — chưa có yêu cầu thực tế nên chưa thể ADOPT.
 - **WATCH** — nhịp phát triển chậm lại (push cuối 2026-06-30, stable cuối v0.32.0 2026-01-25, theo GitHub API ngày 2026-09-08): theo dõi thêm một chu kỳ nữa; nếu hoạt động quay lại, cân nhắc lại các grade trên với nguồn mới.
 - **N/A** — tách license theo thư mục ee/: Wakii giữ một license MIT duy nhất cho toàn bộ repo; pattern phân chia license không áp vào mô hình phát hành của chúng ta.

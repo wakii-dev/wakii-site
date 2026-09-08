@@ -82,7 +82,7 @@ Wakii follows a related direction — detaching the environment from any single 
 ## What Wakii learns
 
 - **ADOPT** — the discipline of "one concern, one named patch": code-server's `patches/` layer shows a fork delta stays cheap to maintain when each piece is small, self-describing, and independent. Wakii is a fork of Orca; the concrete proposal: keep an inventory of fork deltas by concern (name + reason + files touched) in the repo and use it as a per-item re-validation checklist on every upstream sync — instead of diffing a pile of mixed commits.
-- **DIRECTION** — the editor running next to the worktree: Wakii already has SSH worktrees and story view on mobile; code-server's model suggests the completing step: point the IDE straight at the host where the worktree and the agent live. Not doing it now because it is a large surface change that needs its own decision.
+- **DIRECTION** — the editor running next to the worktree: Wakii already has SSH worktrees (desktop) and story view on mobile; code-server's model suggests the completing step: point the IDE straight at the host where the worktree and the agent live. Not doing it now because it is a large surface change that needs its own decision.
 - **WATCH** — a heartbeat file for liveness: a marker file beating every 60s is cheaper than polling many sources; Wakii's watchdog currently checks three layers (recent commits, terminal output, Linear state). Revisit this pattern when agent sessions run on remote hosts, where terminal polling gets expensive.
 
 Wakii is an agentic IDE with a built-in agent team that runs right after install — if you want to see how that team divides the work, the [agents and kit docs](/docs/agents-and-kit/) are a good starting point.

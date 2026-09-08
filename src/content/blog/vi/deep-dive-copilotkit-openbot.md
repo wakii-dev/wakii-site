@@ -79,7 +79,7 @@ Nguyên tắc "hành động qua cổng, refusal nêu rõ rule" chính là thứ
 
 ## Wakii học được gì
 
-- **ADOPT** — "refusal phải nêu tên rule": `ActionRefusedError` của OpenBot mang đúng rule gây chặn để UI hiển thị. Wakii đã làm điều này với guard codes ở decision gates (FI-341: resolve trùng hoặc gate đóng bị chặn với mã lỗi rõ ràng) — OpenBot xác nhận pattern và gợi ý mở rộng: mọi refusal của agent, kể cả ngoài gate (tool bị từ chối, file không cho ghi), đều nên trả kèm định danh rule thay vì thông báo vô hồn.
+- **ADOPT** — "refusal phải nêu tên rule": `ActionRefusedError` của OpenBot mang đúng rule gây chặn để UI hiển thị. Wakii đã làm điều này với guard codes ở decision gates — resolve trùng hoặc gate đóng bị chặn với mã lỗi rõ ràng — OpenBot xác nhận pattern và gợi ý mở rộng: mọi refusal của agent, kể cả ngoài gate (tool bị từ chối, file không cho ghi), đều nên trả kèm định danh rule thay vì thông báo vô hồn.
 - **DIRECTION** — generative UI có grant: component được duyệt trước, render phải hỏi server từng lần, data function grant per-component. Nếu Wakii muốn agent render trạng thái workflow ngay trong panel thay vì prose, đây là hình mẫu an toàn để nghiên cứu.
 - **WATCH** — repo 3 tuần tuổi (tính tới probe 2026-09-08), badge Alpha, và threads/memory phụ thuộc CopilotKit Intelligence — service ngoài repo. Theo dõi tới khi phần phụ thuộc này có đường self-host mượt hoặc bề mặt API ổn định thì đánh giá lại.
 - **N/A** — routines chạy lịch (sàn 15 phút, cap 20, tự tắt sau 10 fail) và SSO SAML/OIDC theo email domain: đúng bài toán doanh nghiệp của một template deployment, không đụng tới surface Wakii hiện tại.
