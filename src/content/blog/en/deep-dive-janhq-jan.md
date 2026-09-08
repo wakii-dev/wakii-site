@@ -88,7 +88,7 @@ The detail that goes beyond the slogan: the app does not keep the local capabili
 
 ## Release cadence, with main running ahead
 
-The 10 most recent releases span v0.7.5 (2025-12-08) to v0.8.4 (2026-07-23): steady but not compressed — the v0.8.0 → v0.8.3 cluster alone fits inside roughly a month:
+The 10 most recent releases span v0.7.5 (2025-12-08) to v0.8.4 (2026-07-23): steady but not compressed — the v0.8.0 → v0.8.3 cluster alone fits inside roughly a month. The table shows the five most recent:
 
 | Tag | Release date |
 | --- | --- |

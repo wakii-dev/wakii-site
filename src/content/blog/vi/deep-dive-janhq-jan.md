@@ -88,7 +88,7 @@ Chi tiết hơn khẩu hiệu: app không giữ khả năng local cho riêng mì
 
 ## Nhịp release và chiều main đi trước
 
-10 release gần nhất trải từ v0.7.5 (08-12-2025) tới v0.8.4 (23-07-2026): đều nhưng không dồn, riêng cụm v0.8.0 → v0.8.3 gói trong hơn một tháng:
+10 release gần nhất trải từ v0.7.5 (08-12-2025) tới v0.8.4 (23-07-2026): đều nhưng không dồn, riêng cụm v0.8.0 → v0.8.3 gói trong hơn một tháng. Bảng dưới là 5 bản gần nhất:
 
 | Tag | Ngày phát hành |
 | --- | --- |

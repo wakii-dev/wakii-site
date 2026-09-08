@@ -112,7 +112,7 @@ Thứ tự so sánh nằm ngay trong `__lt__` của message: trước là clock 
 
 ## Nhịp phát hành: mã chảy đều, release thưa dần
 
-Mười bản gần nhất theo GitHub API ngày 2026-09-08:
+Năm bản gần nhất theo GitHub API ngày 2026-09-08:
 
 | Tag | Ngày phát hành |
 | --- | --- |

@@ -112,7 +112,7 @@ The ordering lives in the message's own `__lt__`: first the clock (Lamport-clock
 
 ## Release cadence: code flows, releases thin out
 
-The ten most recent releases per the GitHub API on 2026-09-08:
+The five most recent releases per the GitHub API on 2026-09-08:
 
 | Tag | Published |
 | --- | --- |
