@@ -93,7 +93,7 @@ v1.2.23-vscode  2026-06-15
 
 (source: GitHub API repos/continuedev/continue/releases, on 2026-09-08 — github.com/continuedev/continue/releases)
 
-Cluster three releases into two final days is a graceful way to close: ship the version that seals the code, don't leave the repo dangling mid-episode. The README ends by handing the code back: "We hope this codebase continues to serve as a foundation for others." For a fork like Wakii — a fork of orca — an upstream that stops is not a hypothetical; branch discipline and a steady sync rhythm are the lifeboat for exactly that moment, as the post on [living with upstream](/blog/oss-upstream-sync/) documents step by step.
+Cluster three releases into two final days is a graceful way to close: ship the version that seals the code, don't leave the repo dangling mid-episode. The README ends by handing the code back: "We hope this codebase continues to serve as a foundation for others." (source: the continuedev/continue README — github.com/continuedev/continue#readme) For a fork like Wakii — a fork of orca — an upstream that stops is not a hypothetical; branch discipline and a steady sync rhythm are the lifeboat for exactly that moment, as the post on [living with upstream](/blog/oss-upstream-sync/) documents step by step.
 
 ## Two layers: inside the IDE and outside it
 

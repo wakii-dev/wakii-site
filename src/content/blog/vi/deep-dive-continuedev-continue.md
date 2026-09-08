@@ -93,7 +93,7 @@ v1.2.23-vscode  2026-06-15
 
 (nguồn: GitHub API repos/continuedev/continue/releases, ngày 2026-09-08 — github.com/continuedev/continue/releases)
 
-Ba mốc release dồn về hai ngày cuối cùng là kiểu đóng cửa tử tế: phát hành bản chốt, không để repo lơ lửng giữa chừng. README kết bằng một câu nhường lại cộng đồng: "We hope this codebase continues to serve as a foundation for others." Với một fork như Wakii — fork của orca — tình huống upstream dừng không phải giả định lý thuyết; kỷ luật giữ nhánh upstream rõ ràng và sync có nhịp chính là ván cứu sinh lúc đó, như bài [sống chung với upstream](/vi/blog/oss-upstream-sync/) đã ghi lại từng bước.
+Ba mốc release dồn về hai ngày cuối cùng là kiểu đóng cửa tử tế: phát hành bản chốt, không để repo lơ lửng giữa chừng. README kết bằng một câu nhường lại cộng đồng: "We hope this codebase continues to serve as a foundation for others." (nguồn: README của continuedev/continue — github.com/continuedev/continue#readme) Với một fork như Wakii — fork của orca — tình huống upstream dừng không phải giả định lý thuyết; kỷ luật giữ nhánh upstream rõ ràng và sync có nhịp chính là ván cứu sinh lúc đó, như bài [sống chung với upstream](/vi/blog/oss-upstream-sync/) đã ghi lại từng bước.
 
 ## Hai lớp: trong IDE và ngoài IDE
 
