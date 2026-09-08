@@ -184,7 +184,7 @@ nhận đúng văn bản đó.
 
 ```bash
 $ grep -n "export type DiffCommentDeliverySnapshot" src/renderer/src/store/slices/diffComments.ts
-32: export type DiffCommentDeliverySnapshot = Pick<
+32:export type DiffCommentDeliverySnapshot = Pick<
 ```
 
 *Nguồn: src/renderer/src/store/slices/diffComments.ts, tag v1.4.199, lấy
