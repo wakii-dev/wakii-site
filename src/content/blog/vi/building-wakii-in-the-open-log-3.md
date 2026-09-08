@@ -5,6 +5,7 @@ pubDate: "2026-09-30"
 category: "build-log"
 tags: ["build-log", "wakii", "release"]
 draft: false
+heroImage: "/blog/heroes/building-wakii-in-the-open-log-3.png"
 ---
 
 Log 2 khép lại bằng một lời hứa: các con số sẽ được chụp lại và đối chiếu — cái nào nhích, cái nào đứng yên. Log này giữ nhịp đó nhưng đổi góc máy: thay vì kể bài viết mới, nó kể về cái khung đang chứa các bài viết ấy. Story FI-349 đã thiết kế lại blog từ một danh sách phẳng thành một hệ thống hai locale, rồi khép lại bằng một PR duy nhất đã merged. Câu hỏi của log này: thiết kế đóng góp gì cho một sản phẩm kỹ thuật, và làm sao biết nó đã làm đúng việc thay vì chỉ đẹp?
@@ -58,7 +59,7 @@ Phần việc ít nhìn thấy nhất của FI-349 nằm ở trang bài. Route c
 
 *Nguồn: chú thích trong src/pages/blog/[slug].astro, repo công khai wakii-dev/wakii-site, lấy 2026-09-08.*
 
-Bảy thành phần trong chú thích trên — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — là thứ một bài kỹ thuật cần để tồn tại như một trang web: điều hướng giữa các bài, dữ liệu có cấu trúc cho công cụ tìm kiếm, và một hero tile 1200×630 khi bài có hình đại diện. Hợp đồng của hero cũng ghi ngay trong schema: đường dẫn PNG nằm trong public/, không qua astro:assets, và bản VI dùng chung hero của bản EN. Log 3 này là ví dụ đầu tiên ngoài bộ seed: bản tiếng Anh khai báo heroImage trong frontmatter, còn bản tiếng Việt bạn đang đọc không có trường đó — theo hợp đồng, nó kế thừa đúng tấm hình ấy.
+Bảy thành phần trong chú thích trên — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — là thứ một bài kỹ thuật cần để tồn tại như một trang web: điều hướng giữa các bài, dữ liệu có cấu trúc cho công cụ tìm kiếm, và một hero tile 1200×630 khi bài có hình đại diện. Hợp đồng của hero cũng ghi ngay trong schema: đường dẫn PNG nằm trong public/, không qua astro:assets, và bản VI dùng chung hero của bản EN. Log 3 này là ví dụ đầu tiên ngoài bộ seed: cả hai bản ngữ khai cùng một đường dẫn heroImage trong frontmatter — bản VI dùng chung tấm hình của bản EN, và parity gate kiểm cả sự hiện diện lẫn giá trị phải khớp nhau.
 
 SEO depth nằm ở head của mỗi trang. Hai dòng sau khai báo với công cụ tìm kiếm rằng bài EN và bản VI của nó là hai bản của cùng một nội dung:
 

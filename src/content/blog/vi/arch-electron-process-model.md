@@ -5,6 +5,7 @@ pubDate: "2026-09-24"
 category: "tech"
 tags: ["architecture", "electron"]
 draft: false
+heroImage: "/blog/heroes/arch-electron-process-model.png"
 ---
 
 Mỗi ứng dụng Electron là ít nhất ba process chạy song song: một process main giữ quyền với hệ điều hành, một process renderer vẽ giao diện, và một script preload đứng giữa hai bên. Rất nhiều câu chuyện bảo mật Electron bắt đầu từ cùng một sai lầm: renderer được trao quá nhiều quyền. Wakii chọn chiều ngược lại — renderer chạy trong sandbox mà không có Node.js, quyền hạn gom về process main, và lối đi giữa hai bên là một hợp đồng kiểu hoá, đọc được bằng mắt. Bài này đi qua từng ranh giới bằng chính code trong repo công khai `wakii-dev/wakii`; đường dẫn nào trong bài cũng trỏ tới file có thật trên repo đó, bạn có thể mở ra đối chiếu từng dòng.
