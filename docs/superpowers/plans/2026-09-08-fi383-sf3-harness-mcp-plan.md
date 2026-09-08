@@ -86,7 +86,7 @@
       oss-why-fork-mit. Angle: hạ tầng phân phối — naming/discovery/trust.
       ⚠ † scoped-FORBIDDEN machine: KHÔNG "open-source"/"mã nguồn mở" ở BẤT KỲ
       đâu trong file (kể cả title/description).
-- [ ] T11 series-harness-mcp-consistency-pass — lint full · cross-link resolve
+- [x] T11 series-harness-mcp-consistency-pass — lint full · cross-link resolve
       grep · claims sentence-check vs registry §Third-party · digests 10/10 điền
       · adopt drafts đủ bài ADOPT (rubric §10) · `pnpm build` xanh · code-reviewer
       2 nhóm + re-review · security-audit · browser Rule 0 3 tầng (DOM listing ·
