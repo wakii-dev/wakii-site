@@ -8,6 +8,9 @@
  *   T2 — style-guide §2 D1 word-band algorithm (PINNED, verbatim)
  *   T3 — claims-registry ## FORBIDDEN parse + variants + evidence-pack §Numbers snapshot D8
  *        + ## Verify-shipped labels (DEC-8, batch-2 feature posts)
+ *        + scoped FORBIDDEN entries (FI-383: `- "phrase" — scope: slug,slug`
+ *          enforces ONLY on the listed slugs — parser identical to
+ *          check-blog-content.mjs: same tree ⇒ same verdict from both scripts)
  *   T4 — link/locale/anchor rules (style-guide §6, D4) resolved against dist/
  *   T5 — RSS contract (FI-339 SF-1): bilingual feed, guid absolute per locale, no <language>
  *   T6 — sitemap + hreflang pair + OG article contract (FI-339 rev 2)
@@ -161,7 +164,11 @@ function parseFields(frontmatter) {
 const unquote = (v) => v.replace(/^["'](.*)["']$/s, '$1').trim();
 
 /* FORBIDDEN section parse — same contract as check-blog-content.mjs:
-   one literal per `- ` line, reason stripped at " — ", stop at next `## `. */
+   one literal per `- ` line, reason stripped at " — ", stop at next `## `.
+   Scoped entries (FI-383 SF-1): `- "phrase" — scope: slug-a,slug-b` enforces
+   the phrase ONLY on the listed slugs; an entry without ` — scope:` is
+   unscoped (greps every non-seed file). Parser IDENTICAL to lint — same
+   tree ⇒ same verdict from both scripts. */
 function forbiddenPhrases() {
   const src = readFileSync(join(KIT, 'claims-registry.md'), 'utf8');
   const start = src.match(/^## FORBIDDEN\s*$/m);
@@ -173,8 +180,15 @@ function forbiddenPhrases() {
   for (const line of section.split('\n')) {
     const t = line.trim();
     if (!t.startsWith('- ')) continue;
-    const phrase = t.slice(2).split(' — ')[0].trim();
-    if (phrase) phrases.push(phrase);
+    const scoped = t.match(/^- (.+?) — scope: ([a-z0-9,-]+)\s*$/);
+    if (scoped) {
+      const phrase = scoped[1].replace(/^"(.*)"$/s, '$1').trim();
+      if (phrase) phrases.push({ phrase, scope: scoped[2].split(',').map((s) => s.trim()).filter(Boolean) });
+      continue;
+    }
+    // strip surrounding quotes — harmless for the legacy unquoted entries
+    const phrase = t.slice(2).split(' — ')[0].trim().replace(/^"(.*)"$/s, '$1');
+    if (phrase) phrases.push({ phrase, scope: null });
   }
   return phrases;
 }
@@ -251,16 +265,18 @@ for (const p of newPosts) {
  * ================================================================ */
 out(`\n--- T3: claims sweep vs snapshot D8 (evidence-pack §Numbers, ${SNAPSHOT.snapshotDate}) ---`);
 
-/* (a) FORBIDDEN literals — exact lint parse, full file, case-insensitive. */
+/* (a) FORBIDDEN literals — exact lint parse, full file, case-insensitive.
+   Scoped entries (FI-383) hit only their listed slugs. */
 const phrases = forbiddenPhrases();
 let t3aHits = 0;
-out(`(a) FORBIDDEN literals parsed from claims-registry.md: ${phrases.length}`);
+out(`(a) FORBIDDEN literals parsed from claims-registry.md: ${phrases.length} (${phrases.filter((x) => x.scope).length} scoped)`);
 for (const p of newPosts) {
   const lower = p.content.toLowerCase();
-  for (const phrase of phrases) {
+  for (const { phrase, scope } of phrases) {
+    if (scope && !scope.includes(p.slug)) continue;
     if (lower.includes(phrase.toLowerCase())) {
       t3aHits += 1;
-      fail('T3', `src/content/blog/${p.locale}/${p.slug}.md: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN) [${owner(p.slug)}]`);
+      fail('T3', `src/content/blog/${p.locale}/${p.slug}.md: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN${scope ? ` — scoped to ${scope.length} slug †` : ''}) [${owner(p.slug)}]`);
     }
   }
 }

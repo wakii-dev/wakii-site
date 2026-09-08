@@ -116,7 +116,14 @@ const REQUIRED_FIELDS = ['title', 'description', 'pubDate', 'category', 'tags', 
 
 /** Literals from the registry's `## FORBIDDEN` section (one per `- ` line,
  *  reason stripped at the " — " separator). Section parse stops at the next
- *  `## ` heading — the review-only variants section is ignored by design. */
+ *  `## ` heading — the review-only variants section is ignored by design.
+ *
+ *  Scoped entries (FI-383 SF-1): `- "phrase" — scope: slug-a,slug-b` enforces
+ *  the phrase ONLY on the listed slugs (license † repos must not be called
+ *  open-source; the 64 batch-1/2 posts stay green). An entry without
+ *  ` — scope:` is unscoped and greps every planned file as before. CONTRACT:
+ *  audit-blog-convergence.mjs T3(a) parses the registry with the SAME
+ *  algorithm — same tree ⇒ same verdict from both scripts. */
 function forbiddenPhrases() {
   if (!existsSync(registryPath)) {
     console.error(`✗ blog content FAILED: claims registry missing at ${registryPath}`);
@@ -135,8 +142,15 @@ function forbiddenPhrases() {
   for (const line of section.split('\n')) {
     const t = line.trim();
     if (!t.startsWith('- ')) continue;
-    const phrase = t.slice(2).split(' — ')[0].trim();
-    if (phrase) phrases.push(phrase);
+    const scoped = t.match(/^- (.+?) — scope: ([a-z0-9,-]+)\s*$/);
+    if (scoped) {
+      const phrase = scoped[1].replace(/^"(.*)"$/s, '$1').trim();
+      if (phrase) phrases.push({ phrase, scope: scoped[2].split(',').map((s) => s.trim()).filter(Boolean) });
+      continue;
+    }
+    // strip surrounding quotes — harmless for the legacy unquoted entries
+    const phrase = t.slice(2).split(' — ')[0].trim().replace(/^"(.*)"$/s, '$1');
+    if (phrase) phrases.push({ phrase, scope: null });
   }
   if (phrases.length === 0) {
     console.error('✗ blog content FAILED: `## FORBIDDEN` section has no `- ` lines');
@@ -277,11 +291,13 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
     }
   }
 
-  // Forbidden phrases — full file, case-insensitive.
+  // Forbidden phrases — full file, case-insensitive. Scoped entries hit only
+  // their listed slugs (FI-383); unscoped entries grep every planned file.
   const lower = content.toLowerCase();
-  for (const phrase of phrases) {
+  for (const { phrase, scope } of phrases) {
+    if (scope && !scope.includes(slug)) continue;
     if (lower.includes(phrase.toLowerCase())) {
-      fileErrors.push(`claims: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN)`);
+      fileErrors.push(`claims: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN${scope ? ` — scoped to ${scope.length} slug †` : ''})`);
     }
   }
 
