@@ -20,7 +20,7 @@ TL;DR:
 
 ## Repo công khai mà không chứa mã của tool
 
-Điều đầu tiên gây bất ngờ là chính cấu trúc repo. Tại commit được đọc ngày 2026-09-08 (`ab9b2cf`), gốc repo gồm đúng các thành phần sau:
+Điều đầu tiên gây bất ngờ là chính cấu trúc repo. Tại commit được đọc ngày 2026-09-08 (`ab9b2cf`), gốc repo gồm các thành phần chính sau:
 
 ```
 github.com/anthropics/claude-code @ ab9b2cf
@@ -65,7 +65,7 @@ Lịch sử lớn hơn nhiều: CHANGELOG.md tại `ab9b2cf` chứa 387 bản gh
 
 13 plugin chính thức nằm ngay trong repo tại `ab9b2cf` — mỗi plugin là một thư mục markdown: `commands/`, `agents/`, `hooks/` và một `plugin.json`. Đây là source thật, đọc được nguyên vẹn, và nó phơi bày cách Anthropic tự dùng hệ plugin của mình.
 
-Đáng học nhất là `pr-review-toolkit` với sáu agent review chuyên biệt: code-reviewer, code-simplifier, comment-analyzer, pr-test-analyzer, type-design-analyzer và silent-failure-hunter. Agent cuối mở đầu system prompt thế này:
+Đáng học nhất là `pr-review-toolkit` với sáu agent review chuyên biệt: code-reviewer, code-simplifier, comment-analyzer, pr-test-analyzer, type-design-analyzer và silent-failure-hunter. Agent cuối có nguyên tắc đầu trong system prompt thế này:
 
 > "Silent failures are unacceptable - Any error that occurs without proper logging and user feedback is a critical defect"
 — silent-failure-hunter, plugins/pr-review-toolkit @ [`ab9b2cf`](https://github.com/anthropics/claude-code/blob/ab9b2cf/plugins/pr-review-toolkit/agents/silent-failure-hunter.md)
@@ -87,6 +87,22 @@ Ba lớp đó là triết lý defense-in-depth — thứ khó thấy ở phần 
 ## 12.654 issue và máy triage công khai
 
 Cửa sổ cuối nhỏ hơn nhưng nói nhiều: 12.654 open issues và 23.069 forks (theo GitHub API ngày 2026-09-08). Repo kèm 8 script vận hành issue — `auto-close-duplicates.ts`, `sweep.ts`, `issue-lifecycle.ts`… — đủ thấy lượng feedback quy mô đó được xử lý bằng công cụ nằm luôn trong repo, công khai cả cách vận hành. README còn chỉ đường ngắn nhất: lệnh `/bug` trong chính Claude Code tạo issue hộ bạn.
+
+Cả 8 script, tại `scripts/` @ `ab9b2cf`:
+
+```
+scripts/
+├── auto-close-duplicates.ts
+├── backfill-duplicate-comments.ts
+├── comment-on-duplicates.sh
+├── edit-issue-labels.sh
+├── gh.sh
+├── issue-lifecycle.ts
+├── lifecycle-comment.ts
+└── sweep.ts
+```
+
+(nguồn: [scripts/ @ ab9b2cf](https://github.com/anthropics/claude-code/tree/ab9b2cf/scripts))
 
 Wakii đi chiều ngược lại: toàn bộ đội 9-agent và 20 skills được mô tả công khai trong [agents & kit](/vi/docs/agents-and-kit/). Đặt cạnh nhau, hai cách công bố này là hai cực của cùng một câu hỏi: người dùng agent nên được biết bao nhiêu về cơ chế phía sau.
 

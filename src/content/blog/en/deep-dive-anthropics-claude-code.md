@@ -20,7 +20,7 @@ TL;DR:
 
 ## A public repo that contains none of the tool
 
-The first surprise is the repo structure itself. At the commit read on 2026-09-08 (`ab9b2cf`), the repo root consists of exactly these parts:
+The first surprise is the repo structure itself. At the commit read on 2026-09-08 (`ab9b2cf`), the repo root consists of these main parts:
 
 ```
 github.com/anthropics/claude-code @ ab9b2cf
@@ -65,7 +65,7 @@ The full history is much larger: CHANGELOG.md at `ab9b2cf` holds 387 version ent
 
 13 official plugins sit right in the repo at `ab9b2cf` — each plugin is a folder of markdown: `commands/`, `agents/`, `hooks/`, and a `plugin.json`. This is real source, readable in full, and it shows how Anthropic uses its own plugin system.
 
-The most instructive is `pr-review-toolkit` with six specialized review agents: code-reviewer, code-simplifier, comment-analyzer, pr-test-analyzer, type-design-analyzer, and silent-failure-hunter. The last one opens its system prompt like this:
+The most instructive is `pr-review-toolkit` with six specialized review agents: code-reviewer, code-simplifier, comment-analyzer, pr-test-analyzer, type-design-analyzer, and silent-failure-hunter. The first principle in its system prompt reads:
 
 > "Silent failures are unacceptable - Any error that occurs without proper logging and user feedback is a critical defect"
 — silent-failure-hunter, plugins/pr-review-toolkit @ [`ab9b2cf`](https://github.com/anthropics/claude-code/blob/ab9b2cf/plugins/pr-review-toolkit/agents/silent-failure-hunter.md)
@@ -87,6 +87,22 @@ Those three layers are defense-in-depth — the kind of thing you cannot see in 
 ## 12,654 issues and a public triage machine
 
 The last window is smaller but telling: 12,654 open issues and 23,069 forks (per GitHub API on 2026-09-08). The repo ships 8 issue-ops scripts — `auto-close-duplicates.ts`, `sweep.ts`, `issue-lifecycle.ts`… — showing that feedback at that scale is handled by tooling kept in the repo, with the ops itself public. The README even offers the shortest path: the `/bug` command inside Claude Code files an issue for you.
+
+All 8 of them, at `scripts/` @ `ab9b2cf`:
+
+```
+scripts/
+├── auto-close-duplicates.ts
+├── backfill-duplicate-comments.ts
+├── comment-on-duplicates.sh
+├── edit-issue-labels.sh
+├── gh.sh
+├── issue-lifecycle.ts
+├── lifecycle-comment.ts
+└── sweep.ts
+```
+
+(source: [scripts/ @ ab9b2cf](https://github.com/anthropics/claude-code/tree/ab9b2cf/scripts))
 
 Wakii takes the opposite direction: the entire 9-agent team and 20 skills are described publicly in [agents & kit](/docs/agents-and-kit/). Side by side, these two disclosure styles are two poles of the same question: how much of the machinery behind an agent should its users get to see?
 

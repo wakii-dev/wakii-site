@@ -14,7 +14,7 @@ TL;DR:
 
 - llama.cpp is a pure C/C++ inference engine built on the ggml library, aiming for performance across a "wide range of hardware" — x86, Apple Silicon, down to phone NPUs.
 - Quantization is the core philosophy: the enum in `ggml.h` spans 1-bit (IQ1_S/M), 4-bit (Q4_K, MXFP4) to 8-bit (Q8_0) — 56 type definitions in one header.
-- Backends are not hardwired: the registry in `ggml/src/` scans, loads libraries, and picks the highest-scoring backend out of 18.
+- Backends are not hardwired: the registry in `ggml/src/` scans, loads libraries, and picks the highest-scoring backend out of 18 backend directories (the README table lists 17).
 - Ship cadence: stable release v0.4.0 on 2026-09-04, yet 12 nightly b108xx builds landed in ~27 hours (per GitHub API on 2026-09-08).
 - The repo governs AI contributions with a "100% responsible for every line" policy and ships its own contribution-guidance skill in-tree.
 
@@ -86,11 +86,11 @@ Infrastructure repos live differently from app repos: the latest stable release,
 | b10837 | 2026-09-07 08:35 |
 | b10835 | 2026-09-07 08:08 |
 
-12 builds in ~27.5 hours (per GitHub API on 2026-09-08); the repo's `pushed_at` falls in the same window — 11:36:37 UTC on 2026-09-08. A natural consequence of swappable backends: every merge may touch one of 18 backends, so the pipeline builds continuously so that whoever tests on whichever hardware gets a fresh binary. Public since 2026-03-10, and the cadence has held for over three years.
+12 builds in ~27.5 hours (per GitHub API on 2026-09-08); the repo's `pushed_at` falls in the same window — 11:36:37 UTC on 2026-09-08. A natural consequence of swappable backends: every merge may touch one of 18 backends, so the pipeline builds continuously so that whoever tests on whichever hardware gets a fresh binary. Public since 2023-03-10, and the cadence has held for over three years.
 
 ## An agent-native repo: AGENTS.md and a contribution skill
 
-The first surprise: the tree root has an `AGENTS.md` — not instructions for the agent, but constraints for people using agents. The first principle: "AI-generated code is allowed. What is **not** allowed is submitting code you do not understand" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)). Contributors own 100% of every line, whoever typed it — because every merged line is maintained indefinitely by a small maintainer team across a vast platform-backend matrix, so "a simpler change that does 90% of the job is often preferable to a complex one that does 100%" (same AGENTS.md).
+The first surprise: the tree root has an `AGENTS.md` — not instructions for the agent, but constraints for people using agents. The first principle: "AI-generated code is allowed. What is **not** allowed is submitting code you do not understand" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)). Contributors own 100% of every line, whoever typed it — because every merged line is maintained indefinitely by a small maintainer team across a vast platform-backend matrix, so "a simpler change that does 90% of the job is often preferable to a complex one that does 100%" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)).
 
 The repo even ships a skill for contributing agents: `skills/add-new-model/SKILL.md` walks through adding a new model architecture, with memorable constraints — never write the PR description or commit message on the contributor's behalf, require disclosure of any AI-meaningful contribution, sign `Assisted-by:` instead of `Co-authored-by:`. The skill requires reading the `git log` of at least 3 recent model-adding PRs, because the log "shows current convention more reliably than the docs, which can lag behind" ([SKILL.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/skills/add-new-model/SKILL.md)). A 127k-star repo does not trust docs to describe convention — it points the agent at real data.
 

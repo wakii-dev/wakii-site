@@ -14,7 +14,7 @@ TL;DR:
 
 - llama.cpp là engine inference thuần C/C++ trên thư viện ggml, nhắm hiệu năng trên "wide range of hardware" — x86, Apple Silicon tới NPU điện thoại.
 - Quantization là lõi triết lý: enum trong `ggml.h` liệt kê từ 1-bit (IQ1_S/M), 4-bit (Q4_K, MXFP4) tới 8-bit (Q8_0) — 56 định nghĩa kiểu trong một header.
-- Backend không gắn cứng: registry trong `ggml/src/` tự quét, tự load library rồi chọn backend điểm số cao nhất trong 18 backend.
+- Backend không gắn cứng: registry trong `ggml/src/` tự quét, tự load library rồi chọn backend điểm số cao nhất trong 18 thư mục backend (bảng README liệt kê 17).
 - Nhịp ship: release ổn định v0.4.0 ngày 04-09-2026, nhưng 12 nightly build b108xx đổ ra chỉ trong ~27 giờ (theo GitHub API ngày 2026-09-08).
 - Repo quản AI contribution bằng chính sách "chịu 100% trách nhiệm từng dòng" và tự ship skill hướng dẫn đóng góp ngay trong tree.
 
@@ -90,7 +90,7 @@ Repo hạ tầng sống khác repo ứng dụng: release ổn định gần nh�
 
 ## Repo agent-native: AGENTS.md và skill đóng góp riêng
 
-Điều bất ngờ nhất: gốc tree có `AGENTS.md` — không phải hướng dẫn cho agent, mà là giới hạn cho người dùng agent. Nguyên tắc đầu: "AI-generated code is allowed. What is **not** allowed is submitting code you do not understand" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)). Người đóng góp chịu 100% trách nhiệm từng dòng, dù do ai gõ — vì mỗi dòng merged được đội maintainer nhỏ maintain vô hạn trên ma trận platform-backend khổng lồ, nên "a simpler change that does 90% of the job is often preferable to a complex one that does 100%" (vẫn AGENTS.md).
+Điều bất ngờ nhất: gốc tree có `AGENTS.md` — không phải hướng dẫn cho agent, mà là giới hạn cho người dùng agent. Nguyên tắc đầu: "AI-generated code is allowed. What is **not** allowed is submitting code you do not understand" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)). Người đóng góp chịu 100% trách nhiệm từng dòng, dù do ai gõ — vì mỗi dòng merged được đội maintainer nhỏ maintain vô hạn trên ma trận platform-backend khổng lồ, nên "a simpler change that does 90% of the job is often preferable to a complex one that does 100%" ([AGENTS.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/AGENTS.md)).
 
 Repo còn tự ship skill cho agent đóng góp: `skills/add-new-model/SKILL.md` dẫn từng bước thêm kiến trúc model mới, kèm ràng buộc đáng nhớ — cấm viết hộ PR description và commit message, bắt disclosure mọi đóng góp có AI, ký `Assisted-by:` thay vì `Co-authored-by:`. Skill yêu cầu đọc `git log` của ít nhất 3 PR thêm model gần nhất, vì log đó "shows current convention more reliably than the docs, which can lag behind" ([SKILL.md @ 1744c6b](https://github.com/ggml-org/llama.cpp/blob/1744c6b/skills/add-new-model/SKILL.md)). Repo 127k★ không tin tài liệu tả convention — nó trỏ agent vào dữ liệu thật.
 
