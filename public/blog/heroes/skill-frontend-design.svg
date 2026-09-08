@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- hero Skill /frontend-design: aesthetics as decisions, not preferences — brand mono aesthetic (tokens.css: bg #0A0E0D, accent #45E0A8, text #D7E2DD, dim #6B7A74).
+       Re-render: node scripts/render-blog-heroes.mjs -->
+  <defs>
+    <radialGradient id="glow" cx="30%" cy="34%" r="60%">
+      <stop offset="0%" stop-color="#45E0A8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#45E0A8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#45E0A8" fill-opacity="0.07"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0A0E0D"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#45E0A8" stroke-opacity="0.18" stroke-width="2" rx="16"/>
+
+  <g font-family="'JetBrains Mono', Menlo, monospace">
+    <text x="120" y="205" font-size="42" font-weight="700">
+      <tspan fill="#6B7A74">~/</tspan><tspan fill="#D7E2DD">wakii</tspan><tspan fill="#45E0A8">.</tspan>
+    </text>
+    <text x="120" font-size="52" font-weight="700" fill="#D7E2DD">
+    <tspan x="120" y="283">Skill /frontend-design:</tspan>
+    <tspan x="120" y="350">aesthetics as decisions, not</tspan>
+    <tspan x="120" y="417">preferences</tspan>
+    </text>
+    <text x="120" y="502" font-size="30" fill="#45E0A8"># tech notes</text>
+  </g>
+
+  <text x="1120" y="548" font-family="'JetBrains Mono', Menlo, monospace" font-size="26" fill="#6B7A74" text-anchor="end">wakii.xyz</text>
+</svg>
