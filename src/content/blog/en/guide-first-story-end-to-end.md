@@ -5,6 +5,7 @@ pubDate: "2026-09-20"
 category: "tutorial"
 tags: ["guide", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/guide-first-story-end-to-end.png"
 ---
 
 There are two ways to tell the story of Wakii's story workflow: retell a case
