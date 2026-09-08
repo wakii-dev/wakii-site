@@ -9,7 +9,7 @@ draft: false
 
 Agent code tốn tiền không chỉ vì model đắt, mà vì ngữ cảnh bẩn. Một lệnh search trả về trăm kết quả JSON; một log dump nặng vài chục nghìn token; phần lớn là nhiễu lặp lại. Model đọc cả, bạn trả tiền cho cả — và đôi khi vẫn bỏ sót đúng dòng FATAL giữa đống nhiễu. Headroom đánh vào đúng điểm đó: nén mọi thứ agent đọc trước khi chúng tới model, ngay trên máy bạn.
 
-## TL;DR
+TL;DR:
 
 - Agent trả tiền cho ngữ cảnh, không chỉ cho câu trả lời — tool output thô là kẻ chiếm chỗ lớn nhất trong window.
 - Headroom: một router nhận diện loại nội dung, ba bộ nén chuyên dụng (JSON, code, prose) và kho bản gốc để lấy lại khi cần.

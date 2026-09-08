@@ -9,7 +9,7 @@ draft: false
 
 Coding agents burn money not only because models are expensive, but because context is dirty. One search returns a hundred JSON results; one log dump weighs tens of thousands of tokens; most of it is repeated noise. The model reads all of it, you pay for all of it — and it can still miss the one FATAL line buried in the noise. Headroom attacks exactly that: it compresses everything an agent reads before it reaches the model, entirely on your machine.
 
-## TL;DR
+TL;DR:
 
 - Agents pay for context, not just for answers — raw tool output is the biggest occupant of the window.
 - Headroom is a content router plus three dedicated compressors (JSON, source code, prose) and a local store that keeps originals for retrieval.
