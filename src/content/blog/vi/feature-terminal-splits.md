@@ -84,7 +84,7 @@ qua `splitPtyBackedTerminal` chứ không chia sẻ stream với pane gốc. Hai
 định cứng của app. Ba — và đây là phần ít thấy nhất ở tính năng UI: mỗi pane
 mới nhận `command` và `env` riêng. Hai pane trong một tab có thể chạy hai lệnh
 khác nhau trong hai môi trường khác nhau; chúng chỉ chia sẻ cửa sổ, không chia
-sse phiên.
+sẻ phiên.
 
 ## Layout split sống qua restart
 
