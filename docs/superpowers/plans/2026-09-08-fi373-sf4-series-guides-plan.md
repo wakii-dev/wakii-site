@@ -224,6 +224,6 @@ graphState: ready
 - [x] code-reviewer APPROVED (2 nhóm)
 - [x] security-audit sạch
 - [x] verifier PASS từng dòng ACCEPTANCE
-- [ ] merge đích + audit comment FI-377
+- [x] merge đích + audit comment FI-377
 - story-verify sf-4: gate chạy SAU merge — verdict ghi trong audit comment (gate action, không phải task plan).
 - FI-377 Done: set sau khi story-verify xanh (Linear state change, không phải task plan).
