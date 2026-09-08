@@ -28,41 +28,41 @@
 
 ## Tasks (10 — thứ tự DAG: T1-T8 song song → T9 (cần T1,T6) → T10)
 
-- [ ] T1 `feature-terminal-splits` EN+VI — matrix #14, pubDate 2026-09-15, tech,
+- [x] T1 `feature-terminal-splits` EN+VI — matrix #14, pubDate 2026-09-15, tech,
       tags [features, terminal, wakii], docs-link getting-started, hero flag
       (EN frontmatter `heroImage: "/blog/heroes/feature-terminal-splits.png"`),
       cross-link parallel-worktrees-isolation. Claim scope: SHIPPED (c558d7e083
       #17601 + v1.4.198 notes).
-- [ ] T2 `feature-ssh-worktrees` EN+VI — matrix #15, 2026-09-16, tags [features,
+- [x] T2 `feature-ssh-worktrees` EN+VI — matrix #15, 2026-09-16, tags [features,
       cli, worktree], docs getting-started, cross-link parallel-worktrees-isolation.
       SHIPPED (278f9ee876 #17946 MFA + ssh-config-alias.ts).
-- [ ] T3 `feature-design-mode` EN+VI — matrix #16, 2026-09-16, tags [features,
+- [x] T3 `feature-design-mode` EN+VI — matrix #16, 2026-09-16, tags [features,
       design], docs faq, cross-link convergence-qa-last-tier. SHIPPED
       (design-mode.mdx + feature-wall-tiles.ts:108 + 216cabb9f0 #463).
-- [ ] T4 `feature-ai-diff-annotation` EN+VI — matrix #17, 2026-09-17, tags
+- [x] T4 `feature-ai-diff-annotation` EN+VI — matrix #17, 2026-09-17, tags
       [features, qa], docs faq, cross-link gates-not-trust-rule-zero. SHIPPED
       (DiffCommentCard.tsx + inline-comments.ts + tile-08).
-- [ ] T5 `feature-emulator-android` EN+VI — matrix #18, 2026-09-17, tags
+- [x] T5 `feature-emulator-android` EN+VI — matrix #18, 2026-09-17, tags
       [features, android, mobile], docs getting-started, cross-link
       shipping-cadence-two-releases-one-day. SHIPPED với caveat: CHỈ claim skill
       orca-emulator-android + emulator runtime (adb) — desktop backend KHÔNG nhắc
       như đã ship (main-only).
-- [ ] T6 `feature-computer-use-native` EN+VI — matrix #19, 2026-09-18, tech,
+- [x] T6 `feature-computer-use-native` EN+VI — matrix #19, 2026-09-18, tech,
       tags [features, agents, workflow], docs agents-and-kit, hero flag (EN),
       cross-link nine-agents-separated-powers. SHIPPED (v1.4.198 notes + 
       src/main/computer/ + 787766bfcf + 66dfdc456f).
-- [ ] T7 `feature-per-workspace-env` EN+VI — matrix #20, 2026-09-18, tags
+- [x] T7 `feature-per-workspace-env` EN+VI — matrix #20, 2026-09-18, tags
       [features, worktree, cli], docs getting-started, cross-link
       parallel-worktrees-isolation. SHIPPED (24d7f6b790 #7908 + skill
       orca-per-workspace-env 45370a5987).
-- [ ] T8 `feature-notification-keyboard` EN+VI — matrix #21, 2026-09-19, tags
+- [x] T8 `feature-notification-keyboard` EN+VI — matrix #21, 2026-09-19, tags
       [features, mobile], docs faq, cross-link decision-gates-safe-ai-agents.
       SHIPPED (v1.4.199 notification routing + 7b9529da22 #16271 shortcut).
       Mobile claims CHỈ theo 5 APPROVED FI-341 + release notes.
-- [ ] T9 hero-render-2-flagship — SAU T1+T6: `node scripts/render-blog-heroes.mjs`
+- [x] T9 hero-render-2-flagship — SAU T1+T6: `node scripts/render-blog-heroes.mjs`
       (derive từ frontmatter — 2 slug mới của SF này) → commit PNG+SVG + `--check`
       1200×630. KHÔNG chạy trước khi bài tồn tại (render sớm = thiếu tile).
-- [ ] T10 series-features-consistency-pass — lint full (band/links/forbidden) ·
+- [x] T10 series-features-consistency-pass — lint full (band/links/forbidden) ·
       cross-link grep resolve · claims sentence-check vs registry labels ·
       `pnpm build` xanh toàn chain · code-reviewer 2 nhóm (T1-T4, T5-T8) +
       re-review · security-audit · browser Rule 0 3 tầng (DOM listing 8 bài ·
