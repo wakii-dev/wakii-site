@@ -71,7 +71,7 @@ Một recipe là artifact: chia sẻ được, tham số hoá được, và quan
 
 ## Scheduler là một extension, không phải đặc quyền
 
-Điểm kiến trúc đáng học nhất: scheduler — tính năng của chính goose — được implement đúng như một extension ngoài. File [crates/goose/src/agents/platform_extensions/scheduler.rs](https://github.com/aaif-goose/goose/blob/5e90925962f05acf8e255032de44d16c4a7768a2/crates/goose/src/agents/platform_extensions/scheduler.rs) đặt `EXTENSION_NAME = "scheduler"` và mô tả công việc trong chính instructions của tool: "Create, list, update, pause, resume, and remove scheduled recipe runs, and inspect the sessions they produced." Agent tạo lịch chạy recipe bằng đúng protocol nó dùng để gọi MCP server:
+Điểm kiến trúc đáng học nhất: scheduler — tính năng của chính goose — được implement đúng như một extension ngoài. File [scheduler.rs (platform extension)](https://github.com/aaif-goose/goose/blob/5e90925962f05acf8e255032de44d16c4a7768a2/crates/goose/src/agents/platform_extensions/scheduler.rs) đặt `EXTENSION_NAME = "scheduler"` và mô tả công việc trong chính instructions của tool: "Create, list, update, pause, resume, and remove scheduled recipe runs, and inspect the sessions they produced." Agent tạo lịch chạy recipe bằng đúng protocol nó dùng để gọi MCP server:
 
 ```
 model ─── một tool surface duy nhất ───┬─► MCP server ngoài

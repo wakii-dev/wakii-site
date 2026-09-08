@@ -19,7 +19,7 @@ TL;DR:
 
 ## Browser của bạn, không phải browser của agent
 
-README của repo định nghĩa gọn sự khác biệt: "Chrome MCP Server directly uses your daily Chrome browser, leveraging existing user habits, configurations, and login states" (hangwin/mcp-chrome, README). Dịch sang cơ chế: extension chạy bên trong Chrome của bạn, nên những gì Chrome đã có — phiên đăng nhập, cookie, profile — sẵn dùng cho agent, không cần đăng nhập lại.
+README của repo định nghĩa gọn sự khác biệt: "Chrome MCP Server directly uses your daily Chrome browser, leveraging existing user habits, configurations, and login states" (hangwin/mcp-chrome, [README](https://github.com/hangwin/mcp-chrome#readme)). Dịch sang cơ chế: extension chạy bên trong Chrome của bạn, nên những gì Chrome đã có — phiên đăng nhập, cookie, profile — sẵn dùng cho agent, không cần đăng nhập lại.
 
 So với đường Playwright quen thuộc, khác biệt nằm ở ba chiều:
 
@@ -37,7 +37,7 @@ Cái giá của sự tiện ấy nằm ngay trong thiết kế: agent hành đ�
 
 Chuỗi nối đọc được thẳng từ cây source, và nó dài đúng ba chặng:
 
-```ascii
+```text
 MCP client (AI bất kỳ)     native server                Chrome extension
   "click nút X"  ────────►  gói mcp-chrome-bridge  ───►  background script
    Streamable HTTP           (Node >= 20)                 native-host.ts
@@ -50,7 +50,7 @@ MCP client (AI bất kỳ)     native server                Chrome extension
 
 *Nguồn: dựng từ README và cây source hangwin/mcp-chrome tại commit f48e717, lấy ngày 2026-09-08.*
 
-Client nói MCP qua Streamable HTTP (hoặc stdio nếu client chỉ hỗ trợ đường đó); phần native server là một gói npm cài toàn cục tên `mcp-chrome-bridge`; tới extension thì background script nhận lệnh, tra bảng tool rồi gọi Chrome API trên tab thật — thư mục `tools/browser/` chứa 30 module (screenshot, interaction, keyboard, network capture, vector search…), trong khi README quảng bá hơn 20 tool.
+Client nói MCP qua Streamable HTTP (hoặc stdio nếu client chỉ hỗ trợ đường đó); phần native server là một gói npm cài toàn cục tên `mcp-chrome-bridge`; tới extension thì background script nhận lệnh, tra bảng tool rồi gọi Chrome API trên tab thật — thư mục `tools/browser/` chứa 30 module (screenshot, interaction, keyboard, network capture, vector search…), trong khi README quảng bá hơn 20 tool (tính tới 2026-09-08).
 
 Chi tiết đáng chú ý ở chặng giữa: extension nền không nằm im chờ lệnh. Code giữ kết nối native port với cơ chế tự nối lại có nhịp:
 
@@ -61,7 +61,7 @@ const RECONNECT_MAX_FAST_ATTEMPTS = 8;
 const RECONNECT_COOLDOWN_DELAY_MS = 5 * 60_000;
 ```
 
-*Trích app/chrome-extension/entrypoints/background/native-host.ts tại commit f48e717: github.com/hangwin/mcp-chrome/blob/f48e71751e00bc09725c7e173423cff4f2ccd12a/app/chrome-extension/entrypoints/background/native-host.ts*
+*Trích [`native-host.ts` (chrome-extension background script), commit f48e717](https://github.com/hangwin/mcp-chrome/blob/f48e71751e00bc09725c7e173423cff4f2ccd12a/app/chrome-extension/entrypoints/background/native-host.ts)*
 
 Nghĩa là tám lần thử nhanh với backoff lũy thừa từ 500ms, trần 60 giây, có jitter để tránh các kết nối dẫm nhịp nhau, rồi rơi vào cooldown 5 phút. Riêng service worker của extension (Manifest V3) còn được giữ sống bằng keepalive — comment trong code gọi thẳng mục đích: "keep SW alive". Một bài học vận hành gọn trong bốn hằng số.
 
@@ -73,7 +73,7 @@ Phần thú vị nhất nằm ở `register-tools.ts` — nơi native server tr�
 const name = `flow.${item.slug}`;
 ```
 
-*Trích app/native-server/src/mcp/register-tools.ts tại commit f48e717: github.com/hangwin/mcp-chrome/blob/f48e71751e00bc09725c7e173423cff4f2ccd12a/app/native-server/src/mcp/register-tools.ts*
+*Trích [`register-tools.ts` (native server MCP), commit f48e717](https://github.com/hangwin/mcp-chrome/blob/f48e71751e00bc09725c7e173423cff4f2ccd12a/app/native-server/src/mcp/register-tools.ts)*
 
 Schema của tool không viết tay. Code đọc danh sách biến của flow — label, kiểu string/number/boolean/enum/array, giá trị mặc định, bắt buộc hay không — rồi dựng inputSchema tương ứng, cộng thêm bốn tùy chọn chạy chung (tabTarget, refresh, captureNetwork, returnLogs). Một quy trình bạn ghi lại một lần — điền form, bấm nút, chờ kết quả — trở thành công cụ agent gọi được bằng tên, với tham số có kiểm soát.
 
@@ -92,7 +92,7 @@ Dòng thời gian release kể một câu chuyện rõ (toàn bộ theo GitHub A
 | v0.0.6 | 2025-07-09 |
 | v1.0.0 | 2025-12-29 |
 
-Năm release trong chưa đầy một tháng (06-2025) — đúng nhịp README tự tả: "The project is still in its early stages and is under intensive development" (hangwin/mcp-chrome, README). Rồi nhịp ấy tắt: sau đó 5 tháng mới có v1.0.0, và commit cuối trên nhánh chính là merge PR #272 ngày 2026-01-06 — tính tới ngày probe 2026-09-08 là khoảng 8 tháng.
+Năm release trong chưa đầy một tháng (06-2025) — đúng nhịp README tự tả: "The project is still in its early stages and is under intensive development" (hangwin/mcp-chrome, [README](https://github.com/hangwin/mcp-chrome#readme)). Rồi nhịp ấy tắt: sau đó 5 tháng mới có v1.0.0, và commit cuối trên nhánh chính là merge PR #272 ngày 2026-01-06 — tính tới ngày probe 2026-09-08 là khoảng 8 tháng.
 
 Con số đáng đọc là tỉ lệ: 12.393 sao đi với 8 tháng dừng. Nhu cầu thì thị trường đã xác nhận — "để agent dùng browser thật của tôi" là điều nhiều người muốn; phần bảo trì thì chưa thấy ai gánh tiếp tại repo gốc. Với ai định dựng lên đó: pattern trong code vẫn đáng học; nhưng phụ thuộc vận hành vào một repo ngừng chạy thì nên tính sẵn phương án fork. Câu hỏi mở tính tới ngày probe: trạng thái này là nghỉ giữa chừng hay đã dừng hẳn — chưa có dấu hiệu nào hai chiều.
 

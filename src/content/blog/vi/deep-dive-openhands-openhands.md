@@ -41,7 +41,7 @@ Frontend chỉ là một khách: trỏ biến `VITE_BACKEND_BASE_URL` tới agen
 
 Cùng runtime ấy phục vụ automation: một backend riêng cho agent chạy theo lịch hoặc webhook, tích Slack, GitHub, Linear.
 
-```
+```text
         GUI (Agent Canvas)      CLI (agent-canvas)      Automations
                  \                     |                     /
                   \                    |                    /

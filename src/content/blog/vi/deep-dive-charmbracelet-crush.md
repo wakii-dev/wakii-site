@@ -9,7 +9,7 @@ draft: false
 
 Agent coding chạy trong terminal thường bị làm vội: một khung nhập lệnh, output cuộn lên, muốn đọc diff cho rõ thì phải mở editor riêng. Crush đi theo hướng ngược lại. Nó đến từ Charm — nhóm đứng sau bubbletea và lipgloss, những thư viện TUI quen thuộc của hệ sinh thái Go — và mang đúng tiêu chuẩn làm TUI đó vào một công cụ agent. Điều đáng đọc không phải danh sách feature, mà interaction design: diff hiện ra sao, agent hỏi quyền thế nào, và gì thay đổi khi terminal được đối xử như một sản phẩm.
 
-## TL;DR
+TL;DR:
 
 - Crush là agent coding chạy trong terminal từ nhà Charm (bubbletea/lipgloss); 27.953 sao theo GitHub API ngày 2026-09-08, commit đẩy trong ngày probe.
 - Diff hiện side-by-side ngay trong TUI; thuật toán gộp cặp dòng xóa/thêm nằm gọn trong một file Go.
@@ -19,7 +19,7 @@ Agent coding chạy trong terminal thường bị làm vội: một khung nhập
 
 ## Mặt bằng số: nhịp release nói gì
 
-Charm định vị crush ngắn gọn — README mở đầu bằng câu "Your new coding bestie, now available in your favourite terminal." (nguồn: README, theo GitHub API ngày 2026-09-08). Số liệu:
+Charm định vị crush ngắn gọn — README mở đầu bằng câu "Your new coding bestie, now available in your favourite terminal." (nguồn: [README](https://github.com/charmbracelet/crush#readme), theo GitHub API ngày 2026-09-08). Số liệu:
 
 | Chỉ số | Giá trị @ 2026-09-08 |
 |---|---|
@@ -78,9 +78,9 @@ internal/ui/dialog/
   models.go             # đổi model
 ```
 
-Agent không hỏi bằng prompt tự do mà bằng dialog đúng dạng. README khẳng định mô hình mặc định: "By default, Crush will ask you for permission before running tool calls." (nguồn: README của crush, theo GitHub API ngày 2026-09-08). Muốn bớt lớp hỏi này có hai lối: liệt kê ngoại lệ bằng `permissions allow`, hoặc `--yolo` — mà README tự cảnh báo: "Be very, very careful with this feature."
+Agent không hỏi bằng prompt tự do mà bằng dialog đúng dạng. README khẳng định mô hình mặc định: "By default, Crush will ask you for permission before running tool calls." (nguồn: [README](https://github.com/charmbracelet/crush#readme) của crush, theo GitHub API ngày 2026-09-08). Muốn bớt lớp hỏi này có hai lối: liệt kê ngoại lệ bằng `permissions allow`, hoặc `--yolo` — mà README tự cảnh báo: "Be very, very careful with this feature."
 
-Notification cũng bị đặt một điều kiện thú vị. README viết: "Crush sends desktop notifications when a tool call requires permission and when the agent finishes its turn." — và câu liền sau chốt điều kiện: chỉ gửi khi terminal không focus. Bản chất được hiểu đúng: notification là cách gọi người trở lại, không phải xác nhận cho người đang nhìn màn hình.
+Notification cũng bị đặt một điều kiện thú vị. README viết: "Crush sends desktop notifications when a tool call requires permission and when the agent finishes its turn." ([README](https://github.com/charmbracelet/crush#readme)) — và câu liền sau chốt điều kiện: chỉ gửi khi terminal không focus. Bản chất được hiểu đúng: notification là cách gọi người trở lại, không phải xác nhận cho người đang nhìn màn hình.
 
 ## Một session, nhiều cửa sổ
 
@@ -92,7 +92,7 @@ TUI client B ─┼── crush serve ──────────────
 TUI client C ─┘   workspace (một --cwd)      └─ LSP, MCP, lịch sử tin nhắn
 ```
 
-README mô tả hai tín hiệu để nhận một session đang có người: "IsBusy is set while an agent turn is in flight for that session." — kèm `AttachedClients` đếm số client đang xem. Tham gia thì im lặng: trỏ thêm client cùng `--cwd` là vào workspace, nhưng mỗi client bắt đầu bằng session mới — muốn xem phiên đang chạy thì chọn qua session picker. Quyết định cấp workspace theo luật ai đến trước: `--yolo` hay `--debug` của client sau không đổi flag client đầu đã đặt. Workspace sống chừng nào còn một luồng event mở; luồng cuối ngắt là dọn dẹp. (toàn bộ: README mục "Sharing a workspace across clients", theo GitHub API ngày 2026-09-08)
+README mô tả hai tín hiệu để nhận một session đang có người: "IsBusy is set while an agent turn is in flight for that session." — kèm `AttachedClients` đếm số client đang xem. Tham gia thì im lặng: trỏ thêm client cùng `--cwd` là vào workspace, nhưng mỗi client bắt đầu bằng session mới — muốn xem phiên đang chạy thì chọn qua session picker. Quyết định cấp workspace theo luật ai đến trước: `--yolo` hay `--debug` của client sau không đổi flag client đầu đã đặt. Workspace sống chừng nào còn một luồng event mở; luồng cuối ngắt là dọn dẹp. (toàn bộ: README mục "Sharing a workspace across clients" — [README](https://github.com/charmbracelet/crush#readme), theo GitHub API ngày 2026-09-08)
 
 ## Ngữ cảnh LSP và skill đọc chéo
 
@@ -103,7 +103,7 @@ lsp add go --command "gopls" --env "GOTOOLCHAIN go1.24.5"
 lsp add typescript --command "typescript-language-server" --args --stdio
 ```
 
-(nguồn: README của crush, theo GitHub API ngày 2026-09-08)
+(nguồn: [README](https://github.com/charmbracelet/crush#readme) của crush, theo GitHub API ngày 2026-09-08)
 
 Phía code, [manager.go](https://github.com/charmbracelet/crush/blob/563d658bccb56019edc1136c3c262ba0a81ccc99/internal/lsp/manager.go) khởi tạo client theo kiểu lười — mỗi ngôn ngữ chỉ bật khi cần:
 

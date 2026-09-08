@@ -9,7 +9,7 @@ draft: false
 
 The 2026 agent-CLI race keeps repeating one pattern: every large model house ends up writing its own harness for its own model. Anthropic has Claude Code, Google has Gemini CLI, and xAI has grok-build — public on GitHub since mid-July this year. This post is not a feature review; it reads grok-build as a data point of that pattern, through three questions: how is the code organized, what is welded to the house model, and which ports open to the outside world.
 
-## TL;DR
+TL;DR:
 
 - grok-build is xAI's Rust TUI harness for the Grok model: interactive, headless for CI, or embedded into editors via the Agent Client Protocol (ACP) — per the GitHub API on 2026-09-08.
 - The repo is a one-way mirror: the 8 most recent commits all read "Synced from monorepo", external contributions are not accepted, and there are no GitHub Releases or tags.
@@ -33,7 +33,7 @@ Two numbers carry weight: 26,563 stars in roughly 8 weeks since 2026-07-14 shows
 
 The two harness families side by side:
 
-```
+```text
   MODEL HOUSE                          INDEPENDENT HARNESS
   ┌─────────────────────┐              ┌─────────────────────┐
   │  model (Grok)       │              │  aider / goose /    │
@@ -45,7 +45,7 @@ The two harness families side by side:
 
 ## A one-way mirror: synced from monorepo, no PRs
 
-The grok-build README states the repo is "synced periodically from the SpaceXAI monorepo" (grok-build README, github.com/xai-org/grok-build). Concretely: a small `SOURCE_REV` file at the root records the internal monorepo commit SHA matching the published tree — at probe time, `a549186d9d39311f2d3ee4208db62af8c65aa476`.
+The grok-build README states the repo is "synced periodically from the SpaceXAI monorepo" (grok-build README, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). Concretely: a small `SOURCE_REV` file at the root records the internal monorepo commit SHA matching the published tree — at probe time, `a549186d…` (full SHA kept in `SOURCE_REV`, recorded verbatim in the digest).
 
 The commit history confirms the mechanism. The 8 most recent commits, probed via the GitHub API on 2026-09-08:
 
@@ -60,11 +60,11 @@ The commit history confirms the mechanism. The 8 most recent commits, probed via
 | 07b2f71 | 2026-08-23 | Synced from monorepo |
 | 19d42e3 | 2026-08-19 | Synced from monorepo |
 
-Not a single external author, not a single feature branch. The sync cadence runs every 1-3 days across the 19/08-01/09 window. Contributing is blocked up front: "External contributions are not accepted" (grok-build README, github.com/xai-org/grok-build). GitHub Releases sit at zero, tags at zero, per the GitHub API on 2026-09-08 — the official binary ships through an install script at x.ai/cli, and the changelog lives off GitHub. The design choice: publish code for transparency, keep all write access inside the internal monorepo.
+Not a single external author, not a single feature branch. The sync cadence runs every 1-3 days across the 19/08-01/09 window. Contributing is blocked up front: "External contributions are not accepted" (grok-build README, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). GitHub Releases sit at zero, tags at zero, per the GitHub API on 2026-09-08 — the official binary ships through an install script at x.ai/cli, and the changelog lives off GitHub. The design choice: publish code for transparency, keep all write access inside the internal monorepo.
 
 ## The crate that reads Claude Code, Codex and Cursor sessions
 
-The most interesting find lives in the `xai-grok-foreign-sessions` crate. Its own docs describe it as a "Bounded, metadata-only listing of foreign coding-agent sessions" (xai-grok-foreign-sessions, github.com/xai-org/grok-build). "Foreign" here means other houses' harnesses:
+The most interesting find lives in the `xai-grok-foreign-sessions` crate. Its own docs describe it as a "Bounded, metadata-only listing of foreign coding-agent sessions" (xai-grok-foreign-sessions, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). "Foreign" here means other houses' harnesses:
 
 ```rust
 pub enum ForeignSessionTool {
@@ -74,7 +74,7 @@ pub enum ForeignSessionTool {
 }
 ```
 
-(From `crates/codegen/xai-grok-foreign-sessions/src/lib.rs`, commit `72a61251fcffb464bcc687aeb5a998e5a98ec0c9` — github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-grok-foreign-sessions/src/lib.rs)
+(From [`src/lib.rs` in crate `xai-grok-foreign-sessions`, commit 72a6125](https://github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-grok-foreign-sessions/src/lib.rs))
 
 For Claude Code, the crate scans `~/.claude` (or the path in the `CLAUDE_CONFIG_DIR` environment variable when set) — here is the scanner entry point:
 
@@ -98,13 +98,13 @@ The motive is easy to guess: recognizing the harness you already used means swit
 
 ## Ports to the outside: ACP, MCP, hooks
 
-Welding to the house model does not mean closing the border. grok-build opens three kinds of ports, each pointing in a different direction. The first is ACP — the Agent Client Protocol: the README notes grok runs "embedded in editors via the Agent Client Protocol (ACP)" (grok-build README, github.com/xai-org/grok-build). In the code, the `xai-acp-lib` crate holds the two-way gateway between grok and outside clients, using the `agent_client_protocol` crate directly:
+Welding to the house model does not mean closing the border. grok-build opens three kinds of ports, each pointing in a different direction. The first is ACP — the Agent Client Protocol: the README notes grok runs "embedded in editors via the Agent Client Protocol (ACP)" (grok-build README, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). In the code, the `xai-acp-lib` crate holds the two-way gateway between grok and outside clients, using the `agent_client_protocol` crate directly:
 
 ```rust
 use agent_client_protocol as acp;
 ```
 
-(From `crates/codegen/xai-acp-lib/src/gateway.rs`, same commit — github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-acp-lib/src/gateway.rs)
+(From [`src/gateway.rs` in crate `xai-acp-lib`, same commit 72a6125](https://github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-acp-lib/src/gateway.rs))
 
 The second port is MCP: the `xai-grok-mcp` crate (an MCP client with elicitation, credentials, liveness). The third is the hooks and plugin system: the `xai-grok-hooks` crate ships a dispatcher, matcher, and runners for both shell commands and HTTP, with a trust mechanism; plugins get a marketplace, git-based installs, and their own trust registry. To be precise: ACP and MCP are the only model-agnostic-facing ports; the README shows no mechanism to configure any provider other than Grok.
 

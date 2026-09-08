@@ -9,7 +9,7 @@ draft: false
 
 Coding agents that live in the terminal are usually built in a hurry: one input box, output scrolling past, and diffs you have to open a separate editor to read properly. Crush takes the opposite approach. It comes from Charm — the team behind bubbletea and lipgloss, the TUI libraries most Go terminal apps are built on — and it brings that same standard of TUI craft to an agent tool. What is worth reading here is not the feature list but the interaction design: how diffs are rendered, how the agent asks for permission, and what changes when the terminal is treated like a product.
 
-## TL;DR
+TL;DR:
 
 - Crush is a coding agent that runs in the terminal, from the makers of bubbletea/lipgloss; 27,953 stars per the GitHub API on 2026-09-08, with commits pushed on the probe day itself.
 - Diffs render side-by-side inside the TUI; the algorithm that pairs deleted and inserted lines fits in one Go file.
@@ -19,7 +19,7 @@ Coding agents that live in the terminal are usually built in a hurry: one input 
 
 ## The numbers: what the release cadence says
 
-Charm positions Crush in one line — the README opens with "Your new coding bestie, now available in your favourite terminal." (source: Crush's README, per the GitHub API on 2026-09-08). The numbers:
+Charm positions Crush in one line — the README opens with "Your new coding bestie, now available in your favourite terminal." (source: [Crush's README](https://github.com/charmbracelet/crush#readme), per the GitHub API on 2026-09-08). The numbers:
 
 | Metric | Value @ 2026-09-08 |
 |---|---|
@@ -78,9 +78,9 @@ internal/ui/dialog/
   models.go             # model picker
 ```
 
-The agent does not ask through free-form prompts; it asks through dialogs shaped to the answer. The README states the default model plainly: "By default, Crush will ask you for permission before running tool calls." (source: Crush's README, per the GitHub API on 2026-09-08). To thin out that layer there are two levers: list exceptions with `permissions allow`, or use `--yolo` — which the README itself warns about: "Be very, very careful with this feature."
+The agent does not ask through free-form prompts; it asks through dialogs shaped to the answer. The README states the default model plainly: "By default, Crush will ask you for permission before running tool calls." (source: [Crush's README](https://github.com/charmbracelet/crush#readme), per the GitHub API on 2026-09-08). To thin out that layer there are two levers: list exceptions with `permissions allow`, or use `--yolo` — which the README itself warns about: "Be very, very careful with this feature."
 
-In the same spirit, notifications carry one interesting constraint. The README says: "Crush sends desktop notifications when a tool call requires permission and when the agent finishes its turn." — and the very next sentence sets the condition: they are only sent when the terminal window is not focused. That treats a notification as what it really is: a way to call someone back, not a receipt for someone who is already watching.
+In the same spirit, notifications carry one interesting constraint. The README says: "Crush sends desktop notifications when a tool call requires permission and when the agent finishes its turn." ([README](https://github.com/charmbracelet/crush#readme)) — and the very next sentence sets the condition: they are only sent when the terminal window is not focused. That treats a notification as what it really is: a way to call someone back, not a receipt for someone who is already watching.
 
 ## One session, many windows
 
@@ -92,7 +92,7 @@ TUI client B ─┼── crush serve ──────────────
 TUI client C ─┘   workspace (one --cwd)      └─ LSP, MCP, message history
 ```
 
-The README describes two signals that reveal a session in use: "IsBusy is set while an agent turn is in flight for that session." — alongside `AttachedClients`, which counts the clients currently viewing it. Joining is silent: point another client at the same `--cwd` and you are in, but each client starts in a fresh session; to watch a live one you pick it in the session picker. Workspace-level decisions follow first-wins rules: a later client's `--yolo` or `--debug` cannot change the flags the first client set. The workspace lives as long as one event stream stays open; when the last disconnects, it is torn down. (all from the README section "Sharing a workspace across clients", per the GitHub API on 2026-09-08)
+The README describes two signals that reveal a session in use: "IsBusy is set while an agent turn is in flight for that session." — alongside `AttachedClients`, which counts the clients currently viewing it. Joining is silent: point another client at the same `--cwd` and you are in, but each client starts in a fresh session; to watch a live one you pick it in the session picker. Workspace-level decisions follow first-wins rules: a later client's `--yolo` or `--debug` cannot change the flags the first client set. The workspace lives as long as one event stream stays open; when the last disconnects, it is torn down. (all from the README section "Sharing a workspace across clients" — [README](https://github.com/charmbracelet/crush#readme), per the GitHub API on 2026-09-08)
 
 ## LSP context and cross-reading skills
 
@@ -103,7 +103,7 @@ lsp add go --command "gopls" --env "GOTOOLCHAIN go1.24.5"
 lsp add typescript --command "typescript-language-server" --args --stdio
 ```
 
-(source: Crush's README, per the GitHub API on 2026-09-08)
+(source: [Crush's README](https://github.com/charmbracelet/crush#readme), per the GitHub API on 2026-09-08)
 
 On the code side, [manager.go](https://github.com/charmbracelet/crush/blob/563d658bccb56019edc1136c3c262ba0a81ccc99/internal/lsp/manager.go) initializes clients lazily — each language server only starts when needed:
 

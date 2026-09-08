@@ -9,7 +9,7 @@ draft: false
 
 Cuộc đua agent CLI năm 2026 lặp lại một quy luật: nhà model nào đủ lớn cũng tự viết harness cho model của mình. Anthropic có Claude Code, Google có Gemini CLI, và xAI có grok-build — công khai trên GitHub từ giữa tháng 7 năm nay. Bài này đọc grok-build như một điểm dữ liệu của pattern trên, qua ba câu hỏi: repo tổ chức code ra sao, gắn chặt những gì vào model nhà, và mở cổng nào ra bên ngoài.
 
-## TL;DR
+TL;DR:
 
 - grok-build là harness TUI viết bằng Rust của xAI cho model Grok: chạy interactive, headless cho CI, hoặc nhúng vào editor qua Agent Client Protocol (ACP) — theo GitHub API ngày 2026-09-08.
 - Repo là mirror một chiều: 8 commit gần nhất đều mang message "Synced from monorepo", không nhận contribution ngoài, không có GitHub Releases hay tag.
@@ -33,7 +33,7 @@ Hai con số nói nhiều: 26.563 sao chỉ sau gần 8 tuần kể từ 2026-07
 
 Sơ đồ so sánh hai họ harness:
 
-```
+```text
   NHÀ MODEL                            HARNESS ĐỘC LẬP
   ┌─────────────────────┐              ┌─────────────────────┐
   │  model (Grok)       │              │  aider / goose /    │
@@ -45,7 +45,7 @@ Sơ đồ so sánh hai họ harness:
 
 ## Mirror một chiều: sync từ monorepo, không nhận PR
 
-README grok-build ghi rõ repo được "synced periodically from the SpaceXAI monorepo" (README grok-build, github.com/xai-org/grok-build). Cụ thể: một file nhỏ tên `SOURCE_REV` ở gốc repo lưu SHA của commit monorepo nội bộ tương ứng với bản code đang công khai — tại thời điểm probe, giá trị là `a549186d9d39311f2d3ee4208db62af8c65aa476`.
+README grok-build ghi rõ repo được "synced periodically from the SpaceXAI monorepo" (README grok-build, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). Cụ thể: một file nhỏ tên `SOURCE_REV` ở gốc repo lưu SHA của commit monorepo nội bộ tương ứng với bản code đang công khai — tại thời điểm probe, giá trị là `a549186d…` (full SHA trong `SOURCE_REV`, ghi nguyên bản ở digest).
 
 Lịch sử commit xác nhận cơ chế này. 8 commit gần nhất, probe bằng GitHub API ngày 2026-09-08:
 
@@ -60,11 +60,11 @@ Lịch sử commit xác nhận cơ chế này. 8 commit gần nhất, probe bằ
 | 07b2f71 | 2026-08-23 | Synced from monorepo |
 | 19d42e3 | 2026-08-19 | Synced from monorepo |
 
-Không một commit nào mang tên tác giả ngoài, không một feature branch. Nhịp sync khoảng 1-3 ngày một lần trong khoảng 19/08 đến 01/09. Contributing cũng chặn từ đầu: "External contributions are not accepted" (README grok-build, github.com/xai-org/grok-build). GitHub Releases của repo là con số 0, tag cũng 0 theo GitHub API ngày 2026-09-08 — binary chính thức phân phối qua install script tại x.ai/cli, changelog nằm ngoài GitHub. Lựa chọn thiết kế ở đây: công khai code để minh bạch, nhưng giữ toàn quyền ghi trong monorepo nội bộ.
+Không một commit nào mang tên tác giả ngoài, không một feature branch. Nhịp sync khoảng 1-3 ngày một lần trong khoảng 19/08 đến 01/09. Contributing cũng chặn từ đầu: "External contributions are not accepted" (README grok-build, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). GitHub Releases của repo là con số 0, tag cũng 0 theo GitHub API ngày 2026-09-08 — binary chính thức phân phối qua install script tại x.ai/cli, changelog nằm ngoài GitHub. Lựa chọn thiết kế ở đây: công khai code để minh bạch, nhưng giữ toàn quyền ghi trong monorepo nội bộ.
 
 ## Crate đọc session của Claude Code, Codex và Cursor
 
-Phát hiện thú vị nhất nằm ở crate `xai-grok-foreign-sessions`. Tài liệu trong code tự mô tả đây là "Bounded, metadata-only listing of foreign coding-agent sessions" (xai-grok-foreign-sessions, github.com/xai-org/grok-build). Danh sách "foreign" ở đây là harness của các nhà khác:
+Phát hiện thú vị nhất nằm ở crate `xai-grok-foreign-sessions`. Tài liệu trong code tự mô tả đây là "Bounded, metadata-only listing of foreign coding-agent sessions" (xai-grok-foreign-sessions, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). Danh sách "foreign" ở đây là harness của các nhà khác:
 
 ```rust
 pub enum ForeignSessionTool {
@@ -74,7 +74,7 @@ pub enum ForeignSessionTool {
 }
 ```
 
-(Trích từ `crates/codegen/xai-grok-foreign-sessions/src/lib.rs`, commit `72a61251fcffb464bcc687aeb5a998e5a98ec0c9` — github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-grok-foreign-sessions/src/lib.rs)
+(Trích từ [`src/lib.rs` của crate `xai-grok-foreign-sessions`, commit 72a6125](https://github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-grok-foreign-sessions/src/lib.rs))
 
 Với Claude Code, crate scan thư mục `~/.claude` (hoặc đường dẫn trong biến môi trường `CLAUDE_CONFIG_DIR` nếu có) — đoạn sau là điểm vào của scanner:
 
@@ -98,13 +98,13 @@ Kỷ luật đọc là phần đáng học nhất. Các hằng số trong cùng 
 
 ## Cổng mở ra ngoài: ACP, MCP, hooks
 
-Gắn chặt model không có nghĩa đóng kín biên giới. grok-build mở ba loại cổng, mỗi loại một hướng. Cổng thứ nhất là ACP — Agent Client Protocol: README giới thiệu grok chạy được "embedded in editors via the Agent Client Protocol (ACP)" (README grok-build, github.com/xai-org/grok-build). Trong code, crate `xai-acp-lib` chứa gateway hai chiều giữa grok và client ngoài, trực tiếp dùng crate `agent_client_protocol`:
+Gắn chặt model không có nghĩa đóng kín biên giới. grok-build mở ba loại cổng, mỗi loại một hướng. Cổng thứ nhất là ACP — Agent Client Protocol: README giới thiệu grok chạy được "embedded in editors via the Agent Client Protocol (ACP)" (README grok-build, [github.com/xai-org/grok-build](https://github.com/xai-org/grok-build)). Trong code, crate `xai-acp-lib` chứa gateway hai chiều giữa grok và client ngoài, trực tiếp dùng crate `agent_client_protocol`:
 
 ```rust
 use agent_client_protocol as acp;
 ```
 
-(Trích từ `crates/codegen/xai-acp-lib/src/gateway.rs`, cùng commit như trên — github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-acp-lib/src/gateway.rs)
+(Trích từ [`src/gateway.rs` của crate `xai-acp-lib`, cùng commit 72a6125](https://github.com/xai-org/grok-build/blob/72a61251fcffb464bcc687aeb5a998e5a98ec0c9/crates/codegen/xai-acp-lib/src/gateway.rs))
 
 Cổng thứ hai là MCP: crate `xai-grok-mcp` (client MCP với elicitation, credentials, liveness). Cổng thứ ba là hệ hooks và plugin: crate `xai-grok-hooks` có dispatcher, matcher, runner cho cả lệnh shell lẫn HTTP, kèm cơ chế trust; phía plugin thì có marketplace, cài qua git, và registry tin cậy riêng. Cần nói thẳng: ACP và MCP là cổng ra duy nhất theo hướng model-agnostic; README không cho thấy cơ chế cấu hình provider nào khác ngoài grok.
 

@@ -44,44 +44,44 @@
 
 ## Tasks (12 — T0 tuần tự → T1-T10 waves ≤3 → T11 tổng)
 
-- [ ] T0 probe + install: `pnpm install` (background) + `bash
+- [x] T0 probe + install: `pnpm install` (background) + `bash
       scripts/probe-repos.sh` 1 lần — capture exit code đúng (improvements-log:
       không đo `$?` sau pipe) → số stars/pushed/license ngày 2026-09-08 cho brief
       từng agent.
-- [ ] T1 `deep-dive-openhands-openhands` EN+VI — matrix #13, pubDate 2026-10-07,
+- [x] T1 `deep-dive-openhands-openhands` EN+VI — matrix #13, pubDate 2026-10-07,
       harness, tags [agents, architecture, oss], docs agents-and-kit, cross-link
       zero-setup-agent-team. Angle: agent platform tự vận hành — event/runtime
       kiến trúc (OpenDevin → OpenHands).
-- [ ] T2 `deep-dive-headroomlabs-ai-headroom` EN+VI — #14, 2026-10-07, mcp, tags
+- [x] T2 `deep-dive-headroomlabs-ai-headroom` EN+VI — #14, 2026-10-07, mcp, tags
       [agents, memory, features], docs story-workflow, cross-link
       story-memory-learning-loop. Angle: context supply layer cho agent code.
-- [ ] T3 `deep-dive-aaif-goose-goose` EN+VI — #15, 2026-10-08, harness, tags
+- [x] T3 `deep-dive-aaif-goose-goose` EN+VI — #15, 2026-10-08, harness, tags
       [agents, cli, workflow], docs getting-started, cross-link
       agentic-landscape-50-projects. Angle: local-first automation ngoài IDE.
-- [ ] T4 `deep-dive-aider-ai-aider` EN+VI — #16, 2026-10-08, harness, tags
+- [x] T4 `deep-dive-aider-ai-aider` EN+VI — #16, 2026-10-08, harness, tags
       [cli, git, agents], docs getting-started, cross-link one-branch-one-pr.
       Angle: git-native editing — mỗi thay đổi một commit + repo map.
-- [ ] T5 `deep-dive-deusdata-codebase-memory-mcp` EN+VI — #17, 2026-10-09, mcp,
+- [x] T5 `deep-dive-deusdata-codebase-memory-mcp` EN+VI — #17, 2026-10-09, mcp,
       tags [memory, agents, evidence], docs story-workflow, cross-link
       skill-story-workflow. Angle: trí nhớ dài hạn khi agent đọc code — so
       context packs/memory của Wakii.
-- [ ] T6 `deep-dive-charmbracelet-crush` EN+VI — #18, 2026-10-09, harness, tags
+- [x] T6 `deep-dive-charmbracelet-crush` EN+VI — #18, 2026-10-09, harness, tags
       [terminal, cli, design], docs agents-and-kit, cross-link
       feature-terminal-splits. Angle: TUI-first agent UX (ecosystem Charm).
       ⚠ license NOASSERTION (ngoài scope pin): "công khai trên GitHub" — không
       "open-source"/"mã nguồn mở" (review-enforced).
-- [ ] T7 `deep-dive-xai-org-grok-build` EN+VI — #19, 2026-10-10, harness, tags
+- [x] T7 `deep-dive-xai-org-grok-build` EN+VI — #19, 2026-10-10, harness, tags
       [agents, architecture, cli], docs agents-and-kit, cross-link
       agentic-landscape-50-projects. Angle: model-house harness pattern (so
       claude-code/gemini-cli) — strategic WATCH.
-- [ ] T8 `deep-dive-microsoft-mcp-for-beginners` EN+VI — #20, 2026-10-10, mcp,
+- [x] T8 `deep-dive-microsoft-mcp-for-beginners` EN+VI — #20, 2026-10-10, mcp,
       tags [guide, agents, workflow], docs faq, cross-link skills-catalog-tour.
       Angle: curriculum chính thống = tín hiệu MCP mainstream.
-- [ ] T9 `deep-dive-hangwin-mcp-chrome` EN+VI — #21, 2026-10-11, mcp, tags
+- [x] T9 `deep-dive-hangwin-mcp-chrome` EN+VI — #21, 2026-10-11, mcp, tags
       [features, agents, workflow], docs superpowers-panel, cross-link
       feature-computer-use-native. Angle: browser-in-the-loop — so browser
       native/design-mode của Wakii.
-- [ ] T10 `deep-dive-modelcontextprotocol-registry` EN+VI — #22, 2026-10-11,
+- [x] T10 `deep-dive-modelcontextprotocol-registry` EN+VI — #22, 2026-10-11,
       mcp, tags [oss, architecture, license], docs agents-and-kit, cross-link
       oss-why-fork-mit. Angle: hạ tầng phân phối — naming/discovery/trust.
       ⚠ † scoped-FORBIDDEN machine: KHÔNG "open-source"/"mã nguồn mở" ở BẤT KỲ

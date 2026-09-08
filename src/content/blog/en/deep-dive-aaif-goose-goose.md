@@ -71,7 +71,7 @@ A recipe is an artifact: shareable, parameterizable, and — most importantly �
 
 ## The scheduler is an extension, not a privileged feature
 
-The most instructive architectural choice: the scheduler — a first-party goose feature — is implemented exactly like an external extension. The file [crates/goose/src/agents/platform_extensions/scheduler.rs](https://github.com/aaif-goose/goose/blob/5e90925962f05acf8e255032de44d16c4a7768a2/crates/goose/src/agents/platform_extensions/scheduler.rs) sets `EXTENSION_NAME = "scheduler"` and describes the job in the tool's own instructions: "Create, list, update, pause, resume, and remove scheduled recipe runs, and inspect the sessions they produced." The agent schedules recipe runs through the same protocol it uses to call external MCP servers:
+The most instructive architectural choice: the scheduler — a first-party goose feature — is implemented exactly like an external extension. The file [scheduler.rs (platform extension)](https://github.com/aaif-goose/goose/blob/5e90925962f05acf8e255032de44d16c4a7768a2/crates/goose/src/agents/platform_extensions/scheduler.rs) sets `EXTENSION_NAME = "scheduler"` and describes the job in the tool's own instructions: "Create, list, update, pause, resume, and remove scheduled recipe runs, and inspect the sessions they produced." The agent schedules recipe runs through the same protocol it uses to call external MCP servers:
 
 ```
 model ─── one uniform tool surface ───┬─► external MCP servers

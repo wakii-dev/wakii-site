@@ -41,7 +41,7 @@ The frontend is a client: point `VITE_BACKEND_BASE_URL` at any agent-server and 
 
 The same runtime serves automation: a separate backend runs agents on schedules or webhooks, integrating Slack, GitHub, and Linear.
 
-```
+```text
         GUI (Agent Canvas)      CLI (agent-canvas)      Automations
                  \                     |                     /
                   \                    |                    /
