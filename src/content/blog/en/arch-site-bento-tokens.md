@@ -146,7 +146,7 @@ src/pages/index.astro (EN, 10 lines) · src/pages/vi/index.astro (VI, 9 lines)
 
 The homepage is a thin wrapper: 10 lines for EN, 9 for VI, each just wrapping the Landing component and injecting the right string pack. The same token set flows down into blog and docs — the post detail layout `src/layouts/BlogDetailLayout.astro` is among the 17 `min-width: 0` spots mentioned above. At the time of writing, the blog holds 25 slugs × 2 locales = 50 files (snapshot 2026-09-08), and all of them render on the same token foundation — a number you can recount with `ls src/content/blog/en`.
 
-A token change therefore has no shortcut: it goes through the repo's public build chain — utility gate → parity gate → content lint → astro build. The post [log 2 of the building-in-the-open series](/blog/building-wakii-in-the-open-log-2/) dissects that chain layer by layer; here it is enough to add that the one-place-ness of tokens is what keeps that chain short enough to trust.
+A token change therefore has no shortcut: it goes through the repo's public build chain — parity gate → utility gate → content lint → astro build. The post [log 2 of the building-in-the-open series](/blog/building-wakii-in-the-open-log-2/) dissects that chain layer by layer; here it is enough to add that the one-place-ness of tokens is what keeps that chain short enough to trust.
 
 Questions about the site and the product are collected on the [FAQ page](/docs/faq/). To see how this site itself got built, the best starting point is [case study: this blog is a running story](/blog/blog-story-case-study/).
 
