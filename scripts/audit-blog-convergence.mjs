@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 /**
- * Convergence audit — story FI-359 SF-5 (Linear FI-364).
+ * Convergence audit — story FI-373 SF-1 (Linear FI-374). Lineage: built in
+ * FI-359 SF-5 (Linear FI-364), checks 2-7 carried over; scope widened from a
+ * hard-coded 20-slug list to the all-non-seed manifest (both matrix tables).
  *
- * Machine sweep for checks 2-7 of docs/superpowers/contexts/fi359-longform-sf-5.md
- * (the CỨNG frame). Contract sources pinned in the header of each check below:
+ * Machine sweep (the CỨNG frame). Contract sources pinned in the header of each check below:
  *   T2 — style-guide §2 D1 word-band algorithm (PINNED, verbatim)
  *   T3 — claims-registry ## FORBIDDEN parse + variants + evidence-pack §Numbers snapshot D8
+ *        + ## Verify-shipped labels (DEC-8, batch-2 feature posts)
  *   T4 — link/locale/anchor rules (style-guide §6, D4) resolved against dist/
  *   T5 — RSS contract (FI-339 SF-1): bilingual feed, guid absolute per locale, no <language>
  *   T6 — sitemap + hreflang pair + OG article contract (FI-339 rev 2)
- *   T7 — listings live-count + frontmatter vs topic-matrix 20/20 (D2/D6 gate)
+ *   T7 — listings live-count + frontmatter vs BOTH matrix tables (D2/D6 + DEC-6 policy a)
  *
  * READ-ONLY over src/ and dist/ — report goes to STDOUT only (never writes any
  * file). Zero-dependency: node:fs / node:path / node:url + global fetch only.
@@ -77,10 +79,13 @@ const DOC_SLUGS = ['getting-started', 'superpowers-panel', 'story-workflow', 'ag
 /* D1 band, style-guide §2 (PIN). */
 const VI_MIN = 900, VI_WARN = 1400, VI_HARD = 1470, EN_MIN = 800;
 
-/* Snapshot D8 (evidence-pack.md §Numbers snapshot — chụp 2026-09-07). */
+/* Snapshot D8 (evidence-pack.md §Numbers snapshot — chụp 2026-09-08, FI-373
+ * SF-1 refresh; the 21/14 capture of 2026-09-07 was a counting-pattern error,
+ * see claims-registry ## Drift-note). Releases re-verified unchanged. */
 const SNAPSHOT = {
-  skillsTotal: 21,
-  skillsPublic: 14,
+  snapshotDate: '2026-09-08',
+  skillsTotal: 20,
+  skillsPublic: 13,
   releases: {
     'v1.4.199': '2026-09-05T19:07:31Z',
     'v1.4.198': '2026-09-05T12:47:15Z',
@@ -239,7 +244,7 @@ for (const p of newPosts) {
 /* ================================================================
  * T3 — claims sweep vs snapshot D8
  * ================================================================ */
-out('\n--- T3: claims sweep vs snapshot D8 (evidence-pack §Numbers, 2026-09-07) ---');
+out(`\n--- T3: claims sweep vs snapshot D8 (evidence-pack §Numbers, ${SNAPSHOT.snapshotDate}) ---`);
 
 /* (a) FORBIDDEN literals — exact lint parse, full file, case-insensitive. */
 const phrases = forbiddenPhrases();
@@ -325,8 +330,11 @@ const FAMILIES = [
         const w = body.slice(Math.max(0, m.index - 80), m.index + 80);
         if (/skill/i.test(w)) {
           const v = m[1];
-          const driftNarrative = v === '13' && /(→|->|trước|từng|before|was|nay|giờ|now|then)/i.test(w);
-          rows.push({ idx: m.index, claim: `skills=${v}`, ok: v === '21' || v === '14' || driftNarrative, ctx: w.replace(/\s+/g, ' ').trim().slice(0, 140) });
+          // Snapshot refresh 2026-09-08 (FI-373 SF-1): allowed values are
+          // 20/13. 21/14 are now the documented drift narrative — the generic
+          // badMatch branch below handles them (dated-source marker → NOTE
+          // per D8; no marker → FAIL).
+          rows.push({ idx: m.index, claim: `skills=${v}`, ok: v === '20' || v === '13', ctx: w.replace(/\s+/g, ' ').trim().slice(0, 140) });
         }
       }
       return rows;
@@ -446,6 +454,57 @@ for (const p of newPosts) {
       }
     }
   }
+}
+
+/* (c2) verify-shipped family — batch-2 feature posts (SF-3) may only claim the
+   label recorded in claims-registry ## Verify-shipped (DEC-8). Registry lines:
+   `- feature-<name> — <SHIPPED|MAIN-ONLY|ROADMAP> — evidence...`; PENDING-VERIFY
+   = placeholder, skipped (no feature post may exist while pending). A canonical
+   uppercase label near a `feature-<name>` mention must MATCH the registry or
+   it is a FAIL; soft VI/EN phrasings ("đã ship" / "trên main" / "roadmap")
+   mismatching the registry are a NOTE (false-positive bar stays low — content
+   SFs get hard-blocked on canonical labels only). A mention with NO label
+   nearby is skipped entirely. */
+function verifyShippedLabels() {
+  const src = readFileSync(join(KIT, 'claims-registry.md'), 'utf8');
+  const start = src.match(/^## Verify-shipped[^\n]*$/m); // heading may carry a suffix (date/scope)
+  if (!start) return new Map(); // section becomes mandatory with SF-3 (FI-376)
+  const rest = src.slice(start.index + start[0].length);
+  const end = rest.indexOf('\n## ');
+  const section = end === -1 ? rest : rest.slice(0, end);
+  const labels = new Map();
+  for (const line of section.split('\n')) {
+    const m = line.trim().match(/^- feature-([a-z0-9-]+)\s*—\s*([A-Z-]+)/);
+    if (m) labels.set(m[1], m[2]);
+  }
+  return labels;
+}
+{
+  const labels = verifyShippedLabels();
+  const enforced = [...labels.entries()].filter(([, l]) => l !== 'PENDING-VERIFY');
+  out(`(c2) verify-shipped labels parsed from claims-registry.md: ${labels.size} entries, ${enforced.length} verified (PENDING-VERIFY skipped: ${labels.size - enforced.length})`);
+  const CANON = /\b(SHIPPED|MAIN-ONLY|ROADMAP)\b/;
+  const SOFT = /(đã ship|trên main|roadmap)/i;
+  const NORMALIZE = { 'đã ship': 'SHIPPED', 'trên main': 'MAIN-ONLY', roadmap: 'ROADMAP' };
+  let vsClaims = 0, vsBare = 0;
+  for (const p of newPosts) {
+    for (const [name, label] of enforced) {
+      const re = new RegExp(`feature-${name}(?![a-z0-9-])`, 'g');
+      for (const m of p.body.matchAll(re)) {
+        const w = p.body.slice(Math.max(0, m.index - 120), m.index + 120);
+        const canon = w.match(CANON);
+        const soft = canon ? null : w.match(SOFT);
+        if (!canon && !soft) { vsBare += 1; continue; } // bare mention — no claim made
+        vsClaims += 1;
+        const claimed = canon ? canon[1] : NORMALIZE[soft[1].toLowerCase()];
+        const rel = `src/content/blog/${p.locale}/${p.slug}.md`;
+        const msg = `${rel}: feature-${name} claimed "${claimed}" but registry Verify-shipped says "${label}" — context: "${w.replace(/\s+/g, ' ').trim().slice(0, 140)}" [${owner(p.slug)}]`;
+        if (canon) fail('T3', msg);
+        else note('T3', msg);
+      }
+    }
+  }
+  out(`(c2) verify-shipped label claims scanned: ${vsClaims} (mismatches → FAIL/NOTE above), bare mentions skipped: ${vsBare}`);
 }
 
 /* (d) drift probes at QA time — NOTES only, never FAIL. */
@@ -639,7 +698,6 @@ out('\n--- T5: RSS contract (dist/rss.xml, FI-339 SF-1) ---');
 
 /* T6 — sitemap + hreflang + OG */
 out('\n--- T6: sitemap + hreflang pair + OG article contract (FI-339 rev 2) ---');
-const SAMPLES = ['zero-setup-agent-team', 'convergence-qa-last-tier', 'wakii-in-production-hub-store'];
 {
   const sxml = readFileSync(DIST('sitemap-0.xml'), 'utf8');
   const locs = new Set([...sxml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
@@ -653,29 +711,44 @@ const SAMPLES = ['zero-setup-agent-team', 'convergence-qa-last-tier', 'wakii-in-
   out(`sitemap-0.xml: ${locs.size} urls; missing required: ${missingUrls.length === 0 ? 'none' : missingUrls.length}`);
   for (const u of missingUrls) fail('T6', `dist/sitemap-0.xml: missing URL ${u}`);
 
-  for (const slug of SAMPLES) {
-    for (const locale of ['en', 'vi']) {
-      const p = posts.get(`${locale}/${slug}`);
-      const htmlPath = locale === 'vi' ? DIST('vi', 'blog', slug, 'index.html') : DIST('blog', slug, 'index.html');
-      if (!p || !existsSync(htmlPath)) { fail('T6', `dist HTML missing for sample ${locale}/${slug}`); continue; }
-      const html = readFileSync(htmlPath, 'utf8');
-      const href = new Map([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => [m[1], m[2]]));
-      const selfUrl = locale === 'vi' ? `${SITE_URL}/vi/blog/${slug}/` : `${SITE_URL}/blog/${slug}/`;
-      const twinUrl = locale === 'vi' ? `${SITE_URL}/blog/${slug}/` : `${SITE_URL}/vi/blog/${slug}/`;
-      const probs = [];
-      if (href.get('en') !== (locale === 'en' ? selfUrl : twinUrl)) probs.push(`hreflang en=${href.get('en') || 'MISSING'}`);
-      if (href.get('vi') !== (locale === 'vi' ? selfUrl : twinUrl)) probs.push(`hreflang vi=${href.get('vi') || 'MISSING'}`);
-      if (!href.has('x-default')) probs.push('hreflang x-default MISSING');
-      const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
-      if (canon !== selfUrl) probs.push(`canonical=${canon || 'MISSING'} (want self ${selfUrl})`);
-      const ogType = (html.match(/<meta property="og:type" content="([^"]*)"/) || [])[1];
-      if (ogType !== 'article') probs.push(`og:type=${ogType || 'MISSING'} (want article)`);
-      const pub = (html.match(/<meta property="(?:article|og):published_time" content="([^"]*)"/) || [])[1];
-      if (!pub || pub.slice(0, 10) !== p.pubDate) probs.push(`published_time=${pub || 'MISSING'} != frontmatter ${p.pubDate}`);
-      if (probs.length) for (const pr of probs) fail('T6', `${locale}/${slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): ${pr}`);
-      else out(`sample ${locale}/${slug}: hreflang en+vi+x-default 2-way pair, canonical self, og:type article, published_time=${pub.slice(0, 10)} — OK`);
+  // Full sweep (FI-373 SF-1): the SAMPLES hard-code is gone — every present
+  // post in both locales gets the hreflang/canonical/og/published_time check.
+  // Non-seed = enforce (FAIL); seeds stay inventory-only (deviation → NOTE).
+  let t6Ok = 0;
+  for (const p of [...posts.values()].sort((a, b) => (a.slug + a.locale).localeCompare(b.slug + b.locale))) {
+    if (p.draft) continue; // drafts render no dist page (lint still checks metadata)
+    const htmlPath = p.locale === 'vi' ? DIST('vi', 'blog', p.slug, 'index.html') : DIST('blog', p.slug, 'index.html');
+    if (!existsSync(htmlPath)) {
+      const msg = `${p.locale}/${p.slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): dist HTML missing (build stale or page dropped)`;
+      if (p.isSeed) note('T6', `seed ${msg}`);
+      else fail('T6', msg);
+      continue;
+    }
+    const html = readFileSync(htmlPath, 'utf8');
+    const href = new Map([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => [m[1], m[2]]));
+    const selfUrl = p.locale === 'vi' ? `${SITE_URL}/vi/blog/${p.slug}/` : `${SITE_URL}/blog/${p.slug}/`;
+    const twinUrl = p.locale === 'vi' ? `${SITE_URL}/blog/${p.slug}/` : `${SITE_URL}/vi/blog/${p.slug}/`;
+    const probs = [];
+    if (href.get('en') !== (p.locale === 'en' ? selfUrl : twinUrl)) probs.push(`hreflang en=${href.get('en') || 'MISSING'}`);
+    if (href.get('vi') !== (p.locale === 'vi' ? selfUrl : twinUrl)) probs.push(`hreflang vi=${href.get('vi') || 'MISSING'}`);
+    if (!href.has('x-default')) probs.push('hreflang x-default MISSING');
+    const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+    if (canon !== selfUrl) probs.push(`canonical=${canon || 'MISSING'} (want self ${selfUrl})`);
+    const ogType = (html.match(/<meta property="og:type" content="([^"]*)"/) || [])[1];
+    if (ogType !== 'article') probs.push(`og:type=${ogType || 'MISSING'} (want article)`);
+    const pub = (html.match(/<meta property="(?:article|og):published_time" content="([^"]*)"/) || [])[1];
+    if (!pub || pub.slice(0, 10) !== p.pubDate) probs.push(`published_time=${pub || 'MISSING'} != frontmatter ${p.pubDate}`);
+    if (probs.length) {
+      for (const pr of probs) {
+        const msg = `${p.locale}/${p.slug} (${scrub(htmlPath).replace(scrub(root) + '/', '')}): ${pr}`;
+        if (p.isSeed) note('T6', `seed ${msg}`);
+        else fail('T6', msg);
+      }
+    } else {
+      t6Ok += 1;
     }
   }
+  out(`T6 full sweep: ${t6Ok} post pages OK (hreflang en+vi+x-default 2-way pair, canonical self, og:type article, published_time == frontmatter); seeds included — a seed deviation would appear as a NOTE above`);
 }
 
 /* T7 — listings + matrix gate */
