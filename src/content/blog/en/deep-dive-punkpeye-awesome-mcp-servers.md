@@ -23,7 +23,7 @@ The first surprise: the repo's README is 1.6 MB long (measured from a clone @ a6
 ```
 Top:        What is MCP? · Clients · Tutorials · Community · Legend
 Body:       ## Server Implementations
-              └─ 59 category headings, 3,862 entries like "- [Name](link) icons — description"
+              └─ 59 category headings (58 distinct — E-Commerce appears twice), 3,862 entries like "- [Name](link) icons — description"
 Bottom:     ## Frameworks · ## Tips and Tricks · ## Star History
 ```
 
@@ -60,7 +60,7 @@ One detail betrays the process's age: the E-Commerce category appears twice in t
 
 Take two README snapshots exactly a month apart and count them the same way:
 
-| Snapshot | Commit | Entries | Category headings |
+| Snapshot | Commit | Entries | `###` headings (whole file) |
 |---|---|---|---|
 | 2026-08-08 | 165f838 | 3,371 | 58 |
 | 2026-09-07 | a62cced | 3,862 | 60 |

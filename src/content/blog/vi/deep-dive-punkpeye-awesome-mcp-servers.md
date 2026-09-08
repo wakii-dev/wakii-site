@@ -23,7 +23,7 @@ TL;DR:
 ```
 Đầu file:   What is MCP? · Clients · Tutorials · Community · Legend
 Thân file:  ## Server Implementations
-              └─ 59 heading category, 3.862 mục dạng "- [Tên](link) icon — mô tả"
+              └─ 59 heading category (58 category riêng — E-Commerce lặp 2 lần), 3.862 mục dạng "- [Tên](link) icon — mô tả"
 Cuối file:  ## Frameworks · ## Tips and Tricks · ## Star History
 ```
 
@@ -60,7 +60,7 @@ Còn một chi tiết lộ tuổi của quy trình: category E-Commerce xuất h
 
 Lấy hai mốc README cách nhau đúng một tháng và đếm cùng một cách:
 
-| Mốc | Commit | Số mục | Heading category |
+| Mốc | Commit | Số mục | Heading `###` (cả file) |
 |---|---|---|---|
 | 2026-08-08 | 165f838 | 3.371 | 58 |
 | 2026-09-07 | a62cced | 3.862 | 60 |
