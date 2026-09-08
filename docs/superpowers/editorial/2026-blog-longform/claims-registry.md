@@ -77,14 +77,14 @@
 > (dòng `- feature-<tên> — <NHÃN> — ...`); `PENDING-VERIFY` = placeholder
 > chưa verify — bài features KHÔNG ĐƯỢC viết khi còn placeholder.
 
-- feature-terminal-splits — PENDING-VERIFY
-- feature-ssh-worktrees — PENDING-VERIFY
-- feature-design-mode — PENDING-VERIFY
-- feature-ai-diff-annotation — PENDING-VERIFY
-- feature-emulator-android — PENDING-VERIFY
-- feature-computer-use-native — PENDING-VERIFY
-- feature-per-workspace-env — PENDING-VERIFY
-- feature-notification-keyboard — PENDING-VERIFY
+- feature-terminal-splits — SHIPPED — evidence: orca commit `c558d7e083` (#17601, trong tag v1.4.198 + v1.4.199) + v1.4.198 notes "Everything new from stablyai/orca — parallel worktrees, terminal splits, …"
+- feature-ssh-worktrees — SHIPPED — evidence: orca commit `278f9ee876` (#17946 ssh MFA, trong tag v1.4.198 + v1.4.199) + v1.4.198 notes "GitHub & Linear native, SSH worktrees, mobile companion"
+- feature-design-mode — SHIPPED — evidence: orca `docs/site/content/docs/browser/design-mode.mdx` (docs trang riêng) + feature-wall tile-05 "Embedded browser + Design Mode" + commit `216cabb9f0` (#463 — từ v1.4.0, nằm trong tag v1.4.198/v1.4.199 qua upstream sync)
+- feature-ai-diff-annotation — SHIPPED — evidence: orca `src/renderer/src/components/diff-comments/DiffCommentCard.tsx` + `pull-request-page/files/inline-comments.ts` (nằm trong tag v1.4.199) + feature-wall tile-08 "Inline review, back to the agent"
+- feature-emulator-android — SHIPPED — evidence: tag v1.4.199 chứa `skills/orca-emulator-android/SKILL.md` + `mobile/scripts/start-emulator.mjs` + `docs/assets/orca-mobile-emulator.gif`; desktop backend `src/main/emulator/android-emulator-backend.ts` trên main SAU v1.4.199 (bài chỉ được claim phần skill + emulator runtime đã ship)
+- feature-computer-use-native — SHIPPED — evidence: v1.4.198 notes "macOS arm64 is being rebuilt … to include the computer-use native module" + orca module `src/main/computer/` + commit `787766bfcf` (CI "full chain with computer-use, DMG to release") + commit `66dfdc456f` (từ v1.4.186)
+- feature-per-workspace-env — SHIPPED — evidence: orca commit `24d7f6b790` (#7908 "Align per-workspace environment toggle", từ v1.4.130) + `45370a5987` (skill `orca-per-workspace-env`) — cả hai trong tag v1.4.198/v1.4.199
+- feature-notification-keyboard — SHIPPED — evidence: v1.4.199 notes "Notification routing: gate-open/gate-closed đủ routing fields, tap → đúng màn" (FI-305/309) + orca commit `7b9529da22` (#16271 keyboard shortcut, từ v1.4.193, trong tag v1.4.198/v1.4.199)
 
 ## Quy tắc snapshot D8 (pin từ epic spec)
 
