@@ -138,7 +138,7 @@ Asset demo đi cùng docs cũng đã nằm sẵn trong repo:
 
 ```bash
 $ ls -lh docs/assets/orca-mobile-emulator.gif
--rw-r--r--  1 hoivu  staff   1.8M Aug 30 23:46 docs/assets/orca-mobile-emulator.gif
+-rw-r--r--  1 <user> <group>   1.8M Aug 30 23:46 docs/assets/orca-mobile-emulator.gif
 ```
 
 *Nguồn: `ls -lh` trên checkout cục bộ repo wakii-dev/wakii, lấy 2026-09-08.*

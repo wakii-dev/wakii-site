@@ -166,6 +166,7 @@ Default Mod+Shift+Backspace (⌘⇧⌫ on Mac) lets users delete the hovered
 worktree or folder workspace immediately. The shortcut targets the
 sidebar hover state rather than requiring focus, and avoids terminal
 pane D-based split shortcuts on all platforms.
+[…]
 ```
 
 *Source: commit 7b9529da22 "Add keyboard shortcut for workspace deletion

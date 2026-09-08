@@ -64,20 +64,23 @@ that part of the work has an owner.
 
 ## Inside the module: one responsibility per layer
 
-`src/main/computer/` is not one large file but small layers. The five layers
-carrying the `computer-` prefix are the core five:
+`src/main/computer/` is not one large file but small layers. Six files carry
+the `computer-` prefix without being tests — five of them are the layers this
+post follows, and the sixth (`computer-sidecar-paste-validation.ts`) belongs
+to the sidecar family:
 
 ```bash
-$ ls src/main/computer/ | grep '^computer-'
+$ ls src/main/computer/ | grep '^computer-' | grep -v '\.test\.'
 computer-action-verification-normalization.ts
 computer-clipboard-paste-validation.ts
 computer-provider-action-validation.ts
 computer-provider-lifecycle.ts
 computer-provider-unavailable-message.ts
+computer-sidecar-paste-validation.ts
 ```
 
-*Source: `ls src/main/computer/ | grep '^computer-'`, retrieved 2026-09-08;
-the same directory also hosts the `desktop-script-*`,
+*Source: `ls src/main/computer/ | grep '^computer-' | grep -v '\.test\.'`,
+retrieved 2026-09-08; the same directory also hosts the `desktop-script-*`,
 `macos-native-provider-*` and `sidecar-*` families.*
 
 Reading each layer's role from the code. `computer-provider-lifecycle.ts`

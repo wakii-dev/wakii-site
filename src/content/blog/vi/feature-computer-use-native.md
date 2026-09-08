@@ -60,21 +60,23 @@ việc đó có chủ.
 
 ## Bên trong module: mỗi lớp một trách nhiệm
 
-`src/main/computer/` không phải một file lớn mà là các lớp nhỏ. Năm lớp mang
-tiền tố `computer-` là năm lớp trung tâm:
+`src/main/computer/` không phải một file lớn mà là các lớp nhỏ. Sáu file mang
+tiền tố `computer-` và không phải test — năm file là các lớp bài này đi theo,
+file thứ sáu (`computer-sidecar-paste-validation.ts`) thuộc nhóm sidecar:
 
 ```bash
-$ ls src/main/computer/ | grep '^computer-'
+$ ls src/main/computer/ | grep '^computer-' | grep -v '\.test\.'
 computer-action-verification-normalization.ts
 computer-clipboard-paste-validation.ts
 computer-provider-action-validation.ts
 computer-provider-lifecycle.ts
 computer-provider-unavailable-message.ts
+computer-sidecar-paste-validation.ts
 ```
 
-*Nguồn: `ls src/main/computer/ | grep '^computer-'`, lấy 2026-09-08; cùng
-thư mục còn các nhóm `desktop-script-*`, `macos-native-provider-*` và
-`sidecar-*`.*
+*Nguồn: `ls src/main/computer/ | grep '^computer-' | grep -v '\.test\.'`,
+lấy 2026-09-08; cùng thư mục còn các nhóm `desktop-script-*`,
+`macos-native-provider-*` và `sidecar-*`.*
 
 Đọc vai trò từng lớp từ code. `computer-provider-lifecycle.ts` chọn provider
 theo nền tảng: trên macOS ưu tiên provider native nếu khả dụng, không thì rơi

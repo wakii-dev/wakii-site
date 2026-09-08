@@ -148,7 +148,7 @@ The demo asset ships alongside the docs, already in the repo:
 
 ```bash
 $ ls -lh docs/assets/orca-mobile-emulator.gif
--rw-r--r--  1 hoivu  staff   1.8M Aug 30 23:46 docs/assets/orca-mobile-emulator.gif
+-rw-r--r--  1 <user> <group>   1.8M Aug 30 23:46 docs/assets/orca-mobile-emulator.gif
 ```
 
 *Source: `ls -lh` on a local checkout of the wakii-dev/wakii repo, retrieved
