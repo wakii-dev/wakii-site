@@ -12,7 +12,7 @@ Most chat-AI applications you install on your machine are shells: the intelligen
 TL;DR:
 
 - Jan is a desktop app that runs AI models on the user's own machine: the llama.cpp engine runs as a native plugin of the app, models downloaded from Hugging Face live in the app's data folder.
-- The provider abstraction layer is the most instructive part: each engine registers itself into a registry by provider name, and the UI only calls names — adding or swapping an engine never touches the UI.
+- The provider abstraction layer is the most instructive part: each engine registers itself into a registry by provider name, and the UI only calls names — adding or swapping an engine does not touch the UI.
 - Local engines and cloud providers inherit from the same base class; the difference is confined to headers and transport.
 - "Privacy by default" is an architectural decision, not a settings toggle — the app simultaneously exposes a standard API on `localhost:1337` for other applications.
 - The license is a side lesson: GitHub's API does not recognize a standard license — it reports NOASSERTION (per GitHub API on 2026-09-08) — even though a LICENSE file sits right in the tree.
@@ -122,7 +122,7 @@ If you want a software process with clear gates and evidence for your agent team
 ## What Wakii learns
 
 - **ADOPT — privacy as the architectural default.** Jan keeps the engine and conversation data inside the app; Wakii has followed the same principle from day one: the kit installs itself into `~/.claude/` on first run, stories happen in local worktrees on the machine. Concrete proposal: put "nothing leaves the machine by default" on the review checklist for new features — any feature that needs the cloud must state why in the plan.
-- **DIRECTION — a provider registry keyed by name.** The EngineManager registers engines by `provider` and consumers only call the name; swapping an engine never touches the UI. Wakii currently runs a single backend family for its agents; this abstraction is worth putting on the roadmap when a second backend becomes necessary — so agent and skill definitions do not change when the model does.
+- **DIRECTION — a provider registry keyed by name.** The EngineManager registers engines by `provider` and consumers only call the name; swapping an engine does not touch the UI. Wakii currently runs a single backend family for its agents; this abstraction is worth putting on the roadmap when a second backend becomes necessary — so agent and skill definitions do not change when the model does.
 - **WATCH — Tauri as an alternative packaging path.** Jan builds its desktop shell on Tauri (Rust + system webview); the Wakii desktop app uses Electron — [the process-model analysis](/blog/arch-electron-process-model/) covers that choice. The condition to promote this to DIRECTION: when Electron's bundle size or memory footprint becomes a measurable pain point.
 - **N/A — maintaining an inference engine.** llama.cpp bindings, GPU offload, quantization: inference infrastructure is not Wakii's surface — Wakii orchestrates agents, it does not run models itself.
 

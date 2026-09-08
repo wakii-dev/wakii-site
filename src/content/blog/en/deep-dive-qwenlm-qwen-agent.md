@@ -32,7 +32,7 @@ How the repo follows models says the same thing: every new Qwen model line ships
 
 (Excerpted from the README's News section, read 2026-09-08.)
 
-The framework follows the model, not the other way around. In an independent repo, that chase-the-trend cadence would be worrying; in the live backend of a running chat product, it is the front side of improving agents every time a new model lands.
+The framework follows the model, not the other way around. In an independent repo, that chase-the-trend cadence would be worrying; in the live backend of a running chat product, it is the front side of improving agents with each new model landing.
 
 ## Tool calling is the model's format; the framework replays it
 
