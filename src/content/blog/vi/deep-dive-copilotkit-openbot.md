@@ -47,7 +47,7 @@ the mapping.
 
 — `server/src/computer/gateway.ts`, [blob @ `2e1b352`](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts) (probe 2026-09-08)
 
-Tức là rule "không bấm nút Submit" của bạn vô nghĩa nếu model được tự khai nó bấm cái gì. OpenBot giữ refs mờ đục với caller đúng để ánh xạ nằm ở server. Câu chốt của file còn đắt hơn: "an action that was not recorded did not happen" ([cùng file](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)) — không tồn tại đường nào act mà không ghi row trước. Mỗi refusal đi kèm đúng rule gây từ chối (`ActionRefusedError` mang theo `rule`), nên màn admin thấy được vì sao bị chặn chứ không chỉ thấy bị chặn.
+Tức là rule "không bấm nút Submit" của bạn vô nghĩa nếu model được tự khai nó bấm cái gì. OpenBot giữ refs mờ đục với caller đúng để ánh xạ nằm ở server. Cùng comment đầu file, câu sau còn đắt hơn: "an action that was not recorded did not happen" ([cùng file](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)) — không tồn tại đường nào act mà không ghi row trước. Mỗi refusal đi kèm đúng rule gây từ chối (`ActionRefusedError` mang theo `rule`), nên màn admin thấy được vì sao bị chặn chứ không chỉ thấy bị chặn.
 
 ## Take the wheel — UX bàn giao điều khiển
 

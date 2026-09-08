@@ -47,7 +47,7 @@ the mapping.
 
 — `server/src/computer/gateway.ts`, [blob @ `2e1b352`](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts) (probed 2026-09-08)
 
-In other words, your "never click Submit" rule is meaningless if the model gets to declare what it is clicking. OpenBot keeps the refs opaque to the caller precisely so the mapping lives on the server. The file's closing line is even better: "an action that was not recorded did not happen" ([same file](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)) — there is no path that acts without the record existing first. Every refusal carries the rule that caused it (`ActionRefusedError` ships with a `rule` field), so the admin surface shows you why an action was blocked, not just that it was.
+In other words, your "never click Submit" rule is meaningless if the model gets to declare what it is clicking. OpenBot keeps the refs opaque to the caller precisely so the mapping lives on the server. The same header comment has an even better line: "an action that was not recorded did not happen" ([same file](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)) — there is no path that acts without the record existing first. Every refusal carries the rule that caused it (`ActionRefusedError` ships with a `rule` field), so the admin surface shows you why an action was blocked, not just that it was.
 
 ## Take the wheel — the handoff UX
 
