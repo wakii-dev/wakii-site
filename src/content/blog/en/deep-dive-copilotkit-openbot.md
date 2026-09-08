@@ -18,7 +18,7 @@ CopilotKit is known for the framework that embeds copilot UI into React apps. Op
 
 ## A template, not a product — and why that matters
 
-The repo description on GitHub calls OpenBot "Open-source AI coworkers that each get a computer of their own" — a team of AI colleagues, one machine each. The README's own positioning is sharper: "A template, not a product." There is no hosted version to sign up for, nothing published as a package to depend on, and every workspace in the repository is private. You take the repo, replace the example tenant package under `examples/` with your own coworkers, channels, and skills, and run it yourself.
+The repo description on GitHub calls OpenBot "Open-source AI coworkers that each get a computer of their own" ([repo description](https://github.com/CopilotKit/OpenBot)) — a team of AI colleagues, one machine each. The README's own positioning is sharper: "A template, not a product" ([README](https://github.com/CopilotKit/OpenBot#readme)). There is no hosted version to sign up for, nothing published as a package to depend on, and every workspace in the repository is private. You take the repo, replace the example tenant package under `examples/` with your own coworkers, channels, and skills, and run it yourself.
 
 The technically interesting choice: a "bot" is any endpoint speaking [AG-UI](https://github.com/ag-ui-protocol/ag-ui), the open protocol for agent-to-user interaction. Bots built with LangGraph, Mastra, CrewAI, Pydantic AI, Google ADK, or written by hand all arrive the same way, and the governance rides the protocol rather than the framework. The three sample coworkers (General Assistant, Knowledge, Risk Analyst) are configuration in `agents.yaml`, not code.
 
@@ -30,11 +30,11 @@ The technically interesting choice: a "bot" is any endpoint speaking [AG-UI](htt
 | Latest release | v0.0.8 on 2026-09-06 |
 | Language | TypeScript (Bun + Hono + React/Vite + PostgreSQL/pgvector) |
 
-Its first five releases (v0.0.4 through v0.0.8) landed inside three weeks, and the ten most recent commits we probed on 2026-09-08 all fall on a single day — September 6. This repo is moving fast and rough; its own Alpha badge warns you to "expect rough edges." Read it as a blueprint, not a dependency.
+Its first five releases (v0.0.4 through v0.0.8) landed inside three weeks, and the ten most recent commits we probed on 2026-09-08 all fall on a single day — September 6. This repo is moving fast and rough; its own Alpha badge warns you to "expect rough edges" ([README](https://github.com/CopilotKit/OpenBot#readme)). Read it as a blueprint, not a dependency.
 
 ## Every action goes through one gate
 
-The heart of OpenBot is `server/src/computer/gateway.ts`, which introduces itself as "The only way an action reaches a Bot's computer." The gateway does three jobs, in order. One: resolve the ref the caller sent into the element it actually points at, from a snapshot the server fetched — never from the label the model claims it is clicking. Two: ask the policy — deny is evaluated before allow, a missing policy permits nothing, and a broken rule refuses rather than opens. Three: write the audit row, whichever way the decision went, and only then act.
+The heart of OpenBot is `server/src/computer/gateway.ts`, which introduces itself as "The only way an action reaches a Bot's computer" ([`gateway.ts` @ `2e1b352`](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)). The gateway does three jobs, in order. One: resolve the ref the caller sent into the element it actually points at, from a snapshot the server fetched — never from the label the model claims it is clicking. Two: ask the policy — deny is evaluated before allow, a missing policy permits nothing, and a broken rule refuses rather than opens. Three: write the audit row, whichever way the decision went, and only then act.
 
 The file's own header comment explains why the resolve step is the one that is easy to skip and fatal to skip:
 
@@ -47,7 +47,7 @@ the mapping.
 
 — `server/src/computer/gateway.ts`, [blob @ `2e1b352`](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts) (probed 2026-09-08)
 
-In other words, your "never click Submit" rule is meaningless if the model gets to declare what it is clicking. OpenBot keeps the refs opaque to the caller precisely so the mapping lives on the server. The file's closing line is even better: "an action that was not recorded did not happen" — there is no path that acts without the record existing first. Every refusal carries the rule that caused it (`ActionRefusedError` ships with a `rule` field), so the admin surface shows you why an action was blocked, not just that it was.
+In other words, your "never click Submit" rule is meaningless if the model gets to declare what it is clicking. OpenBot keeps the refs opaque to the caller precisely so the mapping lives on the server. The file's closing line is even better: "an action that was not recorded did not happen" ([same file](https://github.com/CopilotKit/OpenBot/blob/2e1b352e9a0e7be6235d641b787aab8da10b64db/server/src/computer/gateway.ts)) — there is no path that acts without the record existing first. Every refusal carries the rule that caused it (`ActionRefusedError` ships with a `rule` field), so the admin surface shows you why an action was blocked, not just that it was.
 
 ## Take the wheel — the handoff UX
 
@@ -62,7 +62,7 @@ Bot hits a login wall / 2FA prompt
 While the human drives: every bot action is REFUSED, not queued.
 ```
 
-Source: README, Features section, probed 2026-09-08. The detail with taste: while the person is driving, bot actions are refused outright rather than queued to run after the human lets go — once the handover starts, there is no side door. Around it sits the observation surface: you watch the page the bot is looking at, an Activity tab lists what it ran, read, and saved with the output, and a saved file shows its path and size, never its contents. Secrets never enter the transcript — the trail records that a secret was requested and how long it was, nothing more.
+Source: [README, Features section](https://github.com/CopilotKit/OpenBot#features), probed 2026-09-08. The detail with taste: while the person is driving, bot actions are refused outright rather than queued to run after the human lets go — once the handover starts, there is no side door. Around it sits the observation surface: you watch the page the bot is looking at, an Activity tab lists what it ran, read, and saved with the output, and a saved file shows its path and size, never its contents. Secrets never enter the transcript — the trail records that a secret was requested and how long it was, nothing more.
 
 ## Answering with components, not prose
 
@@ -73,7 +73,7 @@ component exists?  ─▶ is published?  ─▶ not withheld from this bot?
         └─ component data functions are granted per-component
 ```
 
-Source: README, Features section, probed 2026-09-08. The same philosophy runs down to skills: the README's line is "Skills are instructions, not capabilities" — personal skills attach only to bots their author owns, deployment skills are admin-owned, and a bot granted the shipped `skill-creator` skill saves a new one only when you press the button on the card. Free-form language is where agents go rogue; OpenBot clamps all three layers — actions through the gateway, interface through the component gallery, capability through skill grants.
+Source: [README, Features section](https://github.com/CopilotKit/OpenBot#features), probed 2026-09-08. The same philosophy runs down to skills: the README's line is "Skills are instructions, not capabilities" ([README](https://github.com/CopilotKit/OpenBot#features)) — personal skills attach only to bots their author owns, deployment skills are admin-owned, and a bot granted the shipped `skill-creator` skill saves a new one only when you press the button on the card. Free-form language is where agents go rogue; OpenBot clamps all three layers — actions through the gateway, interface through the component gallery, capability through skill grants.
 
 That "actions through a gate, refusals that name their rule" principle is exactly what Wakii builds around decision gates — see the [story-workflow docs](/docs/story-workflow/) for the mirror image: the agent owns the doing, the human owns the deciding. Our post [decision gates — why Wakii's AI agents always stop to ask](/blog/decision-gates-safe-ai-agents/) covers that mechanism in detail.
 

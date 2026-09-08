@@ -7,7 +7,8 @@
 
 - repo: CopilotKit/OpenBot
 - facet: editors
-- stars @ 2026-09-08: 4448 (probe SF-1) / 4453 (refresh `gh api repos/CopilotKit/OpenBot` cùng ngày 2026-09-08 — bài dùng 4453)
+- stars @ 2026-09-08: 4448 (probe SF-1) / 4453 (refresh sáng `gh api repos/CopilotKit/OpenBot` cùng ngày — bài dùng 4453, cite kèm ngày) / 4458 (re-probe chiều cùng ngày sau review — drift ~5 sao/ngày là bình thường, bài KHÔNG đổi số, giữ giá trị tại thời điểm viết + ngày)
+- pushed_at: 2026-09-07T14:27:31Z (re-probe `gh api` 2026-09-08 sau review P1 — giá trị hợp lệ, khớp bảng trong bài)
 - license (GitHub API 2026-09-08): MIT
 - probe-date: 2026-09-08 (`bash scripts/probe-repos.sh` + `gh api` trực tiếp cùng ngày)
 - metadata thêm (gh api 2026-09-08): created 2026-08-17 · TypeScript · forks 549 · open issues 44 · homepage copilotkit.ai/openbot · topics: ag-ui, agent-governance, ai-agents, browser-automation, copilotkit, generative-ui, mcp
