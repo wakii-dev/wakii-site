@@ -44,11 +44,11 @@ Mở thư mục `runtime/lua/vim` trên cây mã hôm nay (theo GitHub API ngày
 | UI và nhập liệu | `ui`, `keymap`, `tty`, `hl` | bề mặt tương tác |
 | Hạ tầng extension | `pack`, `loader`, `health`, `secure` | cài plugin và tự chẩn đoán |
 
-Dưới lớp Lua là lớp C: `src/nvim/api/` chứa 13 module — `buffer`, `window`, `tabpage`, `extmark`, `autocmd`, `command`, `options`, `events`, `ui` — mỗi module là một vùng nghiệm của editor được mở ra thành hàm (theo GitHub API ngày 2026-09-08). README liệt kê API client viết sẵn cho 17 dòng ngôn ngữ, từ Go, Python tới Rust ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)). Và chi tiết nói nhiều nhất: `pack.lua` — một plugin manager nằm ngay trong runtime. Nền tảng tự mang công cụ để mở rộng chính nó, không bắt người dùng tìm công cụ ngoài. Câu định vị của README khớp chính xác cấu trúc đó: "Enable advanced UIs without modifications to the core" ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)) — UI chỉ là một client trong nhiều client.
+Dưới lớp Lua là lớp C: `src/nvim/api/` chứa 13 module — `buffer`, `window`, `tabpage`, `extmark`, `autocmd`, `command`, `options`, `events`, `ui` — mỗi module là một vùng nghiệm của editor được mở ra thành hàm (theo GitHub API ngày 2026-09-08). README liệt kê API client viết sẵn cho 17 dòng ngôn ngữ, từ Go, Python tới Rust ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md), theo GitHub API ngày 2026-09-08). Và chi tiết nói nhiều nhất: `pack.lua` — một plugin manager nằm ngay trong runtime. Nền tảng tự mang công cụ để mở rộng chính nó, không bắt người dùng tìm công cụ ngoài. Câu định vị của README khớp chính xác cấu trúc đó: "Enable advanced UIs without modifications to the core" ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)) — UI chỉ là một client trong nhiều client.
 
 ## LSP client built-in: máy hỏi nguồn sự thật trước con người
 
-Neovim không nhét tri thức ngôn ngữ vào lõi — nó nhét client. `vim.lsp`, module LSP trong stdlib, gồm 22 submodule: từ `client`, `completion`, `diagnostic` tới `semantic_tokens`, `inlay_hint` (đếm từ bảng nạp muộn trong [lsp.lua](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/runtime/lua/vim/lsp.lua)). Chi tiết đáng học hơn cả con số là cách module được nạp:
+Neovim không nhét tri thức ngôn ngữ vào lõi — nó nhét client. `vim.lsp`, module LSP trong stdlib, gồm 22 submodule: từ `client`, `completion`, `diagnostic` tới `semantic_tokens`, `inlay_hint` (đếm từ bảng nạp muộn trong [lsp.lua](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/runtime/lua/vim/lsp.lua), theo GitHub API ngày 2026-09-08). Chi tiết đáng học hơn cả con số là cách module được nạp:
 
 ```lua
 local lsp = vim._defer_require('vim.lsp', {
@@ -68,7 +68,7 @@ Thông báo có tên method, có ngữ cảnh, kèm log cảnh báo (hàm `_unsu
 
 ## Nhịp release: platform giữ cam kết bằng bản vá đều
 
-Nền tảng chỉ đáng gọi là nền tảng khi người build trên đó tin được lịch phát hành. Mười release gần nhất của repo (theo GitHub API ngày 2026-09-08):
+Nền tảng chỉ đáng gọi là nền tảng khi người build trên đó tin được lịch phát hành. Sáu release gần nhất của repo (theo GitHub API ngày 2026-09-08):
 
 | Tag | Publish (UTC) |
 |---|---|

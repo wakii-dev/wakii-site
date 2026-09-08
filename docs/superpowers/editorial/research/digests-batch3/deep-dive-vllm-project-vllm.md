@@ -42,7 +42,7 @@
 - 90 ngày (2026-06-10 → 2026-09-08): **8 releases** — v0.23.0 06-15 · v0.24.0 06-29 ·
   v0.25.0 07-11 · v0.25.1 07-14 · v0.26.0 07-27 · v0.27.0 08-10 · v0.27.1 08-11 ·
   v0.28.0 08-26
-- Hotfix nhanh: v0.27.1 sau v0.27.0 ~13.5 giờ
+- Hotfix nhanh: v0.27.1 sau v0.27.0 ~13.5 giờ (publish_at: v0.27.0 21:18 UTC 2026-08-10 → v0.27.1 10:47 UTC 2026-08-11 — số chính xác dùng trong bài EN §release rhythm)
 
 ## Wakii grading (style-guide §8)
 

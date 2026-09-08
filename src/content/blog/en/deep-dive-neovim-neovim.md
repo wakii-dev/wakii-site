@@ -44,11 +44,11 @@ Open the `runtime/lua/vim` directory on today's tree (per GitHub API, 2026-09-08
 | UI and input | `ui`, `keymap`, `tty`, `hl` | the interaction surface |
 | Extension infrastructure | `pack`, `loader`, `health`, `secure` | installing plugins and self-diagnostics |
 
-Beneath the Lua layer sits the C layer: `src/nvim/api/` holds 13 modules — `buffer`, `window`, `tabpage`, `extmark`, `autocmd`, `command`, `options`, `events`, `ui` — each one an area of the editor opened up as functions (per GitHub API, 2026-09-08). The README lists ready-made API clients for 17 language families, from Go and Python to Rust ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)). And the most telling detail: `pack.lua` — a plugin manager living right inside the runtime. The platform ships its own extension tooling instead of sending users shopping for one. The README's positioning matches that structure exactly: "Enable advanced UIs without modifications to the core" ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)) — a UI is just one client among many.
+Beneath the Lua layer sits the C layer: `src/nvim/api/` holds 13 modules — `buffer`, `window`, `tabpage`, `extmark`, `autocmd`, `command`, `options`, `events`, `ui` — each one an area of the editor opened up as functions (per GitHub API, 2026-09-08). The README lists ready-made API clients for 17 language families, from Go and Python to Rust ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md), per GitHub API, 2026-09-08). And the most telling detail: `pack.lua` — a plugin manager living right inside the runtime. The platform ships its own extension tooling instead of sending users shopping for one. The README's positioning matches that structure exactly: "Enable advanced UIs without modifications to the core" ([README](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/README.md)) — a UI is just one client among many.
 
 ## The built-in LSP client: machines ask ground truth before humans do
 
-Neovim does not stuff language knowledge into the core — it stuffs in a client. `vim.lsp`, the LSP module in the standard library, has 22 submodules: from `client`, `completion`, and `diagnostic` to `semantic_tokens` and `inlay_hint` (counted from the lazy-load table in [lsp.lua](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/runtime/lua/vim/lsp.lua)). The most instructive detail is not the count but how the modules load:
+Neovim does not stuff language knowledge into the core — it stuffs in a client. `vim.lsp`, the LSP module in the standard library, has 22 submodules: from `client`, `completion`, and `diagnostic` to `semantic_tokens` and `inlay_hint` (counted from the lazy-load table in [lsp.lua](https://github.com/neovim/neovim/blob/b3bd442c5c3cb5f4392c7a15bff12cd412c23872/runtime/lua/vim/lsp.lua), per GitHub API, 2026-09-08). The most instructive detail is not the count but how the modules load:
 
 ```lua
 local lsp = vim._defer_require('vim.lsp', {
@@ -68,7 +68,7 @@ The message names the method, gives context, and logs a warning (the `_unsupport
 
 ## Release cadence: a platform keeps its promises with steady patches
 
-A platform only deserves the name when people building on it can trust the release schedule. The repository's ten most recent releases (per GitHub API, 2026-09-08):
+A platform only deserves the name when people building on it can trust the release schedule. The repository's six most recent releases (per GitHub API, 2026-09-08):
 
 | Tag | Published (UTC) |
 |---|---|

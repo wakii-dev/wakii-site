@@ -3,7 +3,7 @@
 > Draft theo rubric style-guide §10 — SF-6 file tập trung sau review, label
 > `enhancement` trên wakii-dev/wakii. KHÔNG file issue từ SF.
 
-## Pattern
+## 1. Pattern
 
 Declarative role cards: mỗi agent là dữ liệu khai báo — `role`/`goal`/
 `backstory` là typed field của một Pydantic model — và được **nội suy đầu vào
@@ -13,7 +13,7 @@ MIT — theo GitHub API ngày 2026-09-08). Wakii đã áp lớp nền của patt
 đội 9 agent khai báo theo bảng vai trong docs agents-and-kit, mỗi vai một việc
 hẹp — đề xuất ở đây là lớp nội suy, chưa có.
 
-## Evidence inline
+## 2. Evidence inline
 
 ```python
 role: str = Field(description="Role of the agent")
@@ -37,7 +37,7 @@ cùng package cũng khai `guardrail` — "Function or string description of a
 guardrail to validate agent output" — với `guardrail_max_retries` default 3
 (`lib/crewai/src/crewai/agent/core.py`, cùng commit).
 
-## Đề xuất Wakii
+## 3. Đề xuất Wakii
 
 - **Surface**: story-team-kit agent definitions (kit Wakii cài vào
   `~/.claude/`) + dispatch logic giữa các agent trong 1 story run.
@@ -50,7 +50,7 @@ guardrail to validate agent output" — với `guardrail_max_retries` default 3
   (bài học batch-2: plan transcripts stale khi kit re-sync — executor phải
   re-run live).
 
-## Upstream links
+## 4. Upstream links
 
 - Repo: https://github.com/crewAIInc/crewAI (MIT, 58.233 sao — theo GitHub API
   ngày 2026-09-08)
