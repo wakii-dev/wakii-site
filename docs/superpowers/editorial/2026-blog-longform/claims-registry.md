@@ -4,9 +4,12 @@
 > `## FORBIDDEN` (literal, case-insensitive) trên 20 slug mới — seed được miễn.
 > Writer tự check bài của mình vs cả hai section trước khi commit (runbook bước 6).
 >
-> **Section contract (PIN — plan-critic 2026-09-07):** dòng greppable = chính xác
-> các dòng `- ...` trong `## FORBIDDEN` bên dưới (mỗi dòng 1 cụm literal; parse
-> dừng ở heading `##` kế tiếp). Biến thể rộng nằm ở `## FORBIDDEN — variants
+> **Section contract (PIN — plan-critic 2026-09-07; scoped mở rộng FI-383):**
+> dòng greppable = chính xác các dòng `- ...` trong `## FORBIDDEN` bên dưới
+> (mỗi dòng 1 cụm literal; parse dừng ở heading `##` kế tiếp). Dòng có đuôi
+> `— scope: <slugs>` = **scoped FORBIDDEN** — chỉ grep trên slug trong list
+> (parser GIỐNG NHAU ở `check-blog-content.mjs` lẫn `audit-blog-convergence.mjs`:
+> cùng tree ⇒ cùng kết quả). Biến thể rộng nằm ở `## FORBIDDEN — variants
 > (review-only)` — lint BỎ QUA heading này; SF-5 claims sweep + review bắt nốt.
 
 ## ALLOWED
@@ -44,6 +47,13 @@
 - worktrees from your phone — số nhiều của claim trên (plan-critic P1 plural pin)
 - worktree từ phone — bản VI (FI-341 P1)
 - worktrees từ phone — số nhiều bản VI (plan-critic P1 plural pin)
+
+<!-- FI-383 batch-3: 2 dòng scoped dưới đây CHỈ áp cho 6 slug † (license
+     none/NOASSERTION) — bài của repo † gọi "công khai trên GitHub", KHÔNG
+     "open-source"/"mã nguồn mở". Bài khác (batch-1/2 + 44 slug batch-3 còn
+     lại) dùng hai cụm này tự do. Xem §Third-party claims — batch-3. -->
+- "open-source" — scope: deep-dive-anthropics-claude-code,deep-dive-modelcontextprotocol-servers,deep-dive-modelcontextprotocol-registry,deep-dive-zed-industries-zed,deep-dive-tabbyml-tabby,deep-dive-janhq-jan
+- "mã nguồn mở" — scope: deep-dive-anthropics-claude-code,deep-dive-modelcontextprotocol-servers,deep-dive-modelcontextprotocol-registry,deep-dive-zed-industries-zed,deep-dive-tabbyml-tabby,deep-dive-janhq-jan
 
 ## FORBIDDEN — variants (review-only)
 
@@ -93,6 +103,33 @@ Số liệu trong bài **re-extract ĐỐI CHIẾU SNAPSHOT** (`evidence-pack.md
 so với snapshot tại thời điểm viết: ghi số theo SNAPSHOT + ngày chụp trong bài
 ("tại thời điểm viết"). Drift phát hiện ở QA (SF-5) = ghi chú, không fail.
 Mỗi evidence block trong bài ghi nguồn + ngày lấy.
+
+## Third-party claims — batch-3 (FI-383)
+
+> Áp cho 50 bài deep-dive repo batch-3 (matrix `topic-matrix-batch3.md`).
+> Bài batch-3 viết về repo NGƯỜI KHÁC — mọi claim về repo đó là third-party
+> claim, chuẩn khác claim sản phẩm Wakii (snapshot D8 ở trên vẫn áp cho số
+> về Wakii).
+
+1. **Mọi số third-party** (stars, forks, releases, commit counts, benchmark)
+   PHẢI kèm mốc lấy: "theo GitHub API ngày N" — N là ngày research THẬT
+   (probe bằng `bash scripts/probe-repos.sh`, ngày ghi trong digest của repo
+   tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).
+   Không ngày = không đăng (giống tinh thần D8).
+2. **License-safe**: repo có license `none`/`NOASSERTION` → gọi **"công khai
+   trên GitHub"** — KHÔNG được gọi "open-source" hay "mã nguồn mở". Scoped
+   enforcement (lint + audit cùng FAIL) CHỈ trên đúng 6 slug † pin D8 ở trên;
+   probe 2026-09-08 thấy thêm `charmbracelet/crush` + `neovim/neovim` =
+   NOASSERTION NGOÀI scope — bài của 2 slug này vẫn viết license-safe
+   (review-enforced), chờ coordinator ACK mở scope trước khi enforce máy.
+3. **Paraphrase license-safe**: tả cơ chế/kiến trúc bằng lời của mình; quote
+   nguyên văn (README/docs/release notes) chỉ nên ngắn (**≤25 từ**), PHẢI có
+   attribution (tên repo/người nói) + link nguồn. Không dịch ngược quote để
+   né attribution.
+4. **Trích code**: chỉ đoạn ngắn có mục đích phân tích, kèm link commit/tree
+   (URL `github.com/<owner>/<repo>/blob/<sha>/...`) ngay cạnh — trích thô
+   không link = không đăng. Mã của repo † vẫn trích được (public) — chỉ cách
+   GỌI TÊN license bị giới hạn.
 
 ## Drift-note — skills 21/14 → 20/13 (FI-373 SF-1, probe 2026-09-08)
 

@@ -5,8 +5,9 @@
  * FI-359 D5 where the scope was a hard-coded 20-slug list).
  *
  * Scope: derived, not hard-coded. The planned manifest = every slug parsed
- * from BOTH matrix tables (topic-matrix.md batch-1 + topic-matrix-batch2.md
- * batch-2, same row regex, 64 slugs total). A slug is checked only when its
+ * from ALL THREE matrix tables (topic-matrix.md batch-1 FI-359 +
+ * topic-matrix-batch2.md batch-2 FI-373 + topic-matrix-batch3.md batch-3
+ * FI-383, same row regex, 114 slugs total). A slug is checked only when its
  * file exists in the tree, so a mid-story worktree stays green (partial pass
  * by design — matrix completeness is the convergence SF's job, not lint's).
  *
@@ -24,11 +25,19 @@
  *      kebab and forbidden-phrase checks still apply).
  *   2. ≥1 docs link in prose: EN `](/docs/<slug>/)`, VI `](/vi/docs/<slug>/)`,
  *      slug ∈ DOC_SLUGS.
- *   3. Frontmatter: 6 required fields, types per src/content.config.ts.
+ *   3. Frontmatter: 6 required fields, types per src/content.config.ts;
+ *      pubDate must equal the slug's matrix row date (normalized YYYY-MM-DD,
+ *      FI-383 — wrong scheduled dates are caught at content time, not QA).
  *   4. Forbidden phrases from claims-registry.md (## FORBIDDEN section,
  *      one literal per `- ` line, case-insensitive) — grepped on the FULL
- *      file (claims can hide in title/description too).
- *   5. kebab-case filename — checked on every blog .md (pure filename
+ *      file (claims can hide in title/description too). Scoped entries
+ *      (`- "phrase" — scope: slug,slug`, FI-383) hit ONLY the slugs listed.
+ *   5. Batch-3 marker (FI-383 D4): a slug planned by topic-matrix-batch3.md
+ *      must carry the grading heading `## Wakii học được gì` (vi) /
+ *      `## What Wakii learns` (en) — level `##` exact, `###` does not count.
+ *      Enforced on drafts too (structural). Batch-1/2 slugs are exempt —
+ *      scope follows matrix origin (`planned.set(..., { file })`).
+ *   6. kebab-case filename — checked on every blog .md (pure filename
  *      hygiene; all seeds pass it, so it cannot fail on frozen files).
  *
  * The forbidden list is parsed from the registry at run time — the registry
@@ -45,6 +54,18 @@ const blogDir = join(root, 'src', 'content', 'blog');
 const kitDir = join(root, 'docs', 'superpowers', 'editorial', '2026-blog-longform');
 const registryPath = join(kitDir, 'claims-registry.md');
 
+/* Output-scrub parity with audit-blog-convergence.mjs (security-audit P2
+ * 2026-09-08): lint output gets pasted to Linear — no absolute home path may
+ * reach it, including uncaught-crash stacks. */
+const HOME = process.env.HOME || process.env.USERPROFILE || '/nonexistent-home';
+const scrub = (s) => String(s).split(HOME).join('~');
+const failHard = (err) => {
+  console.error(scrub((err && (err.stack || err.message)) || err));
+  process.exit(1);
+};
+process.on('uncaughtException', failHard);
+process.on('unhandledRejection', failHard);
+
 /** Frozen scope (story FI-341 seeds) — never edit casually. */
 const SEED_SLUGS = [
   'review-ai-agents-from-your-phone',
@@ -54,11 +75,13 @@ const SEED_SLUGS = [
   'building-wakii-in-the-open-log-1',
 ];
 
-/** Planned scope = both matrix tables parsed with the same row regex
- *  (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs → 64 non-seed).
- *  slug -> { n, cat, pubDate, file }. Missing file = config error (exit 1),
- *  never a silent scope shrink. */
-const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md'];
+/** Planned scope = all three matrix tables parsed with the same row regex
+ *  (batch-1 FI-359: 20 slugs · batch-2 FI-373: 44 slugs · batch-3 FI-383:
+ *  50 slugs → 114 non-seed). slug -> { n, cat, pubDate, file } — `file`
+ *  records the matrix ORIGIN (drives batch-3-only checks like the "Wakii
+ *  learns" marker). Missing file = config error (exit 1), never a silent
+ *  scope shrink. */
+const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md', 'topic-matrix-batch3.md'];
 const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
 function plannedSlugs() {
   const planned = new Map();
@@ -107,10 +130,19 @@ const REQUIRED_FIELDS = ['title', 'description', 'pubDate', 'category', 'tags', 
 
 /** Literals from the registry's `## FORBIDDEN` section (one per `- ` line,
  *  reason stripped at the " — " separator). Section parse stops at the next
- *  `## ` heading — the review-only variants section is ignored by design. */
+ *  `## ` heading — the review-only variants section is ignored by design.
+ *
+ *  Scoped entries (FI-383 SF-1): `- "phrase" — scope: slug-a,slug-b` enforces
+ *  the phrase ONLY on the listed slugs (license † repos must not be called
+ *  open-source; the 64 batch-1/2 posts stay green). An entry without
+ *  ` — scope:` is unscoped and greps every planned file as before. CONTRACT:
+ *  audit-blog-convergence.mjs T3(a) parses the registry with the SAME
+ *  algorithm — same tree ⇒ same verdict from both scripts. Parse warnings
+ *  (scope slug not in matrix, bad scope syntax) are non-failing and worded
+ *  identically in both scripts. */
 function forbiddenPhrases() {
   if (!existsSync(registryPath)) {
-    console.error(`✗ blog content FAILED: claims registry missing at ${registryPath}`);
+    console.error('✗ blog content FAILED: claims registry missing at docs/superpowers/editorial/2026-blog-longform/claims-registry.md');
     process.exit(1);
   }
   const src = readFileSync(registryPath, 'utf8');
@@ -123,11 +155,26 @@ function forbiddenPhrases() {
   const end = rest.indexOf('\n## ');
   const section = end === -1 ? rest : rest.slice(0, end);
   const phrases = [];
+  const warnScoped = (msg) => console.log(`  ⚠ scoped-FORBIDDEN: ${msg}`);
   for (const line of section.split('\n')) {
     const t = line.trim();
     if (!t.startsWith('- ')) continue;
-    const phrase = t.slice(2).split(' — ')[0].trim();
-    if (phrase) phrases.push(phrase);
+    const scoped = t.match(/^- (.+?) — scope: ([a-z0-9,-]+)\s*$/);
+    if (scoped) {
+      const phrase = scoped[1].replace(/^"(.*)"$/s, '$1').trim();
+      const scope = scoped[2].split(',').map((s) => s.trim()).filter(Boolean);
+      for (const s of scope) {
+        if (!PLANNED.has(s)) warnScoped(`scope slug "${s}" not in any matrix — entry cannot fire on it (typo?)`);
+      }
+      if (phrase) phrases.push({ phrase, scope });
+      continue;
+    }
+    if (t.includes(' — scope:')) {
+      warnScoped(`bad scope syntax — enforcing UNSCOPED (fail-safe over-blocking, never under): "${t.slice(0, 60)}…"`);
+    }
+    // strip surrounding quotes — harmless for the legacy unquoted entries
+    const phrase = t.slice(2).split(' — ')[0].trim().replace(/^"(.*)"$/s, '$1');
+    if (phrase) phrases.push({ phrase, scope: null });
   }
   if (phrases.length === 0) {
     console.error('✗ blog content FAILED: `## FORBIDDEN` section has no `- ` lines');
@@ -192,6 +239,7 @@ function parseTags(value) {
 function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skips) {
   const rel = `${locale}/${slug}.md`;
   const fileErrors = [];
+  const row = PLANNED.get(slug);
   const { frontmatter, body, fmlError } = splitFrontmatter(content);
 
   // Frontmatter (always checked — a draft still cannot carry bad metadata).
@@ -207,6 +255,13 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
       if (!unquote(fields.description)) fileErrors.push('frontmatter: `description` must be a non-empty string');
       const date = new Date(unquote(fields.pubDate));
       if (Number.isNaN(date.valueOf())) fileErrors.push(`frontmatter: \`pubDate\` not parseable ("${fields.pubDate}")`);
+      // pubDate-vs-matrix (FI-383 SF-1): normalized YYYY-MM-DD must equal the
+      // slug's own matrix row (frontmatter format is `"YYYY-MM-DD"`-quoted in
+      // all 128 existing files — verified before adding the check).
+      const pub = unquote(fields.pubDate);
+      if (row && pub.slice(0, 10) !== row.pubDate) {
+        fileErrors.push(`frontmatter: pubDate "${pub}" != matrix row "${row.pubDate}"`);
+      }
       if (!CATEGORY_ENUM.includes(unquote(fields.category))) {
         fileErrors.push(`frontmatter: \`category\` "${fields.category}" not in ${CATEGORY_ENUM.join(' | ')}`);
       }
@@ -219,6 +274,21 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
       const isDraft = fields.draft === 'true';
       const stats = proseStats(body);
       if (!stats.balanced) fileErrors.push('body: unclosed fenced code block (``` opened but never closed)');
+
+      // Batch-3 marker (FI-383 D4): the "Wakii learns" grading section IS the
+      // content of every batch-3 post — enforced on both locales, drafts too
+      // (structural). Scope by matrix origin: batch-1/2 rows have no marker.
+      if (row && row.file === 'topic-matrix-batch3.md') {
+        const isVi = locale === 'vi';
+        const marker = isVi ? /^## Wakii học được gì\s*$/m : /^## What Wakii learns\s*$/m;
+        if (!marker.test(body)) {
+          fileErrors.push(
+            isVi
+              ? 'marker: missing heading `## Wakii học được gì` (batch-3 grading section — level ## exact, ### does not count; spec FI-383 D4)'
+              : 'marker: missing heading `## What Wakii learns` (batch-3 grading section — level ## exact, ### does not count; spec FI-383 D4)'
+          );
+        }
+      }
 
       if (isDraft) {
         skips.push(`${rel} — skipped-draft (band + docs-link skipped, D7 fallback)`);
@@ -252,11 +322,13 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
     }
   }
 
-  // Forbidden phrases — full file, case-insensitive.
+  // Forbidden phrases — full file, case-insensitive. Scoped entries hit only
+  // their listed slugs (FI-383); unscoped entries grep every planned file.
   const lower = content.toLowerCase();
-  for (const phrase of phrases) {
+  for (const { phrase, scope } of phrases) {
+    if (scope && !scope.includes(slug)) continue;
     if (lower.includes(phrase.toLowerCase())) {
-      fileErrors.push(`claims: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN)`);
+      fileErrors.push(`claims: forbidden phrase "${phrase}" (claims-registry ## FORBIDDEN${scope ? ` — scoped to ${scope.length} slug †` : ''})`);
     }
   }
 

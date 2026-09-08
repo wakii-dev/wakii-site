@@ -97,3 +97,66 @@ draft: false                   # fallback D7: true = flip CẢ HAI locale cùng 
 VI draft trong band → EN mirror **cùng commit** → `node
 scripts/check-blog-content.mjs` xanh → claims-check vs `claims-registry.md` →
 `pnpm build` xanh → commit.
+
+## 8. Section "Wakii học được gì" — bắt buộc batch-3 (FI-383 D4, lint-enforced)
+
+- MỌI bài batch-3 (`topic-matrix-batch3.md`) PHẢI có section grading:
+  VI file heading **`## Wakii học được gì`**, EN file heading
+  **`## What Wakii learns`** — level `##` EXACT (`###` không tính), thiếu →
+  `node scripts/check-blog-content.mjs` exit 1. Đặt cuối bài, trước CTA —
+  đây là NỘI DUNG bài (learn-in-public), không phải chú thích.
+- Nội dung = grading **ADOPT / DIRECTION / WATCH / N/A** so với product
+  surface THẬT của Wakii (đọc docs/config/code trước khi grade — không grade
+  trên trí nhớ). Chọn đúng các grade bài đó dùng, không cần đủ 4; **mỗi
+  grade ≥1 lý do cụ thể** trỏ về evidence trong bài.
+
+Template (VI — EN mirror cùng nghĩa, heading như trên):
+
+```markdown
+## Wakii học được gì
+
+- **ADOPT** — <pattern Wakii áp dụng/đã áp — vì sao, ở surface nào>
+- **DIRECTION** — <đáng đưa vào hướng đi — vì sao chưa áp ngay>
+- **WATCH** — <theo dõi thêm — điều kiện sẽ đổi thành ADOPT/DIRECTION>
+- **N/A** — <không áp được cho Wakii — vì sao>
+```
+
+- Grading nhắm ADOPT có kỷ luật: chỉ grade ADOPT khi pattern thật sự áp
+  được kèm đề xuất cụ thể (seeding cho ADOPT issue — §10); grade ADOPT tràn
+  lan cho đủ ô là anti-pattern. Strategic forks/ACP → ghi WATCH trong bài,
+  decision lớn flag epic (spec D4).
+
+## 9. Trích dẫn repo third-party (batch-3)
+
+- Chuẩn gốc: `claims-registry.md` §Third-party claims — batch-3 (FI-383).
+  Section này tóm tắt cho writer, KHÔNG duplicate literal — khi mâu thuẫn,
+  claims-registry thắng.
+- **Paraphrase license-safe**: tả cơ chế/kiến trúc bằng lời mình; quote
+  nguyên văn (README/docs/release notes) ngắn (≤25 từ), có attribution
+  (tên repo/người nói) + link nguồn ngay cạnh.
+- **Trích code ngắn** có mục đích phân tích + link commit/tree
+  (`github.com/<owner>/<repo>/blob/<sha>/...`) ngay cạnh.
+- **Mọi số third-party** (stars/releases/commits) kèm "theo GitHub API ngày
+  N" — probe bằng `bash scripts/probe-repos.sh`, ngày chạy là ngày N.
+- **License none/NOASSERTION** → gọi "công khai trên GitHub", KHÔNG
+  "open-source"/"mã nguồn mở". Machine-chặn scoped trên đúng 6 slug †
+  (matrix); `charmbracelet/crush` + `neovim/neovim` cũng NOASSERTION (probe
+  09-08) nhưng ngoài scope pin — vẫn license-safe, xem claims-registry rule 2.
+
+## 10. ADOPT issue body rubric (FI-383 D5)
+
+ADOPT issues do SF-6 file TẬP TRUNG sau review (draft từng SF ghi ở
+`docs/superpowers/editorial/research/adopt-drafts/`); label `enhancement`
+trên `wakii-dev/wakii`. Body mỗi issue theo thứ tự:
+
+1. **Pattern** — 1-2 câu: pattern gì, học từ repo nào (tên +stars+license
+   tại ngày probe).
+2. **Evidence inline** — quote/đoạn code ngắn + "theo GitHub API ngày N"
+   NGAY TRONG issue (issue phải tự đứng được nếu link chết).
+3. **Đề xuất Wakii** — áp vào surface nào, kỳ vọng hành vi gì, rủi ro chính.
+4. **Upstream links** — repo/commit/docs gốc (URL GitHub công khai).
+
+- **KHÔNG link path nội bộ site repo** (đường dẫn working tree/private) —
+  dẫn chứng bằng link bài post public thay thế; nếu post chưa lên prod,
+  ghi rõ "bài sẽ live tại /blog/<slug>/ sau khi story merge" (build-in-public
+  đã được user duyệt 2026-09-07).

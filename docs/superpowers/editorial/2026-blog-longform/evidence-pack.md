@@ -20,6 +20,81 @@
 > Snapshot là **mức đối chiếu**, không phải lời hứa vĩnh viễn. Bài viết sinh sau
 > snapshot: re-extract lệnh nguồn nếu nghi ngờ, ghi số theo snapshot + ngày.
 
+### Batch-3 repo snapshot (FI-383) — stars theo GitHub API ngày 2026-09-08
+
+50 repo của `topic-matrix-batch3.md` — số copy từ epic spec §MATRIX (probe
+2026-09-08, `/tmp/repos-probe-clean.txt`). Bài batch-3 KHÔNG dùng số này
+trực tiếp khi đã muộn hơn: re-probe bằng `bash scripts/probe-repos.sh` và
+ghi ngày probe thật của mình ("theo GitHub API ngày N" — claims-registry
+§Third-party claims). Bảng theo matrix #:
+
+| # | repo | stars @ 2026-09-08 | license |
+|---|------|--------------------|---------|
+| 1 | deepseek-ai/deepseek-harness | 215k | probe khi research |
+| 2 | anomalyco/opencode | 205k | probe khi research |
+| 3 | ollama/ollama | 180k | probe khi research |
+| 4 | langchain-ai/langchain | 145k | probe khi research |
+| 5 | anthropics/claude-code † | 144k | **none/NOASSERTION** |
+| 6 | ggml-org/llama.cpp | 127k | probe khi research |
+| 7 | google-gemini/gemini-cli | 106k | probe khi research |
+| 8 | punkpeye/awesome-mcp-servers | 94k | probe khi research |
+| 9 | modelcontextprotocol/servers † | 90k | **none/NOASSERTION** |
+| 10 | zed-industries/zed † | 89k | **none/NOASSERTION** |
+| 11 | junegunn/fzf | 82k | probe khi research |
+| 12 | cline/cline | 67k | probe khi research |
+| 13 | OpenHands/OpenHands | 86k | probe khi research |
+| 14 | headroomlabs-ai/headroom | 70k | probe khi research |
+| 15 | aaif-goose/goose | 54k | probe khi research |
+| 16 | Aider-AI/aider | 48k | probe khi research |
+| 17 | DeusData/codebase-memory-mcp | 42k | probe khi research |
+| 18 | charmbracelet/crush | 27k | probe khi research |
+| 19 | xai-org/grok-build | 26k | probe khi research |
+| 20 | microsoft/mcp-for-beginners | 17k | probe khi research |
+| 21 | hangwin/mcp-chrome | 12k | probe khi research |
+| 22 | modelcontextprotocol/registry † | 7k | **none/NOASSERTION** |
+| 23 | neovim/neovim | 102k | probe khi research |
+| 24 | vllm-project/vllm | 91k | probe khi research |
+| 25 | FoundationAgents/MetaGPT | 70k | probe khi research |
+| 26 | microsoft/autogen | 60k | CC-BY-4.0 (spec) |
+| 27 | crewAIInc/crewAI | 58k | probe khi research |
+| 28 | HKUDS/nanobot | 47k | probe khi research |
+| 29 | exo-explore/exo | 47k | probe khi research |
+| 30 | janhq/jan † | 44k | **none/NOASSERTION** |
+| 31 | openai/openai-agents-python | 29k | probe khi research |
+| 32 | pydantic/pydantic-ai | 19k | probe khi research |
+| 33 | QwenLM/Qwen-Agent | 17k | probe khi research |
+| 34 | camel-ai/camel | 17k | probe khi research |
+| 35 | HKUDS/DeepCode | 16k | probe khi research |
+| 36 | ast-grep/ast-grep | 15k | probe khi research |
+| 37 | coder/code-server | 79k | probe khi research |
+| 38 | BurntSushi/ripgrep | 68k | probe khi research |
+| 39 | sharkdp/bat | 60k | probe khi research |
+| 40 | starship/starship | 59k | probe khi research |
+| 41 | helix-editor/helix | 46k | MPL-2.0 (spec) |
+| 42 | sxyazi/yazi | 42k | probe khi research |
+| 43 | lapce/lapce | 38k | probe khi research |
+| 44 | continuedev/continue | 35k | probe khi research |
+| 45 | TabbyML/tabby † | 33k | **none/NOASSERTION** |
+| 46 | anywhere-labs/dsh-desktop | 24k | probe khi research |
+| 47 | CopilotKit/OpenBot | 4k | probe khi research |
+| 48 | Hisn00w/ASu-skills | 3.9k | probe khi research |
+| 49 | yetone/cumora | 3.5k | probe khi research |
+| 50 | Leonxlnx/unlazy | 3.1k | probe khi research |
+
+**License notes — 6 slug †** (`none`/`NOASSERTION` trên GitHub API): bài của
+6 slug `deep-dive-anthropics-claude-code` · `deep-dive-modelcontextprotocol-servers`
+· `deep-dive-modelcontextprotocol-registry` · `deep-dive-zed-industries-zed` ·
+`deep-dive-tabbyml-tabby` · `deep-dive-janhq-jan` gọi "công khai trên GitHub",
+KHÔNG "open-source"/"mã nguồn mở" (scoped FORBIDDEN — claims-registry).
+Probe 2026-09-08 thấy thêm 2 repo NOASSERTION ngoài 6 † pin:
+`charmbracelet/crush` + `neovim/neovim` (tổng 8 none/NOASSERTION) — scoped
+FORBIDDEN chỉ enforce 6 slug theo pin D8; bài 2 slug kia VẪN viết
+license-safe (review-enforced) đến khi coordinator ACK mở scope.
+Hai license đặc biệt khác đã biết từ spec: microsoft/autogen = CC-BY-4.0,
+helix-editor/helix = MPL-2.0. Các dòng "probe khi research": SF sở hữu chạy
+`bash scripts/probe-repos.sh` và điền license thật + ngày vào digest trước
+khi viết bài.
+
 ## Hub-store artifacts (D3) — dự án production chạy bằng workflow
 
 Repo public `https://github.com/wakii-dev/hub-store` — verify public 2026-09-07
