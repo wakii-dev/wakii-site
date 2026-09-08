@@ -82,5 +82,6 @@
 6. KHÔNG link cross-file kèm `#anchor`; link docs chỉ tới trang.
 7. **Hero `yes`** — sau khi bài tồn tại: thêm frontmatter `heroImage:
    "/blog/heroes/<slug>.png"` CẢ HAI locale (VI share hero EN) rồi chạy
-   `node scripts/render-blog-heroes.mjs` (SF sở hữu bài tự render — không render
-   trước khi bài tồn tại, pipeline đọc frontmatter sẽ ENOENT).
+   `node scripts/render-blog-heroes.mjs` (SF sở hữu bài tự render — render
+   trước khi bài tồn tại thì tile KHÔNG được sinh: pipeline chỉ quét bài
+   đang có trong tree; chạy khi không bài nào có heroImage = exit 1).

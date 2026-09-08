@@ -73,8 +73,10 @@ này: sai nhãn canonical = FAIL.
 
 Pipeline `scripts/render-blog-heroes.mjs` ĐỌC frontmatter: mỗi bài EN khai
 `heroImage: "/blog/heroes/<slug>.png"` (khớp đúng slug của chính nó) sẽ được
-render. Vì vậy **render CHỈ sau khi bài tồn tại** — chạy script trước khi bài
-có file → ENOENT đọc frontmatter. VI KHÔNG khai heroImage (share hero EN).
+render. Vì vậy **render CHỈ sau khi bài tồn tại** — script quét các bài EN
+đang có trong tree, nên bài chưa commit chỉ là CHƯA được render (không lỗi);
+chạy khi không bài nào có heroImage → script exit 1 (không render gì một cách
+âm thầm). VI KHÔNG khai heroImage (share hero EN).
 Sau render: commit CẢ file PNG + SVG của slug đó cùng commit bài (hero thuộc
 bài). --check để xác nhận 1200×630 mà không re-render.
 
