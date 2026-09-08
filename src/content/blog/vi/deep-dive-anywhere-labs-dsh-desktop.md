@@ -7,7 +7,7 @@ tags: ["architecture", "electron", "agents", "workflow"]
 draft: false
 ---
 
-Một repo tạo ngày 13-08-2026 đã đạt 24.444 sao theo GitHub API ngày 2026-09-08 — chưa đầy một tháng. Điều đáng đọc không phải con số, mà là câu trả lời cho một câu hỏi mà mọi đội xây sản phẩm trên nền agent đều gặp: khi nền tảng bạn bọc liên tục nhích, làm sao mở rộng mà không biến thành một bản fork cứng, xa rời upstream chỉ sau vài tháng? Câu trả lời của DSH Desktop nằm gọn trong mô tả repo: 「万物皆插件」— mọi thứ đều là plugin, và chính desktop cũng là một plugin.
+Một repo tạo ngày 13-08-2026 đã đạt 24.444 sao theo GitHub API ngày 2026-09-08 — chưa đầy một tháng. Điều đáng đọc không phải con số, mà là câu trả lời cho một câu hỏi mà mọi đội xây sản phẩm trên nền agent đều gặp: khi nền tảng bạn bọc liên tục nhích, làm sao mở rộng mà không biến thành một bản fork cứng, xa rời upstream chỉ sau vài tháng? Câu trả lời của DSH Desktop nằm gọn trong mô tả repo: 「万物皆插件」 ([mô tả repo](https://github.com/anywhere-labs/dsh-desktop), probe 2026-09-08) — mọi thứ đều là plugin, và chính desktop cũng là một plugin.
 
 ## TL;DR
 
@@ -18,7 +18,7 @@ Một repo tạo ngày 13-08-2026 đã đạt 24.444 sao theo GitHub API ngày 2
 
 ## Desktop mỏng bọc harness — đúng nghĩa "host"
 
-DeepSeek Harness (DSH) là harness agent có sẵn ba mảnh: Web UI chạy local, dịch vụ Host, và hệ thống plugin. DSH Desktop không viết lại mảnh nào; nó đưa cả ba vào một ứng dụng desktop — tự khởi động và quản lý dịch vụ Harness local, tích hợp tray hệ thống và cửa sổ, không cần cài Node.js hay gõ lệnh (diễn giải từ README, probe 2026-09-08). Điểm đáng học nằm ở chỗ repo khẳng định điều KHÔNG làm trong tài liệu kiến trúc: desktop không tạo thêm hệ plugin IPC renderer riêng và không đưa Electron API tới trang web — cửa sổ chỉ là khung nhìn cho carrier web của Host.
+DeepSeek Harness (DSH) là harness agent có sẵn ba mảnh: Web UI chạy local, dịch vụ Host, và hệ thống plugin. DSH Desktop không viết lại mảnh nào; nó đưa cả ba vào một ứng dụng desktop — tự khởi động và quản lý dịch vụ Harness local, tích hợp tray hệ thống và cửa sổ, không cần cài Node.js hay gõ lệnh (diễn giải từ README, probe 2026-09-08). Điểm đáng học là điều repo khẳng định KHÔNG làm trong tài liệu kiến trúc: desktop không tạo thêm hệ plugin IPC renderer riêng và không đưa Electron API tới trang web — cửa sổ chỉ là khung nhìn cho carrier web của Host.
 
 | Chỉ số | Giá trị |
 | --- | --- |
@@ -36,13 +36,13 @@ Tài liệu plugin-ecosystem của repo gọi desktop shell là "范例 đầu t
 
 — docs/plugin-ecosystem.md, [anywhere-labs/dsh-desktop](https://github.com/anywhere-labs/dsh-desktop/blob/main/docs/plugin-ecosystem.md) (probe 2026-09-08)
 
-Ở tầng app cũng vậy: kiến trúc mô tả một vòng đời "generation" — mỗi lần đổi profile hay mode, generation hiện tại bị dispose toàn bộ, không gì được cache sang generation mới: không service reference, không window object, không subprocess handle. Tài liệu còn tự chặn chính nó khi nói về bảo mật: bản draft Community Fabric hiện chỉ là tài liệu, capability chỉ dùng cho kiểm tra tương thích, xác nhận người dùng và audit — "không giả vờ rằng JavaScript cùng tiến trình là một sandbox an toàn".
+Ở tầng app, kiến trúc mô tả vòng đời "generation" — mỗi lần đổi profile hay mode, generation hiện tại bị dispose toàn bộ, không gì được cache sang generation mới: không service reference, không window object, không subprocess handle. Tài liệu còn tự chặn chính nó khi nói về bảo mật: bản draft Community Fabric hiện chỉ là tài liệu, capability chỉ dùng cho kiểm tra tương thích, xác nhận người dùng và audit — "không giả vờ rằng JavaScript cùng tiến trình là một sandbox an toàn" ([docs/plugin-ecosystem.md](https://github.com/anywhere-labs/dsh-desktop/blob/main/docs/plugin-ecosystem.md), probe 2026-09-08).
 
 ## Pin upstream — và giao thức kênh fail-closed
 
 Upstream được pin theo nghĩa cứng nhất: submodule `deepseek-harness/` vendored giữ nguyên pnpm workspace của upstream, cả kênh stable lẫn beta đều không sửa submodule; file `upstream.json` ghi version upstream, commit và manifest runtime vendored cho cả hai kênh. Kênh stable và beta thậm chí không phân bằng nhánh git — chúng là hai npm package vật lý và hai ứng dụng riêng.
 
-Phần đáng đóng khung là giao thức cập nhật, viết như một hợp đồng fail-closed giữa client và server:
+Phần đáng đóng khung: giao thức cập nhật, viết như hợp đồng fail-closed giữa client và server:
 
 ```text
 check      :  kèm header X-DSH-Desktop-Channel: stable|beta + version hiện tại
@@ -74,7 +74,7 @@ Chính sự kết hợp "pin upstream + mọi mở rộng đi qua cơ chế plug
 
 ## Wakii học được gì
 
-- **DIRECTION** — pin-and-wrap thay cho fork-and-merge: bọc upstream bằng submodule vendored không bao giờ bị sửa, xây mọi giá trị gia tăng qua chính cơ chế plugin của upstream, kèm sổ ADR có ngày. Wakii fork Orca theo merge-sync và hiện hoạt động tốt; nhưng nếu ma sát upstream tăng, đây là hình thế đối xứng đáng đưa lên bảng hướng đi.
+- **DIRECTION** — pin-and-wrap thay cho fork-and-merge: bọc upstream bằng submodule vendored không bao giờ bị sửa, xây mọi giá trị gia tăng qua chính cơ chế plugin của upstream, kèm sổ ADR có ngày. Wakii fork Orca theo merge-sync; nếu ma sát upstream tăng, đây là hình thế đối xứng đáng đưa lên bảng hướng đi.
 - **DIRECTION** — giao thức kênh fail-closed cho cập nhật: server phải echo đúng channel + version được yêu cầu, lệch là response vô hiệu, không bao giờ tải chéo kênh im lặng. Wakii không vận hành server cập nhật riêng (feed đọc GitHub releases) nên chưa áp trực tiếp được — nhưng khuôn "client từ chối response không khớp" đáng giữ cho mọi claim kênh phân phối trong tương lai.
 - **WATCH** — repo chưa đầy một tháng tuổi (tạo 13-08-2026), 4 stable trong hai tuần là nhịp đang dò; plugin market và contract Fabric mới dừng ở mức tài liệu, mobile remote còn badge "sắp ra". Quay lại khi contract thành chuẩn chạy được.
 - **N/A** — dàn sponsor và các API-aggregator quảng cáo trong README: bài toán thương mại hóa hệ sinh thái, không đụng tới bề mặt sản phẩm Wakii.

@@ -7,7 +7,7 @@ tags: ["gates", "evidence", "agents", "qa"]
 draft: false
 ---
 
-Start with a correction: the name "unlazy" sounds like an image lazy-loading library — and the original brief for this post guessed exactly that. The GitHub API on 2026-09-08 says otherwise: Leonxlnx/unlazy is an "Anti-laziness skill for AI agents" — 3,168 stars, MIT, created 2026-08-09. "Laziness" here has nothing to do with deferring image loads; it is the habit of finishing early — an agent reporting "done" while the work is not done. This repo pushes back against that habit with machinery: runnable gates written before the work starts, and evidence in place of confident assertions.
+Start with a correction: the name "unlazy" sounds like an image lazy-loading library — and the original brief for this post guessed exactly that. The GitHub API on 2026-09-08 says otherwise: Leonxlnx/unlazy is an "Anti-laziness skill for AI agents" ([repo description](https://github.com/Leonxlnx/unlazy)) — 3,168 stars, MIT, created 2026-08-09. "Laziness" here has nothing to do with deferring image loads; it is the habit of finishing early — an agent reporting "done" while the work is not done. This repo pushes back against that habit with machinery: runnable gates written before the work starts, and evidence in place of confident assertions.
 
 ## TL;DR
 
@@ -51,19 +51,31 @@ The skill's timeline is: before touching the work, write `GATES.md` from a templ
 
 — templates/gates-leaf.md, [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy/blob/main/templates/gates-leaf.md) (probed 2026-09-08)
 
-A runnable gate counts as met only when the command exits 0 and the output matches `EXPECT:` — both conditions, neither substituting for the other. The subtler layer is the evidence: the checker records a versioned full SHA-256 digest of the parsed `CHECK:`/`EXPECT:`/`CWD:` — change any part of the gate's definition and the old evidence flips to stale-unmet, forcing a re-run against the new definition. The README also states its own limit precisely: this unkeyed binding detects structural drift, not ledger tampering — anyone who can edit a ledger can forge canonical-looking evidence; the real boundary is the approval step. And approval is bound exhaustively: a record under `~/.unlazy/approved` locks the ledger, gate, command, expectation, CWD, shell, timeout, platform, and the full inherited PATH — change any bound input and that input needs approval again. The README's closing line deserves framing: "Approval is consent, not a sandbox."
+A runnable gate counts as met only when the command exits 0 and the output matches `EXPECT:` — both conditions, neither substituting for the other. The subtler layer is the evidence: the checker records a versioned full SHA-256 digest of the parsed `CHECK:`/`EXPECT:`/`CWD:` — change any part of the gate's definition and the old evidence flips to stale-unmet, forcing a re-run against the new definition. The README also states its own limit precisely: this unkeyed binding detects structural drift, not ledger tampering — anyone who can edit a ledger can forge canonical-looking evidence; the real boundary is the approval step. And approval is bound exhaustively: a record under `~/.unlazy/approved` locks the ledger, gate, command, expectation, CWD, shell, timeout, platform, and the full inherited PATH — change any bound input and that input needs approval again. The README's closing line ([README](https://github.com/Leonxlnx/unlazy/blob/main/README.md)) deserves framing: "Approval is consent, not a sandbox."
 
 ## Abandonment is honest — but never counted as done
 
 Two mechanisms complete the philosophy. First, `--reverify` re-runs ALL runnable gates, including ones that already passed — the changelog states the point directly: it removes completion when the oracle no longer passes. Verification runs in four layers: leaf self-check, parent re-verify, branch integration, and an optional Stop hook that returns Claude Code's `decision: "block"` while unmet gates or open dispatch waves remain — with a progress guard that releases after six no-progress blocks so the hook cannot wedge itself into an infinite one.
 
-Second, quitting has its own typed state: `ABANDON: <id> <reason>` goes into the ledger, the checker exits 1 with "HANDOFF REQUIRED" — a handoff, not a success — and a parent gate can never accept an abandoned child while claiming ALL MET. Alongside it sits gate-lint, which lints the ledger AT AUTHORING TIME to catch gates that cannot fail (fixed-output commands, vague success vocabulary, unmeasured manual figures) — an oracle that cannot fail should be caught at authoring, not certified at report time. And an anti-circularity rule: measure figures independently; never copy a supplied number into `EXPECT:` as its own proof.
+Second, quitting has its own typed state: `ABANDON: <id> <reason>` goes into the ledger:
+
+```text
+- [ ] G3: old export path cleaned up
+  ABANDON: G3 upstream still owns this path — needs an owner decision
+
+checker : exit 1 · "HANDOFF REQUIRED"
+parent  : cannot accept a leaf carrying an ABANDON gate as ALL MET
+```
+
+— shape from README.md ("The gate contract" section), [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy/blob/main/README.md) (probed 2026-09-08)
+
+Quitting becomes a handoff — honest, but never a success. Alongside it sits gate-lint, which lints the ledger AT AUTHORING TIME to catch gates that cannot fail (fixed-output commands, vague success vocabulary, unmeasured manual figures) — an oracle that cannot fail should be caught at authoring, not certified at report time. And an anti-circularity rule: measure figures independently; never copy a supplied number into `EXPECT:` as its own proof.
 
 This whole block is "gates, not trust" — the philosophy Wakii runs through B-gates; see the [story-workflow docs](/docs/story-workflow/) and the post [gates, not trust — and Rule 0](/blog/gates-not-trust-rule-zero/) — independently reinvented as a portable skill. The convergence is itself a signal: completion discipline is becoming standard agent engineering.
 
 ## A repo that refuses its own evidence
 
-The part that makes this repo worth learning from is not the code. `research/validation-protocol.md` declares up front: the historical six-run comparison (2 tasks × 3 conditions — no skill / tree 3 / tree 6) once mentioned in earlier README versions inspired the v2 design, but the repo does NOT keep the transcripts, token logs, or calculation code from those runs, so the reported numbers "cannot be independently reproduced or audited from source." The file's own verdict: treat it as design provenance only — far too small for any model-level claim — and never describe it "as proof that unlazy causes a specific improvement or cost multiplier." It then lays out a minimum protocol for anyone to rerun the science properly: pre-register conditions, isolate every run, archive full transcripts.
+The part that makes this repo worth learning from is not the code. [`research/validation-protocol.md`](https://github.com/Leonxlnx/unlazy/blob/main/research/validation-protocol.md) declares up front: the historical six-run comparison (2 tasks × 3 conditions — no skill / tree 3 / tree 6) once mentioned in earlier README versions inspired the v2 design, but the repo does NOT keep the transcripts, token logs, or calculation code from those runs, so the reported numbers "cannot be independently reproduced or audited from source." The file's own verdict: treat it as design provenance only — far too small for any model-level claim — and never describe it "as proof that unlazy causes a specific improvement or cost multiplier" ([same file](https://github.com/Leonxlnx/unlazy/blob/main/research/validation-protocol.md)). It then lays out a minimum protocol for anyone to rerun the science properly: pre-register conditions, isolate every run, archive full transcripts.
 
 A repo selling evidence discipline, taking a real loss on its own marketing, to stay honest about its own evidence — that is learn-in-public in the true sense.
 

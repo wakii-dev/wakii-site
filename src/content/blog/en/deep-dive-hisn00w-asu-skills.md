@@ -20,7 +20,7 @@ A skills pack for a non-coding niche — preparing job applications in Chinese �
 
 How the repo organizes distribution is the operational definition of skills-as-content. All content lives in three shared directories — `skills/`, `assets/`, `references/` — and each harness only needs a thin manifest pointing at them: `.codex-plugin/` for Codex, `.claude-plugin/` for Claude Code, `.trae-plugin/` for TraeWork, while `.opencode-plugin/` and `.workbuddy-plugin/` are lighter community bridges. Installing on Claude Code is the familiar two-command marketplace flow: `/plugin marketplace add Hisn00w/ASu-skills`, then `/plugin install asu-skills@asu`.
 
-The anti-drift part is the real lesson. The README states it plainly: the catalog of entries takes `skills.registry.json` at the repo root as the single source of truth, generated and reconciled by `npm run sync:skills`, with CI re-checking via `--check`. Add a skill and forget to sync the manifests in five places, and CI goes red before merge. This is not theory: in the very first month, an outside contributor (qiyu-lu) submitted PR #136 "fix/docs-skill-catalog-sync" explicitly to stop the docs catalog from drifting — the mechanism is genuinely being used.
+The anti-drift part is the real lesson. The README states it plainly: the catalog of entries takes `skills.registry.json` at the repo root as the single source of truth, generated and reconciled by `npm run sync:skills`, with CI re-checking via `--check`. Add a skill and forget to sync the manifests in five places, and CI goes red before merge. This is not theory: in the very first month, an outside contributor (qiyu-lu) submitted [PR #136](https://github.com/Hisn00w/ASu-skills/pull/136) "fix/docs-skill-catalog-sync" explicitly to stop the docs catalog from drifting — the mechanism is genuinely being used.
 
 | Component | Role |
 | --- | --- |
@@ -33,7 +33,21 @@ The repo has no releases or tags at all (per the GitHub API on 2026-09-08) — v
 
 ## Nine skills, one workflow
 
-The nine entries are not nine loose tools; they are an ordered job-hunting pipeline. `/contributor` finds open-source issues matching your target role and checks maintainer signals and contribution rules before proposing anything; `/project-guide` generates a source-reading path with study questions; `/great-resume` and `/make-resume` handle the CV itself (18 editable HTML templates — which is also why the repo's language stat reads HTML); `/job-match` compares a job description against real evidence; `/job-apply` fills application forms through a browser and stops before submitting for human review; `/interview` and `/offer` close out interview prep and application tracking.
+The nine entries are not nine loose tools; they are an ordered job-hunting pipeline:
+
+| Skill | Role in the pipeline |
+| --- | --- |
+| `/contributor` | find open-source issues matching the target role; check maintainer signals and contribution rules before proposing |
+| `/evidence-recap` | nine-segment evidence chain from AI-coding records |
+| `/project-guide` | a source-reading path with study questions |
+| `/great-resume` | reposition the resume for a target role; mark gaps 【待补】 |
+| `/make-resume` | export editable HTML resumes from 18 templates (why the repo's language stat reads HTML) |
+| `/job-match` | compare a job description against real evidence |
+| `/job-apply` | fill application forms through a browser, stopping before submit for review |
+| `/interview` | predict questions and probe evidence gaps |
+| `/offer` | track application progress |
+
+— compiled from README.md, [Hisn00w/ASu-skills](https://github.com/Hisn00w/ASu-skills) (probed 2026-09-08)
 
 The README chains them into scenarios: no real experience yet? Run `/contributor` first, then hand the results to `/great-resume`. Have AI-coding records? `/evidence-recap` builds the evidence chain before you decide how to tell the story. Each entry also documents when NOT to use it — the responsibility boundaries between skills are declared rather than left for the runtime to guess.
 

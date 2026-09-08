@@ -20,7 +20,7 @@ Một bộ skill cho niche phi-lập-trình — chuẩn bị xin việc tiếng 
 
 Cách repo tổ chức phân phối chính là định nghĩa hoạt động của skills-as-content. Toàn bộ nội dung sống trong ba thư mục dùng chung — `skills/`, `assets/`, `references/` — và mỗi harness chỉ cần một manifest mỏng trỏ vào đó: `.codex-plugin/` cho Codex, `.claude-plugin/` cho Claude Code, `.trae-plugin/` cho TraeWork, còn `.opencode-plugin/` và `.workbuddy-plugin/` là các bridge cộng đồng nhẹ hơn. Cài lên Claude Code là hai lệnh marketplace quen thuộc: `/plugin marketplace add Hisn00w/ASu-skills` rồi `/plugin install asu-skills@asu`.
 
-Phần chống-drift mới là thứ đáng học. README ghi rõ: danh mục entry lấy `skills.registry.json` ở gốc repo làm "nguồn sự thật duy nhất", do `npm run sync:skills` sinh ra và đối chiếu, còn CI chạy lại với `--check`. Nghĩa là ai thêm một skill mà quên đồng bộ manifest ở năm chỗ thì CI đỏ trước khi merge. Điều này không phải lý thuyết: ngay tháng đầu, một contributor ngoài (qiyu-lu) đã gửi PR #136 "fix/docs-skill-catalog-sync" với lý do rõ ràng là chống trôi catalogs docs — lớp cơ chế này thực sự được người ngoài dùng.
+Phần chống-drift mới là thứ đáng học. README ghi rõ: danh mục entry lấy `skills.registry.json` ở gốc repo làm "nguồn sự thật duy nhất", do `npm run sync:skills` sinh ra và đối chiếu, còn CI chạy lại với `--check`. Nghĩa là ai thêm một skill mà quên đồng bộ manifest ở năm chỗ thì CI đỏ trước khi merge. Điều này không phải lý thuyết: ngay tháng đầu, một contributor ngoài (qiyu-lu) đã gửi [PR #136](https://github.com/Hisn00w/ASu-skills/pull/136) "fix/docs-skill-catalog-sync" với lý do rõ ràng là chống trôi catalogs docs — lớp cơ chế này thực sự được người ngoài dùng.
 
 | Thành phần | Vai trò |
 | --- | --- |
@@ -33,7 +33,21 @@ Repo không có release hay tag nào (theo GitHub API ngày 2026-09-08) — vers
 
 ## Chín skill, một workflow
 
-Chín entry không phải chín công cụ rời mà là một pipeline tìm việc có thứ tự. `/contributor` tìm vấn đề open-source phù hợp vị trí mục tiêu, check tín hiệu maintainer và quy tắc đóng góp trước khi đề xuất; `/project-guide` sinh đường đọc source kèm câu hỏi ôn; `/great-resume` và `/make-resume` lo phần CV (18 template HTML chỉnh được, ngôn ngữ stats của repo là HTML cũng vì đây); `/job-match` đối chiếu JD với bằng chứng thật; `/job-apply` điền form qua browser và dừng trước khi submit để người dùng kiểm; `/interview` và `/offer` gói phần phỏng vấn và theo dõi tiến độ.
+Chín entry không phải chín công cụ rời mà là một pipeline tìm việc có thứ tự:
+
+| Skill | Vai trong pipeline |
+| --- | --- |
+| `/contributor` | tìm vấn đề open-source khớp vị trí mục tiêu; check maintainer + quy tắc đóng góp trước khi đề xuất |
+| `/evidence-recap` | chuỗi bằng chứng 9 đoạn từ record AI-coding |
+| `/project-guide` | đường đọc source kèm câu hỏi ôn |
+| `/great-resume` | nâng CV theo vị trí mục tiêu; đánh 【待补】 chỗ thiếu |
+| `/make-resume` | xuất CV HTML chỉnh được từ 18 template (ngôn ngữ stats của repo là HTML cũng vì đây) |
+| `/job-match` | đối chiếu JD với bằng chứng thật |
+| `/job-apply` | điền form qua browser, dừng trước submit để người kiểm |
+| `/interview` | dự đoán câu hỏi, soi lỗ hổng bằng chứng |
+| `/offer` | theo dõi tiến độ ứng tuyển |
+
+— tổng hợp từ README.md, [Hisn00w/ASu-skills](https://github.com/Hisn00w/ASu-skills) (probe 2026-09-08)
 
 Chuỗi phối hợp được README viết thành kịch bản: thiếu trải nghiệm thật thì đi `/contributor` trước, kết quả đưa thẳng cho `/great-resume`; có record AI-coding thì `/evidence-recap` tạo chuỗi bằng chứng trước khi quyết định cách kể. Mỗi entry mô tả rõ khi nào KHÔNG dùng nó — ranh giới trách nhiệm giữa các skill được khai báo thay vì để runtime đoán.
 

@@ -7,7 +7,7 @@ tags: ["architecture", "electron", "agents", "workflow"]
 draft: false
 ---
 
-A repository created on August 13, 2026 reached 24,444 stars per the GitHub API on 2026-09-08 — under a month. The interesting part is not the number; it is the answer to a question every team building on an agent platform eventually faces: when the platform you wrap keeps moving, how do you extend it without hardening into a fork that drifts from upstream within months? DSH Desktop's answer fits in its own repo description: "万物皆插件" — everything is a plugin, and the desktop itself is a plugin too.
+A repository created on August 13, 2026 reached 24,444 stars per the GitHub API on 2026-09-08 — under a month. The interesting part is not the number; it is the answer to a question every team building on an agent platform eventually faces: when the platform you wrap keeps moving, how do you extend it without hardening into a fork that drifts from upstream within months? DSH Desktop's answer fits in its own repo description: "万物皆插件" ([repo description](https://github.com/anywhere-labs/dsh-desktop), probed 2026-09-08) — everything is a plugin, and the desktop itself is a plugin too.
 
 ## TL;DR
 
@@ -36,7 +36,7 @@ The repo's plugin-ecosystem doc calls the desktop shell the first exemplar of it
 
 — docs/plugin-ecosystem.md, [anywhere-labs/dsh-desktop](https://github.com/anywhere-labs/dsh-desktop/blob/main/docs/plugin-ecosystem.md) (probed 2026-09-08)
 
-The same discipline shows at the app layer. The architecture describes a "generation" lifecycle: every profile or mode switch disposes the current generation entirely, and nothing is cached across generations — no service references, no window objects, no subprocess handles. The docs even police themselves on security: the Community Fabric draft (manifest, capabilities, host descriptor, events) is currently documentation only, and its capabilities are for compatibility checks, user confirmation, and auditing — "won't pretend same-process JavaScript is a security sandbox."
+The same discipline shows at the app layer. The architecture describes a "generation" lifecycle: every profile or mode switch disposes the current generation entirely, and nothing is cached across generations — no service references, no window objects, no subprocess handles. The docs even police themselves on security: the Community Fabric draft (manifest, capabilities, host descriptor, events) is currently documentation only, and its capabilities are for compatibility checks, user confirmation, and auditing — "won't pretend same-process JavaScript is a security sandbox" ([docs/plugin-ecosystem.md](https://github.com/anywhere-labs/dsh-desktop/blob/main/docs/plugin-ecosystem.md), probed 2026-09-08).
 
 ## Pinned upstream — and a fail-closed channel protocol
 
