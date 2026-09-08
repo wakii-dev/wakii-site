@@ -98,7 +98,7 @@ My favorite detail sits in a single function: `mayAcknowledgeClient` returns tru
 
 ## Admission budgets and close codes
 
-One cell serves many session pairs at once, so resource limits must be published numbers, not server instinct. In `admission-budgets.ts`: each cell has a connection hard cap (600 by default, within a design range of 600–3000), part of that budget is reserved for host controls — ordinary sockets stop at a ceiling equal to the hard cap minus the reserve. The splice has low/high water marks at 64 KB / 256 KB, and a splice wedged for more than 10 seconds counts as wedged.
+One cell serves many session pairs at once, so resource limits must be published numbers, not server instinct. In `admission-budgets.ts`: each cell has a connection hard cap — 600 by default, with `RELAY_CELL_CONNECTION_HARD_CAPS` allowing exactly three values `[600, 1_000, 3_000]` — and part of that budget is reserved for host controls, so ordinary sockets stop at a ceiling equal to the hard cap minus the reserve. The splice has low/high water marks at 64 KB / 256 KB, and a splice wedged for more than 10 seconds counts as wedged.
 
 When a connection is rejected or cut, it does not die silently. Six close codes state the reason:
 
@@ -133,8 +133,8 @@ This entire operations surface is public as GitHub workflows, and the file names
 
 *Source: .github/workflows/ and cloud/README.md, retrieved 2026-09-08.*
 
-"Deploy Relay Fence Broker" resolves the image at an exact commit and then verifies a ready singleton revision; "Monitor Relay Cell Clock Skew" measures the Date-header skew of every relay cell — which matters because the signed challenge above is clock-sensitive. The most important operational fact: every job is gated on the repository variable `ORCA_CLOUD_OPERATIONS_ENABLED == 'true'`, which is unset on the public repo, so the whole infrastructure block sits inert by default. Only "Cloud Verify" is ungated — it builds, typechecks, tests, and validates the relay Terraform on every pull request, including from forks. You can read the entire topology without being able to run a single step against the real infrastructure.
+"Deploy Relay Fence Broker" resolves the image at an exact commit and then verifies a ready singleton revision; "Monitor Relay Cell Clock Skew" measures the Date-header skew of every relay cell — which matters because the signed challenge above is clock-sensitive. The most important operational fact: every job is gated on the repository variable `ORCA_CLOUD_OPERATIONS_ENABLED == 'true'`, which is unset on the public repo, so the whole infrastructure block sits inert by default. And per `cloud/README.md`, an ungated "Cloud Verify" flow builds, typechecks, tests, and validates the relay Terraform on every pull request, including from forks. You can read the entire topology without being able to run a single step against the real infrastructure.
 
 ## Wrap-up
 
-Frequently asked configuration and operations questions — including relay and device pairing — are collected on the [FAQ](/docs/faq/) page. To check the claims yourself, every path cited here is on the public `wakii-dev/wakii` repo under the MIT license: open `cloud/README.md`, then descend into `packages/relay-contract`, and you will find exactly what this post describes. To experience the mobile side connected through this relay, download Wakii and open the Superpowers panel — your signal will travel the exact path in the diagram above.
+Frequently asked configuration and operations questions are collected on the [FAQ](/docs/faq/) page. To check the claims yourself, every path cited here is on the public `wakii-dev/wakii` repo under the MIT license: open `cloud/README.md`, then descend into `packages/relay-contract`, and you will find exactly what this post describes. To experience the mobile side connected through this relay, download Wakii and open the Superpowers panel — your signal will travel the exact path in the diagram above.

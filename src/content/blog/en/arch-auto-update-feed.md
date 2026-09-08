@@ -39,7 +39,7 @@ Wakii-1.4.199-x64.dmg
 ```
 *Read-only `gh` commands against the public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
-Three kinds of files in that listing are worth separating. The download assets carry the version in their names — `Wakii-1.4.199-x64.dmg` — so a URL alone tells you which release a file belongs to, no guessing. The two `.yml` files are manifests: `latest-mac.yml` for macOS, `latest.yml` for Windows. Those manifest names are not a convention someone memorized; the updater picks them by platform:
+Three kinds of files in that listing are worth separating. The macOS download assets carry the version in their names — `Wakii-1.4.199-x64.dmg` — while every asset URL is pinned by tag, so a link alone tells you which release it points at, no guessing. The two `.yml` files are manifests: `latest-mac.yml` for macOS, `latest.yml` for Windows. Those manifest names are not a convention someone memorized; the updater picks them by platform:
 
 ```ts
 // src/main/updater-prerelease-feed.ts
@@ -53,6 +53,7 @@ function getPlatformManifestName(): string {
   return 'latest.yml'
 }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 A manifest is the table of contents of a release: the version, the asset file name, the checksum. The updater works with the (tag, manifest) pair — not with a vague notion of "the newest one".
 
@@ -65,10 +66,11 @@ Now the user's machine. Two constants open `src/main/updater-events.ts`:
 const AUTO_UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000
 const AUTO_UPDATE_RETRY_INTERVAL_MS = 60 * 60 * 1000
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 Once a day, and when a check fails it retries after an hour — doubling on each consecutive failure (the logic lives in `src/main/updater/updater-scheduling.ts`) until it hits the cap. Why does the timer live in the main process rather than the renderer? The comment in `updater-scheduling.ts` answers for me: "Orca runs for days, so keep the next background check scheduled in the main process rather than tying it to relaunches or renderer lifetime." People leave the app open for a week; the check has to outlive any window.
 
-Beyond the automatic loop there is a manual check from the app menu — the handler is registered in `src/main/updater/updater-menu-checks.ts` and invoked from `src/main/index.ts` when you click "check for updates".
+Beyond the automatic loop there is a manual check from the app menu — the handler lives in `src/main/updater/updater-menu-checks.ts`; the menu item is registered in `src/main/menu/register-app-menu.ts`, and the callback wired in `src/main/startup/main-process-i18n-menu.ts` routes the click into that handler.
 
 ## Pinning the feed to a concrete tag: the publishing window trips nobody
 
@@ -86,6 +88,7 @@ Here is the most interesting part: while a release is being published, the atom 
  * the same release.
  */
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 The pinned URL is assembled from the tag: `getReleaseDownloadUrl(tag)` joins `RELEASES_DOWNLOAD_BASE` with the encoded tag — exactly `…/releases/download/v1.4.199`. Before pinning, the updater also probes that tag's manifest:
 
@@ -97,6 +100,7 @@ export type FetchNewerReleaseTagsResult =
   | { tags: string[]; state: 'not-ready'; lastGoodTag?: string }
   | { tags: string[]; state: 'unavailable'; unavailableReason: 'feed' | 'manifest' }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 The four states tell the whole story of the "publishing window": `ready` — the newer tag has a manifest, safe to pin; `not-ready` — the feed shows the tag but the manifest is not up yet, and the type carries `lastGoodTag` so the updater can fall back to the last known-good tag instead of erroring; `unavailable` — the feed or the manifest is broken, skip this check and try again later.
 
@@ -115,7 +119,7 @@ t2   download manifest + asset from the pinned tag → "ready"
                         │
 t3   quit-and-install: renderer flushes → quit → installer → relaunch
 ```
-*Assembled from `src/main/updater-prerelease-feed.ts`, `src/main/updater/updater-events.ts`, `src/main/updater/updater-download-install.ts` — public repo `wakii-dev/wakii`, captured 2026-09-08.*
+*Assembled from `src/main/updater-prerelease-feed.ts`, `src/main/updater-events.ts`, `src/main/updater/updater-download-install.ts` — public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 One honest note: Wakii is a fork, and the feed constant in the source file points at the upstream repo's atom feed — untouched since the fork, the context of which [the staying-current-with-upstream post](/blog/forking-an-ide-keeping-current-with-upstream/) already covers. The takeaway is the mechanism: a feed only has to answer with two things — tags and manifests — and every client-side decision rides on that pair, independent of any host.
 
@@ -130,6 +134,7 @@ this.pendingQuitAndInstallTimer = setTimeout(() => {
   void this.performQuitAndInstall()
 }, QUIT_AND_INSTALL_DELAY_MS)
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 On macOS, installer state is tracked separately in `src/main/updater-mac-install.ts` (see `isMacInstallerReady`) so the app does not quit before the installer is actually ready. On Linux, when the current install is owned by the OS package manager, the updater blocks the download outright and returns a coded error — with a blunt comment:
 
@@ -142,8 +147,9 @@ if (isExternallyManagedLinuxInstall()) {
     version
   })
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
-That comment is this whole layer's philosophy in two sentences: the verdict belongs to the main process, not to a UI card — an older renderer or a direct IPC call must not be allowed to burn a package download this machine could never install. And when the app is running in headless serve mode, installation is deferred through `deferHeadlessServeInstall` in `src/main/serve-update-handoff.ts`, so a running serve session is not cut mid-flight.
+That comment is this whole layer's philosophy in two sentences: the verdict belongs to the main process, not to a UI card — an older renderer or a direct IPC call must not be allowed to burn a package download this machine could never install. And when the app is running in headless serve mode, the `deferHeadlessServeInstall` gate in `src/main/updater/updater-install-execution.ts` defers the install, so a running serve session is not cut mid-flight.
 
 The gates, summarized:
 

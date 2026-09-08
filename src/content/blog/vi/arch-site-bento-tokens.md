@@ -123,7 +123,7 @@ board.style.transform = `scale(${s.toFixed(4)})`;
 
 *Nguồn: src/components/mockups/BracketCanvas.astro, hàm scaleAll, lấy 2026-09-08.*
 
-Cặp này là lý do bạn sẽ không tìm thấy breakpoint 390px nào trong `src/` — grep chuỗi `390` trả về không một dòng. Ở 1020px, media query duy nhất của component cho grid sập một cột; dưới đó, bảng tự co theo bề rộng còn trừ padding 32px mỗi bên của `.wrap`. Pattern `min-width: 0` cũng không riêng Bento: grep toàn `src/` đếm được 17 chỗ tại thời điểm viết, từ PostCard tới DocsLayout. Đó là bài học được trả giá bằng layout vỡ, rồi được viết thành quy ước chung của repo.
+Cặp này là lý do bạn sẽ không tìm thấy breakpoint 390px nào trong `src/` — lọc file nguồn (*.astro, *.ts, *.css) ngoài `src/content/` thì grep chuỗi `390` trả về không một dòng. Ở 1020px, media query duy nhất của component cho grid sập một cột; dưới đó, bảng tự co theo bề rộng còn trừ padding 32px mỗi bên của `.wrap`. Pattern `min-width: 0` cũng không riêng Bento: grep toàn `src/` đếm được 17 chỗ tại thời điểm viết, từ PostCard tới DocsLayout. Đó là bài học được trả giá bằng layout vỡ, rồi được viết thành quy ước chung của repo.
 
 ## Chuỗi một chiều: direction → token → component → trang
 
@@ -146,7 +146,7 @@ src/pages/index.astro (EN, 10 dòng) · src/pages/vi/index.astro (VI, 9 dòng)
 
 Trang chủ là wrapper mỏng: 10 dòng cho EN, 9 dòng cho VI, đều chỉ bọc Landing component và bơm đúng bộ chuỗi. Cùng bộ token đó chảy xuống cả blog lẫn docs — layout chi tiết bài viết `src/layouts/BlogDetailLayout.astro` cũng nằm trong số 17 chỗ `min-width: 0` nói trên. Tại thời điểm viết, blog có 25 slug × 2 locale = 50 file (snapshot 2026-09-08) và tất cả hiển thị trên cùng một nền token — con số bạn tự đếm lại bằng `ls src/content/blog/en`.
 
-Một thay đổi token vì vậy không có đường tắt: nó đi qua đúng chuỗi build công khai của repo — parity gate → content lint → astro build. Bài [log 2 của chuỗi xây Wakii](/vi/blog/building-wakii-in-the-open-log-2/) đã mổ chuỗi đó từng lớp; ở đây chỉ cần nói thêm rằng chính tính một-một-của-token là thứ khiến chuỗi ấy đủ ngắn để tin.
+Một thay đổi token vì vậy không có đường tắt: nó đi qua chuỗi build công khai của repo — utility gate → parity gate → content lint → astro build. Bài [log 2 của chuỗi xây Wakii](/vi/blog/building-wakii-in-the-open-log-2/) đã mổ chuỗi đó từng lớp; ở đây chỉ cần nói thêm rằng chính tính một-một-của-token là thứ khiến chuỗi ấy đủ ngắn để tin.
 
 Hỏi đáp về site và sản phẩm được gom ở [trang FAQ](/vi/docs/faq/). Muốn thấy quy trình dựng site này từ đầu, bài [case study: chính blog này là một story](/vi/blog/blog-story-case-study/) là chỗ hợp lý nhất để bắt đầu.
 

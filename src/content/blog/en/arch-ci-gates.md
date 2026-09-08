@@ -81,7 +81,7 @@ The product's release-cut workflow is considerably bigger: the `release-cut.yml`
 cut ──► create-release
   ├──► terminal-rendering-golden ───────────┐
   ├──► skill-sharing-release-gate ──────────┼──► release-preflight
-  └──► skill-sharing-linux-floor-gate ──────┘           │
+  └──► skill-sharing-linux-floor-release-gate ──────┘           │
                                                 build + build-mac
                                                        │
                                                 publish-release

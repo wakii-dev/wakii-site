@@ -32,7 +32,7 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software...
 ```
 
-*Nguồn: `LICENSE`, repo `wakii-dev/wakii` (bản mirror cục bộ tại `/Users/hoivu/Desktop/projects/orca`, nhánh `wakii-dev`), lấy 2026-09-08.*
+*Nguồn: `LICENSE`, repo `wakii-dev/wakii` (đọc từ bản mirror cục bộ, nhánh `wakii-dev`), lấy 2026-09-08.*
 
 MIT ngắn, và sự ngắn ấy là toàn bộ điểm mạnh của nó: nó không cấm ai điều gì. Fork được, sửa được, đóng cửa source cũng được. Nghĩa là giấy phép không thể là thứ làm bản sắc của một fork — ai cũng có thể làm y hệt. Cái làm bản sắc là phần còn lại: bạn giữ gìn gì trong đó. Wakii giữ nguyên dòng bản quyền của Lovecast Inc. trong file LICENSE thay vì xén nó đi, và phần mô tả trong README nói thẳng quan hệ:
 

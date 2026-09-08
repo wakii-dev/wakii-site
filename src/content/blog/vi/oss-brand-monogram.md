@@ -101,7 +101,7 @@ Web ăn SVG tươi, nhưng desktop không sống với vector đơn thuần — 
 
 *Nguồn: `resources/icon-source/generate.sh`, repo `wakii-dev/wakii`, lấy 2026-09-08.*
 
-Thư mục `resources/icon-source/` đúng chứa hai file: `icon.icon` — project của Icon Composer, công cụ dựng icon của Apple — và `generate.sh` Script chạy `actool` của Xcode để biên dịch `.icon` thành `.icns`, rồi dùng ImageMagick xử lý các slot nhỏ. Một dòng comment trong script cho biết vì sao phải làm vụ này cẩn thận: "macOS list views use the small .icns slots directly" — các khung danh sách của macOS đọc thẳng slot nhỏ trong icns, nên từng slot phải chuẩn, không thể phóng to thu nhỏ tuỳ hứng như trên web.
+Thư mục `resources/icon-source/` đúng chứa hai file: `icon.icon` — project của Icon Composer, công cụ dựng icon của Apple — và script `generate.sh` chạy `actool` của Xcode để biên dịch `.icon` thành `.icns`, rồi dùng ImageMagick xử lý các slot nhỏ. Một dòng comment trong script cho biết vì sao phải làm vụ này cẩn thận: "macOS list views use the small .icns slots directly" — các khung danh sách của macOS đọc thẳng slot nhỏ trong icns, nên từng slot phải chuẩn, không thể phóng to thu nhỏ tuỳ hứng như trên web.
 
 Đáng chú ý là kiến trúc hai nguồn: site dùng SVG thuần làm master, app dùng project Icon Composer làm master. Hai nguồn không đồng bộ tự động — chúng là hai bản thể hiện của cùng một hình học "w.", mỗi bên giữ đúng định dạng môi trường của mình cần. Khi hình học thay đổi, cả hai thay đổi bằng một commit ở mỗi repo — và lịch sử git ghi lại đúng như vậy.
 

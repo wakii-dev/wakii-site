@@ -59,10 +59,11 @@ webPreferences: {
   additionalArguments: [formatBrowserClientHostIdArgument(getBrowserClientHostId())]
 }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 `sandbox: true` là dòng đáng chú ý nhất. Từ Electron 20, renderer đã được sandbox hoá theo mặc định, và Wakii chạy trên Electron 43 — vậy sao còn ghi tường minh? Vì mặc định là mặc định: một dòng tường minh không phụ thuộc việc default có đổi ở bản Electron sau hay không. Đây cùng tinh thần với "phòng thủ từ thiết kế" mà [một bài trước đã mổ xẻ](/vi/blog/defensive-by-design/).
 
-Ngay dưới khối đó còn một ranh giới thứ cấp đáng học: sau khi cửa sổ tạo xong, code gọi `setTrustedUIRendererWebContentsId(rendererWebContentsId)` kèm comment gốc "native paste fallback is privileged IPC; only the top-level renderer may request it". Nghĩa là trong số những IPC có đặc quyền, vẫn chia thêm tầng: chỉ webContents của cửa sổ chính — không phải webview con — được phép xin.
+Ngay dưới khối đó còn một ranh giới thứ cấp đáng học: sau khi cửa sổ tạo xong, code gọi `setTrustedUIRendererWebContentsId`, truyền vào `rendererWebContentsId` của cửa sổ chính — kèm comment gốc "native paste fallback is privileged IPC; only the top-level renderer may request it". Nghĩa là trong số những IPC có đặc quyền, vẫn chia thêm tầng: chỉ webContents của cửa sổ chính — không phải webview con — được phép xin.
 
 Các cửa sổ guest thì khai báo thẳng tay hơn, đủ cả sáu cờ:
 
@@ -79,6 +80,7 @@ webPreferences: {
   webviewTag: false
 }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Kể cả thanh origin bar — dải UI vẽ đè lên nội dung popup — cũng có bộ `contextIsolation`, `nodeIntegration`, `sandbox` riêng của nó trong `src/main/browser/popup-origin-bar-window.ts`, để dữ liệu hiển thị của app không chung context với nội dung web tùy ý bên dưới.
 
@@ -102,6 +104,7 @@ if (process.contextIsolated) {
   window.api = api
 }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Hai chi tiết nhỏ nhưng đắt giá. Thứ nhất, `satisfies PreloadApi`: object `api` bị ép khớp một kiểu tổng hợp định nghĩa trong `src/preload/api-types.ts` — thêm một hàm expose mà chưa khai báo kiểu là gãy lúc compile, chưa kịp chạy. Thứ hai, renderer không hề thấy `ipcRenderer`; nó chỉ thấy những hàm có kiểu, mỗi hàm biến thành một lời invoke có tên. Gõ sai tên hàm là lỗi compile, không phải lỗi runtime lúc nửa đêm.
 
@@ -109,11 +112,11 @@ Hai chi tiết nhỏ nhưng đắt giá. Thứ nhất, `satisfies PreloadApi`: o
 
 IPC về bản chất là chuỗi tin nhắn — không có compiler nào kiểm giúp hai process hiểu nhau, trừ khi hai bên import cùng một file kiểu. Wakii đặt bộ dùng chung đó ở `src/shared`: 1.595 file .ts tại thời điểm viết, gồm cả file test (lệnh đếm: `ls src/shared | grep -c '\.ts$'`, lấy 2026-09-08).
 
-| Hợp đồng | File | Đi từ đâu đến đâu |
+| Hợp đồng | File (trong `src/`) | Đi từ đâu đến đâu |
 | --- | --- | --- |
-| `UpdateStatus`, `ChangelogData` | `src/shared/update-status-types.ts` | process main đẩy trạng thái cập nhật → renderer vẽ thẻ |
-| `ReleaseChannel` | `src/shared/release-channel.ts` | main ↔ renderer: chọn kênh stable / rc / hourly / daily / adhoc |
-| `PreloadApi` | `src/preload/api-types.ts` | preload → renderer: kiểu của toàn bộ `window.api` |
+| `UpdateStatus` | `shared/update-status-types.ts` | process main đẩy trạng thái cập nhật → renderer vẽ thẻ |
+| `ReleaseChannel` | `shared/release-channel.ts` | main ↔ renderer: chọn kênh stable / rc / hourly / daily / adhoc |
+| `PreloadApi` | `preload/api-types.ts` | preload → renderer: kiểu của toàn bộ `window.api` |
 
 *Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
@@ -140,9 +143,10 @@ input: {
   )
 }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Mỗi entry là lời giải của một bài toán riêng. Daemon được build thành file ngoài app.asar (asar-unpacked) vì `child_process.fork()` của Node không chạy được file nằm trong asar — comment trong config giải thích rõ. parcel-watcher được fork với `ELECTRON_RUN_AS_NODE` để lỗi của thư viện theo dõi file không kéo sập process chính. Hang watchdog chạy trong một worker thread để sống sót qua đúng thứ nó cần phát hiện: event loop của process main bị treo — cơ chế đó đã có [bài riêng](/vi/blog/watchdog-idle-is-not-dead/).
 
-Còn relay — kênh điều khiển từ xa, chủ đề quen của loạt bài này — không phải process riêng nào cả: nó chạy trong process main. `src/main/runtime/runtime-rpc/runtime-rpc-state.ts` import trực tiếp `RelayRevokeOutbox` từ `src/relay`. Chạy trong main nghĩa là relay kế thừa đúng mức quyền của main, và cũng bị chặn sau đúng ranh giới preload/renderer mà bài này vừa đi qua.
+Còn relay — kênh điều khiển từ xa, chủ đề quen của loạt bài này — không phải process riêng nào cả: nó chạy trong process main. `src/main/runtime/runtime-rpc/runtime-rpc-state.ts` import `RelayRevokeOutbox` từ `../relay/relay-revoke-outbox` — module relay tầng runtime dưới `src/main/runtime/relay`, không phải thư mục `src/relay` ở gốc. Chạy trong main nghĩa là relay kế thừa đúng mức quyền của main, và cũng bị chặn sau đúng ranh giới preload/renderer mà bài này vừa đi qua.
 
-Câu hỏi "cái gì chạy ở đâu" nằm trong nhóm câu hỏi kiến trúc được thu thập ở [FAQ](/vi/docs/faq/). Muốn tự soi danh sách bridge đầy đủ, mở thư mục `src/preload/api/` trên repo công khai — mỗi file là một hợp đồng. Còn để thấy ba process hợp tác ra sao trong một luồng thật, bài [vòng đời auto-update](/vi/blog/arch-auto-update-feed/) đi từ GitHub Releases tới nút relaunch ngay trong app.
+Những câu hỏi cấp sản phẩm — Wakii là gì, hỗ trợ nền tảng nào, license ra sao — [FAQ](/vi/docs/faq/) có câu trả lời ngắn. Muốn tự soi danh sách bridge đầy đủ, mở thư mục `src/preload/api/` trên repo công khai — mỗi file là một hợp đồng. Còn để thấy ba process hợp tác ra sao trong một luồng thật, bài [vòng đời auto-update](/vi/blog/arch-auto-update-feed/) đi từ GitHub Releases tới nút relaunch ngay trong app.

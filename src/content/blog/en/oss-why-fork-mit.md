@@ -32,7 +32,7 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software...
 ```
 
-*Source: `LICENSE`, repo `wakii-dev/wakii` (local mirror at `/Users/hoivu/Desktop/projects/orca`, branch `wakii-dev`), retrieved 2026-09-08.*
+*Source: `LICENSE`, repo `wakii-dev/wakii` (read from a local mirror, branch `wakii-dev`), retrieved 2026-09-08.*
 
 MIT is short, and its brevity is its entire strength: it forbids no one anything. You may fork it, modify it, even close your source. Which means the license itself cannot be what makes a fork's identity — anyone could do the same. The identity lives in what you choose to keep inside it. Wakii keeps Lovecast Inc.'s copyright line in the LICENSE file instead of shaving it off, and the README states the relationship up front:
 

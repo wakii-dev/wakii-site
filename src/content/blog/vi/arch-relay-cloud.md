@@ -94,11 +94,11 @@ export const SPLICE_STATE = {
 
 Đọc thứ tự trên như một cuộc bắt tay dài: phiên được nhận vào trước khi xác thực, giữ lease credential, báo cho host, chờ host gắn vào, chờ client xác nhận, rồi mới `spliced`. Từ bất kỳ trạng thái nào cũng chỉ có hai lối ra: tiến một bước, hoặc `teardown`. Không có đường tắt.
 
-Chi tiết tôi thích nhất nằm ở một hàm duy nhất: `mayAcknowledgeClient` chỉ trả về true khi máy đang ở `host-attached` và cả hai forwarding handler đã được cài đặt. Comment trong code nói thẳng lý do: xác nhận thành công trước khi cả hai đầu forwarding tồn tại có thể bỏ lại client trên một splice giả — client tưởng đã nối, trong khi frame đi vào hư không. Đó là dạng bug khó bắt nhất trong hệ thống phân tán, và nó bị chặn bằng bốn dòng.
+Chi tiết đáng học nhất nằm ở một hàm duy nhất: `mayAcknowledgeClient` chỉ trả về true khi máy đang ở `host-attached` và cả hai forwarding handler đã được cài đặt. Comment trong code nói thẳng lý do: xác nhận thành công trước khi cả hai đầu forwarding tồn tại có thể bỏ lại client trên một splice giả — client tưởng đã nối, trong khi frame đi vào hư không. Đó là dạng bug khó bắt nhất trong hệ thống phân tán, và nó bị chặn bằng bốn dòng.
 
 ## Admission budget và close code
 
-Một cell phục vụ nhiều cặp phiên cùng lúc, nên giới hạn tài nguyên phải là số công khai, không phải bản năng của server. Trong `admission-budgets.ts`: hard cap kết nối mỗi cell (mặc định 600, trong dải thiết kế 600–3000), một phần giữ riêng cho host control — socket thường dừng ở ceiling bằng hard-cap trừ phần reserve. Băng splice có water-mark thấp/cao 64 KB / 256 KB; splice kẹt quá 10 giây bị coi là wedged.
+Một cell phục vụ nhiều cặp phiên cùng lúc, nên giới hạn tài nguyên phải là số công khai, không phải bản năng của server. Trong `admission-budgets.ts`: hard cap kết nối mỗi cell — mặc định 600, với `RELAY_CELL_CONNECTION_HARD_CAPS` chỉ cho đúng ba giá trị `[600, 1_000, 3_000]` — và một phần được giữ riêng cho host control, nên socket thường dừng ở ceiling bằng hard-cap trừ phần reserve. Băng splice có water-mark thấp/cao 64 KB / 256 KB; splice kẹt quá 10 giây bị coi là wedged.
 
 Khi một kết nối bị từ chối hoặc cắt, nó không chết im lặng. Sáu close code nói rõ lý do:
 
@@ -133,8 +133,8 @@ Toàn bộ mặt vận hành này lộ ra công khai dưới dạng workflow Git
 
 *Nguồn: .github/workflows/ và cloud/README.md, lấy 2026-09-08.*
 
-Workflow "Deploy Relay Fence Broker" resolve image theo đúng commit rồi verify revision singleton sẵn sàng; "Monitor Relay Cell Clock Skew" đo lệch Date header của từng cell — số đo mà challenge sign ở phần trên phụ thuộc. Điểm quan trọng nhất: mọi job đều gate trên biến repository `ORCA_CLOUD_OPERATIONS_ENABLED == 'true'`, không set trên repo public, nên khối hạ tầng mặc định nằm im. Riêng "Cloud Verify" không gate — build, typecheck, test và validate Terraform relay trên mọi pull request, kể cả từ fork. Topology đọc được trọn vẹn; hạ tầng thật thì không chạy được bước nào.
+Workflow "Deploy Relay Fence Broker" resolve image theo đúng commit rồi verify revision singleton sẵn sàng; "Monitor Relay Cell Clock Skew" đo lệch Date header của từng cell — số đo mà challenge sign ở phần trên phụ thuộc. Điểm quan trọng nhất: mọi job đều gate trên biến repository `ORCA_CLOUD_OPERATIONS_ENABLED == 'true'`, không set trên repo public, nên khối hạ tầng mặc định nằm im. Còn theo `cloud/README.md`, luồng "Cloud Verify" không gate — build, typecheck, test và validate Terraform relay trên mọi pull request, kể cả từ fork. Topology đọc được trọn vẹn; hạ tầng thật thì không chạy được bước nào.
 
 ## Kết
 
-Câu hỏi thường gặp về cấu hình và vận hành — trong đó có phần relay và ghép đôi thiết bị — được gộp ở trang [FAQ](/vi/docs/faq/). Nếu muốn tự đối chiếu, toàn bộ đường dẫn nêu trong bài nằm trên repo công khai `wakii-dev/wakii` (MIT): mở `cloud/README.md` rồi đi xuống `packages/relay-contract` là thấy đúng những gì bài này kể. Muốn trải nghiệm phần mobile đã nối qua relay này, tải Wakii và mở Superpowers panel — signal của bạn sẽ đi đúng con đường trong sơ đồ trên.
+Câu hỏi thường gặp về cấu hình và vận hành được gộp ở trang [FAQ](/vi/docs/faq/). Nếu muốn tự đối chiếu, toàn bộ đường dẫn nêu trong bài nằm trên repo công khai `wakii-dev/wakii` (MIT): mở `cloud/README.md` rồi đi xuống `packages/relay-contract` là thấy đúng những gì bài này kể. Muốn trải nghiệm phần mobile đã nối qua relay này, tải Wakii và mở Superpowers panel — signal của bạn sẽ đi đúng con đường trong sơ đồ trên.

@@ -98,4 +98,4 @@ Gom lại, dòng 1.4.x tại thời điểm viết ship những thứ sau — m�
 
 Điều kiện để một hàng vào bảng: có dòng notes nguyên văn, hoặc commit kèm tag, hoặc nhãn SHIPPED trong registry. Không có hàng nào tên "sắp ship" — inventory dừng ở biên giới chứng cứ, phần còn lại là chuyện của trang releases khi nó cập nhật. Cách kê khai này cũng là cách đọc đề xuất cho bạn: thay vì tin dòng mô tả, mở notes, chỉ vào từng bullet, hỏi nó truy về commit nào.
 
-Nội dung dòng 1.4.x chạy trong app tải về từ trang download; docs [getting started](/vi/docs/getting-started/) là chỗ bắt đầu: tải bản cho hệ điều hành của bạn, mở Superpowers panel, chạy story đầu tiên. Còn nếu bạn muốn tự kê khai lại như bài này đã làm — hai lệnh `gh` ở đầu bài là toàn bộ công cụ cần.
+Nội dung dòng 1.4.x chạy trong app tải về từ trang download; docs [getting started](/vi/docs/getting-started/) là chỗ bắt đầu: tải bản cho hệ điều hành của bạn, mở Superpowers panel, chạy story đầu tiên. Còn nếu bạn muốn tự kê khai lại như bài này đã làm — hai lệnh `gh` trong bài là toàn bộ công cụ cần.

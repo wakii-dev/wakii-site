@@ -59,10 +59,11 @@ webPreferences: {
   additionalArguments: [formatBrowserClientHostIdArgument(getBrowserClientHostId())]
 }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 `sandbox: true` is the line worth staring at. Since Electron 20, renderers are sandboxed by default, and Wakii runs on Electron 43 — so why write it out? Because a default is a default: an explicit line does not depend on whether the default changes in a future Electron release. It is the same spirit as the "defensive by design" habits [covered in an earlier post](/blog/defensive-by-design/).
 
-Right below that block sits a second, subtler boundary: after the window is created, the code calls `setTrustedUIRendererWebContentsId(rendererWebContentsId)` with the original comment "native paste fallback is privileged IPC; only the top-level renderer may request it". Even among privileged IPCs there is a finer tier: only the main window's webContents — not a child webview — may ask.
+Right below that block sits a second, subtler boundary: after the window is created, the code calls `setTrustedUIRendererWebContentsId`, passing it the main window's `rendererWebContentsId` — with the original comment "native paste fallback is privileged IPC; only the top-level renderer may request it". Even among privileged IPCs there is a finer tier: only the main window's webContents — not a child webview — may ask.
 
 Guest windows declare things even more bluntly, all six flags:
 
@@ -79,6 +80,7 @@ webPreferences: {
   webviewTag: false
 }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 Even the origin bar — the strip of UI drawn on top of popup content — carries its own `contextIsolation`, `nodeIntegration`, `sandbox` set in `src/main/browser/popup-origin-bar-window.ts`, so the app's own display data never shares a context with arbitrary web content underneath.
 
@@ -102,6 +104,7 @@ if (process.contextIsolated) {
   window.api = api
 }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 Two small details carry a lot of weight. First, `satisfies PreloadApi`: the `api` object is forced to match an aggregate type defined in `src/preload/api-types.ts` — exposing a function without declaring its type breaks the build, before anything runs. Second, the renderer never sees `ipcRenderer`; it only sees typed functions, each one turning into a named invoke call. A mistyped function name is a compile error, not a runtime failure at midnight.
 
@@ -109,11 +112,11 @@ Two small details carry a lot of weight. First, `satisfies PreloadApi`: the `api
 
 IPC is, underneath, strings on a wire — no compiler checks that two processes agree, unless both import the same type file. Wakii keeps that shared set in `src/shared`: 1,595 .ts files at the time of writing, including tests (counting command: `ls src/shared | grep -c '\.ts$'`, captured 2026-09-08).
 
-| Contract | File | Travels from where to where |
+| Contract | File (under `src/`) | Travels from where to where |
 | --- | --- | --- |
-| `UpdateStatus`, `ChangelogData` | `src/shared/update-status-types.ts` | main process pushes update state → renderer draws the card |
-| `ReleaseChannel` | `src/shared/release-channel.ts` | main ↔ renderer: stable / rc / hourly / daily / adhoc channel choice |
-| `PreloadApi` | `src/preload/api-types.ts` | preload → renderer: the type of the whole `window.api` |
+| `UpdateStatus` | `shared/update-status-types.ts` | main process pushes update state → renderer draws the card |
+| `ReleaseChannel` | `shared/release-channel.ts` | main ↔ renderer: stable / rc / hourly / daily / adhoc channel choice |
+| `PreloadApi` | `preload/api-types.ts` | preload → renderer: the type of the whole `window.api` |
 
 *Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
@@ -140,9 +143,10 @@ input: {
   )
 }
 ```
+*Source: public repo `wakii-dev/wakii`, captured 2026-09-08.*
 
 Each entry solves a specific problem. The daemon is built outside app.asar (asar-unpacked) because Node's `child_process.fork()` cannot execute a file inside an asar archive — the comment in the config spells this out. The parcel watcher is forked with `ELECTRON_RUN_AS_NODE` so a fault in the file-watching library cannot take down the main process. The hang watchdog runs in a worker thread so it can survive exactly the thing it watches for: the main process's event loop freezing — that mechanism has [its own post](/blog/watchdog-idle-is-not-dead/).
 
-And the relay — the remote-control channel this series keeps returning to — is not a separate process at all: it runs inside the main process. `src/main/runtime/runtime-rpc/runtime-rpc-state.ts` imports `RelayRevokeOutbox` directly from `src/relay`. Running in main means the relay inherits exactly the main process's privilege level, and is fenced behind the same preload/renderer boundary this post just walked.
+And the relay — the remote-control channel this series keeps returning to — is not a separate process at all: it runs inside the main process. `src/main/runtime/runtime-rpc/runtime-rpc-state.ts` imports `RelayRevokeOutbox` from `../relay/relay-revoke-outbox` — the runtime-level relay module under `src/main/runtime/relay`, not the top-level `src/relay` directory. Running in main means the relay inherits exactly the main process's privilege level, and is fenced behind the same preload/renderer boundary this post just walked.
 
-"What runs where" sits in the architecture questions collected in the [FAQ](/docs/faq/). To browse the full bridge list yourself, open `src/preload/api/` in the public repo — one file per contract. And to see the three processes cooperate in one real flow, [the auto-update lifecycle post](/blog/arch-auto-update-feed/) goes from GitHub Releases to the relaunch button inside the app.
+For the product-level questions — what Wakii is, which platforms it supports, how it is licensed — the [FAQ](/docs/faq/) holds the short answers. To browse the full bridge list yourself, open `src/preload/api/` in the public repo — one file per contract. And to see the three processes cooperate in one real flow, [the auto-update lifecycle post](/blog/arch-auto-update-feed/) goes from GitHub Releases to the relaunch button inside the app.

@@ -59,7 +59,7 @@ The least visible work of FI-349 lives on the post page. The route for each post
 
 *Source: comment in src/pages/blog/[slug].astro, public repo wakii-dev/wakii-site, retrieved 2026-09-08.*
 
-The seven components in that comment — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — are what a technical post needs to exist as a web page: navigation between posts, structured data for search engines, and a 1200×630 hero tile when a post carries a lead image. The hero contract is written into the schema itself: the PNG path lives in public/, bypassing astro:assets, and the VI mirror shares the EN hero. This log is the first example beyond the seed set: both locale files declare the same heroImage path in frontmatter — the VI mirror shares the EN hero file, and the parity gate checks that presence and value stay in sync.
+The seven components in that comment — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — are what a technical post needs to exist as a web page: navigation between posts, structured data for search engines, and a 1200×630 hero tile when a post carries a lead image. The hero contract is written into the schema itself: the PNG path lives in public/, bypassing astro:assets, and the VI mirror shares the EN hero. This log is the first entry of the series beyond the seed set: both locale files declare the same heroImage path in frontmatter — the VI mirror shares the EN hero file, and the parity gate checks that presence and value stay in sync.
 
 SEO depth sits in every page's head. The next two lines tell search engines that an EN post and its VI twin are two versions of the same content:
 

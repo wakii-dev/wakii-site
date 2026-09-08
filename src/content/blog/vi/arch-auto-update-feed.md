@@ -39,7 +39,7 @@ Wakii-1.4.199-x64.dmg
 ```
 *Lệnh `gh` chỉ đọc trên repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
-Listing đó có ba loại file đáng để tách riêng. Asset tải về mang số phiên bản ngay trong tên — `Wakii-1.4.199-x64.dmg` — nhìn URL đã biết file thuộc bản nào, không cần đoán. Hai file `.yml` là manifest: `latest-mac.yml` cho macOS, `latest.yml` cho Windows. Tên manifest không phải ngẫu nhiên mà do updater tự chọn theo nền tảng:
+Listing đó có ba loại file đáng để tách riêng. Asset macOS mang số phiên bản ngay trong tên — `Wakii-1.4.199-x64.dmg` — còn mọi URL asset đều được pin theo tag, nhìn link đã biết nó trỏ về bản nào, không cần đoán. Hai file `.yml` là manifest: `latest-mac.yml` cho macOS, `latest.yml` cho Windows. Tên manifest không phải ngẫu nhiên mà do updater tự chọn theo nền tảng:
 
 ```ts
 // src/main/updater-prerelease-feed.ts
@@ -53,6 +53,7 @@ function getPlatformManifestName(): string {
   return 'latest.yml'
 }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Manifest chính là mục lục của một release: phiên bản, tên file asset, checksum. Updater làm việc với cặp (tag, manifest) chứ không với khái niệm mơ hồ "bản mới nhất".
 
@@ -65,10 +66,11 @@ Giờ sang phía máy người dùng. Hai hằng số mở đầu `src/main/upda
 const AUTO_UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000
 const AUTO_UPDATE_RETRY_INTERVAL_MS = 60 * 60 * 1000
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Một ngày một lần, và khi check thất bại thì thử lại sau một giờ — với backoff nhân đôi mỗi lần liên tiếp (logic nằm ở `src/main/updater/updater-scheduling.ts`), tới trần thì đứng. Vì sao timer nằm ở process main chứ không phải renderer? Comment trong `updater-scheduling.ts` trả lời thay mình: "Orca runs for days, so keep the next background check scheduled in the main process rather than tying it to relaunches or renderer lifetime." Người dùng để app mở cả tuần; check phải sống độc lập với cửa sổ.
 
-Ngoài vòng tự động còn có kiểm thủ động từ menu app — handler được đăng ở `src/main/updater/updater-menu-checks.ts` và gọi từ `src/main/index.ts` khi người dùng bấm "check for updates".
+Ngoài vòng tự động còn có kiểm thủ động từ menu app — handler nằm ở `src/main/updater/updater-menu-checks.ts`; menu item được đăng ký trong `src/main/menu/register-app-menu.ts`, và callback nối trong `src/main/startup/main-process-i18n-menu.ts` chuyển cú bấm vào handler đó.
 
 ## Pin feed theo tag cụ thể: cửa sổ phát hành không làm ai tải dở
 
@@ -86,6 +88,7 @@ Phần thú vị nhất nằm ở chỗ này: lúc một release đang được 
  * the same release.
  */
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 URL được pin là đường ghép từ tag: `getReleaseDownloadUrl(tag)` nối `RELEASES_DOWNLOAD_BASE` với tag đã encode — đúng dạng `…/releases/download/v1.4.199`. Trước khi pin, updater còn thăm dò manifest của tag đó:
 
@@ -97,6 +100,7 @@ export type FetchNewerReleaseTagsResult =
   | { tags: string[]; state: 'not-ready'; lastGoodTag?: string }
   | { tags: string[]; state: 'unavailable'; unavailableReason: 'feed' | 'manifest' }
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Bốn trạng thái kể trọn câu chuyện của "cửa sổ phát hành": `ready` — tag mới có manifest, pin an toàn; `not-ready` — feed thấy tag nhưng manifest chưa xong, và type giữ sẵn `lastGoodTag` để lùi về tag tốt đã biết thay vì báo lỗi; `unavailable` — feed hay manifest gãy, check này bỏ qua và hẹn lần sau.
 
@@ -115,7 +119,7 @@ t2   tải manifest + asset từ đúng tag đã pin → "ready"
                         │
 t3   quit-and-install: renderer kịp flush → quit → installer → relaunch
 ```
-*Tổng hợp từ `src/main/updater-prerelease-feed.ts`, `src/main/updater/updater-events.ts`, `src/main/updater/updater-download-install.ts` — repo `wakii-dev/wakii`, lấy 2026-09-08.*
+*Tổng hợp từ `src/main/updater-prerelease-feed.ts`, `src/main/updater-events.ts`, `src/main/updater/updater-download-install.ts` — repo `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Một ghi chú thẳng thắn: Wakii là fork, và hằng số feed trong file nguồn trỏ về atom feed của repo gốc upstream — nguyên trạng từ lúc fork, đúng như [bài về việc giữ cập nhật với upstream](/vi/blog/forking-an-ide-keeping-current-with-upstream/) đã kể bối cảnh. Điều đáng rút ra là cơ chế: feed chỉ cần trả đúng hai thứ — tag và manifest — và mọi quyết định phía client đều dựa trên cặp đó, không phụ thuộc host nào cả.
 
@@ -130,6 +134,7 @@ this.pendingQuitAndInstallTimer = setTimeout(() => {
   void this.performQuitAndInstall()
 }, QUIT_AND_INSTALL_DELAY_MS)
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
 Trên macOS, trạng thái installer được theo dõi riêng trong `src/main/updater-mac-install.ts` (nhìn vào `isMacInstallerReady`) để app không thoát trước khi installer thực sự sẵn sàng. Trên Linux, nếu bản cài hiện tại thuộc quyền quản lý của package manager của hệ điều hành, updater chặn luôn download và trả lỗi có mã — kèm comment xương:
 
@@ -142,8 +147,9 @@ if (isExternallyManagedLinuxInstall()) {
     version
   })
 ```
+*Nguồn: repo công khai `wakii-dev/wakii`, lấy 2026-09-08.*
 
-Dòng comment đó là toàn bộ triết lý của lớp này gói trong hai câu: quyết định thuộc về process main, không thuộc về thẻ UI — một renderer cũ hay một lời IPC gọi trực tiếp không được phép đốt một lượt download package mà máy này không bao giờ cài được. Còn khi app đang chạy ở chế độ serve headless, việc cài bị hoãn lại qua `deferHeadlessServeInstall` trong `src/main/serve-update-handoff.ts`, để phiên đang chạy không bị cắt ngang.
+Dòng comment đó là toàn bộ triết lý của lớp này gói trong hai câu: quyết định thuộc về process main, không thuộc về thẻ UI — một renderer cũ hay một lời IPC gọi trực tiếp không được phép đốt một lượt download package mà máy này không bao giờ cài được. Còn khi app đang chạy ở chế độ serve headless, cổng `deferHeadlessServeInstall` trong `src/main/updater/updater-install-execution.ts` hoãn việc cài lại, để phiên đang chạy không bị cắt ngang.
 
 Tổng hợp các chốt:
 

@@ -59,7 +59,7 @@ Phần việc ít nhìn thấy nhất của FI-349 nằm ở trang bài. Route c
 
 *Nguồn: chú thích trong src/pages/blog/[slug].astro, repo công khai wakii-dev/wakii-site, lấy 2026-09-08.*
 
-Bảy thành phần trong chú thích trên — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — là thứ một bài kỹ thuật cần để tồn tại như một trang web: điều hướng giữa các bài, dữ liệu có cấu trúc cho công cụ tìm kiếm, và một hero tile 1200×630 khi bài có hình đại diện. Hợp đồng của hero cũng ghi ngay trong schema: đường dẫn PNG nằm trong public/, không qua astro:assets, và bản VI dùng chung hero của bản EN. Log 3 này là ví dụ đầu tiên ngoài bộ seed: cả hai bản ngữ khai cùng một đường dẫn heroImage trong frontmatter — bản VI dùng chung tấm hình của bản EN, và parity gate kiểm cả sự hiện diện lẫn giá trị phải khớp nhau.
+Bảy thành phần trong chú thích trên — sidebar, pager, meta, hero, related, after-CTA, JSON-LD — là thứ một bài kỹ thuật cần để tồn tại như một trang web: điều hướng giữa các bài, dữ liệu có cấu trúc cho công cụ tìm kiếm, và một hero tile 1200×630 khi bài có hình đại diện. Hợp đồng của hero cũng ghi ngay trong schema: đường dẫn PNG nằm trong public/, không qua astro:assets, và bản VI dùng chung hero của bản EN. Log 3 này là mục đầu tiên của chuỗi nằm ngoài bộ seed: cả hai bản ngữ khai cùng một đường dẫn heroImage trong frontmatter — bản VI dùng chung tấm hình của bản EN, và parity gate kiểm cả sự hiện diện lẫn giá trị phải khớp nhau.
 
 SEO depth nằm ở head của mỗi trang. Hai dòng sau khai báo với công cụ tìm kiếm rằng bài EN và bản VI của nó là hai bản của cùng một nội dung:
 
