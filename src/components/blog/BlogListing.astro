@@ -1,0 +1,140 @@
+---
+/**
+ * Blog stream (story FI-349 SF-3 — B+C hybrid hand-off): the s-head + bento
+ * grid for the /blog/ listing, or the crumb + grid for a category page.
+ * Cell spans follow the hand-off — listing: featured sp8 + sp4, then sp4
+ * row(s); category: sp6 pairs, odd last cell sp12 wide. 0 posts → the
+ * empty-state cell (category route stays indexable).
+ *
+ * Entrance = shared motion util (revealChildren + initMotion — no new
+ * script, hand-off Behavior §entrance). motion.css is imported here like
+ * Landing/DownloadPage do.
+ */
+import '../../styles/motion.css';
+import PostCard from './PostCard.astro';
+import { categorySpan, type BlogLocale } from './categories';
+import type { BlogStrings } from './strings';
+import type { PostCardPost } from './cards';
+
+interface Props {
+  mode: 'listing' | 'category';
+  locale: BlogLocale;
+  strings: BlogStrings;
+  posts: PostCardPost[];
+  /** listing only — s-head lede */
+  lede?: string;
+  /** listing only — "5 posts · newest first" */
+  headMeta?: string;
+  /** category only — crumb parent href (/blog/ | /vi/blog/) */
+  blogHref?: string;
+  /** category only — crumb current node (the category enum value) */
+  categorySlug?: string;
+}
+
+const { mode, locale, strings, posts, lede, headMeta, blogHref, categorySlug } = Astro.props;
+---
+{
+  mode === 'listing' ? (
+    <div class="s-head">
+      <p class="lede">{lede}</p>
+      <p class="head-meta">{headMeta}</p>
+    </div>
+  ) : (
+    <p class="crumb">
+      <a href={blogHref}>{strings.crumbBlog}</a> <span>/</span> <span class="cur">{categorySlug}</span>
+    </p>
+  )
+}
+<div class="grid" data-blog-grid>
+  {
+    posts.length === 0 ? (
+      <PostCard variant="empty" span={12} locale={locale} strings={strings} />
+    ) : (
+      posts.map((post, i) => {
+        const span = mode === 'listing' ? (i === 0 ? 8 : 4) : categorySpan(i, posts.length);
+        const variant =
+          mode === 'listing' ? (i === 0 ? 'featured' : 'standard') : span === 12 ? 'wide' : 'standard';
+        return (
+          <PostCard
+            post={post}
+            span={span as 4 | 6 | 8 | 12}
+            variant={variant as 'featured' | 'standard' | 'wide'}
+            locale={locale}
+            strings={strings}
+          />
+        );
+      })
+    )
+  }
+</div>
+
+<style>
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    margin: 0 0 20px;
+  }
+  .crumb a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .crumb a:hover {
+    color: var(--accent);
+  }
+  .crumb .cur {
+    color: var(--accent);
+  }
+  .s-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .lede {
+    color: color-mix(in srgb, var(--text) 78%, transparent);
+    font-size: 16.5px;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 56ch;
+  }
+  .head-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    white-space: nowrap;
+    padding-bottom: 6px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--bento-gap);
+  }
+
+  @media (max-width: 800px) {
+    .s-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .head-meta {
+      padding-bottom: 0;
+    }
+  }
+  @media (max-width: 640px) {
+    .grid {
+      gap: 14px;
+    }
+  }
+</style>
+
+<script>
+  import { initMotion, revealChildren } from '../motion';
+
+  // Staggered rise on the grid cells (shared util: 28px/0.55s, 60ms per
+  // batch). The util exits early under prefers-reduced-motion or coarse
+  // pointers, leaving the cells fully visible and static.
+  revealChildren(document, '[data-blog-grid] .bx');
+  initMotion();
+</script>

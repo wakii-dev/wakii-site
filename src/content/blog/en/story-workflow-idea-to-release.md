@@ -5,6 +5,7 @@ pubDate: "2026-09-04"
 category: "tech"
 tags: ["story-workflow", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/story-workflow-idea-to-release.png"
 ---
 
 Every large Wakii feature runs as a story: it starts as a one-line idea and ends as a merged PR. That's not a pretty metaphor — it's a real pipeline with brackets, tiers, a DAG, an agent per sub-feature, and gates at the real forks in the road. This post walks the whole path.

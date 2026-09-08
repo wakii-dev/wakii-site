@@ -1,0 +1,400 @@
+---
+/**
+ * One bento cell in the blog grid (story FI-349 SF-3 — B+C hybrid hand-off).
+ *
+ * Class system mirrors the shipped bento kit (landing Bento.astro) per the
+ * design hand-off; values come from fi349-sf3-hybrid.html with tokens bound
+ * from src/styles/tokens.css. A handful of literal constants below are the
+ * hand-off's pinned one-offs (hover border #35543F, band grid/vignette) —
+ * the prototype's exact values, same idiom as Bento.astro's rgba() accents.
+ *
+ * Variants (prop-driven, shared EN/VI):
+ *   featured — listing cell #1: hero slot (heroImage <img> | fallback band)
+ *   standard — plain cell (listing sp4 / category sp6 pairs)
+ *   wide     — category odd-last: sp12, meta moves to a right column
+ *   empty    — category with 0 posts: non-link dashed cell (route indexable)
+ *
+ * Reading time is computed (SF-1 util) via the `minutes` field — never
+ * hardcoded. Hover motion is pure CSS, gated on (hover:hover); reveal-on-
+ * scroll entrance is the shared motion util (BlogListing.astro script).
+ */
+import { categoryLabel, type BlogLocale } from './categories';
+import type { BlogStrings } from './strings';
+import type { PostCardPost } from './cards';
+
+interface Props {
+  post?: PostCardPost;
+  span: 4 | 6 | 8 | 12;
+  variant?: 'featured' | 'standard' | 'wide' | 'empty';
+  locale: BlogLocale;
+  strings: BlogStrings;
+}
+
+const { post, span, variant = 'standard', locale, strings } = Astro.props;
+const isFeatured = variant === 'featured';
+const isWide = variant === 'wide';
+const isEmpty = variant === 'empty';
+const label = post ? categoryLabel(post.category, locale) : '';
+
+const cls: string[] = ['bx', `sp${span}`];
+if (isFeatured) cls.push('bx--featured');
+if (isWide) cls.push('bx--wide');
+if (isEmpty) cls.push('bx--empty');
+---
+{
+  isEmpty || !post ? (
+    <div class:list={cls}>
+      <div class="bx-in">
+        <div class="bx-body">
+          <span class="e-title">{strings.noPosts}</span>
+          <span class="e-hint">{strings.emptyHint}</span>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <a class:list={cls} href={post.href}>
+      <span class="bx-in">
+        <span class="bx-label">
+          <span class="name">{label}</span>
+          <span class="dt">{post.date}</span>
+        </span>
+        <span class="bx-body">
+          {isFeatured &&
+            (post.heroImage ? (
+              <span class="hero-img">
+                <img
+                  src={post.heroImage}
+                  alt={post.title}
+                  width="1200"
+                  height="630"
+                  loading="lazy"
+                />
+              </span>
+            ) : (
+              <span class="hero-band">
+                <span class="pulse" />
+                <span class="glyph">#1</span>
+                <span class="tag">{label} · {post.date}</span>
+              </span>
+            ))}
+          <span class="p-main">
+            <span class="p-title">{post.title}</span>
+            <span class="p-desc">{post.description}</span>
+          </span>
+          {isWide ? (
+            <span class="wmeta">
+              {strings.minRead(post.minutes)}<br />
+              <span class="go">{strings.read} <i>→</i></span>
+            </span>
+          ) : null}
+        </span>
+        {!isWide && (
+          <span class="bx-foot">
+            <span>{strings.minRead(post.minutes)}</span>
+            <span class="go">{strings.read} <i>→</i></span>
+          </span>
+        )}
+      </span>
+    </a>
+  )
+}
+
+<style>
+  .bx {
+    display: block;
+    text-decoration: none;
+    min-width: 0;
+  }
+  .sp4 { grid-column: span 4; }
+  .sp6 { grid-column: span 6; }
+  .sp8 { grid-column: span 8; }
+  .sp12 { grid-column: span 12; }
+  .bx-in {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  @media (hover: hover) {
+    .bx:hover .bx-in {
+      transform: translateY(-3px);
+      border-color: #35543F; /* hand-off hover pin */
+      box-shadow: 0 14px 34px rgba(69, 224, 168, 0.1);
+    }
+  }
+  .bx-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 18px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+  .bx-label .name {
+    color: var(--text-dim);
+  }
+  .bx-label .name::before {
+    content: '▸ ';
+    color: var(--accent-dim);
+  }
+  .bx:hover .bx-label .name::before {
+    color: var(--accent);
+  }
+  .bx-label .dt {
+    color: var(--text-faint);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .bx-body {
+    padding: 22px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .p-main {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+  .bx-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-top: 1px dashed var(--border-strong);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .bx-foot .go,
+  .wmeta .go {
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .bx-foot .go i,
+  .wmeta .go i {
+    font-style: normal;
+    color: var(--accent);
+    display: inline-block;
+    transition: transform 0.25s;
+  }
+  .bx:hover .bx-foot .go,
+  .bx:hover .wmeta .go {
+    color: var(--accent);
+  }
+  .bx:hover .bx-foot .go i,
+  .bx:hover .wmeta .go i {
+    transform: translateX(4px);
+  }
+  .p-title {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 17.5px;
+    line-height: 1.42;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .bx:hover .p-title {
+    color: var(--accent);
+  }
+  .p-desc {
+    color: color-mix(in srgb, var(--text) 70%, transparent);
+    font-size: 13.5px;
+    line-height: 1.62;
+    margin-top: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* featured (listing cell #1) */
+  .bx--featured .p-title {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .bx--featured .p-desc {
+    font-size: 15px;
+    -webkit-line-clamp: 3;
+  }
+  .hero-img,
+  .hero-band {
+    display: block;
+    height: 216px;
+    margin: 0 0 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-band {
+    position: relative;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.045) 1px, transparent 1px),
+      #0c110f; /* hand-off band pin */
+    background-size:
+      56px 56px,
+      56px 56px,
+      auto;
+  }
+  .hero-band::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 42%, transparent 25%, rgba(4, 20, 13, 0.72) 100%);
+    pointer-events: none;
+  }
+  .hero-band .glyph {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 92px;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent-dim);
+  }
+  .hero-band .tag {
+    position: absolute;
+    left: 16px;
+    bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    z-index: 1;
+  }
+  .hero-band .pulse {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    z-index: 1;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(69, 224, 168, 0.45);
+    }
+    55% {
+      box-shadow: 0 0 0 9px rgba(69, 224, 168, 0);
+    }
+  }
+
+  /* wide (category odd-last cell) */
+  .bx--wide .bx-body {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+  .bx--wide .p-title {
+    font-size: 20px;
+  }
+  .bx--wide .p-desc {
+    margin-top: 8px;
+    max-width: 58ch;
+  }
+  .wmeta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    text-align: right;
+    white-space: nowrap;
+    line-height: 1.9;
+  }
+
+  /* empty state (0-post category — route stays indexable) */
+  .bx--empty .bx-in {
+    border-style: dashed;
+    opacity: 0.75;
+  }
+  .bx--empty .bx-body {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 44px 20px;
+  }
+  .e-title {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--text-dim);
+  }
+  .e-hint {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    margin-top: 8px;
+  }
+
+  /* span collapse (hand-off Responsive) */
+  @media (max-width: 980px) {
+    .sp8,
+    .sp12 {
+      grid-column: span 12;
+    }
+    .sp4,
+    .sp6 {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 640px) {
+    .sp4,
+    .sp6,
+    .sp8,
+    .sp12 {
+      grid-column: span 12;
+    }
+    .hero-img,
+    .hero-band {
+      height: 160px;
+    }
+    .hero-band .glyph {
+      font-size: 60px;
+    }
+    .bx--wide .bx-body {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .bx--wide .wmeta {
+      text-align: left;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bx-in,
+    .p-title,
+    .bx-foot .go i,
+    .wmeta .go i {
+      transition: none;
+    }
+    .hero-band .pulse {
+      animation: none;
+    }
+  }
+</style>

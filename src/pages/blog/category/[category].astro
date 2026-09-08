@@ -1,0 +1,82 @@
+---
+/**
+ * EN blog category taxonomy (story FI-349 SF-3).
+ *
+ * Routes derive from the category enum mirror (BLOG_CATEGORIES — see
+ * src/components/blog/categories.ts): /blog/category/{tutorial,tech,
+ * build-log}/. A category with 0 posts still ships its page as an
+ * indexable empty-state (NO noindex — spec rev 3 §SF-3).
+ *
+ * getStaticPaths passes the full locale entry list once; this frontmatter
+ * filters the active category and derives the rail counts from the same
+ * list, so nav numbers always match the listing page.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import BlogShell from '../../../components/blog/BlogShell.astro';
+import BlogListing from '../../../components/blog/BlogListing.astro';
+import { BLOG_CATEGORIES, categoryLabel } from '../../../components/blog/categories';
+import { blogStrings } from '../../../components/blog/strings';
+import { toCard } from '../../../components/blog/cards';
+import { SITE_URL } from '../../../config';
+
+export async function getStaticPaths() {
+  const entries = (
+    await getCollection('blog', (b) => b.id.startsWith('en/') && !b.data.draft)
+  ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return BLOG_CATEGORIES.map((category) => ({
+    params: { category },
+    props: { entries },
+  }));
+}
+
+const { entries } = Astro.props;
+const { category } = Astro.params;
+const locale = 'en' as const;
+const strings = blogStrings(locale);
+const label = categoryLabel(category, locale);
+const posts = entries.filter((e) => e.data.category === category).map(toCard);
+
+const categoryCounts: Record<string, number> = { all: entries.length };
+for (const e of entries) categoryCounts[e.data.category] = (categoryCounts[e.data.category] ?? 0) + 1;
+
+const descriptor = strings.categoryRsub[category] ?? '';
+const blogHref = '/blog/';
+
+/** JSON-LD BreadcrumbList — Home → Blog → Category, absolute URLs. */
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: strings.homeName, item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: strings.blogName, item: `${SITE_URL}${blogHref}` },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: label,
+      item: `${SITE_URL}${blogHref}category/${category}/`,
+    },
+  ],
+};
+---
+<Base title={strings.categoryTitle(label)} description={descriptor}>
+  <BlogShell
+    locale={locale}
+    strings={strings}
+    title={label}
+    subtitle={descriptor}
+    activeCategory={category}
+    categoryCounts={categoryCounts}
+    metaLine={`${strings.entriesCount(posts.length)} · ${strings.newestFirst}`}
+  >
+    <BlogListing
+      mode="category"
+      locale={locale}
+      strings={strings}
+      posts={posts}
+      blogHref={blogHref}
+      categorySlug={category}
+    />
+  </BlogShell>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonld).replace(/</g, '\\u003c')} />
+</Base>

@@ -5,6 +5,7 @@ pubDate: "2026-09-06"
 category: "tutorial"
 tags: ["mobile", "stories", "gates"]
 draft: false
+heroImage: "/blog/heroes/review-ai-agents-from-your-phone.png"
 ---
 
 Agent làm việc tốt nhất khi được chạy dài, nhưng quyết định có hệ quả thì vẫn cần con người. Vấn đề nằm ở đoạn nối: bạn không thể canh màn hình cả ngày, mà agent dừng đợi thì cả story chùn bước. Kể từ bản mobile, Wakii khép đúng đoạn nối đó — story view và decision gates ngay trên điện thoại.

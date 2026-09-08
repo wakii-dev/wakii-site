@@ -33,6 +33,14 @@ const blog = defineCollection({
     category: z.enum(['tutorial', 'tech', 'build-log']),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    /**
+     * Optional hero tile — public path to a 1200×630 PNG (spec FI-349 D5:
+     * string path in public/, no astro:assets). Posts without one fall back
+     * to /og-default.png in the og wiring. VI mirror shares the EN hero.
+     */
+    heroImage: z.string().optional(),
+    /** Single-author default — multi-author is a future additive union (FI-349 D4). */
+    author: z.string().default('Wakii team'),
   }),
 });
 

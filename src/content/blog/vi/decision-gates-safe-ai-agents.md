@@ -5,6 +5,7 @@ pubDate: "2026-09-03"
 category: "tech"
 tags: ["gates", "guardrails", "supervised"]
 draft: false
+heroImage: "/blog/heroes/decision-gates-safe-ai-agents.png"
 ---
 
 Câu hỏi chúng tôi nghe nhiều nhất: "Sao không để agent tự chạy hết luôn cho nhanh?" Câu trả lời của Wakii: agent tự chạy hết phần việc — nhưng những quyết định có hệ quả thì dừng ở gate. Bài này mổ xẻ cơ chế đứng sau chữ "dừng" đó.
