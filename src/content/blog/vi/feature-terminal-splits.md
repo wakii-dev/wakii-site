@@ -106,8 +106,9 @@ wakii-dev/wakii, lấy 2026-09-08.*
 
 Nghĩa là sau khi split, cây layout mới được ghi vào `TerminalLayoutSnapshot`
 bền vững — rebuild sau đó dựng lại đúng các pane đã split thay vì thu về một
-leaf. Hành vi này có test chặn: `persistence-split-pane-incarnation.test.ts`
-và `headless-terminal-split-layout.test.ts` nằm ngay cạnh file runtime. Với
+leaf. Hành vi này có test chặn: `headless-terminal-split-layout.test.ts` nằm
+cạnh file runtime, còn `persistence-split-pane-incarnation.test.ts` canh ở tầng
+trên, trong `src/main/`. Với
 một tính năng mà người dùng đánh giá bằng "màn hình của tôi hôm sau còn y
 như hôm trước", đây là phần code quyết định trải nghiệm, dù nó không hiện
 nào lên màn hình.

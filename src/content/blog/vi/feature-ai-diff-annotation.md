@@ -79,7 +79,7 @@ của Monaco, tại đúng dòng được chú thích:
 
 ```bash
 # src/renderer/src/components/diff-comments/DiffCommentCard.tsx, comment đầu file
-// the saved-note card lives inside a Monaco view zone's DOM node.
+// Why: the saved-note card lives inside a Monaco view zone's DOM node.
 // useDiffCommentDecorator creates a React root per zone and renders this
 // component into it so we can use normal lucide icons and JSX ...
 ```
@@ -167,7 +167,7 @@ Khác biệt so với vòng hở ở đầu bài nằm ở một chỗ: lý do k
 trong prompt mới — nó đi cùng diff, dưới dạng ghi chú ghim trên dòng, và agent
 nhận đúng văn bản đó.
 
-## Giới hạn nói thẳng
+## Vòng khép dừng ở đâu
 
 - Không có model nào xuất hiện trong các file này, và bài không gọi tên model
   nào: card không tự sửa code, không sinh patch. Nó đưa lý do về phía agent;
@@ -180,7 +180,15 @@ nhận đúng văn bản đó.
   comment gắn được về dòng hiện tại của code.
 - Phạm vi bài này là tầng component đã đọc: card, popover, hàm dựng inline
   comment trên trang PR, và tile registry. Trạng thái gửi nằm ở store slice
-  `diffComments` (kiểu `DiffCommentDeliverySnapshot`) — bài không đi sâu hơn.
+  `diffComments` — bài không đi sâu hơn:
+
+```bash
+$ grep -n "export type DiffCommentDeliverySnapshot" src/renderer/src/store/slices/diffComments.ts
+32: export type DiffCommentDeliverySnapshot = Pick<
+```
+
+*Nguồn: src/renderer/src/store/slices/diffComments.ts, tag v1.4.199, lấy
+2026-09-08.*
 
 Câu hỏi về vòng review, gates và các cơ chế qa khác gom ở trang
 [FAQ](/vi/docs/faq/).

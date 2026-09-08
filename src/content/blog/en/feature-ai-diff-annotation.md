@@ -85,7 +85,7 @@ position is the core of the mechanism: the card does not open in a side panel
 
 ```bash
 # src/renderer/src/components/diff-comments/DiffCommentCard.tsx, first comment
-// the saved-note card lives inside a Monaco view zone's DOM node.
+// Why: the saved-note card lives inside a Monaco view zone's DOM node.
 // useDiffCommentDecorator creates a React root per zone and renders this
 // component into it so we can use normal lucide icons and JSX ...
 ```
@@ -178,7 +178,7 @@ thing: the reason is no longer re-typed into a fresh prompt — it travels with
 the diff, as a note pinned to the line, and the agent receives exactly that
 text.
 
-## Limits, stated plainly
+## Where the loop stops
 
 - No model appears in these files, and this post names none: the card does not
   edit code by itself, does not generate patches. It carries the reason back
@@ -191,8 +191,15 @@ text.
   row only carries comments that pin onto current code.
 - This post's scope is the component layer it read: the card, the popover, the
   inline-comment builder on the PR page, and the tile registry. Send state
-  lives in the `diffComments` store slice (the `DiffCommentDeliverySnapshot`
-  type) — the post does not go deeper.
+  lives in the `diffComments` store slice — the post does not go deeper:
+
+```bash
+$ grep -n "export type DiffCommentDeliverySnapshot" src/renderer/src/store/slices/diffComments.ts
+32: export type DiffCommentDeliverySnapshot = Pick<
+```
+
+*Source: src/renderer/src/store/slices/diffComments.ts, tag v1.4.199, retrieved
+2026-09-08.*
 
 Questions about review loops, gates and other qa mechanisms are collected on
 the [FAQ](/docs/faq/) page.

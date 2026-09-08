@@ -40,11 +40,12 @@ The cost is not the ssh step — it is the structure. A shared directory does no
 Wakii does not ask you to retype the host, port, and user already written in `~/.ssh/config`. It reads that config as the source that mints targets. Two fields on the `SshTarget` type state the living conditions of this mechanism:
 
 ```bash
-$ grep -n "configHost?:\|source?: 'ssh-config'\|orphaned repos/worktrees\|worktreeId?:" src/shared/ssh-types.ts
+$ grep -n "configHost?:\|source?: 'ssh-config'\|orphaned repos/worktrees\|worktreeId?:\|supportsFolderDownload?:" src/shared/ssh-types.ts
 19:  configHost?: string
 43:  source?: 'ssh-config' | 'manual'
 72: *  can re-point orphaned repos/worktrees from the old (deleted) target id to
 76:  /** The id the removed target had — what orphaned repos/worktrees still point at. */
+79:  configHost?: string
 191:  supportsFolderDownload?: boolean
 208:  worktreeId?: string
 ```
@@ -66,7 +67,7 @@ The tombstone records `oldTargetId` together with `configHost` — the alias, th
 The SSH transport is where failures turn into guesswork: authentication stalls mid-way, clones fail without saying why, connections land on the wrong host. Commit `278f9ee876` — "fix(ssh): answer every MFA stage, stop dialling an unclaimed alias, and say where a clone failed (#17946)" — targets exactly those three shapes:
 
 ```bash
-$ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
+$ git -C <orca-repo> show 278f9ee876 --stat | tail -13
  src/main/ssh/ssh-config-alias-claim.test.ts        |  80 +++++++
  src/main/ssh/ssh-config-alias-claim.ts             | 103 +++++++++
  src/main/ssh/ssh-config-parser.ts                  |  40 ++++
@@ -81,7 +82,7 @@ $ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
  11 files changed, 770 insertions(+), 13 deletions(-)
 ```
 
-*Source: `git show` in a checkout of the orca product repo, retrieved 2026-09-08; home path shortened to `~`.*
+*Source: `git show` in a checkout of the orca product repo, retrieved 2026-09-08.*
 
 **Multi-stage MFA.** The ssh2 library walks one flat auth-method list exactly once — `keyboard-interactive` could only ever be offered a single time. A host running `AuthenticationMethods keyboard-interactive,keyboard-interactive` partial-succeeds the first stage and then finds the list exhausted, and the user sees "All configured authentication methods failed" — the substance of issues #8622 and #16820. The fix: Orca's auth handler now runs for every target, rebuilds its queue on each partial-success failure the host reports, narrowed to the methods the host still offers. That narrowing also stops keys being re-offered after the host has moved past publickey — the re-offering that exhausted `MaxAuthTries` before the MFA challenge was ever shown. The commit includes a fixture: a real ssh2 server staging partial success, covered by the 251-line test file inside the commit itself.
 
@@ -92,7 +93,7 @@ $ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
 And here is the proof the three fixes reached users — the commit sits inside release tags:
 
 ```bash
-$ git -C ~/Desktop/projects/orca tag --contains 278f9ee876
+$ git -C <orca-repo> tag --contains 278f9ee876
 mobile-android-v0.0.48
 v1.4.198
 v1.4.199
@@ -126,6 +127,20 @@ Read out, that is three honest conditions. A host that wants Kerberos goes throu
 
 ## Connectivity is transport; isolation is structure
 
-The two posts meet at one principle: isolation is a disk structure, not a UI promise — and a disk structure needs a trustworthy connection before there is anything to isolate. Local worktrees solve the half that happens in the room; SSH worktrees solve the other half: a repo on another machine still gets the one-task-one-directory rule, with a tombstone to survive the target lifecycle and a generation so automations never mistake a recycled target.
+The two posts meet at one principle: isolation is a disk structure, not a UI promise — and a disk structure needs a trustworthy connection before there is anything to isolate:
+
+```ascii
+two layers, two posts
+
+  isolation layer : worktree + branch on disk, one task one tree  → the worktree
+                    isolation post
+  transport layer : SSH target, alias, MFA, clone-failure reports → this post
+                    (src/shared/ssh-types.ts, src/main/ssh/*)
+```
+
+*Source: synthesized from the two files quoted earlier in this post, retrieved
+2026-09-08.*
+
+Local worktrees solve the half that happens in the room; SSH worktrees solve the other half: a repo on another machine still gets the one-task-one-directory rule, with a tombstone to survive the target lifecycle and a generation so automations never mistake a recycled target.
 
 Read the local worktree mechanism first: [real parallelism through worktree isolation](/blog/parallel-worktrees-isolation/). To connect your first remote machine: the [getting started](/docs/getting-started/) page walks the first steps. Or see it for yourself: open `~/.ssh/config`, pick an alias you use every day — Wakii imports it as a target, and the first worktree on the remote machine is one add away.

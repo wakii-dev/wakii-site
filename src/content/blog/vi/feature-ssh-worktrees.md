@@ -27,7 +27,7 @@ repo sau jump host — đường thủ công: mọi việc chung một thư mụ
                       └── ~/repo/            ← một clone duy nhất
                             ├── việc A: sửa dở, chưa commit
                             ├── việc B: ghi đè lên phần dở của A
-                            └── việc C: checkout sang branch khác, đè cả ba
+                            └── việc C: checkout sang branch khác, đè lên các việc đang dở
                           một cây thư mục — ai ghi sau đè ai ghi trước
 ```
 
@@ -40,11 +40,12 @@ Chi phí không nằm ở thao tác ssh — nó nằm ở cấu trúc. Thư mụ
 Wakii không bắt gõ lại host, port, user đã có trong `~/.ssh/config` — nó đọc config đó làm nguồn sinh target. Hai trường trong kiểu `SshTarget` nói rõ điều kiện sống của cơ chế:
 
 ```bash
-$ grep -n "configHost?:\|source?: 'ssh-config'\|orphaned repos/worktrees\|worktreeId?:" src/shared/ssh-types.ts
+$ grep -n "configHost?:\|source?: 'ssh-config'\|orphaned repos/worktrees\|worktreeId?:\|supportsFolderDownload?:" src/shared/ssh-types.ts
 19:  configHost?: string
 43:  source?: 'ssh-config' | 'manual'
 72: *  can re-point orphaned repos/worktrees from the old (deleted) target id to
 76:  /** The id the removed target had — what orphaned repos/worktrees still point at. */
+79:  configHost?: string
 191:  supportsFolderDownload?: boolean
 208:  worktreeId?: string
 ```
@@ -66,7 +67,7 @@ Tombstone ghi lại `oldTargetId` cùng `configHost` — alias, key ổn định
 Transport SSH là nơi lỗi hay chuyển thành màn hình đoán: xác thực dở dang, clone hỏng không nói chỗ gãy, connect nhầm nơi. Commit `278f9ee876` — "fix(ssh): answer every MFA stage, stop dialling an unclaimed alias, and say where a clone failed (#17946)" — nhắm thẳng ba dạng đó:
 
 ```bash
-$ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
+$ git -C <orca-repo> show 278f9ee876 --stat | tail -13
  src/main/ssh/ssh-config-alias-claim.test.ts        |  80 +++++++
  src/main/ssh/ssh-config-alias-claim.ts             | 103 +++++++++
  src/main/ssh/ssh-config-parser.ts                  |  40 ++++
@@ -81,7 +82,7 @@ $ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
  11 files changed, 770 insertions(+), 13 deletions(-)
 ```
 
-*Nguồn: `git show` trong checkout repo sản phẩm orca, lấy 2026-09-08; đường dẫn home rút gọn về `~`.*
+*Nguồn: `git show` trong checkout repo sản phẩm orca, lấy 2026-09-08.*
 
 **MFA nhiều stage.** ssh2 đi một danh sách phương thức xác thực phẳng, đúng một lần — host chạy `AuthenticationMethods keyboard-interactive,keyboard-interactive` cho qua stage đầu rồi hết phương thức, người dùng thấy "All configured authentication methods failed" (issue #8622, #16820). Bản sửa: handler chạy cho mọi target, dựng lại hàng đợi ở mỗi lần host báo partial success — key không bị đưa lại sau publickey, không làm cạn `MaxAuthTries` trước khi câu hỏi MFA kịp hiện. Commit kèm ssh2 server thật dựng kịch bản partial success, phủ bởi bài test 251 dòng.
 
@@ -89,10 +90,10 @@ $ git -C ~/Desktop/projects/orca show 278f9ee876 --stat | tail -13
 
 **Clone lỗi phải nói rõ chỗ gãy.** Clone chạy non-interactive: `ssh` với `BatchMode=yes` và `SSH_ASKPASS` rỗng. Trên clone từ xa, đó hiện thành `fatal: Could not read from remote repository.` — trong khi gõ đúng lệnh đó bằng tay trên chính máy đó thì thành công (issue #14533). Bản sửa: `getGitCloneFailureMessage` nối thêm sự thật — clone chạy trên máy khác, bằng key của máy khác, prompt bị tắt chủ đích — và gọi tên hai dạng: publickey bị từ chối (nạp key vào agent trên máy đó), host-key chưa có (ghi vào `known_hosts` của máy đó).
 
-Và đây là bằng chứng ba bản sửa đã tới tay người dùng — commit nằm trong tag phát hành:
+Và đây là bằng chứng ba bản sửa tới tay người dùng — commit nằm trong tag phát hành:
 
 ```bash
-$ git -C ~/Desktop/projects/orca tag --contains 278f9ee876
+$ git -C <orca-repo> tag --contains 278f9ee876
 mobile-android-v0.0.48
 v1.4.198
 v1.4.199
@@ -122,10 +123,23 @@ supportsFolderDownload?: boolean
 
 *Nguồn: src/shared/ssh-types.ts, comment trên `SshTarget` và `SshConnectionState`, lấy 2026-09-08.*
 
-Đọc ra ba điều thật. Host muốn Kerberos đi qua system OpenSSH transport vì ssh2 không có gssapi-with-mic. Tải cả thư mục cần SFTP của ssh2, không có trên đường system SSH. Và cơ chế alias phụ thuộc `~/.ssh/config` của máy — không hỏi `ssh -G` thay được vì nó trả lời cả alias không tồn tại, mất tín hiệu "alias còn được claim không". Chưa chắc thì trả lời "claimed" — thiết kế có chủ đích.
+Đọc ra ba điều thật. Host muốn Kerberos đi qua system OpenSSH transport vì ssh2 không có gssapi-with-mic. Tải cả thư mục cần SFTP của ssh2, không có trên đường system SSH. Cơ chế alias phụ thuộc `~/.ssh/config` của máy — không hỏi `ssh -G` thay được vì nó trả lời cả alias không tồn tại. Chưa chắc thì trả lời "claimed" — thiết kế có chủ đích.
 
 ## Kết nối là transport, isolate là cấu trúc
 
-Hai bài trong loạt gặp nhau ở một nguyên tắc: isolate là cấu trúc đĩa, không phải lời hứa giao diện — và cấu trúc đĩa cần đường kết nối đáng tin mới có việc để isolate. Worktree local giải nửa trong phòng; SSH worktree giải nửa còn lại: repo ở máy khác vẫn nhận nguyên tắc một việc một thư mục, với tombstone và generation để automation không nhầm target.
+Hai bài trong loạt gặp nhau ở một nguyên tắc: isolate là cấu trúc đĩa, không phải lời hứa giao diện — và cấu trúc đĩa cần đường kết nối đáng tin mới có việc để isolate:
 
-Muốn đọc cơ chế worktree local trước: [song song bằng worktree isolation](/vi/blog/parallel-worktrees-isolation/). Muốn kết nối máy từ xa đầu tiên: trang [getting started](/vi/docs/getting-started/) dẫn các bước từ đầu. Hoặc tự thấy ngay: mở `~/.ssh/config`, chọn một alias đang dùng hằng ngày — Wakii nhập nó thành target, và worktree đầu tiên trên máy từ xa chỉ còn một cú add.
+```ascii
+hai tầng, hai bài
+
+  tầng isolate  : worktree + branch trên đĩa, một việc một cây  → bài song song
+                  bằng worktree isolation
+  tầng transport: SSH target, alias, MFA, báo lỗi clone         → bài này
+                  (src/shared/ssh-types.ts, src/main/ssh/*)
+```
+
+*Nguồn: tổng hợp từ hai file đã trích trong bài, lấy 2026-09-08.*
+
+Worktree local giải nửa trong phòng; SSH worktree giải nửa còn lại: repo ở máy khác vẫn nhận nguyên tắc một việc một thư mục, với tombstone và generation để automation không nhầm target.
+
+Muốn đọc cơ chế worktree local trước: [song song bằng worktree isolation](/vi/blog/parallel-worktrees-isolation/). Muốn kết nối máy từ xa đầu tiên: trang [getting started](/vi/docs/getting-started/) dẫn các bước từ đầu. Hoặc tự thấy: mở `~/.ssh/config`, chọn một alias dùng hằng ngày — Wakii nhập nó thành target, và worktree đầu tiên trên máy từ xa chỉ còn một cú add.

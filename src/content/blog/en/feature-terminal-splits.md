@@ -107,8 +107,9 @@ wakii-dev/wakii repo, retrieved 2026-09-08.*
 In other words, after a split, the new layout tree is written into the durable
 `TerminalLayoutSnapshot` — a later rebuild restores the split panes instead of
 collapsing back to a single leaf. The behavior has a guard:
-`persistence-split-pane-incarnation.test.ts` and
-`headless-terminal-split-layout.test.ts` sit next to the runtime file. For a
+`headless-terminal-split-layout.test.ts` sits next to the runtime file, and
+`persistence-split-pane-incarnation.test.ts` watches one level up, in
+`src/main/`. For a
 feature users judge by "my screen tomorrow looks like it did today", this is
 the code that decides the experience — even though none of it ever shows on
 screen.
