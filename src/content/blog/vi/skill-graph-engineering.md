@@ -84,10 +84,10 @@ Con người cũng là một node — qua human gate, đặt ở cạnh khó ho�
 | Khung task graph | Ở đội Wakii | Mô tả docs |
 |---|---|---|
 | worker node | task-executor | "Implements tasks in isolated worktrees, commits atomically" |
-| verify node, context riêng | code-reviewer, verifier | "Independent pass/fail verdict — self-reports don't count" |
+| verify node, context riêng | code-reviewer, verifier | "Independent pass/fail verdict on the finished work — self-reports don't count" |
 | node soi chính cái đồ thị | plan-critic | "Adversarial review of the plan and its task dependency graph" |
-| human gate | designer | "Design drafts for user review before UI gets built" |
-| cạnh quay ngược an toàn | rollback-fixer | "Reverts safely to the last known-good state" |
+| human gate | designer | "Produces high-fidelity design drafts for user review before UI gets built" |
+| cạnh quay ngược an toàn | rollback-fixer | "Reverts safely to the last known-good state when something diverges" |
 
 *Nguồn: bảng rút từ src/content/docs/en/agents-and-kit.md §"The 9-agent story team", lấy 2026-09-08.*
 
@@ -105,7 +105,7 @@ FI-359 — 5 plan file, một diamond
   mỗi SF = một plan file + một worktree riêng
 ```
 
-*Nguồn: ls docs/superpowers/plans/ — 5 file 2026-09-07..2026-09-08, trong đó 2 file mang số Linear của SF (FI-362, FI-363), lấy 2026-09-08.*
+*Nguồn: 5 file FI-359 trong docs/superpowers/plans/ (tổng thư mục có nhiều hơn), trong đó 2 file mang số Linear của SF (FI-362, FI-363), lấy 2026-09-08.*
 
 Đội chín agent đến từ đâu, kit tự cài thế nào: docs [agents & kit](/vi/docs/agents-and-kit/). Muốn đọc chín vai ở góc quyền hạn, bài [Chín agent, quyền hạn tách rời](/vi/blog/nine-agents-separated-powers/) đã mổ xẻ; toàn cảnh catalog kỹ năng có trong [bài tour kỹ năng](/vi/blog/skills-catalog-tour/); cách plan file viết cho người không có ngữ cảnh nằm ở [bài viết plan cho Linear](/vi/blog/skill-writing-plans-linear/).
 

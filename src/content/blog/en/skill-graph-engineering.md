@@ -84,10 +84,10 @@ Read the kit's nine-agent team through the frame above — keeping only the fram
 | Task-graph frame | On the Wakii team | Docs description |
 |---|---|---|
 | worker node | task-executor | "Implements tasks in isolated worktrees, commits atomically" |
-| verify node, separate context | code-reviewer, verifier | "Independent pass/fail verdict — self-reports don't count" |
+| verify node, separate context | code-reviewer, verifier | "Independent pass/fail verdict on the finished work — self-reports don't count" |
 | the node that reviews the graph itself | plan-critic | "Adversarial review of the plan and its task dependency graph" |
-| human gate | designer | "Design drafts for user review before UI gets built" |
-| safe backward edge | rollback-fixer | "Reverts safely to the last known-good state" |
+| human gate | designer | "Produces high-fidelity design drafts for user review before UI gets built" |
+| safe backward edge | rollback-fixer | "Reverts safely to the last known-good state when something diverges" |
 
 *Source: table distilled from src/content/docs/en/agents-and-kit.md §"The 9-agent story team", retrieved 2026-09-08.*
 
@@ -105,7 +105,7 @@ FI-359 — 5 plan files, one diamond
   each SF = one plan file + one isolated worktree
 ```
 
-*Source: ls docs/superpowers/plans/ — 5 files 2026-09-07..2026-09-08, two carrying the SFs' Linear IDs (FI-362, FI-363), retrieved 2026-09-08.*
+*Source: the 5 FI-359 plan files in docs/superpowers/plans/ (the directory holds more), two carrying the SFs' Linear IDs (FI-362, FI-363), retrieved 2026-09-08.*
 
 Where the nine agents come from and how the kit installs itself: the [agents & kit docs](/docs/agents-and-kit/). For the nine roles read through the lens of separated powers — why the writer never approves their own work — [Nine agents, separated powers](/blog/nine-agents-separated-powers/) covers it; the full public-skill catalog tour is in [a tour of the skills catalog](/blog/skills-catalog-tour/); how a plan file gets written for someone with no context is in [writing plans for Linear](/blog/skill-writing-plans-linear/).
 

@@ -98,6 +98,7 @@ direction-a.html            direction-b.html           direction-c.html
 direction-c1-tilt.html      direction-c2-scene.html    direction-c3-webgl.html
 direction-d1-cinematic.html direction-d2-tour.html     direction-d3-bento.html
 fi349-sf3-direction.md      sf-downloads-direction.md  sf1-direction.md
+sf2-direction.md            sf3-direction.md
 ```
 
 *Nguồn: ls docs/superpowers/designs/ (repo wakii-site), lấy 2026-09-08.*
