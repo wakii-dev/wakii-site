@@ -5,17 +5,17 @@
 > nguồn. Drift nguồn phát hiện ở QA (SF-5) = ghi chú, không fail. Bài ghi số kèm
 > "tại thời điểm viết" + ngày snapshot.
 
-## Numbers snapshot (D8) — chụp 2026-09-07
+## Numbers snapshot (D8) — chụp 2026-09-08 (FI-373 SF-1 refresh; trước đó 2026-09-07)
 
 | # | Số liệu | Giá trị tại snapshot | Nguồn lệnh / file |
 |---|---------|----------------------|-------------------|
-| 1 | Skills | **21 tổng / 14 public** | `src/data/skills.ts` — đếm entry + `public: true` ×14 (2026-09-07) |
-| 2 | Releases (wakii-dev/wakii) | **v1.4.199** `2026-09-05T19:07:31Z` (Latest) · **v1.4.198** `2026-09-05T12:47:15Z` · **mobile-android-v0.0.48** (Pre-release) `2026-09-05T13:00:31Z` · **KHÔNG có v1.4.197** | `gh release list --repo wakii-dev/wakii --limit 6` (2026-09-07) — output nguyên văn: `Wakii 1.4.199  Latest  v1.4.199  2026-09-05T19:07:31Z` / `Wakii 1.4.198  v1.4.198  2026-09-05T12:47:15Z` / `Orca Mobile Android mobile-android-v0.0.48  Pre-release  mobile-android-v0.0.48  2026-09-05T13:00:31Z` |
+| 1 | Skills | **20 tổng / 13 public** | `src/data/skills.ts` — đếm TRONG mảng `export const skills`: `id: '` ×20 + `public: true` ×13 (2026-09-08). ⚠ Giá trị 21/14 của lần chụp 2026-09-07 là ĐẾM SAI grep whole-file (dính `Skill` interface + comment) — xem `claims-registry.md` `## Drift-note` |
+| 2 | Releases (wakii-dev/wakii) | **v1.4.199** `2026-09-05T19:07:31Z` (Latest) · **v1.4.198** `2026-09-05T12:47:15Z` · **mobile-android-v0.0.48** (Pre-release) `2026-09-05T13:00:31Z` · **KHÔNG có v1.4.197** | `gh release list --repo wakii-dev/wakii --limit 6` (2026-09-08) — output nguyên văn: `Wakii 1.4.199  Latest  v1.4.199  2026-09-05T19:07:31Z` / `Wakii 1.4.198  v1.4.198  2026-09-05T12:47:15Z` / `Orca Mobile Android mobile-android-v0.0.48  Pre-release  mobile-android-v0.0.48  2026-09-05T13:00:31Z` — re-verify 2026-09-08: GIỐNG HỆT lần chụp 2026-09-07 |
 | 3 | Agents | **9**: phase0-impact-analyst, spec-critic, plan-critic, task-executor, designer, code-reviewer, verifier, security-audit, rollback-fixer | `src/content/docs/en/agents-and-kit.md` §"The 9-agent story team" (bảng 9 hàng) |
-| 4 | story-* CLIs | **24** executable trong `~/.claude/bin/` | `ls ~/.claude/bin \| grep '^story-'\| wc -l` → 25 match − 1 file `story-dashboard.html` = 24 (2026-09-07) |
+| 4 | story-* CLIs | **24** executable trong `~/.claude/bin/` | `ls ~/.claude/bin \| grep '^story-'\| wc -l` → 25 match − 1 file `story-dashboard.html` = 24 (re-verify 2026-09-08 — kết quả không đổi) |
 | 5 | Posts hiện có | **10** (5 slug × 2 locale, FI-341): review-ai-agents-from-your-phone · story-workflow-idea-to-release · decision-gates-safe-ai-agents · forking-an-ide-keeping-current-with-upstream · building-wakii-in-the-open-log-1 | `ls src/content/blog/en/ src/content/blog/vi/` (2026-09-07) |
 | 6 | hub-store public | **isPrivate: false**, owner `wakii-dev` | `gh repo view wakii-dev/hub-store --json isPrivate,name,owner` (2026-09-07) |
-| 7 | Blog story hiện tại | Story FI-359 viết thêm **20 slug × 2 locale = 40 file** → tổng 30 posts | epic spec FI-359 |
+| 7 | Blog story hiện tại | Đang có **25 slug × 2 locale = 50 file** (FI-341: 5 slug seed + FI-359: 20 slug); batch-2 (FI-373) kế hoạch **+44 slug → 69 slug × 2 = 138 trang bài** | `ls src/content/blog/en/ src/content/blog/vi/` (2026-09-08) + epic spec FI-373 `topic-matrix-batch2.md` |
 
 > Snapshot là **mức đối chiếu**, không phải lời hứa vĩnh viễn. Bài viết sinh sau
 > snapshot: re-extract lệnh nguồn nếu nghi ngờ, ghi số theo snapshot + ngày.

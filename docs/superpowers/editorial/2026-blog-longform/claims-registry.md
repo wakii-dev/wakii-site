@@ -12,7 +12,7 @@
 ## ALLOWED
 
 - 9 agents đủ tên: **phase0-impact-analyst, spec-critic, plan-critic, task-executor, designer, code-reviewer, verifier, security-audit, rollback-fixer** — nguồn: `src/content/docs/en/agents-and-kit.md` ("The 9-agent story team").
-- Skills kit: **21 tổng / 14 public** theo snapshot D8 ngày 2026-09-07 (`src/data/skills.ts`, `public: true` ×14) — bài viết PHẢI ghi kèm "tại thời điểm viết"; con số KHÔNG pin vào contract, quy tắc đọc-tại-thời-điểm là pin (skills từng 13→14 — drift thật).
+- Skills kit: **20 tổng / 13 public** theo snapshot D8 ngày 2026-09-08 (`src/data/skills.ts`, `public: true` ×13 — đếm TRONG mảng `export const skills`, không grep whole-file) — bài viết PHẢI ghi kèm "tại thời điểm viết"; con số KHÔNG pin vào contract, quy tắc đọc-tại-thời-điểm là pin. ⚠ Snapshot FI-359 (21/14 @ 2026-09-07) là ĐẾM SAI pattern, không phải content đổi — phân tích gốc ở `## Drift-note — skills 21/14 → 20/13` bên dưới.
 - **24 story-* CLIs** trong kit (`~/.claude/bin/story-*`) — verified `ls ~/.claude/bin | grep '^story-'` ngày 2026-09-07 (25 match − 1 file .html).
 - Zero-setup: kit tự cài lần đầu vào `~/.claude/` (skills + agent definitions + story-* CLIs), **idempotent**, không đụng config sẵn — nguồn: docs getting-started §5 "First run — nothing to set up".
 - Superpowers panel đúng 2 tab: **⚡ Workflow** + **🌳 Story** — nguồn: docs superpowers-panel.
@@ -66,6 +66,25 @@
   cadence chỉ nói từ case 09-05 đã verify.
 - KHÔNG bịa screenshot/transcript: ASCII diagram + transcript phải đi từ vật liệu
   thật trong `evidence-pack.md`.
+
+## Verify-shipped — batch-2 features (2026-09-08)
+
+> DEC-8: 8 bài features (SF-3) CHỈ được claim theo NHÃN dưới đây. Đối chiếu
+> code orca local (READ-ONLY) + release v1.4.199 (`gh release view`).
+> Nhãn: **SHIPPED** = có code + nằm trong release notes ≤ v1.4.199 ·
+> **MAIN-ONLY** = code trên main orca nhưng chưa nằm release nào ·
+> **ROADMAP** = không tìm thấy code/notes. Audit T3 parse section này
+> (dòng `- feature-<tên> — <NHÃN> — ...`); `PENDING-VERIFY` = placeholder
+> chưa verify — bài features KHÔNG ĐƯỢC viết khi còn placeholder.
+
+- feature-terminal-splits — PENDING-VERIFY
+- feature-ssh-worktrees — PENDING-VERIFY
+- feature-design-mode — PENDING-VERIFY
+- feature-ai-diff-annotation — PENDING-VERIFY
+- feature-emulator-android — PENDING-VERIFY
+- feature-computer-use-native — PENDING-VERIFY
+- feature-per-workspace-env — PENDING-VERIFY
+- feature-notification-keyboard — PENDING-VERIFY
 
 ## Quy tắc snapshot D8 (pin từ epic spec)
 
