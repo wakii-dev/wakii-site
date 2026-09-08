@@ -44,7 +44,7 @@ Step one of Phase 1 is exploring project context, and the source states this req
 
 ## One question at a time
 
-With context in hand, Phase 1 step two starts asking. The mechanism fits in exactly three lines of source:
+With context in hand, Phase 1 step two starts asking. The mechanism fits in a few lines of source:
 
 ```
 ### 2. Ask clarifying questions

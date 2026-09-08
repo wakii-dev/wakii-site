@@ -90,13 +90,13 @@ orchestrator read.
 
 ## Context packs: analyze once, every SF inherits
 
-The core of the skill is a bolded line near the top of the file:
+The core of the skill is a bolded block near the top of the file:
 
 ```text
 Core principle: analyze once, inherit many times. Phase 0-2 quality
 happens ONCE at epic level with ALL principles at maximum strictness;
 each SF (sub-feature) then runs only Phase 3-5 (plan-detail, execute,
-verify), reading the epic spec.
+verify), reading the epic spec — never re-analyzing, never re-asking.
 ```
 
 *Nguồn: ~/.claude/skills/story-workflow/SKILL.md, lấy 2026-09-08.*

@@ -113,13 +113,15 @@ Re-reading needs no old session: the plan file sits in the repo, the subtask sit
 
 ## Opening a real plan file in this repo
 
-The blog story you are reading runs on exactly those plan files: 20 posts × 2 locales = 40 files across 5 SFs, with the orchestration completing 5/5 tasks. Open the SF-1 plan — the editorial foundation for the 19 posts after it — and the root-cause section puts the risk straight on the page:
+The previous batch story (FI-359) ran on exactly those plan files: 20 posts × 2 locales = 40 files across 5 SFs, with the orchestration completing 5/5 tasks. Open the SF-1 plan — the editorial foundation for the 19 posts after it — and the root-cause section puts the risk straight on the page:
 
 > "Không có lớp nền dùng chung thì mỗi SF tự chế: format frontmatter, cách đếm từ, cụm claim được phép, target link docs — drift mù"
 
 And the Problem section nails the consequence:
 
 > "19 bài viết còn lại của epic sẽ nhờ bộ máy soạn thảo dùng chung này — SF-1 sai thì 19 bài sau sai theo. Ai mở `pnpm build` phải thấy bài lệch chuẩn bị chặn bằng máy, không phải bằng mắt."
+
+*Source: docs/superpowers/plans/2026-09-07-fi359-sf1-editorial-foundation-plan.md, retrieved 2026-09-08.*
 
 *Source: docs/superpowers/plans/2026-09-07-fi359-sf1-editorial-foundation-plan.md, sections 0 + 1, 2026-09-08.*
 

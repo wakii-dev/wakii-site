@@ -113,13 +113,15 @@ Một phiên viết plan dài: nạp spec, đọc code — context window đầy
 
 ## Mở một plan file thật trong repo này
 
-Story blog bạn đang đọc chạy bằng đúng những plan file đó: 20 bài × 2 locale = 40 file chia 5 SF, orchestration hoàn tất 5/5 task. Mở plan SF-1 — nền editorial cho 19 bài sau — root cause viết thẳng rủi ro ra trang:
+Story batch trước (FI-359) chạy bằng đúng những plan file đó: 20 bài × 2 locale = 40 file chia 5 SF, orchestration hoàn tất 5/5 task. Mở plan SF-1 — nền editorial cho 19 bài sau — root cause viết thẳng rủi ro ra trang:
 
 > "Không có lớp nền dùng chung thì mỗi SF tự chế: format frontmatter, cách đếm từ, cụm claim được phép, target link docs — drift mù"
 
 Và mục Problem chốt hệ quả:
 
 > "19 bài viết còn lại của epic sẽ nhờ bộ máy soạn thảo dùng chung này — SF-1 sai thì 19 bài sau sai theo. Ai mở `pnpm build` phải thấy bài lệch chuẩn bị chặn bằng máy, không phải bằng mắt."
+
+*Nguồn: docs/superpowers/plans/2026-09-07-fi359-sf1-editorial-foundation-plan.md, lấy 2026-09-08.*
 
 *Nguồn: docs/superpowers/plans/2026-09-07-fi359-sf1-editorial-foundation-plan.md, mục 0 + mục 1, 2026-09-08.*
 

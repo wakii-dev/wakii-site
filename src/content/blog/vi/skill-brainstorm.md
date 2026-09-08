@@ -44,7 +44,7 @@ Bước một của Phase 1 là explore project context, và source viết yêu 
 
 ## Một câu hỏi một lần
 
-Khi đã có ngữ cảnh, Phase 1 bước hai mới bắt đầu hỏi. Cơ chế nằm gọn trong đúng ba dòng của source:
+Khi đã có ngữ cảnh, Phase 1 bước hai mới bắt đầu hỏi. Cơ chế nằm gọn trong vài dòng của source:
 
 ```
 ### 2. Ask clarifying questions

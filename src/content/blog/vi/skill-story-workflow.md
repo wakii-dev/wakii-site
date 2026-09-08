@@ -84,13 +84,13 @@ chế file: một bracket là một bản vẽ dọc mà cả người và DAG o
 
 ## Context pack: phân tích một lần, SF nào cũng kế thừa
 
-Cốt lõi của skill là một dòng in đậm ngay đầu file:
+Cốt lõi của skill là khối in đậm ngay đầu file:
 
 ```text
 Core principle: analyze once, inherit many times. Phase 0-2 quality
 happens ONCE at epic level with ALL principles at maximum strictness;
 each SF (sub-feature) then runs only Phase 3-5 (plan-detail, execute,
-verify), reading the epic spec.
+verify), reading the epic spec — never re-analyzing, never re-asking.
 ```
 
 *Nguồn: ~/.claude/skills/story-workflow/SKILL.md, lấy 2026-09-08.*
