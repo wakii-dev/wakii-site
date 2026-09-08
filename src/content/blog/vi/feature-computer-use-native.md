@@ -5,6 +5,7 @@ pubDate: "2026-09-18"
 category: "tech"
 tags: ["features", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/feature-computer-use-native.png"
 ---
 
 Agent của Wakii đọc code, chạy lệnh, mở pull request — nhưng tất cả diễn ra

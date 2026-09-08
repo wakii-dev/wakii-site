@@ -5,6 +5,7 @@ pubDate: "2026-09-15"
 category: "tech"
 tags: ["features", "terminal", "wakii"]
 draft: false
+heroImage: "/blog/heroes/feature-terminal-splits.png"
 ---
 
 Agent chạy lâu — mười lăm phút, nửa giờ — và trong lúc đó bạn muốn làm việc
