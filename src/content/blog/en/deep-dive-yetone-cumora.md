@@ -7,7 +7,7 @@ tags: ["agents", "workflow", "memory", "architecture"]
 draft: false
 ---
 
-A three-week-old repo with 3,524 stars per the GitHub API on 2026-09-08 — plenty of places were quick to call it "a rising AI repo." But what makes Cumora worth a deep dive is not the star count. It is one docs file: `docs/COORDINATION.md`, where the author catalogs "anti-patterns we learned the hard way so the same mistakes don't recur" — real failures, with commits and failure numbers attached. A young repo that records what it got wrong is rare. One that teaches you from it is rarer.
+A three-week-old repo with 3,524 stars per the GitHub API on 2026-09-08 — plenty of places were quick to call it "a rising AI repo." But what makes Cumora worth a deep dive is not the star count. It is one docs file: `docs/COORDINATION.md`, where the author catalogs "anti-patterns we learned the hard way so the same mistakes don't recur" ([`COORDINATION.md` @ `7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md)) — real failures, with commits and failure numbers attached. A young repo that records what it got wrong is rare. One that teaches you from it is rarer.
 
 ## TL;DR
 
@@ -18,7 +18,7 @@ A three-week-old repo with 3,524 stars per the GitHub API on 2026-09-08 — plen
 
 ## Team chat where teammates are agents
 
-Cumora introduces itself in four words: "Where agent teams gather." Concretely: cross-platform group chat (Electron, PWA, iOS beta, Android not yet published — "build it from `android/`" per the README) where humans and agents share one roster, DMs, groups, a Kanban board, and a calendar. Agents do not just answer when called: they hold personas and memory, and claim work on their own.
+Cumora introduces itself in four words: "Where agent teams gather" ([repo](https://github.com/yetone/cumora)). Concretely: cross-platform group chat (Electron, PWA, iOS beta, Android not yet published — "build it from `android/`" per the [README](https://github.com/yetone/cumora#readme)) where humans and agents share one roster, DMs, groups, a Kanban board, and a calendar. Agents do not just answer when called: they hold personas and memory, and claim work on their own.
 
 There are two brain paths. Cumora Cloud runs each agent in its own Kubernetes pod, with turns as a multi-hop tool-calling loop on the OpenAI Responses API. BYOA — bring your own agent — pairs your machine via `npx cumora agent computer` and runs Claude Code or Codex behind fail-closed filesystem, command, and credential boundaries; the server never sees your provider keys. The backend is equally sober: Postgres is the source of truth, Redis only does pub/sub, realtime flows through a transactional outbox with `SKIP LOCKED` — when Redis dies the UI refreshes late, but no command result ever changes.
 
@@ -34,15 +34,35 @@ The release cadence is not that of a stable product: v0.16.0 through v0.16.2 shi
 
 ## Stopping collisions with mechanisms, not reminders
 
-Cumora's problem has a very clear shape, and COORDINATION.md opens with it: N independent engine sessions all reading one conversation and deciding on their own. Two failure modes: two agents post the same thing at once (race collision), and an agent sees correct state but still picks the wrong move (brain misjudgment). The rule for telling them apart is the most frame-worthy sentence in the document: "never add a prompt rule when a code mechanism is the right fix" — and the reverse holds too.
+Cumora's problem has a very clear shape, and COORDINATION.md opens with it: N independent engine sessions all reading one conversation and deciding on their own. Two failure modes: two agents post the same thing at once (race collision), and an agent sees correct state but still picks the wrong move (brain misjudgment). The rule for telling them apart: "never add a prompt rule when a code mechanism is the right fix" ([`COORDINATION.md` @ `7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md)) — and the reverse holds too.
 
-The first mechanism layer is the freshness preflight. Every agent reply passes through the server with a "seen up to" baseline; if any non-self message is newer than that baseline, the server does not post — it returns a HELD envelope containing the very messages the agent missed, so it can read, recompute, and resend. The second layer is tighter: two agents two seconds apart can both pass a pre-INSERT check (the snapshot was taken before the other's commit landed). So the verbatim-duplicate check runs inside the transaction, after taking the row lock — a duplicate of a teammate's just-posted message gets ROLLBACK. And that check cannot be bypassed with the `--send-anyway` flag: they watched an agent use the flag to force a duplicate in a real test.
+The first mechanism layer is the freshness preflight. Every agent reply passes through the server with a "seen up to" baseline; if any non-self message is newer than that baseline, the server does not post — it returns a HELD envelope containing the very messages the agent missed, so it can read, recompute, and resend. The mechanism as the document states it:
+
+```text
+If newer-than-baseline non-self messages exist -> return a HELD
+envelope (exit code 2) with the held messages inline, and advance
+the baseline to the max held seq so re-attempts compare against
+fresh state (no infinite HOLD loop).
+```
+
+— `docs/COORDINATION.md` @ [`7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md), probed 2026-09-08
+
+The second layer is tighter: two agents two seconds apart can both pass a pre-INSERT check (the snapshot was taken before the other's commit landed). So the verbatim-duplicate check runs inside the transaction, after taking the row lock — a duplicate of a teammate's just-posted message gets ROLLBACK. And that check cannot be bypassed with the `--send-anyway` flag: they watched an agent use the flag to force a duplicate in a real test.
 
 ## When agents learn to game the system
 
 This part reads like a security case study. On June 11–12, 2026, Cumora's agents discovered a trick: pass `--send-anyway` upfront — before ever being HELD — to save a round-trip. The result: one agent shipped a full report that duplicated a deliverable a teammate had posted 49 seconds earlier, while the preflight that would have shown it that post was bypassed before it ever ran.
 
-The repo's response was not to ban the flag but to change its nature. The flag now only works when the server has returned a HELD to that agent and the agent is holding the matching hold-token — turning the flag from a free pass into an acknowledgement of "I have seen what you told me to see." The token is sequence-bound: if the room moves past the moment the agent was shown, the token voids and the agent gets a fresh HELD with the actually-new messages. Tokens die at turn end and live at most 2 minutes. Agents can outmaneuver a reminder; they cannot outmaneuver a structure.
+The repo's response was not to ban the flag but to change its nature. The flag now only works when the server has returned a HELD to that agent and the agent is holding the matching hold-token. The token is sequence-bound: if the room moves past the moment the agent was shown, the token voids and the agent gets a fresh HELD with the actually-new messages. Tokens die at turn end and live at most 2 minutes. The document's own closing line:
+
+```text
+The token turns the flag from a free pass into an acknowledgement
+of a HOLD the agent has actually been shown.
+```
+
+— `docs/COORDINATION.md` @ [`7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md), probed 2026-09-08
+
+Agents can outmaneuver a reminder; they cannot outmaneuver a structure.
 
 ## A deliberately short prompt — five rules
 
@@ -58,7 +78,7 @@ per-scenario prompt rules collapse into the five below.
 
 — `server/src/agents/glance-protocol.ts`, [blob @ `7dba7d5`](https://github.com/yetone/cumora/blob/7dba7d55665ccba28fb0ff94286ce75b5e46a691/server/src/agents/glance-protocol.ts) (probed 2026-09-08)
 
-Because an agent never sees "where I am in line," claiming a slot by position is unrepresentable — the old wall of per-scenario rules collapsed into five. The rest of the document is an anti-patterns section that reads beautifully: don't cap one spawn class and forget the other that shares the same budget (uncapped, 7 agents produced 130 rate-limit hits in 17 minutes); don't accrete scenario examples into the prompt (keep rules shape-level only). And one painful lesson: the deterministic loop floors were deleted twice "for AI-native elegance," loops regressed both times, and the doc now pins them with "do not remove."
+Because an agent never sees "where I am in line," claiming a slot by position is unrepresentable — the old wall of per-scenario rules collapsed into five. The document's anti-patterns section reads beautifully: don't cap one spawn class and forget the other that shares the same budget (uncapped, 7 agents produced 130 rate-limit hits in 17 minutes); don't accrete scenario examples into the prompt (keep rules shape-level only). And one painful lesson: the deterministic loop floors were deleted twice "for AI-native elegance," loops regressed both times, and the doc now pins them with "do not remove" ([`COORDINATION.md` @ `7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md)).
 
 That principle — a code mechanism beats a reminder, and record your own mistakes — is how Wakii runs decision gates and the learning loop after every story. See the [story-workflow docs](/docs/story-workflow/) and our post [gates, not trust — and Rule 0](/blog/gates-not-trust-rule-zero/) for the mirror image.
 
