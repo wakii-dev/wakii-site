@@ -19,12 +19,11 @@ TL;DR:
 
 - Diagnose in three layers: `orca status` for the overview, manual commands
   in a terminal to separate app trouble from CLI trouble, logs last.
-- Agent won't start: run the CLI by hand first — if the CLI works, the
-  problem is the PATH the app sees.
+- Agent won't start or `command not found`: run the CLI by hand first, then
+  check the PATH the app sees and the registered shim; a dead SSH terminal
+  on Linux means a missing toolchain — and a reconnect after installing.
 - Worktree creation fails: usually a missing `git fetch origin` or a
   branch/folder that already has a worktree.
-- "command not found" means the shim isn't registered; a dead SSH terminal
-  on Linux means a missing toolchain — and a reconnect after installing.
 - Browser reports `browser_no_tab`: one `orca tab create` command fixes it.
 - A frozen GitHub panel: check rate limits with three `gh` commands.
 

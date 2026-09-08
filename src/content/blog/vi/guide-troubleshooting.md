@@ -18,12 +18,11 @@ TL;DR:
 
 - Chẩn đoán theo ba lớp: `orca status` nhìn tổng quan, chạy lệnh thủ công
   trong terminal để tách lỗi app khỏi lỗi CLI, cuối cùng mới mở logs.
-- Agent không start: chạy CLI tay trước — nếu CLI tự chạy được thì lỗi nằm
-  ở PATH mà app nhìn thấy.
+- Agent không start hay `command not found`: chạy CLI tay trước, rồi kiểm
+  PATH mà app nhìn thấy và shim đã đăng ký; terminal SSH chết trên Linux là
+  thiếu toolchain — và cài xong phải kết nối lại.
 - Worktree tạo lỗi: thường là thiếu `git fetch origin` hoặc trùng
   branch/thư mục.
-- "command not found" là shim chưa đăng ký; terminal SSH chết trên Linux là
-  thiếu toolchain — và cài xong phải kết nối lại.
 - Browser báo `browser_no_tab`: một lệnh `orca tab create` là xong.
 - GitHub panel đứng im: kiểm rate limit bằng ba lệnh `gh`.
 

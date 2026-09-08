@@ -5,6 +5,7 @@ pubDate: "2026-09-20"
 category: "tutorial"
 tags: ["guide", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/guide-first-story-end-to-end.png"
 ---
 
 Có hai cách kể về quy trình story của Wakii: kể lại một case đã chạy xong —

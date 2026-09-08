@@ -158,12 +158,19 @@ máy A — không cần UI, không cần đăng nhập lại.
 Một, access link có quyền truy cập runtime — gửi đúng client định pair, xử
 lý như mật khẩu; link lộ vào tay sai người thì revoke grant tương ứng dưới
 Shared Server Access. Hai, giữ server và client trên đường mạng riêng bạn
-kiểm soát — cùng tailnet Tailscale hoặc LAN; docs đánh dấu Remote Orca
-Servers là beta và ghi điều này ngay trong lưu ý đầu trang. Ba, không forward
-port Orca thẳng ra internet — docs liệt kê các thay thế: Tailscale,
-WireGuard, LAN tin cậy, SSH forwarding, authenticated tunnel. Bốn, đừng chọn
-`127.0.0.1` làm địa chỉ cho máy khác — địa chỉ đó chỉ có tác dụng trên chính
-server.
+kiểm soát — cùng tailnet Tailscale hoặc LAN. Lưu ý beta ngay đầu trang docs,
+trích nguyên văn:
+
+> "Remote Orca Servers are beta. Keep the server and client on a private
+> network path you control, such as the same Tailscale tailnet or LAN."
+
+Ba, không forward port Orca thẳng ra internet — docs liệt kê các thay thế:
+Tailscale, WireGuard, LAN tin cậy, SSH forwarding, authenticated tunnel. Bốn,
+đừng chọn `127.0.0.1` làm địa chỉ cho máy khác — địa chỉ đó chỉ có tác dụng
+trên chính server.
+
+*Nguồn: docs "Remote Orca Servers" — callout Beta và mục Access and
+security, truy 2026-09-08.*
 
 Phần thưởng của cấu hình này là đúng cảnh mà bài [watchdog](/vi/blog/watchdog-idle-is-not-dead/)
 bảo vệ: agent đi vào im lặng vì build dài, không phải vì chết — và khi

@@ -165,11 +165,18 @@ linkedLinearIssue: FI-377
 ## Dọn nhà: Resource Manager và branch bị giữ lại
 
 Xóa worktree là xóa cả thư mục lẫn branch, có confirmation. Nhưng khi branch
-còn commit chưa merge, git từ chối drop — lúc đó Orca giữ branch lại và hiện
-toast dạng **Review N Branches**: mở ra là danh sách branch được giữ, bạn
-force-delete cái nào chắc chắn, giữ lại cái nào còn phân vân. Folder đã mất
-thì không hồi phục, nhưng branch chưa merge không bao giờ bị nuốt im lặng
-khi xóa hàng loạt.
+còn commit chưa merge, git từ chối drop — docs mô tả điều xảy ra sau đó
+nguyên văn:
+
+> "If git refuses to drop a local branch because it may contain unmerged
+> commits, Orca keeps those branches and shows a toast such as **Review N
+> Branches**. Opening it lists the kept branches so you can force-delete some
+> and leave others."
+
+*Nguồn: docs worktrees, mục "Preserved branches", truy 2026-09-08.*
+
+Folder đã mất thì không hồi phục, nhưng branch chưa merge không bao giờ bị
+nuốt im lặng khi xóa hàng loạt.
 
 Nhiều worktree cần dọn một lúc thì vào Resource Manager → Clean up
 workspaces: danh sách gom cả worktree local, main worktree, folder

@@ -166,12 +166,19 @@ One, the access link grants access to the runtime — send it only to the
 client you intend to pair and handle it like a password; if it leaks, revoke
 the matching grant under Shared Server Access. Two, keep the server and the
 client on a private network path you control — the same Tailscale tailnet or
-a LAN; the docs mark Remote Orca Servers as beta and say this right in the
-opening note. Three, do not forward the Orca port directly to the public
-internet — the docs list the alternatives: Tailscale, WireGuard, a trusted
-LAN, SSH forwarding, an authenticated tunnel. Four, do not pick `127.0.0.1`
-as the address for another machine — that address only works on the server
-itself.
+a LAN. The beta warning at the top of the remote-server docs, quoted
+verbatim:
+
+> "Remote Orca Servers are beta. Keep the server and client on a private
+> network path you control, such as the same Tailscale tailnet or LAN."
+
+Three, do not forward the Orca port directly to the public internet — the
+docs list the alternatives: Tailscale, WireGuard, a trusted LAN, SSH
+forwarding, an authenticated tunnel. Four, do not pick `127.0.0.1` as the
+address for another machine — that address only works on the server itself.
+
+*Source: the "Remote Orca Servers" docs — the Beta callout and the "Access
+and security" section, retrieved 2026-09-08.*
 
 The reward for this setup is exactly the situation the
 [watchdog post](/blog/watchdog-idle-is-not-dead/) defends: an agent going

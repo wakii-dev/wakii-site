@@ -178,9 +178,16 @@ linkedLinearIssue: FI-377
 
 Deleting a worktree removes both the directory and the branch, with a
 confirmation. But when a branch may still hold unmerged commits, git refuses
-to drop it — Orca keeps the branch and shows a toast like **Review N
-Branches**: open it and you get the list of kept branches, so you can
-force-delete the ones you are sure about and keep the ones you are not.
+to drop it — the docs describe what happens next, verbatim:
+
+> "If git refuses to drop a local branch because it may contain unmerged
+> commits, Orca keeps those branches and shows a toast such as **Review N
+> Branches**. Opening it lists the kept branches so you can force-delete some
+> and leave others."
+
+*Source: the worktrees docs, "Preserved branches" section, retrieved
+2026-09-08.*
+
 Gone folders do not come back, but unmerged branches are never swallowed
 silently in a bulk delete.
 
