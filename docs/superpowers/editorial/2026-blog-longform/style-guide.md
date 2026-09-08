@@ -1,6 +1,8 @@
-# Style guide — blog longform 900-1400 từ (story FI-359)
+# Style guide — blog longform 900-1400 từ (stories FI-359 + FI-373)
 
-> Chuẩn viết cho 20 bài mới. Tone mẫu = 10 seed posts (đọc 1 seed trước khi viết:
+> Chuẩn viết cho 64 bài non-seed (batch 1: 20 bài FI-359 trong `topic-matrix.md`;
+> batch 2: 44 bài FI-373 trong `topic-matrix-batch2.md`). Tone mẫu = 10 seed
+> posts (đọc 1 seed trước khi viết:
 > `src/content/blog/en/review-ai-agents-from-your-phone.md` + bản VI). Lint máy:
 > `scripts/check-blog-content.mjs` — viết xong chạy `node scripts/check-blog-content.mjs`
 > trước khi commit.
@@ -54,7 +56,7 @@ words       = body_no_fml.split(/\s+/).filter(Boolean).length
 ---
 title: "Tiêu đề bài — góc nhìn cụ thể, <70 ký tự"
 description: "1-2 câu tóm tắt có tính từ hành động — dùng cho listing + meta description."
-pubDate: "2026-08-20"          # CỨNG theo topic-matrix.md (D2) — không tự chọn ngày
+pubDate: "2026-08-20"          # CỨNG theo topic-matrix.md (batch 1, D2) hoặc topic-matrix-batch2.md (batch 2) — không tự chọn ngày; ngày tương lai hợp lệ khi khớp dòng matrix (policy a)
 category: "tutorial"           # tutorial | tech | build-log — CỨNG theo matrix (D6)
 tags: ["workflow", "agents"]   # 2-4 tag từ vocab §5 — không tự chế
 draft: false                   # fallback D7: true = flip CẢ HAI locale cùng lượt
@@ -70,8 +72,11 @@ draft: false                   # fallback D7: true = flip CẢ HAI locale cùng 
 - Có sẵn từ seeds: `story-workflow` `agents` `workflow` `gates` `guardrails`
   `build-log` `release` `wakii` `git` `fork` `upstream` `mobile` `stories`
   `supervised`
-- Mới (đã duyệt ở epic spec): `autonomy` `worktree` `linear` `qa` `og` `rss`
-  `seo` `memory` `skills` `evidence`
+- Mới FI-359 (đã duyệt ở epic spec): `autonomy` `worktree` `linear` `qa` `og`
+  `rss` `seo` `memory` `skills` `evidence`
+- Mới FI-373 batch-2 (khớp chính xác cột tags đề xuất của
+  `topic-matrix-batch2.md`): `design` `features` `terminal` `cli` `android`
+  `guide` `architecture` `electron` `oss` `license`
 - 2-4 tag/bài; matrix đã đề xuất sẵn — đổi được trong vocab, không ra ngoài.
 
 ## 6. Link rules (D4 — bắt buộc)
