@@ -127,6 +127,21 @@ const failHard = (err) => {
 process.on('uncaughtException', failHard);
 process.on('unhandledRejection', failHard);
 
+/* Cross-table duplicate guard (P2 security-audit 2026-09-08): lint exits 1 on
+ * a duplicate slug across matrix files (config error) — the audit must reach
+ * the same verdict, not silently last-win on the Map merge. */
+{
+  const seen = new Map();
+  const dups = [];
+  for (const [file, table] of [['topic-matrix.md', BATCH1], ['topic-matrix-batch2.md', BATCH2], ['topic-matrix-batch3.md', BATCH3]]) {
+    for (const slug of table.keys()) {
+      if (seen.has(slug)) dups.push(`${slug} (already in ${seen.get(slug)})`);
+      else seen.set(slug, file);
+    }
+  }
+  if (dups.length > 0) failHard(new Error(`duplicate slug across matrix files — ${dups.join('; ')} (config error)`));
+}
+
 const CHECKS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const fails = Object.fromEntries(CHECKS.map((c) => [c, []]));
 const notes = Object.fromEntries(CHECKS.map((c) => [c, []]));
@@ -175,7 +190,8 @@ const unquote = (v) => v.replace(/^["'](.*)["']$/s, '$1').trim();
    Scoped entries (FI-383 SF-1): `- "phrase" — scope: slug-a,slug-b` enforces
    the phrase ONLY on the listed slugs; an entry without ` — scope:` is
    unscoped (greps every non-seed file). Parser IDENTICAL to lint — same
-   tree ⇒ same verdict from both scripts. */
+   tree ⇒ same verdict from both scripts. Parse warnings (scope slug not in
+   matrix, bad scope syntax) are non-failing and worded identically. */
 function forbiddenPhrases() {
   const src = readFileSync(join(KIT, 'claims-registry.md'), 'utf8');
   const start = src.match(/^## FORBIDDEN\s*$/m);
@@ -184,14 +200,22 @@ function forbiddenPhrases() {
   const end = rest.indexOf('\n## ');
   const section = end === -1 ? rest : rest.slice(0, end);
   const phrases = [];
+  const warnScoped = (msg) => note('T3', `scoped-FORBIDDEN: ${msg}`);
   for (const line of section.split('\n')) {
     const t = line.trim();
     if (!t.startsWith('- ')) continue;
     const scoped = t.match(/^- (.+?) — scope: ([a-z0-9,-]+)\s*$/);
     if (scoped) {
       const phrase = scoped[1].replace(/^"(.*)"$/s, '$1').trim();
-      if (phrase) phrases.push({ phrase, scope: scoped[2].split(',').map((s) => s.trim()).filter(Boolean) });
+      const scope = scoped[2].split(',').map((s) => s.trim()).filter(Boolean);
+      for (const s of scope) {
+        if (!PLANNED.has(s)) warnScoped(`scope slug "${s}" not in any matrix — entry cannot fire on it (typo?)`);
+      }
+      if (phrase) phrases.push({ phrase, scope });
       continue;
+    }
+    if (t.includes(' — scope:')) {
+      warnScoped(`bad scope syntax — enforcing UNSCOPED (fail-safe over-blocking, never under): "${t.slice(0, 60)}…"`);
     }
     // strip surrounding quotes — harmless for the legacy unquoted entries
     const phrase = t.slice(2).split(' — ')[0].trim().replace(/^"(.*)"$/s, '$1');

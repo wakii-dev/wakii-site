@@ -54,6 +54,18 @@ const blogDir = join(root, 'src', 'content', 'blog');
 const kitDir = join(root, 'docs', 'superpowers', 'editorial', '2026-blog-longform');
 const registryPath = join(kitDir, 'claims-registry.md');
 
+/* Output-scrub parity with audit-blog-convergence.mjs (security-audit P2
+ * 2026-09-08): lint output gets pasted to Linear — no absolute home path may
+ * reach it, including uncaught-crash stacks. */
+const HOME = process.env.HOME || process.env.USERPROFILE || '/nonexistent-home';
+const scrub = (s) => String(s).split(HOME).join('~');
+const failHard = (err) => {
+  console.error(scrub((err && (err.stack || err.message)) || err));
+  process.exit(1);
+};
+process.on('uncaughtException', failHard);
+process.on('unhandledRejection', failHard);
+
 /** Frozen scope (story FI-341 seeds) — never edit casually. */
 const SEED_SLUGS = [
   'review-ai-agents-from-your-phone',
@@ -125,10 +137,12 @@ const REQUIRED_FIELDS = ['title', 'description', 'pubDate', 'category', 'tags', 
  *  open-source; the 64 batch-1/2 posts stay green). An entry without
  *  ` — scope:` is unscoped and greps every planned file as before. CONTRACT:
  *  audit-blog-convergence.mjs T3(a) parses the registry with the SAME
- *  algorithm — same tree ⇒ same verdict from both scripts. */
+ *  algorithm — same tree ⇒ same verdict from both scripts. Parse warnings
+ *  (scope slug not in matrix, bad scope syntax) are non-failing and worded
+ *  identically in both scripts. */
 function forbiddenPhrases() {
   if (!existsSync(registryPath)) {
-    console.error(`✗ blog content FAILED: claims registry missing at ${registryPath}`);
+    console.error('✗ blog content FAILED: claims registry missing at docs/superpowers/editorial/2026-blog-longform/claims-registry.md');
     process.exit(1);
   }
   const src = readFileSync(registryPath, 'utf8');
@@ -141,14 +155,22 @@ function forbiddenPhrases() {
   const end = rest.indexOf('\n## ');
   const section = end === -1 ? rest : rest.slice(0, end);
   const phrases = [];
+  const warnScoped = (msg) => console.log(`  ⚠ scoped-FORBIDDEN: ${msg}`);
   for (const line of section.split('\n')) {
     const t = line.trim();
     if (!t.startsWith('- ')) continue;
     const scoped = t.match(/^- (.+?) — scope: ([a-z0-9,-]+)\s*$/);
     if (scoped) {
       const phrase = scoped[1].replace(/^"(.*)"$/s, '$1').trim();
-      if (phrase) phrases.push({ phrase, scope: scoped[2].split(',').map((s) => s.trim()).filter(Boolean) });
+      const scope = scoped[2].split(',').map((s) => s.trim()).filter(Boolean);
+      for (const s of scope) {
+        if (!PLANNED.has(s)) warnScoped(`scope slug "${s}" not in any matrix — entry cannot fire on it (typo?)`);
+      }
+      if (phrase) phrases.push({ phrase, scope });
       continue;
+    }
+    if (t.includes(' — scope:')) {
+      warnScoped(`bad scope syntax — enforcing UNSCOPED (fail-safe over-blocking, never under): "${t.slice(0, 60)}…"`);
     }
     // strip surrounding quotes — harmless for the legacy unquoted entries
     const phrase = t.slice(2).split(' — ')[0].trim().replace(/^"(.*)"$/s, '$1');
