@@ -8,7 +8,7 @@ draft: false
 heroImage: "/blog/heroes/deep-dive-modelcontextprotocol-servers.png"
 ---
 
-Một giao thức chỉ trưởng thành khi đám phát hành nó chịu chọn: cái gì được làm mẫu, cái gì bị đưa ra rìa. modelcontextprotocol/servers — 90.157★, công khai trên GitHub, lần push cuối 2026-09-03 (theo GitHub API ngày 2026-09-08) — là nơi bên phát hành Model Context Protocol giữ bộ server tham chiếu. Đây không phải danh bạ: bài trước đã đếm [3.862 server cộng đồng trong awesome-mcp-servers](/vi/blog/deep-dive-punkpeye-awesome-mcp-servers/); repo này chỉ giữ một số nhỏ mẫu chuẩn. Đọc nó như một bản đặc tả sống: mỗi server trả lời câu hỏi — nếu giao thức nghĩ tính năng này quan trọng, nó chuẩn hoá thành code thế nào.
+Một giao thức chỉ trưởng thành khi đám phát hành nó chịu chọn: cái gì được làm mẫu, cái gì bị đưa ra rìa. modelcontextprotocol/servers — 90.157★, công khai trên GitHub, lần push cuối 2026-09-03 (theo GitHub API ngày 2026-09-08) — là nơi bên phát hành Model Context Protocol giữ bộ server tham chiếu. Đây không phải danh bạ: bài trước đã đếm [3.862 server cộng đồng trong awesome-mcp-servers](/vi/blog/deep-dive-punkpeye-awesome-mcp-servers/, đếm ngày 2026-09-08); repo này chỉ giữ một số nhỏ mẫu chuẩn. Đọc nó như một bản đặc tả sống: mỗi server trả lời câu hỏi — nếu giao thức nghĩ tính năng này quan trọng, nó chuẩn hoá thành code thế nào.
 
 TL;DR:
 

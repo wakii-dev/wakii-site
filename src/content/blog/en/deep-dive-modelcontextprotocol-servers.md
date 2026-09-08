@@ -8,7 +8,7 @@ draft: false
 heroImage: "/blog/heroes/deep-dive-modelcontextprotocol-servers.png"
 ---
 
-A protocol only matures when its stewards agree to choose: what gets held up as the model, and what gets pushed to the margins. modelcontextprotocol/servers — 90,157 stars, public on GitHub, last push 2026-09-03 (per the GitHub API on 2026-09-08) — is where the team behind the Model Context Protocol keeps its reference servers. This is not a catalog: a previous post counted [3,862 community servers in awesome-mcp-servers](/blog/deep-dive-punkpeye-awesome-mcp-servers/); this repo holds a deliberately small set of exemplars. Read it as a living specification — each server answers one question: if the protocol thinks this capability matters, how does it standardize it into code?
+A protocol only matures when its stewards agree to choose: what gets held up as the model, and what gets pushed to the margins. modelcontextprotocol/servers — 90,157 stars, public on GitHub, last push 2026-09-03 (per the GitHub API on 2026-09-08) — is where the team behind the Model Context Protocol keeps its reference servers. This is not a catalog: a previous post counted [3,862 community servers in awesome-mcp-servers](/blog/deep-dive-punkpeye-awesome-mcp-servers/, counted 2026-09-08); this repo holds a deliberately small set of exemplars. Read it as a living specification — each server answers one question: if the protocol thinks this capability matters, how does it standardize it into code?
 
 TL;DR:
 

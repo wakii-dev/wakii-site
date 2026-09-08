@@ -43,7 +43,7 @@ Mười bản trong khoảng 6 tháng — mỗi 2-3 tuần một bản, đều n
 
 ## Ba goroutine và một event box
 
-Đọc cây `src/` thấy ngay một terminal app thật: riêng tầng lõi `src/*.go` đã khoảng 21.700 dòng Go (chưa tính package con algo, tui, util), file lớn nhất là `terminal.go` với 8.850 dòng. Kiến trúc trung tâm: ba luồng chạy song song, gặp nhau ở một hộp thư sự kiện.
+Đọc cây `src/` thấy ngay một terminal app thật: riêng tầng lõi `src/*.go` đã khoảng 21.700 dòng Go (chưa tính package con algo, tui, util; clone ngày 2026-09-08), file lớn nhất là `terminal.go` với 8.850 dòng. Kiến trúc trung tâm: ba luồng chạy song song, gặp nhau ở một hộp thư sự kiện.
 
 ```
 stdin / danh sách file

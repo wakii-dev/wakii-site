@@ -43,7 +43,7 @@ Ten releases in roughly six months — one every 2-3 weeks, as steady as infrast
 
 ## Three goroutines and one event box
 
-Reading the `src/` tree reveals a real terminal application: the core layer `src/*.go` alone is around 21,700 lines of Go (not counting the algo, tui, util subpackages), with `terminal.go` the largest file at 8,850 lines. The central architecture: three threads running in parallel, meeting at a single event mailbox.
+Reading the `src/` tree reveals a real terminal application: the core layer `src/*.go` alone is around 21,700 lines of Go (not counting the algo, tui, util subpackages; clone of 2026-09-08), with `terminal.go` the largest file at 8,850 lines. The central architecture: three threads running in parallel, meeting at a single event mailbox.
 
 ```
 stdin / file list
