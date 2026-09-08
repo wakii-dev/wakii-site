@@ -62,15 +62,19 @@ const MATRIX_FILES = ['topic-matrix.md', 'topic-matrix-batch2.md'];
 const MATRIX_ROW = /^\|\s*(\d+)\s*\|\s*`([a-z0-9-]+)`\s*\|\s*([a-z-]+)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|/gm;
 function plannedSlugs() {
   const planned = new Map();
+  const dups = [];
   for (const file of MATRIX_FILES) {
     const path = join(kitDir, file);
     if (!existsSync(path)) {
-      console.error(`✗ blog content FAILED: matrix file missing at ${path} — lint scope cannot be derived (config error, not a content error)`);
+      // relative path only — this output gets pasted to Linear as evidence
+      // (home-path leak was a P1 security finding on a previous SF)
+      console.error(`✗ blog content FAILED: matrix file missing: docs/superpowers/editorial/2026-blog-longform/${file} — lint scope cannot be derived (config error, not a content error)`);
       process.exit(1);
     }
     const src = readFileSync(path, 'utf8');
     let rows = 0;
     for (const m of src.matchAll(MATRIX_ROW)) {
+      if (planned.has(m[2])) dups.push(`${m[2]} (already in ${planned.get(m[2]).file})`);
       planned.set(m[2], { n: Number(m[1]), cat: m[3], pubDate: m[4], file });
       rows += 1;
     }
@@ -78,6 +82,11 @@ function plannedSlugs() {
       console.error(`✗ blog content FAILED: matrix file ${file} parsed 0 rows — table format drifted (expected \`| N | \`slug\` | cat | pubDate |\`)`);
       process.exit(1);
     }
+  }
+  if (dups.length > 0) {
+    // a duplicate row must never silently shrink the enforced scope
+    console.error(`✗ blog content FAILED: duplicate slug across matrix files — ${dups.join('; ')} (config error)`);
+    process.exit(1);
   }
   return planned;
 }

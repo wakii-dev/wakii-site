@@ -460,11 +460,13 @@ for (const p of newPosts) {
    label recorded in claims-registry ## Verify-shipped (DEC-8). Registry lines:
    `- feature-<name> — <SHIPPED|MAIN-ONLY|ROADMAP> — evidence...`; PENDING-VERIFY
    = placeholder, skipped (no feature post may exist while pending). A canonical
-   uppercase label near a `feature-<name>` mention must MATCH the registry or
-   it is a FAIL; soft VI/EN phrasings ("đã ship" / "trên main" / "roadmap")
-   mismatching the registry are a NOTE (false-positive bar stays low — content
-   SFs get hard-blocked on canonical labels only). A mention with NO label
-   nearby is skipped entirely. */
+   uppercase label in the SAME SENTENCE as a `feature-<name>` mention (nearest
+   label wins) must MATCH the registry or it is a FAIL — a matching label is
+   compliant and silent (review P1 2026-09-08: never fail a correct claim);
+   soft VI/EN phrasings ("đã ship" / "trên main" / "roadmap") mismatching the
+   registry are a NOTE (false-positive bar stays low — content SFs get
+   hard-blocked on canonical labels only). A mention with NO label in its
+   sentence is skipped entirely (bare mention). */
 function verifyShippedLabels() {
   const src = readFileSync(join(KIT, 'claims-registry.md'), 'utf8');
   const start = src.match(/^## Verify-shipped[^\n]*$/m); // heading may carry a suffix (date/scope)
@@ -483,20 +485,51 @@ function verifyShippedLabels() {
   const labels = verifyShippedLabels();
   const enforced = [...labels.entries()].filter(([, l]) => l !== 'PENDING-VERIFY');
   out(`(c2) verify-shipped labels parsed from claims-registry.md: ${labels.size} entries, ${enforced.length} verified (PENDING-VERIFY skipped: ${labels.size - enforced.length})`);
-  const CANON = /\b(SHIPPED|MAIN-ONLY|ROADMAP)\b/;
-  const SOFT = /(đã ship|trên main|roadmap)/i;
+  const CANON = /\b(SHIPPED|MAIN-ONLY|ROADMAP)\b/g;
+  const SOFT = /(đã ship|trên main|roadmap)/gi;
   const NORMALIZE = { 'đã ship': 'SHIPPED', 'trên main': 'MAIN-ONLY', roadmap: 'ROADMAP' };
   let vsClaims = 0, vsBare = 0;
   for (const p of newPosts) {
     for (const [name, label] of enforced) {
       const re = new RegExp(`feature-${name}(?![a-z0-9-])`, 'g');
       for (const m of p.body.matchAll(re)) {
+        // Canon AND soft claims are sentence-scoped within the line (markdown
+        // paragraphs are single lines; two feature sentences on one line must
+        // not borrow each other's label — review P1/P2 2026-09-08). The ±120
+        // window is context-print only. A soft candidate whose text IS an
+        // exact uppercase canonical word ("ROADMAP") is skipped — /i would
+        // otherwise re-read a neighbour's canonical label as a soft phrase.
+        const lineStart = p.body.lastIndexOf('\n', m.index) + 1;
+        const nl = p.body.indexOf('\n', m.index);
+        const line = p.body.slice(lineStart, nl === -1 ? p.body.length : nl);
+        const off = m.index - lineStart;
+        const segs = [];
+        let last = 0;
+        for (const sm of line.matchAll(/[.!?;]+(?=\s|$)/g)) {
+          segs.push([last, sm.index + sm[0].length]);
+          last = sm.index + sm[0].length;
+        }
+        segs.push([last, line.length]);
+        const seg = segs.find(([a, b]) => off >= a && off < b) || [0, line.length];
+        const segText = line.slice(seg[0], seg[1]);
+        let canon = null, best = Infinity;
+        for (const cm of segText.matchAll(CANON)) {
+          const d = Math.abs(seg[0] + cm.index - off);
+          if (d < best) { best = d; canon = cm; }
+        }
+        let soft = null;
+        if (!canon) {
+          for (const sm of segText.matchAll(SOFT)) {
+            if (/^(SHIPPED|MAIN-ONLY|ROADMAP)$/.test(sm[0])) continue;
+            soft = sm;
+            break;
+          }
+        }
         const w = p.body.slice(Math.max(0, m.index - 120), m.index + 120);
-        const canon = w.match(CANON);
-        const soft = canon ? null : w.match(SOFT);
         if (!canon && !soft) { vsBare += 1; continue; } // bare mention — no claim made
-        vsClaims += 1;
         const claimed = canon ? canon[1] : NORMALIZE[soft[1].toLowerCase()];
+        if (claimed === label) continue; // compliant claim — silent (P1: fail mismatch only)
+        vsClaims += 1;
         const rel = `src/content/blog/${p.locale}/${p.slug}.md`;
         const msg = `${rel}: feature-${name} claimed "${claimed}" but registry Verify-shipped says "${label}" — context: "${w.replace(/\s+/g, ' ').trim().slice(0, 140)}" [${owner(p.slug)}]`;
         if (canon) fail('T3', msg);
@@ -504,7 +537,7 @@ function verifyShippedLabels() {
       }
     }
   }
-  out(`(c2) verify-shipped label claims scanned: ${vsClaims} (mismatches → FAIL/NOTE above), bare mentions skipped: ${vsBare}`);
+  out(`(c2) verify-shipped label mismatches: ${vsClaims} (FAIL/NOTE above), bare mentions skipped: ${vsBare}`);
 }
 
 /* (d) drift probes at QA time — NOTES only, never FAIL. */
@@ -634,9 +667,10 @@ for (const path of [...githubArtifacts.keys()].sort()) {
 /* spot-check exactly 3 sample links via GitHub contents API:
    top-2 most-linked hub-store paths (deterministic) + the fi338 spec drift probe.
    Allowlist (P2, security-audit 2026-09-08): only repo-relative paths under
-   docs/superpowers/ may be interpolated into the API URL, whatever a post links. */
+   docs/superpowers/ may be interpolated into the API URL, whatever a post links
+   (`..` rejected — URL normalization would strip the prefix after it). */
 const spot = [...githubArtifacts.entries()]
-  .filter(([p]) => p.startsWith('docs/superpowers/'))
+  .filter(([p]) => p.startsWith('docs/superpowers/') && !p.includes('..'))
   .sort((a, b) => (b[1].count - a[1].count) || a[0].localeCompare(b[0]))
   .slice(0, 2).map(([p]) => p);
 const FI338_SPEC = 'docs/superpowers/specs/2026-09-07-dispatch-queue-design.md';
