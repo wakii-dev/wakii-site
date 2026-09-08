@@ -28,8 +28,14 @@
  *   3. Frontmatter: 6 required fields, types per src/content.config.ts.
  *   4. Forbidden phrases from claims-registry.md (## FORBIDDEN section,
  *      one literal per `- ` line, case-insensitive) — grepped on the FULL
- *      file (claims can hide in title/description too).
- *   5. kebab-case filename — checked on every blog .md (pure filename
+ *      file (claims can hide in title/description too). Scoped entries
+ *      (`- "phrase" — scope: slug,slug`, FI-383) hit ONLY the slugs listed.
+ *   5. Batch-3 marker (FI-383 D4): a slug planned by topic-matrix-batch3.md
+ *      must carry the grading heading `## Wakii học được gì` (vi) /
+ *      `## What Wakii learns` (en) — level `##` exact, `###` does not count.
+ *      Enforced on drafts too (structural). Batch-1/2 slugs are exempt —
+ *      scope follows matrix origin (`planned.set(..., { file })`).
+ *   6. kebab-case filename — checked on every blog .md (pure filename
  *      hygiene; all seeds pass it, so it cannot fail on frozen files).
  *
  * The forbidden list is parsed from the registry at run time — the registry
@@ -195,6 +201,7 @@ function parseTags(value) {
 function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skips) {
   const rel = `${locale}/${slug}.md`;
   const fileErrors = [];
+  const row = PLANNED.get(slug);
   const { frontmatter, body, fmlError } = splitFrontmatter(content);
 
   // Frontmatter (always checked — a draft still cannot carry bad metadata).
@@ -222,6 +229,21 @@ function checkPlannedFile(locale, slug, content, phrases, errors, warnings, skip
       const isDraft = fields.draft === 'true';
       const stats = proseStats(body);
       if (!stats.balanced) fileErrors.push('body: unclosed fenced code block (``` opened but never closed)');
+
+      // Batch-3 marker (FI-383 D4): the "Wakii learns" grading section IS the
+      // content of every batch-3 post — enforced on both locales, drafts too
+      // (structural). Scope by matrix origin: batch-1/2 rows have no marker.
+      if (row && row.file === 'topic-matrix-batch3.md') {
+        const isVi = locale === 'vi';
+        const marker = isVi ? /^## Wakii học được gì\s*$/m : /^## What Wakii learns\s*$/m;
+        if (!marker.test(body)) {
+          fileErrors.push(
+            isVi
+              ? 'marker: missing heading `## Wakii học được gì` (batch-3 grading section — level ## exact, ### does not count; spec FI-383 D4)'
+              : 'marker: missing heading `## What Wakii learns` (batch-3 grading section — level ## exact, ### does not count; spec FI-383 D4)'
+          );
+        }
+      }
 
       if (isDraft) {
         skips.push(`${rel} — skipped-draft (band + docs-link skipped, D7 fallback)`);
