@@ -93,7 +93,7 @@ None of the above lives only in a skill file. The Wakii site went through a rede
 # SF-1 Design Direction — "Modern Bento Premium"
   (D3 — user chọn 2026-09-04, thay thế v1 Terminal Mono)
 
-> v2 BINDING (2026-09-04): thay thế hoàn toàn v1.
+> **v2 BINDING** (2026-09-04): thay thế hoàn toàn v1.
 ```
 
 *Source: docs/superpowers/designs/sf1-direction.md (header), retrieved 2026-09-08.*

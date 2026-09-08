@@ -7,7 +7,7 @@ tags: ["skills", "design"]
 draft: false
 ---
 
-The worst-looking UI never shows up during mocking. At that stage every direction is still open, nothing is precious yet. Bad UI shows up at the end: the page is built, the tests are green, and someone notices the row of three identical cards, the headline screaming in oversized type, the testimonial customer named "John Doe". `/design-taste-frontend` exists for exactly that moment: an audit-first skill in the Wakii design kit that takes no part in building and only steps on stage once the page exists and needs to be scrutinized.
+The worst-looking UI doesn't show up during mocking. At that stage every direction is still open, nothing is precious yet. Bad UI shows up at the end: the page is built, the tests are green, and someone notices the row of three identical cards, the headline screaming in oversized type, the testimonial customer named "John Doe". `/design-taste-frontend` exists for exactly that moment: an audit-first skill in the Wakii design kit that takes no part in building and only steps on stage once the page exists and needs to be scrutinized.
 
 TL;DR:
 
@@ -38,7 +38,7 @@ That contract has a return address. The SKILL.md of the workflow skill in the ki
     chống 3 "AI default looks"
 ```
 
-*Source: ~/.claude/skills/orca-superpowers-workflow/SKILL.md, taken 2026-09-08.*
+*Source: ~/.claude/skills/orca-superpowers-workflow/SKILL.md, taken 2026-09-08 — quoted verbatim; the workflow doc itself is written in Vietnamese.*
 
 The most telling detail is in the first line: the UX review "runs as a TASK in the plan (not a suggestion)". It is a review with a slot in the plan, an owner, and a deliverable — not aesthetic advice an agent hands out when idle. This site's own blog redesign story followed that two-moment order: the design direction was locked first in a direction doc (`docs/superpowers/designs/sf1-direction.md`, still in the repo), the code was built against the chosen direction, and the aesthetic audit layer only gets loaded in the post-build review round, exactly as the LOAD ONLY clause requires. Mocking picks the direction; the audit catches the slop. Two jobs, two moments, no mixing.
 
@@ -126,6 +126,6 @@ Read those three boxes and the nature of the pre-flight becomes obvious: most of
 
 That is also the right way to read the phrase "machine-checkable is not the same as having taste": the skill does not replace the human eye. It moves the arguable part down into numbers that can be re-run, and leaves the human eye with the real decision.
 
-The Wakii design kit holds six skills covering the whole UI lifecycle, and this post opened one book on the shelf. The [skills catalog tour](/blog/skills-catalog-tour/) walks the full catalog; the step that happens before the audit — asking about intent before building — is told in [skill /brainstorm](/blog/skill-brainstorm/). For how the agent team loads these skills, the [agents and kit](/docs/agents-and-kit/) docs page covers the team.
+The Wakii design kit holds six skills covering the whole UI lifecycle (at the time of writing, 2026-09-08), and this post opened one book on the shelf. The [skills catalog tour](/blog/skills-catalog-tour/) walks the full catalog; the step that happens before the audit — asking about intent before building — is told in [skill /brainstorm](/blog/skill-brainstorm/). For how the agent team loads these skills, the [agents and kit](/docs/agents-and-kit/) docs page covers the team.
 
 Every public skill in the kit is a SKILL.md file in the MIT repo `github.com/wakii-dev/wakii`, including the 1,200-line file quoted throughout this post. Download Wakii, let the agent finish building your page, then read the skill's scrutiny rules before you press ship.

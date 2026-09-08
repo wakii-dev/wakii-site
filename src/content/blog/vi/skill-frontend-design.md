@@ -92,7 +92,7 @@ Quy trình ấy không chỉ nằm trong file skill. Site Wakii đi qua một l�
 # SF-1 Design Direction — "Modern Bento Premium"
   (D3 — user chọn 2026-09-04, thay thế v1 Terminal Mono)
 
-> v2 BINDING (2026-09-04): thay thế hoàn toàn v1.
+> **v2 BINDING** (2026-09-04): thay thế hoàn toàn v1.
 ```
 
 *Nguồn: docs/superpowers/designs/sf1-direction.md (header), lấy 2026-09-08.*

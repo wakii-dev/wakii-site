@@ -85,7 +85,7 @@ Nửa còn lại của file là các luật enforcing. Tóm lược theo đúng 
 Tư duy "thẩm mỹ thành ràng buộc có số đo" này không xa lạ với chính site bạn đang đọc: direction thẩm mỹ của landing Wakii, chọn trong redesign FI-349, ghi thông số grid và spacing thành con số cứng:
 
 ```
-# SF-1 Design Direction — "Modern Bento Premium" (D3 — user chọn 2026-09-04)
+# SF-1 Design Direction — "Modern Bento Premium" (D3 — user chọn 2026-09-04…)
 
 Structure (landing — bento bất đối xứng 12-col theo direction-d3-bento.html)
 Spacing nhịp 8px; section padding 96–128px; bento gap 16–20px.

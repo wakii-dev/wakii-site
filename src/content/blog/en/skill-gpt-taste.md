@@ -85,7 +85,7 @@ The common trait of the table: every rule ships with a way to verify it. "No dea
 This "aesthetics as measurable constraint" mindset isn't foreign to the site you're reading: the visual direction of Wakii's landing, chosen during the FI-349 redesign, writes its grid and spacing specs as hard numbers:
 
 ```
-# SF-1 Design Direction — "Modern Bento Premium" (D3 — user chose 2026-09-04)
+# SF-1 Design Direction — "Modern Bento Premium" (D3 — user chose 2026-09-04…)
 
 Structure (landing — asymmetric 12-col bento per direction-d3-bento.html)
 Spacing on an 8px rhythm; section padding 96–128px; bento gap 16–20px.

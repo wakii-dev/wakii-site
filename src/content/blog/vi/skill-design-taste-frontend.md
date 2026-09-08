@@ -126,6 +126,6 @@ Ba ô ví dụ, thấy ngay tính chất máy móc của phép kiểm:
 
 Đó cũng là cách đọc câu "máy kiểm được, mắt thẩm mỹ là chuyện khác" cho đúng: skill không thay mắt người. Nó hạ phần tranh cãi xuống những con số chạy lại được, để mắt người giữ lại cho quyết định thật.
 
-Kit design của Wakii gồm sáu skill phủ hết vòng đời UI, và bài này chỉ mở một cuốn trong kệ. Bài [tour kỹ năng public](/vi/blog/skills-catalog-tour/) đi qua cả catalog; riêng bước diễn ra trước audit — hỏi ý định trước khi build — bài [skill /brainstorm](/vi/blog/skill-brainstorm/) kể từ đầu câu chuyện. Muốn đọc vị đội agent load những skill này, trang docs [agents and kit](/vi/docs/agents-and-kit/) liệt kê đủ.
+Kit design của Wakii gồm sáu skill phủ hết vòng đời UI (tại thời điểm viết, 2026-09-08), và bài này chỉ mở một cuốn trong kệ. Bài [tour kỹ năng public](/vi/blog/skills-catalog-tour/) đi qua cả catalog; riêng bước diễn ra trước audit — hỏi ý định trước khi build — bài [skill /brainstorm](/vi/blog/skill-brainstorm/) kể từ đầu câu chuyện. Muốn đọc vị đội agent load những skill này, trang docs [agents and kit](/vi/docs/agents-and-kit/) liệt kê đủ.
 
 Mọi skill public trong kit là một file SKILL.md nằm trong repo MIT `github.com/wakii-dev/wakii`, kể cả file hơn 1.200 dòng đã trích trong bài này. Tải Wakii, để agent build xong trang của bạn, rồi đọc nguyên tắc soi của skill trước khi nhấn ship.
