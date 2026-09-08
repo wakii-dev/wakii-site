@@ -104,6 +104,31 @@ so với snapshot tại thời điểm viết: ghi số theo SNAPSHOT + ngày ch
 ("tại thời điểm viết"). Drift phát hiện ở QA (SF-5) = ghi chú, không fail.
 Mỗi evidence block trong bài ghi nguồn + ngày lấy.
 
+## Third-party claims — batch-3 (FI-383)
+
+> Áp cho 50 bài deep-dive repo batch-3 (matrix `topic-matrix-batch3.md`).
+> Bài batch-3 viết về repo NGƯỜI KHÁC — mọi claim về repo đó là third-party
+> claim, chuẩn khác claim sản phẩm Wakii (snapshot D8 ở trên vẫn áp cho số
+> về Wakii).
+
+1. **Mọi số third-party** (stars, forks, releases, commit counts, benchmark)
+   PHẢI kèm mốc lấy: "theo GitHub API ngày N" — N là ngày research THẬT
+   (probe bằng `bash scripts/probe-repos.sh`, ngày ghi trong digest của repo
+   tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).
+   Không ngày = không đăng (giống tinh thần D8).
+2. **License-safe**: repo có license `none`/`NOASSERTION` (đúng 6 slug †
+   trong scoped FORBIDDEN ở trên) → gọi **"công khai trên GitHub"** — KHÔNG
+   được gọi "open-source" hay "mã nguồn mở" (lint + audit cùng FAIL trên
+   đúng 6 slug đó; bài khác dùng hai cụm này tự do).
+3. **Paraphrase license-safe**: tả cơ chế/kiến trúc bằng lời của mình; quote
+   nguyên văn (README/docs/release notes) chỉ nên ngắn (**≤25 từ**), PHẢI có
+   attribution (tên repo/người nói) + link nguồn. Không dịch ngược quote để
+   né attribution.
+4. **Trích code**: chỉ đoạn ngắn có mục đích phân tích, kèm link commit/tree
+   (URL `github.com/<owner>/<repo>/blob/<sha>/...`) ngay cạnh — trích thô
+   không link = không đăng. Mã của repo † vẫn trích được (public) — chỉ cách
+   GỌI TÊN license bị giới hạn.
+
 ## Drift-note — skills 21/14 → 20/13 (FI-373 SF-1, probe 2026-09-08)
 
 **Ground truth: 20 tổng / 13 public.** Đếm chuẩn = TRONG mảng `export const
