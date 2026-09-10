@@ -4,7 +4,7 @@ Destination: story/fi409-knowledge-base
 
 ## SF-1 KB skeleton — structure + conventions + 10 ADR + glossary + MOC
 Tier: 0
-linear:
+linear: FI-411
 Design: none
 What: docs/knowledge/ hoàn chỉnh link-first — README index + conventions (biên superpowers=in-flight vs knowledge=finished + LINK-only rules + frontmatter schema + worked example chain 4-link KB→research→post→issue→claim + row template MOC), 10 ADR VI-first MADR-ish naming NNNN (3 nhóm: enforcing ×4 · process ×4 · platform/content ×3, mỗi ADR có nguồn pin), glossary EN/VI ≥15 thuật ngữ, MOC.md slug-level + maintenance rule (mọi task tạo ADR/post mới PHẢI update MOC cùng commit — verify link-back), lessons index trỏ improvements-log, 7 landscape/context references enum, repos references digests-batch3+adopt-drafts separation, frontmatter schema authority (task 9), visibility internal 6 slug †, sensitivity pass per-file bảng pass/fail 100% Linear comment, build verify machine checks 4: (a) gray-matter parse frontmatter (b) link-check resolve (c) adr count = 10 (d) git diff baseline exclude knowledge rỗng. Demo: MOC từ 1 chủ đề truy được chuỗi research → post → issue → decision; build xanh; diff exclude rỗng
 Depends on: —
