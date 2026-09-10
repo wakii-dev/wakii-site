@@ -1,0 +1,12 @@
+# Story: FI-409 — Knowledge Base nội bộ — docs/knowledge/ (mức Standard, Direction C)
+
+Destination: story/fi409-knowledge-base
+
+## SF-1 KB skeleton — structure + conventions + 10 ADR + glossary + MOC
+Tier: 0
+linear:
+Design: none
+What: docs/knowledge/ hoàn chỉnh link-first — README index + conventions (biên superpowers=in-flight vs knowledge=finished + LINK-only rules + frontmatter schema + worked example chain 4-link KB→research→post→issue→claim + row template MOC), 10 ADR VI-first MADR-ish naming NNNN (3 nhóm: enforcing ×4 · process ×4 · platform/content ×3, mỗi ADR có nguồn pin), glossary EN/VI ≥15 thuật ngữ, MOC.md slug-level + maintenance rule (mọi task tạo ADR/post mới PHẢI update MOC cùng commit — verify link-back), lessons index trỏ improvements-log, 7 landscape/context references enum, repos references digests-batch3+adopt-drafts separation, frontmatter schema authority (task 9), visibility internal 6 slug †, sensitivity pass per-file bảng pass/fail 100% Linear comment, build verify machine checks 4: (a) gray-matter parse frontmatter (b) link-check resolve (c) adr count = 10 (d) git diff baseline exclude knowledge rỗng. Demo: MOC từ 1 chủ đề truy được chuỗi research → post → issue → decision; build xanh; diff exclude rỗng
+Depends on: —
+Tasks: knowledge-dir-skeleton-readme-conventions-kèm-worked-example-chain-4-link-row-template / adr-format-template-madr-vi-naming-NNNN / adr-enforcing-decisions-4 (lint-all-non-seed · grading-marker · license-scoped-† · future-date-policy-a) / adr-process-decisions-4 (spec-first-workflow · matrix-chốt-cứng · human-gates-vi-copy-flag-flips-verdict-literal · batch-2-đợt-pilot-first) / adr-platform-content-3 (category-enum-3-flat · learn-in-public-third-party-dated · hero-10-flagship-pinned) / glossary-en-vi-seed-≥15-thuật-ngữ / moc-slug-level-cùng-commit-maintenance-rule-vào-conventions / lessons-index-trỏ-improvements-log / landscape-references-4-artifacts-enum / repos-references-digests-batch3-adopt-drafts-separation / frontmatter-schema-docs-authority-task-9-chỉ-link / visibility-internal-marks-6-slug-† / sensitivity-pass-per-file-bảng-pass-fail-100%-linear-comment / build-verify-machine-checks-4-gray-matter-link-check-adr-count-git-diff-exclude
+Exit criteria: (a) gray-matter parse mọi frontmatter (b) link-check resolve (c) adr/*.md = 10 (d) git diff baseline exclude docs/knowledge rỗng (e) sensitivity bảng 100% pass trong Linear comment
