@@ -99,8 +99,8 @@ New: `6. Research ghi vào \`docs/knowledge/repos/<slug>.md\``
 
 - [ ] **Step 3: claims-registry.md:117 — thay path**
 
-Old: `` tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`). ``
-New: `` tại `docs/knowledge/repos/<slug>.md`). ``
+Old: ``tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).``
+New: ``tại `docs/knowledge/repos/<slug>.md`).``
 
 - [ ] **Step 4: Verify-only pins — xác nhận KHÔNG đụng và vẫn đúng**
 
@@ -168,8 +168,9 @@ Old GHI CHÚ: `**GHI CHÚ:** SF-2 (issue
    FI-410) sẽ move thư mục này sang \`docs/knowledge/repos/\` sau 09-30 —
    KHÔNG move bây giờ (batch publish window; 6 pin refs sẽ sửa trong SF-2).`
 New GHI CHÚ: `**GHI CHÚ:** Đã move xong vào \`docs/knowledge/repos/\` (FI-410,
-   2026-09-10 — chạy sớm hơn 09-30 theo chỉ thị user); 6 pin refs editorial
-   kit đã cập nhật theo path mới.`
+   2026-09-10 — chạy sớm hơn 09-30 theo chỉ thị user); 3 pin refs digests
+   trong editorial kit đã sửa, 3 pin adopt-drafts giữ nguyên (path vẫn đúng
+   — D5).`
 
 - [ ] **Step 7: MOC.md — 4 link digest (lines 50, 57×2, 64) — GIỮ line 79 (adopt-drafts)**
 
@@ -197,7 +198,7 @@ Pin new: ``- `docs/knowledge/repos/README.md` — convention 2``
 
 Run: `grep -rn "editorial/research" docs/knowledge/ | grep -v adopt-drafts | wc -l`
 Expected: `0`.
-Run: `grep -rn "editorial/research" docs/knowledge/ | wc -l` → ghi số còn lại (expect: 9 — toàn adopt-drafts: references.md 3, MOC.md 1, repos/README.md 1, 5 digest files... tổng 10) — từng hit phải trỏ path tồn tại thật.
+Run: `grep -rn "editorial/research" docs/knowledge/ | wc -l` → expect: `11` — toàn adopt-drafts (by-design, từng hit phải trỏ path tồn tại thật): references.md **4** (44, 45, 46, 52) · MOC.md **1** (79) · repos/README.md **1** (22) · 5 digest files **5** (deep-dive-openhands:97, pydantic-ai:75, crush:102, neovim:51, mcp-for-beginners:90).
 
 - [ ] **Step 11: Commit**
 
@@ -212,8 +213,8 @@ git commit -m "docs(kb): update KB-internal links + notes to post-migration path
 
 - [ ] **Step 1: Build xanh đủ 4 checks**
 
-Run: `pnpm build 2>&1 | tail -15; echo "exit=$?"` (lưu ý: lấy exit QUA file — `pnpm build > /tmp/build-fi410.log 2>&1; echo $?`)
-Expected: check-blog-slug-parity + check-blog-utils + check-blog-content PASS + astro build hoàn tất, exit 0. Lint scope all-non-seed tự phủ (matrix/claims-registry vẫn nguyên vị trí) — KHÔNG đụng scripts.
+Run: `pnpm build > /tmp/build-fi410.log 2>&1; echo $?` (KHÔNG pipe qua tail trước khi lấy exit — `$?` sau pipe = exit lệnh cuối)
+Expected: `0` — check-blog-slug-parity + check-blog-utils + check-blog-content PASS + astro build hoàn tất. Lint scope all-non-seed tự phủ (matrix/claims-registry vẫn nguyên vị trí) — KHÔNG đụng scripts.
 
 - [ ] **Step 2: RULE 0 — git-level walkthrough từng lệnh, in FULL output**
 
@@ -227,6 +228,7 @@ Expected: check-blog-slug-parity + check-blog-utils + check-blog-content PASS + 
 
 Run: `git diff --name-only 3f35f47 -- docs/superpowers/editorial/2026-blog-longform/`
 Expected: đúng 3 file (runbook, topic-matrix-batch3, claims-registry). Kèm `git diff 3f35f47 --stat | tail -5` tổng quan toàn SF.
+Known stale-by-design exceptions (report, KHÔNG sửa): `docs/superpowers/improvements-log.md:173` (bài học dated, D7 LINK-only) · `docs/superpowers/brackets/fi409-knowledge-base.md:9,11` (mô tả skeleton phase FI-411) — vẫn nhắc `digests-batch3`, đúng thiết kế.
 
 - [ ] **Step 4: Báo DONE — evidence bundle**
 
