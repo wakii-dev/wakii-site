@@ -41,8 +41,9 @@ KB không copy.
    FI-410) sẽ move thư mục này sang `docs/knowledge/repos/` sau 09-30 —
    KHÔNG move bây giờ (batch publish window; 6 pin refs sẽ sửa trong SF-2).
 
-6. **[ADOPT drafts — grading drafts](../superpowers/editorial/research/adopt-drafts/SELECTION-fi389.md)**
-   (thư mục `docs/superpowers/editorial/research/adopt-drafts/`) — draft
+6. **[ADOPT drafts — grading drafts](../superpowers/editorial/research/adopt-drafts/)**
+   (thư mục `docs/superpowers/editorial/research/adopt-drafts/`; điểm vào chi
+   tiết: [SELECTION-fi389](../superpowers/editorial/research/adopt-drafts/SELECTION-fi389.md)) — draft
    ADOPT/DIRECTION/WATCH từng repo, đầu vào cho ADOPT issues. **GHI CHÚ:**
    KHÔNG move — được pin tại style-guide
    [§10 ADOPT issue body rubric](../superpowers/editorial/2026-blog-longform/style-guide.md)

@@ -33,9 +33,9 @@ khác có license thật (MIT/Apache…) và gọi đúng là chính xác.
 
 Cấm gọi "open-source"/"mã nguồn mở" **chỉ scoped trên đúng 6 slug †** có
 license `none`/`NOASSERTION` (pin trong claims-registry `## FORBIDDEN`, 2 dòng
-scoped): `deep-dive-anthropics-claude-code`, `deep-dive-modelcontextprotocol-servers`,
-`deep-dive-modelcontextprotocol-registry`, `deep-dive-zed-industries-zed`,
-`deep-dive-tabbyml-tabby`, `deep-dive-janhq-jan`. Bài của repo † gọi là
+scoped): `deep-dive-anthropics-claude-code` †, `deep-dive-modelcontextprotocol-servers` †,
+`deep-dive-modelcontextprotocol-registry` †, `deep-dive-zed-industries-zed` †,
+`deep-dive-tabbyml-tabby` †, `deep-dive-janhq-jan` †. Bài của repo † gọi là
 **"công khai trên GitHub"**. Bài khác (batch-1/2 + 44 slug batch-3 còn lại)
 dùng hai cụm này tự do. Enforcement máy: lint + audit T3(a) cùng parser, cùng
 FAIL — cụm cấm grep case-insensitive trên TOÀN file (claim có thể nằm trong
@@ -46,7 +46,7 @@ public) — chỉ cách GỌI TÊN license bị giới hạn, không phải cấ
 
 - 6 slug † mang quy ước dagger trong toàn KB: mỗi lần nhắc phải kèm † để
   writer/agent biết slug này có ràng buộc license riêng (xem
-  [README — quy ước †](../README.md#7-quy-ước-dagger--license-claims-scoped)).
+  [README — quy ước †](../README.md#7-quy-ước--dagger--license-claims-scoped)).
 - Probe 2026-09-08 thấy thêm `charmbracelet/crush` + `neovim/neovim` =
   NOASSERTION NGOÀI scope 6 †: bài 2 slug này vẫn viết license-safe
   (review-enforced), chờ coordinator ACK mở scope trước khi enforce máy.

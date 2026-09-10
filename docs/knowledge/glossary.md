@@ -62,7 +62,7 @@ giữ nguyên (văn hóa repo: VI-first kèm EN) — giải nghĩa bằng VI.
 - **† (scoped dagger)** — dấu hiệu một slug thuộc nhóm 6 slug bị scoped
   FORBIDDEN license (none/NOASSERTION → "công khai trên GitHub", không
   "open-source"). 6 slug † liệt kê trong
-  [README — quy ước †](README.md#7-quy-ước-dagger--license-claims-scoped).
+  [README — quy ước †](README.md#7-quy-ước--dagger--license-claims-scoped).
 - **KB** (Knowledge Base) — `docs/knowledge/` nơi giữ tri thức đã kết luận
   (biên với `docs/superpowers/` = in-flight): [README](README.md).
 - **SF** (Sub-feature) — một slice công việc của story trong bracket, có

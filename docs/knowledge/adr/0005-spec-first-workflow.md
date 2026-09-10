@@ -55,6 +55,6 @@ executor không tự vá spec.
   P0 — user veto tại STORY-READY) + SF breakdown + Boundary.
 - `docs/superpowers/brackets/fi409-knowledge-base.md` — ví dụ bracket đang
   sống: SF chia Tier, What, Depends on, Tasks, Exit criteria.
-- `src/content/docs/en/story-workflow.md` — pipeline "idea → impact → plan →
-  epic + SF → parallel SFs → gates → 1 PR" và gates B0–B5 (cũng pin trong
+- `src/content/docs/en/story-workflow.md` — pipeline idea → impact → plan →
+  epic + SF → parallel SFs → gates → 1 PR và gates B0–B5 (cũng pin trong
   claims-registry `## ALLOWED`).

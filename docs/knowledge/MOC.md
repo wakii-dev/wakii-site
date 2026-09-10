@@ -13,7 +13,7 @@ type: index
 # MOC — Map of Content
 
 Điểm vào tra cứu theo chủ đề. Quy ước đọc hàng: ký hiệu **†** = slug license-
-claims scoped (xem [README — quy ước †](README.md#7-quy-ước-dagger--license-claims-scoped));
+claims scoped (xem [README — quy ước †](README.md#7-quy-ước--dagger--license-claims-scoped));
 link là path relative đến file thật trong repo.
 
 **Maintenance rule** (bắt buộc, chi tiết ở
@@ -47,7 +47,7 @@ ADR/post mới PHẢI thêm/cập nhật hàng ở đây TRONG CÙNG COMMIT + ve
 
 research digest → blog post → ADOPT issue → ADR decision:
 
-1. Digest: [deep-dive-modelcontextprotocol-servers](../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md)
+1. Digest: [deep-dive-modelcontextprotocol-servers](../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md) †
 2. Blog: [EN](../../src/content/blog/en/deep-dive-modelcontextprotocol-servers.md) · [VI](../../src/content/blog/vi/deep-dive-modelcontextprotocol-servers.md) — `deep-dive-modelcontextprotocol-servers` †
 3. Issue: [wakii-dev/wakii#19 — Mutation queue tuần tự tự phục hồi cho state dùng chung](https://github.com/wakii-dev/wakii/issues/19)
 4. Decision: [ADR-0010](adr/0010-learn-in-public-third-party-dated.md)
@@ -61,7 +61,7 @@ research digest → blog post → ADOPT issue → ADR decision:
 
 ### 3. License-safe † — chuỗi 4-link đầy đủ
 
-1. Digest: [deep-dive-anthropics-claude-code](../superpowers/editorial/research/digests-batch3/deep-dive-anthropics-claude-code.md)
+1. Digest: [deep-dive-anthropics-claude-code](../superpowers/editorial/research/digests-batch3/deep-dive-anthropics-claude-code.md) †
 2. Blog: [EN](../../src/content/blog/en/deep-dive-anthropics-claude-code.md) · [VI](../../src/content/blog/vi/deep-dive-anthropics-claude-code.md) — `deep-dive-anthropics-claude-code` †
 3. Issue: [wakii-dev/wakii#21 — Confidence scoring lọc false-positive cho review đa agent](https://github.com/wakii-dev/wakii/issues/21)
 4. Decision: [ADR-0003](adr/0003-license-claims-scoped-forbidden.md)
