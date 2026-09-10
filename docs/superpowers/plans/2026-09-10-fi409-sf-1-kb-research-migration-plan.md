@@ -24,12 +24,12 @@
 - Move: `docs/superpowers/editorial/research/2026-09-08-broad-digest.md` → `docs/knowledge/landscape/2026-09-08-broad-digest.md`
 - Move: `docs/superpowers/editorial/research/2026-09-08-broad-applicability.md` → `docs/knowledge/landscape/2026-09-08-broad-applicability.md`
 
-- [ ] **Step 1: Branch guard (bài học main-worktree-đang-nhầm-branch)**
+- [x] **Step 1: Branch guard (bài học main-worktree-đang-nhầm-branch)**
 
 Run: `git branch --show-current`
 Expected: `wakii-dev/sf-1-kb-migration`. KHÔNG đúng → STOP, báo coordinator.
 
-- [ ] **Step 2: mkdir + git mv 4 files**
+- [x] **Step 2: mkdir + git mv 4 files**
 
 ```bash
 mkdir -p docs/knowledge/landscape
@@ -39,12 +39,12 @@ git mv docs/superpowers/editorial/research/2026-09-08-broad-digest.md docs/knowl
 git mv docs/superpowers/editorial/research/2026-09-08-broad-applicability.md docs/knowledge/landscape/
 ```
 
-- [ ] **Step 3: Verify moves**
+- [x] **Step 3: Verify moves**
 
 Run: `ls docs/knowledge/landscape/ | wc -l && git status --short | grep -c '^R'`
 Expected: `4` và `4` (4 renames, không có D/A lẻ — rename detection giữ history).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/superpowers/editorial/research docs/knowledge/landscape
@@ -56,23 +56,23 @@ git commit -m "docs(kb): move 4 landscape research artifacts → docs/knowledge/
 **Files:**
 - Move dir: `docs/superpowers/editorial/research/digests-batch3/` (51 files) → `docs/knowledge/repos/`
 
-- [ ] **Step 1: Rename dir (KHÔNG mkdir trước — git mv rename nguyên thư mục)**
+- [x] **Step 1: Rename dir (KHÔNG mkdir trước — git mv rename nguyên thư mục)**
 
 ```bash
 git mv docs/superpowers/editorial/research/digests-batch3 docs/knowledge/repos
 ```
 
-- [ ] **Step 2: Verify layout**
+- [x] **Step 2: Verify layout**
 
 Run: `find docs/knowledge/repos -type f | wc -l && ls docs/superpowers/editorial/research/`
 Expected: `51` và chỉ còn `adopt-drafts` (research/ giữ nguyên adopt-drafts/ 44 files — KHÔNG đụng).
 
-- [ ] **Step 3: Verify 0 relative links gãy nội tại (đã pre-check, chốt lại sau move)**
+- [x] **Step 3: Verify 0 relative links gãy nội tại (đã pre-check, chốt lại sau move)**
 
 Run: `grep -rn '](\.\{0,2\}/' docs/knowledge/repos/ | wc -l`
 Expected: `0` (các digest không có relative md link — move flat an toàn).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/superpowers/editorial/research docs/knowledge/repos
@@ -86,33 +86,33 @@ git commit -m "docs(kb): move digests-batch3 → docs/knowledge/repos/ flat (FI-
 - Modify: `docs/superpowers/editorial/2026-blog-longform/topic-matrix-batch3.md:119`
 - Modify: `docs/superpowers/editorial/2026-blog-longform/claims-registry.md:117`
 
-- [ ] **Step 1: runbook.md:122 — thay path**
+- [x] **Step 1: runbook.md:122 — thay path**
 
 Old: `` `docs/superpowers/editorial/research/digests-batch3/<slug>.md` (SF-1 đã ``
 New: `` `docs/knowledge/repos/<slug>.md` (SF-1 đã ``
 (dùng Edit tool, old_string đủ dài để unique — lấy cả dòng 121-122 nếu cần)
 
-- [ ] **Step 2: topic-matrix-batch3.md:119 — thay path**
+- [x] **Step 2: topic-matrix-batch3.md:119 — thay path**
 
 Old: `6. Research ghi vào \`docs/superpowers/editorial/research/digests-batch3/<slug>.md\``
 New: `6. Research ghi vào \`docs/knowledge/repos/<slug>.md\``
 
-- [ ] **Step 3: claims-registry.md:117 — thay path**
+- [x] **Step 3: claims-registry.md:117 — thay path**
 
 Old: ``tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).``
 New: ``tại `docs/knowledge/repos/<slug>.md`).``
 
-- [ ] **Step 4: Verify-only pins — xác nhận KHÔNG đụng và vẫn đúng**
+- [x] **Step 4: Verify-only pins — xác nhận KHÔNG đụng và vẫn đúng**
 
 Run: `grep -n "research/adopt-drafts" docs/superpowers/editorial/2026-blog-longform/runbook.md docs/superpowers/editorial/2026-blog-longform/style-guide.md docs/knowledge/repos/README.md`
 Expected: `runbook.md:141`, `style-guide.md:161`, `repos/README.md:22` — nguyên văn, không sửa (path adopt-drafts vẫn đúng sau move — D5).
 
-- [ ] **Step 5: Verify diff scope = đúng 3 file × 1 dòng**
+- [x] **Step 5: Verify diff scope = đúng 3 file × 1 dòng**
 
 Run: `git diff --stat -- docs/superpowers/editorial/2026-blog-longform/`
 Expected: đúng 3 file, mỗi file 1 insert + 1 delete. Thừa bất kỳ → revert dòng thừa.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add docs/superpowers/editorial/2026-blog-longform
@@ -129,12 +129,12 @@ git commit -m "docs(kb): update 3 editorial-kit pin refs to new KB paths (FI-410
 - Modify: `docs/knowledge/adr/0003-license-claims-scoped-forbidden.md` (2)
 - Modify: `docs/knowledge/adr/0010-learn-in-public-third-party-dated.md` (3)
 
-- [ ] **Step 1: glossary.md:35**
+- [x] **Step 1: glossary.md:35**
 
 Old: `` `docs/superpowers/editorial/research/digests-batch3/` (link từ ``
 New: `` `docs/knowledge/repos/` (link từ ``
 
-- [ ] **Step 2: README.md:34 — flip ghi chú FI-410 (migration đã chạy — timing override)**
+- [x] **Step 2: README.md:34 — flip ghi chú FI-410 (migration đã chạy — timing override)**
 
 Old: `Việc di chuyển file
   research/ sang KB là story riêng (FI-410, sau 09-30) — KHÔNG tự di chuyển.`
@@ -142,24 +142,24 @@ New: `Research/ đã chuyển sang KB (FI-410, 2026-09-10 — chạy sớm theo 
   user): \`landscape/\` + \`repos/\`; \`adopt-drafts/\` ở lại research/ (pin
   style-guide §10).`
 
-- [ ] **Step 3: README.md:66 — link digest**
+- [x] **Step 3: README.md:66 — link digest**
 
 Old: `[digest MCP servers](../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md)`
 New: `[digest MCP servers](repos/deep-dive-modelcontextprotocol-servers.md)`
 
-- [ ] **Step 4: references.md — frontmatter sources (line 8)**
+- [x] **Step 4: references.md — frontmatter sources (line 8)**
 
 Old: `sources: [docs/superpowers/editorial/research/2026-09-08-digest.md, docs/superpowers/editorial/research/digests-batch3/README.md]`
 New: `sources: [docs/knowledge/landscape/2026-09-08-digest.md, docs/knowledge/repos/README.md]`
 
-- [ ] **Step 5: references.md — 4 link landscape (lines 19/24/29/33)**
+- [x] **Step 5: references.md — 4 link landscape (lines 19/24/29/33)**
 
 `(../superpowers/editorial/research/2026-09-08-digest.md)` → `(landscape/2026-09-08-digest.md)`
 `(../superpowers/editorial/research/2026-09-08-wakii-applicability.md)` → `(landscape/2026-09-08-wakii-applicability.md)`
 `(../superpowers/editorial/research/2026-09-08-broad-digest.md)` → `(landscape/2026-09-08-broad-digest.md)`
 `(../superpowers/editorial/research/2026-09-08-broad-applicability.md)` → `(landscape/2026-09-08-broad-applicability.md)`
 
-- [ ] **Step 6: references.md — link repos + GHI CHÚ (lines 38, 40-42)**
+- [x] **Step 6: references.md — link repos + GHI CHÚ (lines 38, 40-42)**
 
 Old link: `[Digests batch-3 — 50 repo](../superpowers/editorial/research/digests-batch3/)`
 New link: `[Digests batch-3 — 50 repo](repos/)`
@@ -172,21 +172,21 @@ New GHI CHÚ: `**GHI CHÚ:** Đã move xong vào \`docs/knowledge/repos/\` (FI-4
    trong editorial kit đã sửa, 3 pin adopt-drafts giữ nguyên (path vẫn đúng
    — D5).`
 
-- [ ] **Step 7: MOC.md — 4 link digest (lines 50, 57×2, 64) — GIỮ line 79 (adopt-drafts)**
+- [x] **Step 7: MOC.md — 4 link digest (lines 50, 57×2, 64) — GIỮ line 79 (adopt-drafts)**
 
 `(../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md)` → `(repos/deep-dive-modelcontextprotocol-servers.md)`
 `(../superpowers/editorial/research/digests-batch3/deep-dive-aider-ai-aider.md)` → `(repos/deep-dive-aider-ai-aider.md)`
 `(../superpowers/editorial/research/digests-batch3/deep-dive-cline-cline.md)` → `(repos/deep-dive-cline-cline.md)`
 `(../superpowers/editorial/research/digests-batch3/deep-dive-anthropics-claude-code.md)` → `(repos/deep-dive-anthropics-claude-code.md)`
 
-- [ ] **Step 8: adr/0003 — sources (line 8) + nguồn pin (line 67)**
+- [x] **Step 8: adr/0003 — sources (line 8) + nguồn pin (line 67)**
 
 Sources old: `docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/superpowers/editorial/2026-blog-longform/runbook.md, docs/superpowers/editorial/research/digests-batch3/README.md`
 Sources new: `docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/superpowers/editorial/2026-blog-longform/runbook.md, docs/knowledge/repos/README.md`
 Pin old: ``- `docs/superpowers/editorial/research/digests-batch3/README.md` — convention 3``
 Pin new: ``- `docs/knowledge/repos/README.md` — convention 3``
 
-- [ ] **Step 9: adr/0010 — sources (line 8) + inline (line 44) + nguồn pin (line 65)**
+- [x] **Step 9: adr/0010 — sources (line 8) + inline (line 44) + nguồn pin (line 65)**
 
 Sources: `docs/superpowers/editorial/research/digests-batch3/README.md` → `docs/knowledge/repos/README.md`
 Inline old: ``tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).``
@@ -194,13 +194,13 @@ Inline new: ``tại `docs/knowledge/repos/<slug>.md`).``
 Pin old: ``- `docs/superpowers/editorial/research/digests-batch3/README.md` — convention 2``
 Pin new: ``- `docs/knowledge/repos/README.md` — convention 2``
 
-- [ ] **Step 10: Verify grep gate + refs adopt-drafts còn lại resolve**
+- [x] **Step 10: Verify grep gate + refs adopt-drafts còn lại resolve**
 
 Run: `grep -rn "editorial/research" docs/knowledge/ | grep -v adopt-drafts | wc -l`
 Expected: `0`.
 Run: `grep -rn "editorial/research" docs/knowledge/ | wc -l` → expect: `11` — toàn adopt-drafts (by-design, từng hit phải trỏ path tồn tại thật): references.md **4** (44, 45, 46, 52) · MOC.md **1** (79) · repos/README.md **1** (22) · 5 digest files **5** (deep-dive-openhands:97, pydantic-ai:75, crush:102, neovim:51, mcp-for-beginners:90).
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 git add docs/knowledge
@@ -211,12 +211,12 @@ git commit -m "docs(kb): update KB-internal links + notes to post-migration path
 
 **Files:** không sửa file nào (throwaway scripts không commit)
 
-- [ ] **Step 1: Build xanh đủ 4 checks**
+- [x] **Step 1: Build xanh đủ 4 checks**
 
 Run: `pnpm build > /tmp/build-fi410.log 2>&1; echo $?` (KHÔNG pipe qua tail trước khi lấy exit — `$?` sau pipe = exit lệnh cuối)
 Expected: `0` — check-blog-slug-parity + check-blog-utils + check-blog-content PASS + astro build hoàn tất. Lint scope all-non-seed tự phủ (matrix/claims-registry vẫn nguyên vị trí) — KHÔNG đụng scripts.
 
-- [ ] **Step 2: RULE 0 — git-level walkthrough từng lệnh, in FULL output**
+- [x] **Step 2: RULE 0 — git-level walkthrough từng lệnh, in FULL output**
 
 1. `grep -rn "editorial/research" docs/knowledge/ | grep -v adopt-drafts | wc -l` → `0`
 2. `grep -c "deep-dive" docs/superpowers/editorial/2026-blog-longform/runbook.md` → `2` (khớp before — nội dung runbook không hao hụt)
@@ -224,13 +224,13 @@ Expected: `0` — check-blog-slug-parity + check-blog-utils + check-blog-content
 4. `ls docs/superpowers/editorial/research/` → chỉ `adopt-drafts` (44 files nguyên vẹn: `find docs/superpowers/editorial/research/adopt-drafts -type f | wc -l` = 44)
 5. `find docs/knowledge -type f | wc -l` → 16 (SF-1) + 55 (move) = 71
 
-- [ ] **Step 3: Tree audit — 0 file editorial kit thừa**
+- [x] **Step 3: Tree audit — 0 file editorial kit thừa**
 
 Run: `git diff --name-only 3f35f47 -- docs/superpowers/editorial/2026-blog-longform/`
 Expected: đúng 3 file (runbook, topic-matrix-batch3, claims-registry). Kèm `git diff 3f35f47 --stat | tail -5` tổng quan toàn SF.
 Known stale-by-design exceptions (report, KHÔNG sửa): `docs/superpowers/improvements-log.md:173` (bài học dated, D7 LINK-only) · `docs/superpowers/brackets/fi409-knowledge-base.md:9,11` (mô tả skeleton phase FI-411) — vẫn nhắc `digests-batch3`, đúng thiết kế.
 
-- [ ] **Step 4: Báo DONE — evidence bundle**
+- [x] **Step 4: Báo DONE — evidence bundle**
 
 Báo coordinator: 4 commit hashes (Task 1-4) + output 5 lệnh Step 2 + build exit + tree audit. KHÔNG tick Done Linear (coordinator làm sau merge).
 
