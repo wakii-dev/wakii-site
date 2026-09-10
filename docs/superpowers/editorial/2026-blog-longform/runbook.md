@@ -119,7 +119,7 @@ Quy trình 1 bài (SF-2/FI-385 · SF-3/FI-386 · SF-4/FI-387 · SF-5/FI-388 —
 owner range theo header matrix `topic-matrix-batch3.md`):
 
 1. **Research** — điền skeleton
-   `docs/superpowers/editorial/research/digests-batch3/<slug>.md` (SF-1 đã
+   `docs/knowledge/repos/<slug>.md` (SF-1 đã
    tạo sẵn: repo/facet/stars/license từ probe GitHub API 2026-09-08): đọc
    README + code thật, release cadence — KHÔNG bịa số không probe. Cần số
    mới: `bash scripts/probe-repos.sh` (bảng aligned 50 repo: repo | stars |
