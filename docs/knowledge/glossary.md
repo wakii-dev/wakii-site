@@ -32,7 +32,7 @@ giữ nguyên (văn hóa repo: VI-first kèm EN) — giải nghĩa bằng VI.
   slug (parity gate đòi presence 1:1).
 - **Digest** — bản ghi research một repo: số liệu kèm ngày probe, đọc
   README/code, nhận xét thô. Batch-3 có 50 digest trong
-  `docs/superpowers/editorial/research/digests-batch3/` (link từ
+  `docs/knowledge/repos/` (link từ
   [references.md](references.md)).
 - **Landscape (research)** — ảnh chụp bối cảnh hệ sinh thái GitHub tại một
   thời điểm (top repo theo stars, theo category) kèm đánh giá áp dụng cho

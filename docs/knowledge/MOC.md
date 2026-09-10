@@ -47,21 +47,21 @@ ADR/post mới PHẢI thêm/cập nhật hàng ở đây TRONG CÙNG COMMIT + ve
 
 research digest → blog post → ADOPT issue → ADR decision:
 
-1. Digest: [deep-dive-modelcontextprotocol-servers](../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md) †
+1. Digest: [deep-dive-modelcontextprotocol-servers](repos/deep-dive-modelcontextprotocol-servers.md) †
 2. Blog: [EN](../../src/content/blog/en/deep-dive-modelcontextprotocol-servers.md) · [VI](../../src/content/blog/vi/deep-dive-modelcontextprotocol-servers.md) — `deep-dive-modelcontextprotocol-servers` †
 3. Issue: [wakii-dev/wakii#19 — Mutation queue tuần tự tự phục hồi cho state dùng chung](https://github.com/wakii-dev/wakii/issues/19)
 4. Decision: [ADR-0010](adr/0010-learn-in-public-third-party-dated.md)
 
 ### 2. Checkpoint + rollback cho executor — chuỗi 4-link đầy đủ
 
-1. Digests: [deep-dive-aider-ai-aider](../superpowers/editorial/research/digests-batch3/deep-dive-aider-ai-aider.md) · [deep-dive-cline-cline](../superpowers/editorial/research/digests-batch3/deep-dive-cline-cline.md)
+1. Digests: [deep-dive-aider-ai-aider](repos/deep-dive-aider-ai-aider.md) · [deep-dive-cline-cline](repos/deep-dive-cline-cline.md)
 2. Blog: [EN aider](../../src/content/blog/en/deep-dive-aider-ai-aider.md) · [VI aider](../../src/content/blog/vi/deep-dive-aider-ai-aider.md) (cline cùng shape: `deep-dive-cline-cline`)
 3. Issue: [wakii-dev/wakii#14 — Checkpoint git tự động + rollback transactional cho executor](https://github.com/wakii-dev/wakii/issues/14)
 4. Decisions: [ADR-0008](adr/0008-batch-hai-dot-pilot-first.md) (pilot-first sinh ra grading này) · [ADR-0010](adr/0010-learn-in-public-third-party-dated.md) (quy tắc dated cho số trong issue)
 
 ### 3. License-safe † — chuỗi 4-link đầy đủ
 
-1. Digest: [deep-dive-anthropics-claude-code](../superpowers/editorial/research/digests-batch3/deep-dive-anthropics-claude-code.md) †
+1. Digest: [deep-dive-anthropics-claude-code](repos/deep-dive-anthropics-claude-code.md) †
 2. Blog: [EN](../../src/content/blog/en/deep-dive-anthropics-claude-code.md) · [VI](../../src/content/blog/vi/deep-dive-anthropics-claude-code.md) — `deep-dive-anthropics-claude-code` †
 3. Issue: [wakii-dev/wakii#21 — Confidence scoring lọc false-positive cho review đa agent](https://github.com/wakii-dev/wakii/issues/21)
 4. Decision: [ADR-0003](adr/0003-license-claims-scoped-forbidden.md)

@@ -30,8 +30,9 @@ issue → decision) và các agent trong kit (KB parse được nhờ frontmatte
 - `docs/knowledge/` = **finished / curated** — quyết định đã chốt, thuật ngữ
   đã ổn, bài học đã tổng hợp; sống lâu hơn story.
 - Một thứ chuyển từ superpowers sang knowledge khi nó **kết luận** (vd: decision
-  trong spec → ADR; improvement lặp ≥2 lần → lesson). Việc di chuyển file
-  research/ sang KB là story riêng (FI-410, sau 09-30) — KHÔNG tự di chuyển.
+  trong spec → ADR; improvement lặp ≥2 lần → lesson). Research/ đã chuyển
+  sang KB (FI-410, 2026-09-10 — chạy sớm theo chỉ thị user): `landscape/` +
+  `repos/`; `adopt-drafts/` ở lại research/ (pin style-guide §10).
 
 ### 2. Quy tắc LINK-only (không bao giờ sửa/move)
 
@@ -63,7 +64,7 @@ Cách tra cứu một chủ đề từ đầu đến cuối trong hệ tri thứ
 1. **KB entry** — hàng chủ đề trong [MOC.md](MOC.md) (vd: chủ đề "MCP platform
    play") trỏ tới ADR quyết định liên quan.
 2. **Research digest** —
-   [digest MCP servers](../superpowers/editorial/research/digests-batch3/deep-dive-modelcontextprotocol-servers.md)
+   [digest MCP servers](repos/deep-dive-modelcontextprotocol-servers.md)
    (số liệu kèm ngày probe).
 3. **Blog post** —
    [EN](../../src/content/blog/en/deep-dive-modelcontextprotocol-servers.md) +

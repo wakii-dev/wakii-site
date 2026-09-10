@@ -5,7 +5,7 @@ updated: 2026-09-10
 status: active
 visibility: internal
 confidence: high
-sources: [docs/superpowers/editorial/research/2026-09-08-digest.md, docs/superpowers/editorial/research/digests-batch3/README.md]
+sources: [docs/knowledge/landscape/2026-09-08-digest.md, docs/knowledge/repos/README.md]
 tags: [references, landscape, research, context]
 type: landscape
 ---
@@ -16,30 +16,31 @@ type: landscape
 hàng này thay vì lặp path. Tất cả là restatement — nội dung gốc nằm ở nguồn,
 KB không copy.
 
-1. **[Landscape digest vòng 1 — agentic coding](../superpowers/editorial/research/2026-09-08-digest.md)**
+1. **[Landscape digest vòng 1 — agentic coding](landscape/2026-09-08-digest.md)**
    — snapshot hệ sinh thái agentic coding theo stars (số lấy 2026-09-08 qua
    `gh` CLI, snapshot rule D8: mỗi con số kèm ngày lấy; re-extract lúc viết
    bài, không tin số trong digest cũ).
 
-2. **[Wakii applicability review — từ digest vòng 1](../superpowers/editorial/research/2026-09-08-wakii-applicability.md)**
+2. **[Wakii applicability review — từ digest vòng 1](landscape/2026-09-08-wakii-applicability.md)**
    — đánh giá từng pattern vòng 1 so với bề mặt Wakii HIỆN TẠI, grade
    ADOPT/DIRECTION/WATCH/N/A kèm "đề xuất cho Wakii" + "landed ở đâu";
    quyết định product thuộc user — đây là đề xuất có dẫn chứng.
 
-3. **[Broad-scan digest — vòng 2, ngoài agentic-coding](../superpowers/editorial/research/2026-09-08-broad-digest.md)**
+3. **[Broad-scan digest — vòng 2, ngoài agentic-coding](landscape/2026-09-08-broad-digest.md)**
    — mở rộng phạm vi 5 category ngoài vòng 1 (agent frameworks Python-side,
    v.v.), cùng snapshot rule D8.
 
-4. **[Wakii applicability — broad scan, vòng 2](../superpowers/editorial/research/2026-09-08-broad-applicability.md)**
+4. **[Wakii applicability — broad scan, vòng 2](landscape/2026-09-08-broad-applicability.md)**
    — grade các pattern vòng 2; kết quả nổi bật: MCP từ chưa từng được grade
    thành entry mạnh nhất (DIRECTION nâng từ WATCH) — bằng chứng ecosystem
    cho hướng platform.
 
-5. **[Digests batch-3 — 50 repo](../superpowers/editorial/research/digests-batch3/)**
+5. **[Digests batch-3 — 50 repo](repos/)**
    — mỗi file 1 matrix row của `topic-matrix-batch3.md` (số liệu kèm ngày
-   probe, convention trong README của thư mục). **GHI CHÚ:** SF-2 (issue
-   FI-410) sẽ move thư mục này sang `docs/knowledge/repos/` sau 09-30 —
-   KHÔNG move bây giờ (batch publish window; 6 pin refs sẽ sửa trong SF-2).
+   probe, convention trong README của thư mục). **GHI CHÚ:** Đã move xong
+   vào `docs/knowledge/repos/` (FI-410, 2026-09-10 — chạy sớm hơn 09-30
+   theo chỉ thị user); 3 pin refs digests trong editorial kit đã sửa, 3 pin
+   adopt-drafts giữ nguyên (path vẫn đúng — D5).
 
 6. **[ADOPT drafts — grading drafts](../superpowers/editorial/research/adopt-drafts/)**
    (thư mục `docs/superpowers/editorial/research/adopt-drafts/`; điểm vào chi
