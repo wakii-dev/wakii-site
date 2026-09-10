@@ -5,7 +5,7 @@ updated: 2026-09-10
 status: accepted
 visibility: internal
 confidence: high
-sources: [docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/superpowers/editorial/2026-blog-longform/runbook.md, docs/superpowers/editorial/research/digests-batch3/README.md]
+sources: [docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/superpowers/editorial/2026-blog-longform/runbook.md, docs/knowledge/repos/README.md]
 tags: [claims, license, scoped-forbidden, dagger]
 type: adr
 ---
@@ -64,5 +64,5 @@ public) — chỉ cách GỌI TÊN license bị giới hạn, không phải cấ
 - `docs/superpowers/editorial/2026-blog-longform/runbook.md` — "Lint gates MỚI
   cho batch-3": Scoped FORBIDDEN FAIL ở cả lint lẫn audit T3(a), hai script
   cùng parser.
-- `docs/superpowers/editorial/research/digests-batch3/README.md` — convention 3
+- `docs/knowledge/repos/README.md` — convention 3
   (license-safe + lưu ý crush/neovim ngoài 6 †).

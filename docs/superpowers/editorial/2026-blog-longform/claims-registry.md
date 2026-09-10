@@ -114,7 +114,7 @@ Mỗi evidence block trong bài ghi nguồn + ngày lấy.
 1. **Mọi số third-party** (stars, forks, releases, commit counts, benchmark)
    PHẢI kèm mốc lấy: "theo GitHub API ngày N" — N là ngày research THẬT
    (probe bằng `bash scripts/probe-repos.sh`, ngày ghi trong digest của repo
-   tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).
+   tại `docs/knowledge/repos/<slug>.md`).
    Không ngày = không đăng (giống tinh thần D8).
 2. **License-safe**: repo có license `none`/`NOASSERTION` → gọi **"công khai
    trên GitHub"** — KHÔNG được gọi "open-source" hay "mã nguồn mở". Scoped

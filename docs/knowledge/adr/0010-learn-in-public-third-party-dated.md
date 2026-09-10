@@ -5,7 +5,7 @@ updated: 2026-09-10
 status: accepted
 visibility: internal
 confidence: high
-sources: [docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/superpowers/editorial/research/digests-batch3/README.md, docs/superpowers/editorial/2026-blog-longform/style-guide.md]
+sources: [docs/superpowers/editorial/2026-blog-longform/claims-registry.md, docs/knowledge/repos/README.md, docs/superpowers/editorial/2026-blog-longform/style-guide.md]
 tags: [learn-in-public, third-party, claims, dated-source, grading]
 type: adr
 ---
@@ -41,7 +41,7 @@ Hai nửa gắn chặt nhau:
    chết.
 2. **Mọi số third-party PHẢI kèm mốc lấy**: "theo GitHub API ngày N" — N là
    ngày research THẬT (probe bằng `bash scripts/probe-repos.sh`; ngày ghi
-   trong digest của repo tại `docs/superpowers/editorial/research/digests-batch3/<slug>.md`).
+   trong digest của repo tại `docs/knowledge/repos/<slug>.md`).
    Không ngày = không đăng (cùng tinh thần snapshot D8 cho số về Wakii). Quote
    nguyên văn ≤25 từ có attribution + link; trích code ngắn có mục đích phân
    tích kèm link commit/tree ngay cạnh.
@@ -62,7 +62,7 @@ Hai nửa gắn chặt nhau:
   GitHub API ngày N", N là ngày research thật, probe `scripts/probe-repos.sh`,
   ngày ghi trong digest của repo; không ngày = không đăng; rule 3: quote ≤25
   từ attribution; rule 4: trích code kèm link commit/tree).
-- `docs/superpowers/editorial/research/digests-batch3/README.md` — convention 2
+- `docs/knowledge/repos/README.md` — convention 2
   (mọi số kèm ngày, re-probe `probe-repos.sh`) + convention 4 (grading ADOPT/
   DIRECTION/WATCH/N/A theo style-guide §8) + convention 6 (digest là research
   nội bộ, không build vào site).

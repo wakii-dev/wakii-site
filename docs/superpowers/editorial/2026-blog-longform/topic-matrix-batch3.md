@@ -116,5 +116,5 @@
 5. **Hero `yes`** — sau khi bài tồn tại: thêm frontmatter
    `heroImage: "/blog/heroes/<slug>.png"` CẢ HAI locale (VI share hero EN —
    cùng giá trị với EN) rồi chạy `node scripts/render-blog-heroes.mjs`.
-6. Research ghi vào `docs/superpowers/editorial/research/digests-batch3/<slug>.md`
+6. Research ghi vào `docs/knowledge/repos/<slug>.md`
    (skeleton có sẵn — điền TODO, không bịa số không probe).
