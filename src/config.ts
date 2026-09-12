@@ -39,9 +39,10 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
  * ── Direct downloads + mobile connect (story FI-300, SF-1 foundation) ──
  *
  * Flag flips remain USER/MANUAL decisions — flipped by explicit user
- * instruction on 2026-09-05 against release v1.4.198 on wakii-dev/wakii
- * (Android APK followed via the mobile-android-v0.0.48 pre-release);
- * URLs re-pinned to v1.4.199 when that became Latest the same day.
+ * instruction on 2026-09-05 against release v1.4.198 on wakii-dev/wakii;
+ * URLs re-pinned each time a new Latest cut: v1.4.199 (same day) →
+ * v1.4.205 (2026-09-12, which now also ships the Android APK alongside
+ * the desktop assets — newer than the mobile-android-v0.0.48 pre-release).
  *
  * State at flip:
  *   (i)   repo is PUBLIC ✓,
@@ -59,8 +60,8 @@ export const SITE_TAGLINE = 'Agentic IDE with a built-in superpowers team';
 export const DOWNLOADS_LIVE = true;
 
 export const DOWNLOAD_URLS: { macos: string; windows: string } = {
-  macos: `${REPO_URL}/releases/download/v1.4.199/Wakii-1.4.199-arm64.dmg`,
-  windows: `${REPO_URL}/releases/download/v1.4.199/orca-windows-setup.exe`,
+  macos: `${REPO_URL}/releases/download/v1.4.205/Wakii-1.4.205-arm64.dmg`,
+  windows: `${REPO_URL}/releases/download/v1.4.205/orca-windows-setup.exe`,
 };
 
 /**
@@ -72,5 +73,5 @@ export const MOBILE_LIVE = true;
 
 export const MOBILE_STORE_URLS: { ios: string; android: string } = {
   ios: '',
-  android: `${REPO_URL}/releases/download/mobile-android-v0.0.48/app-release.apk`,
+  android: `${REPO_URL}/releases/download/v1.4.205/app-release.apk`,
 };

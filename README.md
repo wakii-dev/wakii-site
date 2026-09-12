@@ -98,11 +98,10 @@ production URL: `https://wakii.xyz` — sitemap and `robots.txt` derive from
 
 > `REPO_URL` points to the public product repo
 > [`wakii-dev/wakii`](https://github.com/wakii-dev/wakii), where release
-> `v1.4.199` hosts the desktop builds (`Wakii-1.4.199-arm64.dmg` Apple
-> Silicon, `...-x64.dmg` Intel, `orca-windows-setup.exe` Windows) and the
-> Android APK ships from the `mobile-android-v0.0.48` pre-release.
-> `DOWNLOADS_LIVE` and `MOBILE_LIVE` are on; all four platforms link real
-> release assets.
+> `v1.4.205` (Latest) hosts the desktop builds (`Wakii-1.4.205-arm64.dmg`
+> Apple Silicon, `...-x64.dmg` Intel, `orca-windows-setup.exe` Windows)
+> plus the Android APK. `DOWNLOADS_LIVE` and `MOBILE_LIVE` are on; all
+> platforms link real release assets.
 
 </details>
 

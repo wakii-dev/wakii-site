@@ -1,9 +1,12 @@
 /**
  * Roadmap data — Now / Next / Later for /roadmap (SF-3).
- * Base content is the exact list approved at FI-294 bracket APPROVE
- * (epic spec §4 "Roadmap content") — no SF may invent extra items.
- * Milestones use vague time frames (quarters/years), never far dates —
- * there is no release cadence yet.
+ * FI-294 base list, updated 2026-09-12 per owner instruction ("dựa vào
+ * những gì chúng ta đang làm") — reflects what actually shipped and what
+ * is in flight: blog live (120+ posts), knowledge base shipped (FI-409),
+ * learning loop ADOPT issues landed in product (v1.4.200–205), ADE
+ * knowledge layer next (wakii#38).
+ *
+ * Milestones use vague time frames (quarters/years), never far dates.
  *
  * FI-300 G-B: the downloads line is FLAG-AWARE. `buildRoadmap(live)`:
  *   live=false → "Downloads for macOS & Windows" stays in Next (new copy)
@@ -26,11 +29,11 @@ export interface RoadmapBucket {
 
 /** Downloads line, live variant (G-B: Now/Shipped). */
 const DOWNLOADS_LIVE_ITEM: RoadmapItem = {
-  title: 'Downloads for macOS & Windows',
+  title: 'Downloads for macOS, Windows & Android',
   desc_en:
-    'Direct installers from GitHub Releases, one click away on the download page.',
+    'Direct installers from GitHub Releases, one click away on the download page. Desktop plus an Android companion APK.',
   desc_vi:
-    'Bản cài tải trực tiếp từ GitHub Releases, một cú click trên trang download.',
+    'Bản cài tải trực tiếp từ GitHub Releases, một cú click trên trang download. Desktop kèm bản Android companion.',
 };
 
 /** Downloads line, not-live variant (G-B: stays in Next). */
@@ -59,18 +62,18 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
       label_vi: 'Đang làm',
       items: [
         {
-          title: 'Content depth',
+          title: 'Blog & field notes',
           desc_en:
-            'The story in flight: skills catalog, roadmap (this page), the philosophy behind the workflow, and a proper download section.',
+            'A living blog, 120+ bilingual posts from real builds — repo deep-dives, workflow, guides, build logs. New posts on a steady cadence.',
           desc_vi:
-            'Story đang chạy: skills catalog, roadmap (chính trang này), triết lý đằng sau workflow, và một section download đúng nghĩa.',
+            'Blog sống, hơn 120 bài song ngữ từ build thật — deep-dive repo, workflow, hướng dẫn, nhật ký. Bài mới theo nhịp đều.',
         },
         {
-          title: 'Public repo preparation',
+          title: 'Knowledge base',
           desc_en:
-            'LICENSE file in the repo, a real repository URL to replace the placeholder — the housekeeping that makes build-from-source real.',
+            'A structured internal knowledge base — decision records, 50 repo deep-dives, glossary, map of content — written machine-readable so our own agents can query it.',
           desc_vi:
-            'File LICENSE trong repo, URL repository thật thay cho placeholder — những việc cần làm để build-from-source trở thành hiện thực.',
+            'Kho tri thức nội bộ có cấu trúc — ADR quyết định, 50 bản deep-dive repo, bảng thuật ngữ, bản đồ nội dung — viết chuẩn máy đọc được để chính agents của chúng tôi tra được.',
         },
         ...(downloadsLive ? [DOWNLOADS_LIVE_ITEM] : []),
       ],
@@ -80,7 +83,27 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
       label_en: 'Next',
       label_vi: 'Tiếp theo',
       items: [
-        ...(downloadsLive ? [] : [DOWNLOADS_NEXT_ITEM]),
+        {
+          title: 'Knowledge for agents (ADE layer)',
+          desc_en:
+            'Expose the knowledge base over MCP so any agent client can query our decisions, repo research and lessons — the mem0/letta pattern applied to our own stack.',
+          desc_vi:
+            'Mở kho tri thức cho agents qua MCP để mọi agent client tra được quyết định, nghiên cứu repo và bài học — pattern mem0/letta áp lên stack của chúng tôi.',
+        },
+        {
+          title: 'Contributions in 3D',
+          desc_en:
+            'A 3D contributions view where review counts: measured by PRs reviewed, not just commits pushed.',
+          desc_vi:
+            'Xem đóng góp 3D nơi review được tính: đo bằng số PR đã review, không chỉ số commit đã push.',
+        },
+        {
+          title: 'Skills import/export',
+          desc_en:
+            'Import community skills in the standard format and export Wakii public skills — two-way distribution once the plugin manifest is in place.',
+          desc_vi:
+            'Nhận skill chuẩn từ cộng đồng và xuất skill public của Wakii — phân phối hai chiều khi plugin manifest sẵn sàng.',
+        },
         CHANGELOG_ITEM,
         {
           title: 'Per-skill detail pages',
@@ -104,13 +127,6 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
       label_vi: 'Tầm nhìn',
       items: [
         {
-          title: 'Blog / field notes',
-          desc_en:
-            'Short write-ups from real stories — what worked, what broke, what changed our minds.',
-          desc_vi:
-            'Những bài ngắn từ story thật — cái gì hiệu quả, cái gì vỡ, cái gì khiến chúng ta đổi ý.',
-        },
-        {
           title: 'More locales',
           desc_en:
             'New interface languages, driven by demand rather than a fixed schedule.',
@@ -120,12 +136,11 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
         {
           title: 'Plugin marketplace',
           desc_en:
-            'A direction toward a plugin-agent ecosystem — third-party skills and kits, discoverable and installable.',
+            'A direction toward a plugin-agent ecosystem — third-party skills and kits, discoverable and installable. First step: the plugin manifest.',
           desc_vi:
-            'Hướng tới hệ sinh thái plugin-agent — skill và kit của bên thứ ba, tìm được và cài được.',
+            'Hướng tới hệ sinh thái plugin-agent — skill và kit của bên thứ ba, tìm được và cài được. Bước đầu: plugin manifest.',
         },
       ],
     },
   ];
 }
-
