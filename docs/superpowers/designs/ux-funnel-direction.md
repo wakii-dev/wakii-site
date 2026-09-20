@@ -100,7 +100,7 @@ Cấu trúc gw-a/gw-b/gw-c giữ nguyên as-built FI-300 (kể cả `.bx-in` 14p
 ### `landing.ts` — ADD group `understand` + hero ADD-thêm
 
 - `hero.ctaDownload` (`download wakii` → /download), `hero.ctaBuild` (`build from source` → REPO_URL), `hero.ctaMicro` (`free · open source · unsigned build`) — **ADD MỚI; `hero.ctaPrimary` GIỮ NGUYÊN trong store** (sẽ orphan sau khi SF-2 retarget Hero — cleanup candidate sau SF-2, đã flag); **`hero.ctaGhost` GIỮ NGUYÊN** (consumer GetWakii:117 — cấm đụng).
-- Group `understand`: keys đúng bảng Surface 1 (`q1Kicker, titleBefore, titleHighlight, titleAfter, leadBefore, leadCode, leadAfter, q2Label, q2Meta, q2Body, q2SlotName, q2SlotHint, q2Foot, q3Label, q3Meta, q3BodyBefore, q3BodyEm, q3BodyAfter, q3SlotName, q3SlotHint, q3Foot, q4Label, q4Meta, q4TermTitle, q4Cmd, q4Comment, q4Out, q4BodyBefore, q4BodyCmd, q4BodyAfter, q4Dim, q4Link, q4Foot, moreLabel, moreDocs, moreBlog` — 3 keys cuối = USER ADD-ON docs/blog links 2026-09-20; href = `/docs/` + `/blog/` locale-aware, SF-2 set).
+- Group `understand`: keys đúng bảng Surface 1 (`q1Kicker, titleBefore, titleHighlight, titleAfter, leadBefore, leadCode, leadAfter, q2Label, q2Meta, q2Body, q2SlotName, q2SlotHint, q2Foot, q3Label, q3Meta, q3BodyBefore, q3BodyEm, q3BodyAfter, q3SlotName, q3SlotHint, q3Foot, q4Label, q4Meta, q4TermTitle, q4Cmd, q4Comment, q4Out, q4BodyBefore, q4BodyCmd, q4BodyAfter, q4Dim, q4Link, moreLabel, moreDocs, moreBlog, q4Foot` — đúng thứ tự khai báo trong code; `moreLabel/moreDocs/moreBlog` = USER ADD-ON docs/blog links 2026-09-20; href = `/docs/` + `/blog/` locale-aware, SF-2 set).
 - Interface + EN + VI đối xứng; VI draft (ACK tại Phase-1 checkpoint, im lặng → ship).
 
 ### `downloads.ts` — ADD group `upgrade`
