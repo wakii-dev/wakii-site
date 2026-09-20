@@ -41,6 +41,12 @@ ADR/post mới PHẢI thêm/cập nhật hàng ở đây TRONG CÙNG COMMIT + ve
 |---|---|---|
 | Hero 10 flagship PINNED | [batch2-design DEC-5](../superpowers/specs/2026-09-08-blog-batch2-design.md) | Danh sách 10 slug flagship + hero render sau khi bài tồn tại (pipeline đọc frontmatter). **Template-enforced — không ADR riêng** (seed list ADR CHỐT 10; hero là row này trong MOC). |
 
+## Runbooks — quy trình vận hành cho owner
+
+| Runbook | File | Khi nào dùng |
+|---|---|---|
+| Bật domain wakii.xyz cho social unfurl card | [runbooks/link-preview-domain](runbooks/link-preview-domain.md) | Owner add domain wakii.xyz + www vào Vercel project; verify bằng `check-og --live`; purge cache FB/Zalo sau khi live (story VU-5 SF-3). |
+
 ## Topic chains
 
 ### 1. MCP platform play — chuỗi 4-link đầy đủ

@@ -164,6 +164,7 @@ Số ADR tăng dần, KHÔNG tái sử dụng số đã dùng; hủy quyết đ�
 | [MOC.md](MOC.md) | Map of Content — mọi chủ đề, chuỗi 4-link |
 | [references.md](references.md) | 7 tham chiếu landscape/context |
 | [lessons/index.md](lessons/index.md) | bài học rút ra (trỏ improvements-log) |
+| [runbooks/link-preview-domain.md](runbooks/link-preview-domain.md) | runbook owner — bật domain wakii.xyz cho social unfurl card (VU-5 SF-3) |
 | [adr/0001](adr/0001-lint-scope-all-non-seed.md) · [0002](adr/0002-grading-marker-scoped-batch-3.md) · [0003](adr/0003-license-claims-scoped-forbidden.md) · [0004](adr/0004-future-date-policy-pubdate-in-matrix.md) · [0005](adr/0005-spec-first-workflow.md) · [0006](adr/0006-matrix-chot-cung-per-batch-slug-lock.md) · [0007](adr/0007-human-gates-vi-copy-flag-flips-verdict.md) · [0008](adr/0008-batch-hai-dot-pilot-first.md) · [0009](adr/0009-category-enum-3-flat-listing.md) · [0010](adr/0010-learn-in-public-third-party-dated.md) | 10 ADR nền tảng |
 
 Điểm vào chính cho tra cứu theo chủ đề: [MOC.md](MOC.md).
