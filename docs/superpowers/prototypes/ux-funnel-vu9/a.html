@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>VU-9 · UX funnel — direction A (understand-layer + download)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ============ tokens — brand PIN, terminal-mono (bound values) ============ */
+  :root{
+    --bg:#0A0E0D; --bg-raised:#101614; --card:#131A17;
+    --border:#1E2A26; --border-strong:#2B4234;
+    --accent:#45E0A8; --accent-dim:#2A6B52; --accent-soft:rgba(69,224,168,0.1);
+    --text:#D7E2DD; --text-dim:#6B7A74; --text-faint:#5A7163;
+    --warn:#E8A33D; --panel:#0D1310; --bg-deep:#04140D; --red:#E5654F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent-dim);color:var(--bg-deep)}
+  :focus-visible{outline:1px solid var(--accent);outline-offset:2px;border-radius:2px}
+  a{color:var(--accent)}
+  img{display:block}
+  .container{max-width:1160px;margin:0 auto;padding:0 28px}
+  section{scroll-margin-top:72px}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ============ direction chrome header ============ */
+  .dir-head{position:sticky;top:0;z-index:40;background:rgba(10,14,13,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .dir-head .container{display:flex;align-items:center;justify-content:space-between;gap:16px;height:54px}
+  .dir-id{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:var(--text-dim)}
+  .dir-id img{width:22px;height:22px;border-radius:6px}
+  .dir-id b{color:var(--text);font-weight:600}
+  .dir-tag{border:1px solid var(--accent-dim);color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:4px;font-size:10px;letter-spacing:.16em;font-weight:600}
+  .dir-nav{display:flex;gap:6px}
+  .dir-nav a{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:6px 12px;border-radius:6px;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+  .dir-nav a:hover{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-soft)}
+  @media (max-width:640px){
+    .container{padding:0 20px}
+    .dir-id .lbl{display:none}
+    .dir-id b{white-space:nowrap}
+    .dir-nav a{padding:5px 8px;font-size:10.5px;white-space:nowrap}
+    .dir-head .container{height:auto;flex-wrap:wrap;row-gap:6px;padding-top:8px;padding-bottom:8px;justify-content:flex-start}
+  }
+
+  /* ============ kicker / rails / micro ============ */
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim)}
+  .kicker .h{color:var(--accent)}
+  .ctx-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);display:block;margin-bottom:26px}
+  .rail{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:1px solid var(--border);padding-top:14px;margin-bottom:34px;flex-wrap:wrap}
+  .rail-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.16em;text-transform:uppercase}
+  .rail-n .dim{color:var(--text-faint)}
+  .rail-meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;text-align:right}
+
+  /* ============ buttons — mono 13px, prefix "> " ============ */
+  .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.01em;padding:12px 20px;border-radius:8px;text-decoration:none;cursor:pointer;border:1px solid transparent;line-height:1.25;transition:transform .15s,box-shadow .15s,border-color .15s,background .15s,color .15s}
+  .btn::before{content:'> '}
+  .btn-primary{background:var(--accent);color:var(--bg-deep);border-color:var(--accent);font-weight:600}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 0 1px var(--accent),0 8px 28px rgba(69,224,168,.22)}
+  .btn-ghost{color:var(--text);border-color:var(--border-strong);background:transparent}
+  .btn-ghost:hover{border-color:var(--accent-dim);background:var(--accent-soft);color:var(--accent)}
+  .btn-soon{border:1px dashed var(--border-strong);color:var(--text-faint);cursor:default}
+  .btn-xl{width:100%;padding:17px 26px}
+  .btn-block{width:100%}
+
+  /* ============ bento anatomy (brand) ============ */
+  .bgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .c4{grid-column:span 4}.c5{grid-column:span 5}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+  @media (max-width:980px){.c7,.c5,.c8{grid-column:span 12}.c4{grid-column:span 6}}
+  @media (max-width:680px){.bgrid>*{grid-column:span 12!important}}
+  .bx{display:flex}
+  .bx-in{display:flex;flex-direction:column;flex:1;width:100%;background:var(--card);border:1px solid var(--border-strong);border-radius:12px;overflow:hidden}
+  @media (hover:hover) and (pointer:fine){
+    .bx-in{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+    .bx:hover .bx-in{transform:translateY(-3px);border-color:var(--accent-dim);box-shadow:0 12px 32px rgba(69,224,168,.10),0 0 0 1px var(--accent-dim)}
+  }
+  .bx-label{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 16px;background:var(--panel);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em}
+  .bx-label .t{color:var(--text);font-weight:600}
+  .bx-label .m{color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+  .bx-body{padding:20px;flex:1;display:flex;flex-direction:column;gap:14px}
+  .bx-body p{font-size:14.5px;color:var(--text)}
+  .bx-body p .dim{color:var(--text-dim)}
+  .bx-foot{border-top:1px dashed var(--border-strong);padding:9px 16px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:var(--text-dim)}
+  .bx-foot b{color:var(--warn);font-weight:600}
+  .fname{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);word-break:break-all}
+
+  /* os-detect chip — highlight only */
+  .chip{display:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-dim);border-radius:4px;padding:3px 8px;white-space:nowrap}
+  .chip.on{display:inline-block}
+  .arch-tag{display:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-dim);border-radius:4px;padding:2px 8px;white-space:nowrap}
+  .arch-tag.on{display:inline-block}
+  .os-hit .bx-in{border-color:var(--accent-dim);box-shadow:0 0 0 1px var(--accent-soft),0 0 26px rgba(69,224,168,.07)}
+
+  /* ============ hero (mock context) ============ */
+  .hero{position:relative;padding:88px 0 78px;overflow:hidden;border-bottom:1px solid var(--border)}
+  .hero-bg{position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 75% 95% at 50% 0%,#000 25%,transparent 72%);
+    mask-image:radial-gradient(ellipse 75% 95% at 50% 0%,#000 25%,transparent 72%)}
+  .hero .container{position:relative}
+  h1{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(30px,4.6vw,54px);line-height:1.08;letter-spacing:-.02em;margin:16px 0 20px;max-width:840px}
+  h1 em{color:var(--accent);font-style:normal}
+  .hero-sub{max-width:660px;font-size:16px;color:var(--text)}
+  .cta-row{display:flex;gap:12px;margin:28px 0 18px;flex-wrap:wrap}
+  .micro{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+  .micro .sep{color:var(--text-faint);margin:0 8px}
+  .hero-ver{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint)}
+  .hero-ver .ps{color:var(--accent-dim)}
+  .hero-ver .out{color:var(--text-dim)}
+
+  /* ============ surface sections ============ */
+  .surface{padding:72px 0 8px}
+  .qk{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dim);letter-spacing:.06em}
+  .qk .h{color:var(--accent)}
+  h2{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(23px,3.1vw,37px);line-height:1.15;letter-spacing:-.015em;margin:14px 0 16px;max-width:900px}
+  h2 em{color:var(--accent);font-style:normal}
+  .lead{max-width:760px;font-size:15.5px;color:var(--text)}
+
+  .stats{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:30px 0 34px;flex-wrap:wrap}
+  .stats div{flex:1 1 180px;padding:12px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);border-left:1px solid var(--border);white-space:nowrap}
+  .stats div:first-child{border-left:0}
+  .stats b{color:var(--accent);font-weight:600}
+
+  /* terminal (Q4) — terminal-core foreground chrome */
+  .term{background:var(--panel);border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;align-self:start;width:100%}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:1px solid var(--border);background:var(--bg-raised)}
+  .term-dots{display:flex;gap:6px}
+  .term-dots span{width:9px;height:9px;border-radius:50%}
+  .term-dots .d1{background:var(--red)}.term-dots .d2{background:var(--warn)}.term-dots .d3{background:var(--accent)}
+  .term-title{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);letter-spacing:.08em;margin-left:6px}
+  .term-body{padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2.05;overflow-x:auto}
+  .t-ps{color:var(--accent)}
+  .t-cmd{color:var(--text);font-weight:500}
+  .t-cmd .str{color:var(--warn)}
+  .t-comment{color:var(--text-faint)}
+  .t-out{color:var(--text-dim)}
+  .q4-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+  @media (max-width:860px){.q4-grid{grid-template-columns:1fr}}
+
+  /* screenshot placeholder slots */
+  .slot{position:relative;border:1px dashed var(--border-strong);border-radius:10px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px 18px 30px;text-align:center;overflow:hidden;min-height:150px}
+  .slot::before{content:'';position:absolute;inset:0;opacity:.45;
+    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    background-size:28px 28px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 40%,#000 20%,transparent 80%);
+    mask-image:radial-gradient(ellipse 70% 80% at 50% 40%,#000 20%,transparent 80%)}
+  .slot-name{position:relative;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.06em;font-weight:500}
+  .slot-hint{position:relative;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-dim);max-width:300px;line-height:1.6}
+  .slot::after{content:'screenshot — placeholder frame';position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint)}
+  .slot-lg{min-height:200px}
+  .slot-sm{min-height:118px}
+
+  /* mock context sections (dimmed) */
+  .mockwrap{opacity:.72}
+
+  /* ============ surface 2 — download ============ */
+  .dl-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+  .dl-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .vpill{display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-dim);border-radius:6px;padding:6px 13px;white-space:nowrap}
+  .vpill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(69,224,168,.6)}
+  .dl-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:.06em}
+
+  .dl-pri .bx-body{gap:16px}
+  .arch{display:flex;flex-direction:column;gap:8px}
+  .arch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .or{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint)}
+  .or::before,.or::after{content:'';flex:1;border-top:1px dashed var(--border-strong)}
+  .dl-note{font-size:13px;color:var(--text-dim)}
+  .dl-note .mono{font-size:12px}
+
+  .ver-big{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--text);letter-spacing:-.02em;line-height:1.1}
+  .ver-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:.08em}
+  .inline-link{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent-dim);padding-bottom:1px}
+  .inline-link:hover{border-bottom-style:solid}
+
+  /* first-run strip */
+  .firstrun .bx-body{gap:18px}
+  .steps{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;gap:10px;align-items:stretch}
+  .step{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+  .step-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.14em}
+  .step b{font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:0}
+  .step span{font-size:12.5px;color:var(--text-dim);line-height:1.55}
+  .step-arrow{align-self:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent-dim)}
+  @media (max-width:860px){
+    .steps{grid-template-columns:1fr}
+    .step-arrow{transform:rotate(90deg);padding:0}
+  }
+
+  /* ============ footer ============ */
+  footer{border-top:1px solid var(--border);margin-top:84px;padding:26px 0 52px}
+  .foot-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- ================= direction chrome ================= -->
+<header class="dir-head">
+  <div class="container">
+    <div class="dir-id">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Indha2lpIOKAlCBtb25vZ3JhbSBpY29uIj4KICA8IS0tIHdha2lpIGljb24gc3ltYm9sIOKAlCAiVGhlIE1vbm9ncmFtIiAoY2hvc2VuIDIwMjYtMDktMDUsIDMtZGlyZWN0aW9uIGRyYWZ0KS4KICAgICAgIE1hc3RlciBmaWxlIGZvciByZXVzZTogZmF2aWNvbiAocHVibGljL2Zhdmljb24uc3ZnIGlzIHRoZSBzbWFsbC1zaXplCiAgICAgICB0d2luKSwgR2l0SHViIGF2YXRhciwgb2ctaW1hZ2UsIEVsZWN0cm9uIGFwcCBpY29uIHNvdXJjZS4KICAgICAgIEJyYW5kOiBkYXJrIHRpbGUgIzEzMUExN+KGkiMwNDE0MEQsIG1pbnQgc3Ryb2tlICM0NUUwQTgsIGRvdCAjRDdFMkRELiAtLT4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTMxQTE3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA0MTQwRCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNMjYgNDIgTDQ0IDg4IEw2NCA0OCBMODQgODggTDEwMiA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNDVFMEE4IiBzdHJva2Utd2lkdGg9IjEzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8Y2lyY2xlIGN4PSIxMDYiIGN5PSI4NiIgcj0iOC41IiBmaWxsPSIjRDdFMkREIi8+Cjwvc3ZnPgo=" alt="Wakii" width="22" height="22">
+      <b>VU-9</b><span class="lbl">· UX FUNNEL ·</span> <span class="lbl">SF-1 PROTOTYPE</span>
+      <span class="dir-tag">A</span>
+    </div>
+    <nav class="dir-nav" aria-label="surfaces">
+      <a href="#s1-understand">01 / understand-layer</a>
+      <a href="#s2-download">02 / download</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ============================================================
+       CONTEXT — mock hero (existing landing, minimal, position only)
+  ============================================================= -->
+  <section class="hero" aria-label="mock hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container">
+      <span class="ctx-tag">// mock — existing landing hero, minimal, shown for insertion position only</span>
+      <p class="kicker"><span class="h">##</span> wakii</p>
+      <h1>Open an editor.<br>Get a <em>team</em>.</h1>
+      <p class="hero-sub">Wakii is a free, open-source agentic IDE — a fork of Orca with a nine-agent superpowers team, hard gates B0–B5, a watchdog, and memory that accumulates across stories. Bundled in the app, on by default.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#s2-download">download v1.4.213</a>
+        <a class="btn btn-ghost" href="https://github.com/wakii-dev/wakii" target="_blank" rel="noopener">build from source</a>
+      </div>
+      <p class="micro">free<span class="sep">·</span>open source<span class="sep">·</span>unsigned build</p>
+      <p class="hero-ver"><span class="ps">$</span> wakii --version <span class="out">→ v1.4.213 (latest, published 2026-09-20)</span></p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SURFACE 1 — landing understand-layer (THE new section)
+  ============================================================= -->
+  <section class="surface" id="s1-understand" aria-label="surface 1 — understand layer">
+    <div class="container">
+      <div class="rail">
+        <span class="rail-n">surface 01 <span class="dim">/</span> landing — new section after hero</span>
+        <span class="rail-meta">answers 4 questions in copy<br>before any scrolling past it</span>
+      </div>
+
+      <!-- Q1 — what is wakii -->
+      <div class="q1">
+        <p class="qk"><span class="h">//</span> q1 — what is wakii?</p>
+        <h2>Wakii is an agentic IDE with a <em>superpowers team</em> built in.</h2>
+        <p class="lead">A free, open-source fork of Orca. Nine agents plan, build, verify, and watch each other's work behind gates B0–B5. The plugin ships inside the app and the kit lands in <span class="mono">~/.claude</span> on first run — zero setup steps.</p>
+      </div>
+
+      <div class="stats" role="list" aria-label="core facts">
+        <div role="listitem"><b>9</b> agents</div>
+        <div role="listitem"><b>0</b> setup steps</div>
+        <div role="listitem"><b>1</b> PR per story</div>
+      </div>
+
+      <div class="bgrid">
+        <!-- Q2 — first thing you see -->
+        <div class="bx c7">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ q2 — open the app: what do you see first?</span>
+              <span class="m">team = online</span>
+            </div>
+            <div class="bx-body">
+              <p>The <strong>superpowers panel</strong>. All nine agents are already in there, marked online — each with a distinct role in one pipeline, and a watchdog on the floor. No wizard, no config file, nothing to toggle.</p>
+              <div class="slot slot-lg">
+                <span class="slot-name">⚡ superpowers panel</span>
+                <span class="slot-hint">9 agents online · watchdog active · zero-setup state</span>
+              </div>
+            </div>
+            <div class="bx-foot"><b>0 setup steps</b> — the panel is live before your first click</div>
+          </div>
+        </div>
+
+        <!-- Q3 — who is it for -->
+        <div class="bx c5">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ q3 — who is wakii for?</span>
+              <span class="m">delegate, don't drive</span>
+            </div>
+            <div class="bx-body">
+              <p>Devs who want to hand off the mechanical middle. You give Wakii an idea; the team brackets it, works it behind gates B0–B5, and hands back <strong>one clean, verified PR</strong>. You review the diff, not the process.</p>
+              <svg viewBox="0 0 560 96" width="100%" role="img" aria-label="pipeline: idea, nine-agent team, gates B0 to B5, one PR" style="max-width:520px">
+                <!-- cube 1 -->
+                <g transform="translate(18,18)">
+                  <polygon points="0,0 22,-11 44,0 22,11" fill="#1E2A26" stroke="#2B4234"/>
+                  <polygon points="0,0 22,11 22,33 0,22" fill="#0D1310" stroke="#2B4234"/>
+                  <polygon points="22,11 44,0 44,22 22,33" fill="#101614" stroke="#2B4234"/>
+                </g>
+                <line x1="66" y1="29" x2="146" y2="29" stroke="#2B4234" stroke-dasharray="3 4"/>
+                <polygon points="146,25 152,29 146,33" fill="#2B4234"/>
+                <!-- cube 2 -->
+                <g transform="translate(158,18)">
+                  <polygon points="0,0 22,-11 44,0 22,11" fill="#1E2A26" stroke="#2B4234"/>
+                  <polygon points="0,0 22,11 22,33 0,22" fill="#0D1310" stroke="#2B4234"/>
+                  <polygon points="22,11 44,0 44,22 22,33" fill="#101614" stroke="#2B4234"/>
+                </g>
+                <line x1="206" y1="29" x2="286" y2="29" stroke="#2B4234" stroke-dasharray="3 4"/>
+                <polygon points="286,25 292,29 286,33" fill="#2B4234"/>
+                <!-- cube 3 -->
+                <g transform="translate(298,18)">
+                  <polygon points="0,0 22,-11 44,0 22,11" fill="#1E2A26" stroke="#2B4234"/>
+                  <polygon points="0,0 22,11 22,33 0,22" fill="#0D1310" stroke="#2B4234"/>
+                  <polygon points="22,11 44,0 44,22 22,33" fill="#101614" stroke="#2B4234"/>
+                </g>
+                <line x1="346" y1="29" x2="426" y2="29" stroke="#2A6B52" stroke-dasharray="3 4"/>
+                <polygon points="426,25 432,29 426,33" fill="#2A6B52"/>
+                <!-- cube 4 — the PR (accent) -->
+                <g transform="translate(438,18)">
+                  <polygon points="0,0 22,-11 44,0 22,11" fill="#45E0A8" stroke="#45E0A8"/>
+                  <polygon points="0,0 22,11 22,33 0,22" fill="#2A6B52" stroke="#45E0A8"/>
+                  <polygon points="22,11 44,0 44,22 22,33" fill="#2A6B52" stroke="#45E0A8" fill-opacity="0.72"/>
+                </g>
+                <!-- labels -->
+                <text x="40" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" letter-spacing="1" fill="#6B7A74">01 idea</text>
+                <text x="180" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" letter-spacing="1" fill="#6B7A74">02 team ×9</text>
+                <text x="320" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" letter-spacing="1" fill="#6B7A74">03 gates b0–b5</text>
+                <text x="460" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="600" letter-spacing="1" fill="#45E0A8">04 1 pr</text>
+              </svg>
+              <div class="slot slot-sm">
+                <span class="slot-name">bracket canvas</span>
+                <span class="slot-hint">every story leaves a readable bracket — open it in the story view</span>
+              </div>
+            </div>
+            <div class="bx-foot"><b>1 PR per story</b> — verified through gates B0–B5</div>
+          </div>
+        </div>
+
+        <!-- Q4 — what to try first -->
+        <div class="bx c12">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ q4 — what should i try first?</span>
+              <span class="m">one command</span>
+            </div>
+            <div class="bx-body">
+              <div class="q4-grid">
+                <div class="term">
+                  <div class="term-bar">
+                    <span class="term-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span>
+                    <span class="term-title">wakii — first run</span>
+                  </div>
+                  <div class="term-body">
+                    <div><span class="t-ps">$</span> <span class="t-cmd">/superpowers <span class="str">"&lt;your idea, one line&gt;"</span></span></div>
+                    <div class="t-comment">// e.g. /superpowers "add a /metrics endpoint — with tests"</div>
+                    <div class="t-out">→ team picked it up · bracket created · gates queued</div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <p>In the superpowers panel, type <strong class="mono" style="font-size:13px">/superpowers</strong> plus your idea. The team takes it from there: bracket, gates, PR. No flags, no config, no second command to learn.</p>
+                  <p class="dim" style="font-size:13px;color:var(--text-dim)">That's the whole interface. Everything else — planning, verification, the watchdog — happens where you can watch it.</p>
+                  <div><a class="inline-link" href="https://wakii.xyz/docs/getting-started/">first-run walkthrough — getting-started</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="bx-foot"><b>try this first</b> — one command, no flags, no config</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTEXT — mock features bento (continues below on real landing)
+  ============================================================= -->
+  <section class="surface" aria-label="mock features bento">
+    <div class="container mockwrap">
+      <span class="ctx-tag">// mock — features bento continues below on the real landing (position only)</span>
+      <div class="bgrid">
+        <div class="bx c4">
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">▸ gates b0–b5</span><span class="m">hard checkpoints</span></div>
+            <div class="bx-body"><p>Hard checkpoints between idea and merge. A gate that fails stops the story — by design, not by suggestion.</p></div>
+            <div class="bx-foot"><b>b0–b5</b> enforced, not advisory</div>
+          </div>
+        </div>
+        <div class="bx c4">
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">▸ watchdog</span><span class="m">always on</span></div>
+            <div class="bx-body"><p>A dedicated agent watches every run for stalls and loops, so quiet failure doesn't become your problem.</p></div>
+            <div class="bx-foot"><b>watchdog</b> on every run</div>
+          </div>
+        </div>
+        <div class="bx c4">
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">▸ memory</span><span class="m">accumulates</span></div>
+            <div class="bx-body"><p>Decisions and outcomes accumulate in project memory, so story N starts smarter than story 1.</p></div>
+            <div class="bx-foot"><b>accumulates</b> across stories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SURFACE 2 — /download restructured (one primary action)
+  ============================================================= -->
+  <section class="surface" id="s2-download" aria-label="surface 2 — download">
+    <div class="container">
+      <div class="rail">
+        <span class="rail-n">surface 02 <span class="dim">/</span> /download — restructured</span>
+        <span class="rail-meta">one primary action · real version · first-run strip</span>
+      </div>
+
+      <div class="dl-head">
+        <div>
+          <p class="kicker"><span class="h">##</span> get-wakii</p>
+          <h2>Get Wakii.</h2>
+          <p class="lead" style="max-width:560px">One button for your machine. Everything else is here so nobody has to hunt — including the honest caveats.</p>
+        </div>
+        <div class="dl-meta">
+          <span class="vpill"><span class="dot"></span>v1.4.213 · latest</span>
+          <span class="dl-date">published 2026-09-20</span>
+          <span class="micro">free<span class="sep">·</span>open source<span class="sep">·</span>unsigned build</span>
+        </div>
+      </div>
+
+      <div class="bgrid">
+        <!-- PRIMARY — macOS -->
+        <div class="bx c8 dl-pri" id="card-mac">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ macos — primary download</span>
+              <span class="m"><span class="chip" id="chip-mac">→ for your machine</span></span>
+            </div>
+            <div class="bx-body">
+              <div class="arch" id="arch-arm">
+                <div class="arch-row">
+                  <a class="btn btn-primary btn-xl" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-arm64.dmg">get wakii — apple silicon</a>
+                  <span class="arch-tag on" id="tag-arm">recommended · most macs</span>
+                  <span class="arch-tag" id="tag-intel">→ matches your mac</span>
+                </div>
+                <span class="fname">Wakii-1.4.213-arm64.dmg</span>
+              </div>
+              <div class="or">or</div>
+              <div class="arch" id="arch-intel">
+                <div class="arch-row">
+                  <a class="btn btn-ghost btn-block" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-x64.dmg">mac with intel</a>
+                </div>
+                <span class="fname">Wakii-1.4.213-x64.dmg</span>
+              </div>
+              <p class="dl-note">Not sure which chip? Apple silicon = M-series. <span class="mono">→ </span>When in doubt, take arm64.</p>
+            </div>
+            <div class="bx-foot">unsigned build — first launch: System Settings → Privacy &amp; Security → <b>Open Anyway</b></div>
+          </div>
+        </div>
+
+        <!-- right rail: version + main window slot -->
+        <div style="display:flex;flex-direction:column;gap:16px" class="c4">
+          <div class="bx">
+            <div class="bx-in">
+              <div class="bx-label"><span class="t">▸ version</span><span class="m">latest</span></div>
+              <div class="bx-body" style="gap:8px">
+                <div class="ver-big">v1.4.213</div>
+                <div class="ver-sub">published 2026-09-20</div>
+                <div style="margin-top:6px"><a class="inline-link" href="https://github.com/wakii-dev/wakii/releases" target="_blank" rel="noopener">release notes &amp; older builds</a></div>
+              </div>
+              <div class="bx-foot">this page tracks the <b>latest release</b>, not a pinned one</div>
+            </div>
+          </div>
+          <div class="slot slot-lg" style="flex:1">
+            <span class="slot-name">main window</span>
+            <span class="slot-hint">what you'll see right after install — project open, team online</span>
+          </div>
+        </div>
+
+        <!-- windows -->
+        <div class="bx c4" id="card-win">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ windows</span>
+              <span class="m"><span class="chip" id="chip-win">→ for your machine</span></span>
+            </div>
+            <div class="bx-body">
+              <a class="btn btn-ghost btn-block" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/orca-windows-setup.exe">get wakii for windows</a>
+              <span class="fname">orca-windows-setup.exe</span>
+              <p class="dl-note">The installer keeps its original <span class="mono">orca</span> name — same app, Wakii inside.</p>
+            </div>
+            <div class="bx-foot">unsigned build — SmartScreen: <b>More info → Run anyway</b></div>
+          </div>
+        </div>
+
+        <!-- linux -->
+        <div class="bx c4">
+          <div class="bx-in">
+            <div class="bx-label"><span class="t">▸ linux</span><span class="m">build from source</span></div>
+            <div class="bx-body">
+              <p>No packaged Linux binary yet. Clone the repo and build — same app, same kit, same gates.</p>
+              <a class="btn btn-ghost btn-block" href="https://github.com/wakii-dev/wakii" target="_blank" rel="noopener">build from source</a>
+            </div>
+            <div class="bx-foot">no installer — <b>source only</b> (for now)</div>
+          </div>
+        </div>
+
+        <!-- mobile — honest soon -->
+        <div class="bx c4">
+          <div class="bx-in" style="border-style:dashed">
+            <div class="bx-label"><span class="t">▸ mobile</span><span class="m">soon</span></div>
+            <div class="bx-body">
+              <p>iOS and Android apps are coming soon. No store links yet — this cell is the honest placeholder, not a teaser.</p>
+              <span class="btn btn-soon btn-block" aria-disabled="true">app stores — soon</span>
+            </div>
+            <div class="bx-foot">android tinkerers: raw <b>app-release.apk</b> ships in releases — unsigned</div>
+          </div>
+        </div>
+
+        <!-- first-run strip -->
+        <div class="bx c12 firstrun">
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">▸ first run — three steps after install</span>
+              <span class="m">→ /docs/getting-started/</span>
+            </div>
+            <div class="bx-body">
+              <div class="steps">
+                <div class="step">
+                  <span class="step-n">01</span>
+                  <b>open a project</b>
+                  <span>Any folder. Wakii opens it like the editor you already know.</span>
+                </div>
+                <div class="step-arrow" aria-hidden="true">→</div>
+                <div class="step">
+                  <span class="step-n">02</span>
+                  <b>kit auto-installs</b>
+                  <span>The superpowers kit lands in <span class="mono" style="font-size:11.5px">~/.claude</span> on first run.</span>
+                </div>
+                <div class="step-arrow" aria-hidden="true">→</div>
+                <div class="step">
+                  <span class="step-n">03</span>
+                  <b>describe your first idea</b>
+                  <span>Type <span class="mono" style="font-size:11.5px">/superpowers "…"</span> and the team picks it up.</span>
+                </div>
+              </div>
+              <div><a class="btn btn-ghost" href="https://wakii.xyz/docs/getting-started/">read getting-started</a></div>
+            </div>
+            <div class="bx-foot"><b>~/.claude</b> — the kit's home; nothing to configure by hand</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container foot-row">
+    <span>VU-9 · SF-1 · direction A — prototype only, not production</span>
+    <span>roulette #16 · terminal-core soft-futurism — structure only, brand palette pinned</span>
+  </div>
+</footer>
+
+<script>
+  /* minimal JS — OS-detect chip: highlight only, never hide buttons; linux/unknown = no chip */
+  (function(){
+    var ua = navigator.userAgent || '';
+    var os = 'unknown';
+    if (/Mac/i.test(ua) && !/iPhone|iPad|iPod/i.test(ua)) os = 'mac';
+    else if (/Win/i.test(ua)) os = 'win';
+    else if (/Linux/i.test(ua) && !/Android/i.test(ua)) os = 'linux';
+
+    function hit(cardId, chipId){
+      var c = document.getElementById(cardId);
+      if (c) c.classList.add('os-hit');
+      var ch = document.getElementById(chipId);
+      if (ch) ch.classList.add('on');
+    }
+    if (os === 'mac') {
+      hit('card-mac','chip-mac');
+      /* arch refine when the browser exposes it; default stays arm64 */
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        navigator.userAgentData.getHighEntropyValues(['architecture']).then(function(h){
+          if (h && h.architecture === 'x86') {
+            var a = document.getElementById('tag-arm'), i = document.getElementById('tag-intel');
+            if (a) a.classList.remove('on');
+            if (i) i.classList.add('on');
+          }
+        }).catch(function(){});
+      }
+    } else if (os === 'win') {
+      hit('card-win','chip-win');
+    }
+    /* linux / unknown: no chip, no highlight */
+  })();
+</script>
+
+<!--
+============================================================
+VU-9 · SF-1 · DIRECTION A — structural roulette log
+============================================================
+  $ date +%S  = 15
+  15 % 20 + 1 = #16
+  #16 (Web-20 library, huashu-design) = Terminal-Core Soft-Futurism
+      等宽字+等距立方 · ref Cursor (Anysphere) × Teenage Engineering
+      中性 · 还原80%
+
+  TAKEN — structure/layout DNA only (brand PIN forbids its palette/fonts):
+    1. monospace-as-protagonist hierarchy — JetBrains Mono carries
+       headlines/labels/commands; Inter stays auxiliary body
+    2. terminal-window foreground chrome — Q4 cell is a real terminal
+       panel (title bar + traffic dots in brand tokens + prompt lines)
+    3. bento partitioning with hairline discipline — maps 1:1 onto the
+       brand .bx anatomy (kept intact)
+    4. 2.5D isometric-cube diagram — the pipeline motif: idea → team ×9
+       → gates b0–b5 → 1 pr (hand-built SVG, brand-token fills)
+    5. industrial-minimal spacing, numbered section rails, visible rules
+
+  DROPPED — contradicts brand terminal-mono PIN:
+    - charcoal #0B0D14 bg + warm-white #F2F0EF text → brand green-black
+      token set (#0A0E0D / #D7E2DD …)
+    - blue-purple gradient accent + halo glow → mint #45E0A8 only;
+      glow restricted to hover lift per brand anatomy
+    - "clickable multi-UI demo" ambition → honest dashed screenshot
+      placeholder frames instead (no fake app UI)
+
+  DEGRADE: none needed — the drawn style is already palette-adjacent
+  to the brand; only color/glow were swapped for pinned tokens.
+
+  Form-question #5 (visual motif origin — from CONTENT, not library):
+  the motif is the product's own assembly line. A Wakii story literally
+  moves idea → 9-agent team → gates B0–B5 → one verified PR, and the
+  first-run surface is a terminal command (/superpowers "…"). So the
+  isometric cubes ARE stories on a conveyor, and the terminal chrome IS
+  the panel the copy describes — the style library only supplied the
+  drawing convention.
+============================================================
+-->
+</body>
+</html>
