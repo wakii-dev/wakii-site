@@ -5,6 +5,7 @@ pubDate: "2026-09-29"
 category: "tech"
 tags: ["architecture", "qa", "workflow"]
 draft: false
+heroImage: "/blog/heroes/arch-ci-gates.png"
 ---
 
 Wakii's story process gets told mostly through its human gates — the independent stopping points before work counts as done. Less often told is the layer underneath those gates: machine gates that run by themselves, fail by themselves, and require nobody to remember to invoke them. This post reads that layer straight from the files, across two repos: the build chain of the very site you are reading, and the product's release-cut pipeline. It also points at a rare sight in a CI file — the place where a workflow states what it does not do, instead of leaving readers to guess.

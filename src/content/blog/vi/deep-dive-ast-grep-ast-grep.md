@@ -5,6 +5,7 @@ pubDate: "2026-10-18"
 category: "tech"
 tags: ["terminal", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-ast-grep-ast-grep.png"
 ---
 
 grep làm việc trên chữ: đưa một chuỗi, nó trả về các dòng chứa chuỗi đó. Nhưng code không phải chữ thuần — code là cây cú pháp. Đổi tên biến, xuống dòng, thêm ngoặc: ý nghĩa giữ nguyên, kết quả grep đổi. Repo ast-grep/ast-grep — 15.799 sao, license MIT, theo GitHub API ngày 2026-09-08 — đi theo hướng ngược lại: tìm và sửa code theo cấu trúc, bằng pattern trông như chính code cần tìm.

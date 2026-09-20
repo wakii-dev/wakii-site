@@ -5,6 +5,7 @@ pubDate: "2026-09-09"
 category: "tech"
 tags: ["skills", "linear", "workflow"]
 draft: false
+heroImage: "/blog/heroes/skill-writing-plans-linear.png"
 ---
 
 Hand a feature to someone — a new engineer, an agent that has never seen the repo, or yourself six weeks from now — with a few spoken sentences, and the result almost always drifts from what you pictured. The receiver is not the problem: the decisive information sits in whatever you took for granted, and none of it got written down. The `/writing-plans-linear` skill in the Wakii kit targets exactly that spot — it turns a spec into a plan for a reader with no context, then puts that plan on Linear. This post goes inside the skill, with two real plan files from the Wakii repo as proof.

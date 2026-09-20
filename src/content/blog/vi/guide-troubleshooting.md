@@ -5,6 +5,7 @@ pubDate: "2026-09-24"
 category: "tutorial"
 tags: ["guide", "wakii"]
 draft: false
+heroImage: "/blog/heroes/guide-troubleshooting.png"
 ---
 
 Agent báo "xong rồi" nhưng thay đổi không có đâu. Terminal mới không mở được

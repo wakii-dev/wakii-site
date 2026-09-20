@@ -5,6 +5,7 @@ pubDate: "2026-10-15"
 category: "tech"
 tags: ["architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-janhq-jan.png"
 ---
 
 Phần lớn ứng dụng chat AI mà bạn cài trên máy thực ra là một cái vỏ: "trí tuệ" nằm ở cloud, mất mạng là mất tính năng, và mỗi câu hỏi rời khỏi máy trước khi được trả lời. Jan đi chiều ngược lại — engine được đóng gói nằm ngay trong app, model tải về nằm trên đĩa của bạn, app vẫn chạy khi không có internet. Dự án này công khai trên GitHub với 44.380 stars (theo GitHub API ngày 2026-09-08), đáng đọc vì hai quyết định kiến trúc bên dưới: app tự host engine của mình, và mọi engine — local lẫn cloud — đi qua cùng một lớp interface.

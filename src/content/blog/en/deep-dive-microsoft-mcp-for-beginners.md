@@ -5,6 +5,7 @@ pubDate: "2026-10-10"
 category: "tech"
 tags: ["guide", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-microsoft-mcp-for-beginners.png"
 ---
 
 When Microsoft builds an entire 13-module curriculum just to teach the Model Context Protocol (MCP), the signal matters more than the content: MCP is mature enough to have a canonical textbook. The microsoft/mcp-for-beginners repo has reached 17,170 stars (per the GitHub API on 2026-09-08) — not because it contains rare code (it is all learning material), but because it is the official answer to the question "where do I start with MCP". This post reads the curriculum as an artifact: what it teaches in which order, how a lesson is designed, and what that says about the maturity of the ecosystem.

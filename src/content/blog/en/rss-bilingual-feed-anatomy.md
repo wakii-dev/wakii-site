@@ -5,6 +5,7 @@ pubDate: "2026-09-06"
 category: "tech"
 tags: ["rss", "wakii", "workflow"]
 draft: false
+heroImage: "/blog/heroes/rss-bilingual-feed-anatomy.png"
 ---
 
 Anyone following this blog through an RSS reader needs exactly one address:

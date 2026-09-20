@@ -5,6 +5,7 @@ pubDate: "2026-10-07"
 category: "tech"
 tags: ["agents", "memory", "features"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-headroomlabs-ai-headroom.png"
 ---
 
 Coding agents burn money not only because models are expensive, but because context is dirty. One search returns a hundred JSON results; one log dump weighs tens of thousands of tokens; most of it is repeated noise. The model reads all of it, you pay for all of it — and it can still miss the one FATAL line buried in the noise. Headroom attacks exactly that: it compresses everything an agent reads before it reaches the model, entirely on your machine.

@@ -5,6 +5,7 @@ pubDate: "2026-10-16"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-openai-openai-agents-python.png"
 ---
 
 Multi-agent frameworks tend to solve orchestration by stacking layers: declarative roles, actor runtimes, or documented standard operating procedures. The OpenAI Agents SDK — 29,267 stars, MIT license, per the GitHub API on 2026-09-08 — grows the other way: it keeps the surface as small as it can. An agent is one dataclass; a handoff is a tool; a guardrail is a function that runs in parallel; tracing is built out as a product feature of its own. This post reads the real code under `src/agents` (main at commit `544b8b0`, as of 2026-09-08) to see how the four primitives fit together — and what Wakii borrows about placing machine gates before human ones.

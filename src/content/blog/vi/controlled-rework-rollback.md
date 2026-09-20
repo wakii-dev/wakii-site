@@ -5,6 +5,7 @@ pubDate: "2026-08-26"
 category: "tech"
 tags: ["story-workflow", "git", "workflow"]
 draft: false
+heroImage: "/blog/heroes/controlled-rework-rollback.png"
 ---
 
 Spec đổi giữa chừng là chuyện bình thường của dự án thật: người dùng

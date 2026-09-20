@@ -5,6 +5,7 @@ pubDate: "2026-09-08"
 category: "tech"
 tags: ["landscape", "agents", "oss", "mcp", "workflow"]
 draft: false
+heroImage: "/blog/heroes/agentic-landscape-50-projects.png"
 ---
 
 A year ago, "agentic coding" was a question. Today it is an industry with its own map.

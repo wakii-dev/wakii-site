@@ -5,6 +5,7 @@ pubDate: "2026-10-14"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-crewaiinc-crewai.png"
 ---
 
 Multi-agent frameworks tend to fail in one of two ways: agents become piles of free-form prompts nobody can review, or the pipeline gets so rigid it cannot express a mid-run judgment call. crewAI — 58,233 stars, MIT license, per the GitHub API on 2026-09-08 — takes a different path: an agent's role is declarative data, and orchestration splits across two runtimes. Crew for the parts that should run autonomously, Flow for the parts that need strict ordering. This post reads the actual code under `lib/crewai/src/crewai` (main at commit `34199c2`, on 2026-09-08) to see how they cut the problem — and why that cut lowers the cost of understanding the whole framework.

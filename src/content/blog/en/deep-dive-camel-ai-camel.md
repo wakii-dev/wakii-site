@@ -5,6 +5,7 @@ pubDate: "2026-10-17"
 category: "tech"
 tags: ["agents", "qa"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-camel-ai-camel.png"
 ---
 
 Most multi-agent frameworks answer the same question: how do many agents coordinate to finish a task. CAMEL asks a different one: how do you get agents to produce data clean enough for research. The camel-ai/camel repo — 17,685 stars per the GitHub API on 2026-09-08, Apache-2.0 licensed — started from a paper on role-playing between two agents and grew into data-generation and benchmarking infrastructure for large-scale agent research. This post walks through three layers of the actual code: the conversation, the data filters, and the benchmarks — to see what a research repo measures quality with, instead of trusting a feeling.

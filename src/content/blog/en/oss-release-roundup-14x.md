@@ -5,6 +5,7 @@ pubDate: "2026-09-29"
 category: "tech"
 tags: ["oss", "release"]
 draft: false
+heroImage: "/blog/heroes/oss-release-roundup-14x.png"
 ---
 
 Release notes are a project's most public document: anyone can read them, and precisely because of that they are also the easiest place to exaggerate — features get told from their best angle, numbers drift by unchecked. This post runs the opposite direction on the Wakii 1.4.x release line: an inventory of what actually went out, each item tied to a verbatim notes line, a commit, or a command you can rerun yourself. It does not cover release cadence — that already has [its own post](/blog/shipping-cadence-two-releases-one-day/). It covers content: which item belongs to which release, where the evidence lives, and which thing does not exist.

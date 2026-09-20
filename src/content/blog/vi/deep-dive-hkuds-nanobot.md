@@ -5,6 +5,7 @@ pubDate: "2026-10-14"
 category: "tech"
 tags: ["agents", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hkuds-nanobot.png"
 ---
 
 Phần lớn framework agent chào mời bạn bằng số lượng: bao nhiêu vai, bao nhiêu pattern orchestration, bao nhiêu abstraction. HKUDS/nanobot đi ngược lại — một agent cá nhân chạy trong WebUI, terminal hay chat app, nhưng gói phần lõi lại rất chặt. README tự giới thiệu đây là "an ultra-lightweight, open-source, self-hosted personal AI agent framework" (repo [HKUDS/nanobot](https://github.com/HKUDS/nanobot), license MIT theo GitHub API ngày 2026-09-08, 47.883 sao theo GitHub API ngày 2026-09-08). Điều đáng học không phải danh sách tính năng, mà cách họ giữ surface nhỏ một cách có chủ đích: cấu hình là dữ liệu, persona là Markdown, và phần mở rộng nằm ngoài core. Bài này mổ xẻ bốn quyết định kiến trúc đó trên code thật tại commit `104917a`.

@@ -5,6 +5,7 @@ pubDate: "2026-10-12"
 category: "tech"
 tags: ["architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-vllm-project-vllm.png"
 ---
 
 Khi một LLM phải phục vụ nhiều request cùng lúc, GPU thường không thiếu phép tính — nó thiếu chỗ chứa. Mỗi token được sinh ra kéo theo KV-cache — "tâm trí" của chuỗi trước đó, nằm trên VRAM đắt đỏ. Serving thế hệ trước cấp phát vùng nhớ này theo kiểu đặt trước cả vùng tối đa rồi bỏ phí phần chưa dùng. vLLM, khởi nguồn từ Sky Computing Lab của UC Berkeley, giải bài này bằng cách mượn lại kỹ thuật hệ điều hành đã kiểm chứng: phân trang bộ nhớ.

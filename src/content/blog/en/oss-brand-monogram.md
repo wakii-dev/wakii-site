@@ -5,6 +5,7 @@ pubDate: "2026-09-28"
 category: "tech"
 tags: ["oss", "design", "wakii"]
 draft: false
+heroImage: "/blog/heroes/oss-brand-monogram.png"
 ---
 
 An icon is easy to dismiss as a detail — until your project is a fork, and the icon becomes the sharpest identity boundary between you and the parent project. At that point "draw the logo" stops being a pure design task: one shape has to live in two repos with two export pipelines, one side a web app consuming vectors, the other a desktop app needing icns and png. Wakii solves this the way wall builders always have: one geometry, everything else derived from it. This post reads both ends of that pipeline — from the SVG file on the site to the icon build script in the product repo — and lets the files make the argument themselves.

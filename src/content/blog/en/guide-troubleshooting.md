@@ -5,6 +5,7 @@ pubDate: "2026-09-24"
 category: "tutorial"
 tags: ["guide", "wakii"]
 draft: false
+heroImage: "/blog/heroes/guide-troubleshooting.png"
 ---
 
 The agent says "done" but the change is nowhere. A terminal won't open on

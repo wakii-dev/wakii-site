@@ -5,6 +5,7 @@ pubDate: "2026-09-25"
 category: "tech"
 tags: ["architecture", "agents"]
 draft: false
+heroImage: "/blog/heroes/arch-relay-cloud.png"
 ---
 
 When you open the Wakii app on your phone to follow an agent running on the machine at home, your signal does not fly straight from the phone to the desktop. Between the two machines sits a relay cloud: a server tier that accepts a connection from each side and then splices them together. What is worth discussing is not that an intermediary exists — it is how that intermediary is designed. Both the phone and the desktop only dial outward; neither side opens a port the other could touch. This post walks that relay through the public code in the `wakii-dev/wakii` repo: the handshake, the splice state machine, admission budgets, and the operations workflows.

@@ -5,6 +5,7 @@ pubDate: "2026-09-04"
 category: "build-log"
 tags: ["build-log", "story-workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/wakii-in-production-hub-store.png"
 ---
 
 Mọi bài giới thiệu công cụ lập trình đều có một câu quen thuộc: "chúng tôi dùng

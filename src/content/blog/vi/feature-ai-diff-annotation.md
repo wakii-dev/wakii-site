@@ -5,6 +5,7 @@ pubDate: "2026-09-17"
 category: "tech"
 tags: ["features", "qa"]
 draft: false
+heroImage: "/blog/heroes/feature-ai-diff-annotation.png"
 ---
 
 Agent sửa xong code, người review mở diff và để lại vài comment — rồi vòng đời

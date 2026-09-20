@@ -5,6 +5,7 @@ pubDate: "2026-09-13"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-web-design-guidelines.png"
 ---
 
 A UI page can look perfect in a screenshot and still be wrong in ways no camera captures. Focus ring deleted with `outline: none`? Screenshots can't see it — a screenshot contains no focus. An icon button missing its `aria-label`? The image looks exactly the same. A decorative animation that keeps running for users who set `prefers-reduced-motion` in their OS? A screenshot is a still frame. `/web-design-guidelines`, a skill in the design group of the Wakii kit, was built for exactly that class of failure: it reviews UI code against a list of concrete rules, each one checkable in code, no taste required.

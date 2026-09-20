@@ -5,6 +5,7 @@ pubDate: "2026-09-23"
 category: "tutorial"
 tags: ["guide", "linear", "workflow"]
 draft: false
+heroImage: "/blog/heroes/guide-linear-github-wiring.png"
 ---
 
 Your work lives in three places: issues on Linear, reviews on GitHub, code

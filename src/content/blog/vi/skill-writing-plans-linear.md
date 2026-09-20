@@ -5,6 +5,7 @@ pubDate: "2026-09-09"
 category: "tech"
 tags: ["skills", "linear", "workflow"]
 draft: false
+heroImage: "/blog/heroes/skill-writing-plans-linear.png"
 ---
 
 Giao một tính năng cho ai đó — engineer mới, một agent chưa từng thấy repo, hay chính bạn sáu tuần sau — bằng vài câu nói miệng, kết quả gần như luôn lệch khỏi những gì bạn hình dung. Không phải người nhận kém: thông tin quyết định nằm ở những gì bạn cho là hiển nhiên, và không cái nào được viết ra. Skill `/writing-plans-linear` trong kit của Wakii xử lý đúng chỗ đó — biến spec thành kế hoạch cho người đọc không có ngữ cảnh nào, rồi đặt bản kế hoạch lên Linear. Bài này đi vào nội tại của skill, kèm hai plan file thật trong repo Wakii.

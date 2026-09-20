@@ -5,6 +5,7 @@ pubDate: "2026-09-25"
 category: "tech"
 tags: ["architecture", "agents", "electron"]
 draft: false
+heroImage: "/blog/heroes/arch-native-computer-use.png"
 ---
 
 Khi một agent quyết định "click nút X" trên desktop của bạn, cái quyết định đó không phải là một cú click. Giữa ý định và pixel là cả một pipeline: tham số phải qua validation, một provider phải được chọn theo hệ điều hành, một native module phải thực thi trong tiến trình của nó, và kết quả phải được chứng minh trước khi báo về. Bài này đi qua pipeline đó bằng code thật trong repo công khai `wakii-dev/wakii` — thư mục `src/main/computer/` và `native/` — để bạn thấy chính xác ranh giới nào nằm ở đâu.

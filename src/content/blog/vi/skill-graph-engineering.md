@@ -5,6 +5,7 @@ pubDate: "2026-09-14"
 category: "tech"
 tags: ["skills", "architecture", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-graph-engineering.png"
 ---
 
 Agent có hai điểm yếu kinh điển: quên thế giới của bạn ngay ngoài cửa sổ ngữ cảnh, và lúng túng khi việc lớn phải chia nhiều tay. Hai vấn đề nghe như một nhưng khác loại, và giải bằng hai cấu trúc dữ liệu khác nhau. Skill `/graph-engineering` của kit Wakii mở đầu đúng bằng sự phân biệt đó: knowledge graph cho câu hỏi "agent nhớ gì", task graph cho câu hỏi "agent phối hợp thế nào". Bài này đi qua hai nửa theo đúng thứ tự skill dạy, rồi đọc ngược một story thật để thấy nửa thứ hai không phải lý thuyết.

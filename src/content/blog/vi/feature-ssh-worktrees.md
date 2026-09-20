@@ -5,6 +5,7 @@ pubDate: "2026-09-16"
 category: "tech"
 tags: ["features", "cli", "worktree"]
 draft: false
+heroImage: "/blog/heroes/feature-ssh-worktrees.png"
 ---
 
 Bài trước trong loạt này kết thúc ở một kết luận vật lý: song song thật bắt đầu từ đĩa — mỗi việc một worktree, mỗi worktree một branch. Nhưng không phải repo nào cũng nằm trên máy của bạn: repo nội bộ sau jump host, box build ở văn phòng khác, máy dùng chung của cả nhóm. Đường quen thuộc là ssh vào rồi clone thủ công vào một thư mục dùng chung — và bài học "ai ghi sau đè ai ghi trước" quay lại nguyên vẹn. Wakii chọn đường khác: lấy SSH target làm điểm xuất phát, và xử lý phần khó của kết nối như code đọc được.

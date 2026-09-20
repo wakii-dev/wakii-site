@@ -5,6 +5,7 @@ pubDate: "2026-08-29"
 category: "tutorial"
 tags: ["linear", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/linear-as-external-memory.png"
 ---
 
 An agent has no memory between sessions. When the context window runs out,

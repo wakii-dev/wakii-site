@@ -5,6 +5,7 @@ pubDate: "2026-09-04"
 category: "build-log"
 tags: ["build-log", "story-workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/wakii-in-production-hub-store.png"
 ---
 
 Every developer-tool pitch contains the same sentence: "we use it in

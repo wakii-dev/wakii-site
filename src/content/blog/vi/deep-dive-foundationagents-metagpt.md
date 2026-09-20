@@ -5,6 +5,7 @@ pubDate: "2026-10-13"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-foundationagents-metagpt.png"
 ---
 
 Đa agent dễ sa vào một hình thức: một phòng chat, nhiều AI, câu hỏi qua lại liên miên, và không ai chỉ ra được đâu là sản phẩm cuối. MetaGPT — dự án 70.263 stars, license MIT (theo GitHub API ngày 2026-09-08) — đi lối khác: mô phỏng một công ty phần mềm với đầy đủ product manager, architect, project manager, engineer và QA. Điều đáng học là hội thoại trong công ty đó gần như bị cấm: mỗi vai chỉ trao đổi với vai kia qua artifact có cấu trúc, đóng vai trò hợp đồng giữa các bộ phận. Cách chuẩn hoá handoff này còn giá trị cả khi dự án gốc đã chậm lại.

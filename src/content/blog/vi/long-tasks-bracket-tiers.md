@@ -5,6 +5,7 @@ pubDate: "2026-08-27"
 category: "tech"
 tags: ["story-workflow", "workflow", "linear"]
 draft: false
+heroImage: "/blog/heroes/long-tasks-bracket-tiers.png"
 ---
 
 Một dự án dài hiếm khi chết vì thiếu việc làm — nó chết vì không ai còn nhớ dự

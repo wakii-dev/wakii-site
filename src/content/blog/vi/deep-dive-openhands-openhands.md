@@ -5,6 +5,7 @@ pubDate: "2026-10-07"
 category: "tech"
 tags: ["agents", "architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-openhands-openhands.png"
 ---
 
 Ngày 13-03-2024, OpenHands xuất hiện trên GitHub như một dự án nghiên cứu về agent lập trình tự trị. Hai năm rưỡi sau, repo này — 86.809 sao theo GitHub API ngày 2026-09-08 — đã đổi vai thành Agent Canvas: một control center self-hosted, nơi bạn điều hành không chỉ agent của nó mà cả Claude Code, Codex hay Gemini CLI. Điều đáng học không nằm ở con số sao, mà ở cách dự án tách runtime agent khỏi mặt điều khiển: agent chạy như một service có địa chỉ riêng, còn ba cửa vào — GUI, API, CLI — cùng ngó xuống đúng một runtime. Bài này mổ xẻ kiến trúc đó bằng code thật trên main, số liệu ghi kèm ngày lấy.

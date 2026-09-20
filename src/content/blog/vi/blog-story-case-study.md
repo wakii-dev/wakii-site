@@ -5,6 +5,7 @@ pubDate: "2026-09-03"
 category: "build-log"
 tags: ["build-log", "story-workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/blog-story-case-study.png"
 ---
 
 Thể loại case study trong bài kỹ thuật có một điểm yếu cố hữu: người viết vừa là

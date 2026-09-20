@@ -5,6 +5,7 @@ pubDate: "2026-09-30"
 category: "build-log"
 tags: ["build-log", "wakii", "evidence"]
 draft: false
+heroImage: "/blog/heroes/building-wakii-in-the-open-log-4.png"
 ---
 
 [Log 3](/vi/blog/building-wakii-in-the-open-log-3/) kể về cái khung: FI-349 dựng lại blog và khép bằng PR #2. Log này kể về thứ nằm trong khung — hai mươi bài longform của story FI-359, mỗi bài một bản VI một bản EN. Phần thú vị không phải con số 20. Phần thú vị là bộ khung editorial được dựng cùng lúc để bảo đảm hai mươi bài ấy không nói dối: một matrix khóa trước khi viết, một lint đếm từ không chịu nuốt cho ai, và một danh sách cấm chạy cùng build. Story khép bằng PR #3 — và phần việc chưa hết: sau merge còn một lượt integration đáng kể chi tiết.

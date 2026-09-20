@@ -5,6 +5,7 @@ pubDate: "2026-08-20"
 category: "tutorial"
 tags: ["workflow", "agents", "autonomy"]
 draft: false
+heroImage: "/blog/heroes/zero-setup-agent-team.png"
 ---
 
 Công cụ cho developer thường mở đầu bằng một README ba màn hình: cài dependency

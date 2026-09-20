@@ -5,6 +5,7 @@ pubDate: "2026-09-15"
 category: "tech"
 tags: ["skills", "workflow"]
 draft: false
+heroImage: "/blog/heroes/skill-prompt-master.png"
 ---
 
 Bạn viết prompt mỗi ngày — cho chatbot, cho IDE, cho generator ảnh — và đa số lần nó ra đời theo cảm hứng: vài câu mông lung — gửi, lệch, viết lại, lệch tiếp. Kit kỹ năng của Wakii có một skill nhìn việc này khác đi. prompt-master — một trong 13 kỹ năng public của kit, tại thời điểm viết 2026-09-08 — tuyên bố gọn một dòng: prompt không phải câu hỏi lặp theo cảm hứng, mà là sản phẩm có spec: intent đã rút, tool đích đã định, format output khóa từ đầu. Bài này đọc thẳng source của skill để xem tuyên bố đó được thi hành thế nào.

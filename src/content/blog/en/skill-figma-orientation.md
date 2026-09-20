@@ -5,6 +5,7 @@ pubDate: "2026-09-14"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-figma-orientation.png"
 ---
 
 An agent with Figma tools in hand doesn't automatically know where to start. Before it can draw its first node, it has to answer a smaller question: what kind of task is this — reading the canvas, writing to it, translating a design into code, or generating a diagram? Pick the wrong kind and you call the wrong tool, and some wrong calls don't fail on the spot; they leave consequences that are hard to trace later. The `/figma-orientation` skill in the Wakii kit exists for exactly that moment: a thin layer that stands in front of the Figma task, reads the intent, and only then points the way.

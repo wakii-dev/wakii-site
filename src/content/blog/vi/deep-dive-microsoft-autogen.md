@@ -5,6 +5,7 @@ pubDate: "2026-10-13"
 category: "tech"
 tags: ["agents", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-microsoft-autogen.png"
 ---
 
 AutoGen là một trong những framework agent đa vai nổi nhất của Microsoft — 60.866 sao

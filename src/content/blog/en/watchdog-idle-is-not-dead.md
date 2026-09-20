@@ -5,6 +5,7 @@ pubDate: "2026-08-23"
 category: "tech"
 tags: ["story-workflow", "workflow", "guardrails"]
 draft: false
+heroImage: "/blog/heroes/watchdog-idle-is-not-dead.png"
 ---
 
 Watch a long story run and the question that keeps coming back is not "how

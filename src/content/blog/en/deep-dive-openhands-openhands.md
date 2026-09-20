@@ -5,6 +5,7 @@ pubDate: "2026-10-07"
 category: "tech"
 tags: ["agents", "architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-openhands-openhands.png"
 ---
 
 On March 13, 2024, OpenHands appeared on GitHub as a research project about autonomous coding agents. Two and a half years later, the repo — 86,809 stars per the GitHub API on 2026-09-08 — has changed roles: it is now Agent Canvas, a self-hosted control center where you operate not only its own agent but also Claude Code, Codex, or Gemini CLI. The interesting lesson is not the star count but the split: the agent runtime is separated from the control surface — the agent runs as a service with its own address, and three entry points — GUI, API, CLI — all look down at exactly one runtime. This article dissects that architecture from real code on main, every number stamped with its pull date.

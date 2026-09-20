@@ -5,6 +5,7 @@ pubDate: "2026-09-05"
 category: "tech"
 tags: ["og", "seo", "wakii"]
 draft: false
+heroImage: "/blog/heroes/og-article-contract-anatomy.png"
 ---
 
 Paste a link to a blog post into Facebook, X, or Zalo and you get (or don't

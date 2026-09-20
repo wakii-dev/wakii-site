@@ -5,6 +5,7 @@ pubDate: "2026-08-29"
 category: "tutorial"
 tags: ["linear", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/linear-as-external-memory.png"
 ---
 
 Agent không có trí nhớ giữa các phiên. Hết context window, mọi thứ nó biết về

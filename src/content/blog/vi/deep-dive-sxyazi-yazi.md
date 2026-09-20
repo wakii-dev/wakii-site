@@ -5,6 +5,7 @@ pubDate: "2026-10-21"
 category: "tech"
 tags: ["terminal", "architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-sxyazi-yazi.png"
 ---
 
 File manager terminal nghe như một công cụ của quá khứ, cho tới khi bạn mở một thư mục vài chục nghìn file trên màn hình 4K và muốn xem ảnh, xem video, lọc tên file mà không rời tay khỏi bàn phím. Yazi — tên nghĩa là "vịt" — của sxyazi là file manager hiện đại theo đúng nghĩa đó: 42.043 sao, 1.009 fork, license MIT (theo GitHub API ngày 2026-09-08), mô tả chính thức — "Blazing fast terminal file manager written in Rust, based on async I/O" ([sxyazi/yazi](https://github.com/sxyazi/yazi), GitHub API ngày 2026-09-08). Điều đáng học không phải tốc độ, mà cách repo tổ chức một ứng dụng TUI phức tạp: nhìn vào workspace của nó là thấy một bản đồ kiến trúc hoàn chỉnh.

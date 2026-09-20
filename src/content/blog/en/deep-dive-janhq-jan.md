@@ -5,6 +5,7 @@ pubDate: "2026-10-15"
 category: "tech"
 tags: ["architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-janhq-jan.png"
 ---
 
 Most chat-AI applications you install on your machine are shells: the intelligence lives in the cloud, losing connectivity means losing the feature, and every question leaves your machine before it gets answered. Jan runs the other direction — the engine ships inside the app, models you download sit on your own disk, and the app keeps working without internet. The project is publicly available on GitHub with 44,380 stars (per GitHub API on 2026-09-08), and it is worth reading for two architectural decisions underneath: the app hosts its own engine, and every engine — local or cloud — passes through a single interface layer.

@@ -5,6 +5,7 @@ pubDate: "2026-09-25"
 category: "tech"
 tags: ["architecture", "agents"]
 draft: false
+heroImage: "/blog/heroes/arch-relay-cloud.png"
 ---
 
 Khi bạn mở app Wakii trên điện thoại để theo dõi một agent đang chạy ở máy nhà, tín hiệu của bạn không bay thẳng từ điện thoại tới desktop. Giữa hai máy là một relay cloud: một tầng server nhận kết nối từ cả hai phía rồi ghép chúng lại với nhau. Điều đáng nói không phải việc có trung gian, mà cách trung gian đó được thiết kế. Cả điện thoại lẫn desktop đều chỉ dial ra ngoài, không bên nào mở port cho bên nào chạm vào. Bài này đi qua relay đó bằng chính code công khai trong repo `wakii-dev/wakii`: từ handshake, máy trạng thái splice, tới admission budget và các workflow vận hành.

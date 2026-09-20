@@ -5,6 +5,7 @@ pubDate: "2026-09-12"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-design-taste-frontend.png"
 ---
 
 UI xấu nhất không lộ diện lúc đang mock. Lúc đó mọi hướng còn mở, chưa cái nào đáng tiếc. UI xấu lộ diện ở bước cuối: trang đã build xong, tests xanh, và ai đó nhìn thấy hàng ba card y hệt, tiêu đề to như hét, tên khách hàng trong testimonial là "John Doe". `/design-taste-frontend` sinh ra cho đúng thời điểm đó: một skill audit-first trong kit design của Wakii, không tham gia lúc dựng, chỉ lên sân khấu khi trang đã tồn tại và cần bị soi.

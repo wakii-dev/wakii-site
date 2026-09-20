@@ -5,6 +5,7 @@ pubDate: "2026-10-04"
 category: "tech"
 tags: ["agents", "workflow", "oss", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-punkpeye-awesome-mcp-servers.png"
 ---
 
 Một giao thức mới chỉ có thật khi nó có danh bạ. Với MCP (Model Context Protocol), danh bạ đó là awesome-mcp-servers của punkpeye: 94.614★, 15.881 fork, license MIT, lần push cuối 2026-09-07 (theo GitHub API ngày 2026-09-08). Phần lớn người ta mở list này để tìm đúng một server cho nhu cầu của mình. Bài này đọc nó theo cách khác: như bảng chỉ số sức khoẻ của cả hệ sinh thái — ngành nào đang đông, mục mới sinh ra nhanh thế nào, và một danh sách hàng nghìn mục liệu còn tổ chức được bằng tay hay không.

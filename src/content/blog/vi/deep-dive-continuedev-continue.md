@@ -5,6 +5,7 @@ pubDate: "2026-10-22"
 category: "tech"
 tags: ["agents", "workflow", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-continuedev-continue.png"
 ---
 
 Khi cả thị trường đua nhau dựng IDE mới, Continue chọn chiều ngược lại: giữ nguyên VS Code hoặc JetBrains của bạn, rồi gắn trợ lý AI vào đúng editor đó. Cách họ làm việc đó — gom models, rules, context và công cụ MCP vào một file config — vẫn đáng đọc hôm nay, kể cả sau khi dự án dừng. Vì theo GitHub API ngày 2026-09-08, repo 35.833 sao này đã chuyển sang read-only, và cách một dự án lớn khép lại tử tế cũng là bài học không kém phần kỹ thuật.
