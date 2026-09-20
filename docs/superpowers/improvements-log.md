@@ -191,3 +191,6 @@
 - **`argv[indexOf('--flag') + 1]` khi thiếu flag = argv[0] = node binary** (không bắt đầu `-` nên qua guard `startsWith('-')`) — default path của CLI script phải test no-arg THẬT, không chỉ happy path qua flag (reviewer P1 bắt: crawler-probe in heading node-bin path). Fix khuôn: `const i = argv.indexOf('--url'); const v = i !== -1 ? argv[i+1] : undefined;`
 - **Đọc Linear comments bằng orca**: `orca linear comments` KHÔNG tồn tại; `orca linear issue X --comments --json` → comments ở `result.comments` (NGANG HÀNG `result.issue`, không phải lồng trong issue). story-verify B3 grep literal `VERDICT[^\n]{0,40}APPROVED` + `CHECKLIST-4Q` trong CÙNG body — đọc trực tiếp `~/.claude/bin/story-verify` nhanh hơn đoán format từ SF trước.
 - **SF worker terminal không mutate được DAG run của coordinator** — `task-update --run <run>` từ terminal SF vẫn `consumer_fenced` (run bind terminal tạo nó, FI-410 mở rộng: kể cả mutation có --run). Task status để coordinator update; SF worker báo qua evidence/comment.
+
+## 2026-09-20 — VU-9 SF-1 (VU-10)
+- `~/.claude/bin/story-verify` line 187: `BRACKET: unbound variable` khi chạy `story-verify sf-1` — script vẫn chạy đủ (READY-TO-DONE đọc được) nhưng lỗi in ra đầu output. Suggested: guard `${BRACKET:-}` hoặc set trước khi dùng. ( Principle 6 flag — không tự sửa script.)
