@@ -1,18 +1,22 @@
 ---
 /**
- * MobileConnect — jumbo bento cell innards (SF-2, FI-302). Design binding 1:1:
- * docs/superpowers/designs/sf-downloads-direction.md "Bento Dispatch" —
- * Surface 2 = the sp8 jumbo cell of /download.
+ * MobileConnect — mobile cell innards (SF-2 FI-302; VU-9 SF-3 rewire).
+ * Design binding: docs/superpowers/designs/ux-funnel-direction.md
+ * "Terminal Conveyor" Surface 2 (SUPERSEDES sf-downloads-direction.md
+ * for /download surfaces) — now the sp4 mobile cell of /download
+ * (single-column: QR on top, badges + caps below).
  *
- * Prop-driven for SF-3 teaser reuse: pass the `mobile` slice of
- * src/i18n/downloads.ts (KEY-OWNERSHIP: SF-1 owns those keys — this
- * component never hardcodes copy). Flags + store URLs come from
- * src/config.ts directly so every consumer renders the same flag state.
+ * Prop-driven: pass the `mobile` slice of src/i18n/downloads.ts
+ * (KEY-OWNERSHIP: SF-1 owns those keys — this component never hardcodes
+ * copy). Flags come from src/config.ts; URLs come from the release-
+ * resolution module src/utils/release.ts (D5 consumers-rewire: no direct
+ * DOWNLOAD_URLS / MOBILE_STORE_URLS imports — the module owns them).
  *
  * Gates baked in:
  *   G-QR  QR renders ONLY when MOBILE_LIVE AND a real store URL exists;
- *         encodes the store page (never a pairing endpoint — site is static).
- *         flag=false → white overlay with the reviewed coming-soon copy.
+ *         encodes the RESOLVED release APK / store page (never a pairing
+ *         endpoint — site is static). flag=false → white overlay with the
+ *         reviewed coming-soon copy.
  *   G-A2  badges link the real store URL when present; a missing URL renders
  *         an honest dashed badge without a href (partial-fill safe).
  *   G-C   capabilities = exactly the reviewed `caps` array (3 items);
@@ -21,17 +25,26 @@
  * Renders the cell INNARDS (.bx-in …) only — the page owns the outer
  * .bx wrapper + grid placement (span map stays with the layout).
  */
-import { MOBILE_LIVE, MOBILE_STORE_URLS, REPO_URL } from '../../config';
+import { MOBILE_LIVE, REPO_URL } from '../../config';
+import { getRelease } from '../../utils/release';
 import QRCode from 'qrcode';
 import type { DownloadStrings } from '../../i18n/downloads';
 
 interface Props {
   t: DownloadStrings['mobile'];
+  /** D6 OS-detect chip text — rendered in the label meta when set. */
+  osChip?: string;
 }
-const { t } = Astro.props;
+const { t, osChip } = Astro.props;
 
-// G-QR: build-time SVG, store page as the encoded target.
-const storeUrl = MOBILE_STORE_URLS.ios || MOBILE_STORE_URLS.android || '';
+// D5 — resolved URLs (android apk validated against the release response;
+// ios is a store URL passed through the module).
+const release = await getRelease();
+const iosUrl = release.mobileIos;
+const androidUrl = release.assets.androidApk.url;
+
+// G-QR: build-time SVG, store page / resolved apk as the encoded target.
+const storeUrl = iosUrl || androidUrl || '';
 const qrSvg =
   MOBILE_LIVE && storeUrl
     ? await QRCode.toString(storeUrl, {
@@ -49,7 +62,10 @@ const releasesUrl = `${REPO_URL}/releases`;
 <div class="bx-in">
   <div class="bx-label">
     <span class="t">{t.label}</span>
-    <span class="pill">qr pairing</span>
+    <span class="label-meta">
+      {osChip && <span class="chip">{osChip}</span>}
+      <span class="pill">qr pairing</span>
+    </span>
   </div>
   <div class="bx-body">
     <div class="mob-grid">
@@ -59,8 +75,8 @@ const releasesUrl = `${REPO_URL}/releases`;
       <div class="mob-side">
         <div class="badges">
           {
-            MOBILE_LIVE && MOBILE_STORE_URLS.ios ? (
-              <a class="badge" href={MOBILE_STORE_URLS.ios}>
+            MOBILE_LIVE && iosUrl ? (
+              <a class="badge" href={iosUrl}>
                 <span class="os"></span>
                 <span class="bl"><b>{t.badgeIos}</b></span>
               </a>
@@ -72,8 +88,8 @@ const releasesUrl = `${REPO_URL}/releases`;
             )
           }
           {
-            MOBILE_LIVE && MOBILE_STORE_URLS.android ? (
-              <a class="badge" href={MOBILE_STORE_URLS.android}>
+            MOBILE_LIVE && androidUrl ? (
+              <a class="badge" href={androidUrl}>
                 <span class="os">▶</span>
                 <span class="bl"><b>{t.badgeAndroid}</b></span>
               </a>
@@ -134,6 +150,12 @@ const releasesUrl = `${REPO_URL}/releases`;
     content: '▸ ';
     color: var(--accent);
   }
+  .label-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
   .pill {
     font-size: 10.5px;
     color: var(--accent);
@@ -142,6 +164,23 @@ const releasesUrl = `${REPO_URL}/releases`;
     border-radius: 20px;
     padding: 2px 10px;
     white-space: nowrap;
+  }
+  /* D6 OS-detect chip — display:none until the PE script adds .on
+     (no-JS fallback: chip never shows, all badges render normally). */
+  .chip {
+    display: none;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .chip.on {
+    display: inline-block;
   }
   .bx-body {
     padding: 20px 22px;
@@ -166,12 +205,12 @@ const releasesUrl = `${REPO_URL}/releases`;
     text-decoration: underline;
   }
 
-  /* ---- mobile jumbo cell (hand-off Surface 2) ---- */
+  /* ---- mobile cell (VU-9 SF-3: sp4 → single column, QR on top) ---- */
   .mob-grid {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 28px;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    justify-items: start;
     flex: 1;
   }
   .qr-frame {
@@ -275,10 +314,6 @@ const releasesUrl = `${REPO_URL}/releases`;
   }
 
   @media (max-width: 720px) {
-    .mob-grid {
-      grid-template-columns: 1fr;
-      justify-items: start;
-    }
     .qr-frame {
       width: 150px;
       height: 150px;

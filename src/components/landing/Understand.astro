@@ -1,0 +1,610 @@
+---
+/**
+ * Landing — Understand section (VU-9 SF-2, direction A "Terminal Conveyor").
+ * Answers the 4 newcomer questions in copy (D1 content-inspection): what is
+ * wakii / what do you see first / who is it for / what to try first.
+ *
+ * Per docs/superpowers/designs/ux-funnel-direction.md (BINDING, Surface 1):
+ * inserted right after <Hero/>, before <Bento/>; bento anatomy kept
+ * (.bx/.bx-in/.bx-label/.bx-body/.bx-foot as built in GetWakii.astro);
+ * copy = keys only (landing.ts `understand`, SF-1 store) — the isometric
+ * pipeline labels + aria-label are hand-off signature strings absent from
+ * the store → inline EN+VI parallel drafts (precedent: GetWakii.astro
+ * hand-off micro-copy), flagged for the SF-4 G-D copy gate.
+ *
+ * Isometric SVG + terminal chrome + slots bind tokens.css (authority) —
+ * never prototype hex values. Screenshot slots ship as honest dashed
+ * placeholder frames (hand-off: slots MAY sit empty with captions) until
+ * the SF-2 GAP lands real shots — placeholder state is never labeled as a
+ * screenshot.
+ */
+import type { LandingStrings } from '../../i18n/landing';
+
+interface Props {
+  strings: LandingStrings;
+}
+const { strings } = Astro.props;
+const t = strings;
+const prefix = t.lang === 'vi' ? '/vi' : '';
+const docsHref = `${prefix}/docs/getting-started/`;
+const blogRoot = `${prefix}/blog/`;
+
+// Hand-off signature diagram strings absent from the key store → inline
+// EN+VI parallel drafts (G-D idiom), flagged for the SF-4 copy gate.
+const iso =
+  t.lang === 'vi'
+    ? {
+        aria: 'pipeline: ý tưởng, team chín agent, gates B0 tới B5, một PR',
+        steps: ['01 ý tưởng', '02 team ×9', '03 gates b0–b5', '04 1 pr'],
+      }
+    : {
+        aria: 'pipeline: idea, nine-agent team, gates B0 to B5, one PR',
+        steps: ['01 idea', '02 team ×9', '03 gates b0–b5', '04 1 pr'],
+      };
+
+// Terminal command line — split the key at its first quote so the string
+// argument takes the warn color (presentational split only, no copy edit).
+const cmdQuote = t.understand.q4Cmd.indexOf('"');
+const cmdHead = cmdQuote === -1 ? t.understand.q4Cmd : t.understand.q4Cmd.slice(0, cmdQuote);
+const cmdStr = cmdQuote === -1 ? '' : t.understand.q4Cmd.slice(cmdQuote);
+
+/** "lead — rest" → <b>lead</b> — rest (bx-foot bold-lead idiom, FI-303) */
+function splitFoot(s: string): [string, string] {
+  const i = s.indexOf(' — ');
+  return i === -1 ? [s, ''] : [s.slice(0, i), s.slice(i + 3)];
+}
+---
+
+<section class="understand" id="understand">
+  <div class="wrap">
+    <!-- Q1 — what is wakii (section opener) -->
+    <div class="q1" data-reveal>
+      <p class="qk"><span class="h">//</span> {t.understand.q1Kicker}</p>
+      <h2>{t.understand.titleBefore}<em>{t.understand.titleHighlight}</em>{t.understand.titleAfter}</h2>
+      <p class="lead">{t.understand.leadBefore}<code>{t.understand.leadCode}</code>{t.understand.leadAfter}</p>
+    </div>
+
+    <!-- stats rail — REUSES hero.stats (hand-off: no new keys) -->
+    <div class="ustats" role="list" data-reveal>
+      {t.hero.stats.map((s) => (
+        <div role="listitem"><b>{s.v}</b> {s.k}</div>
+      ))}
+    </div>
+
+    <div class="ugrid">
+      <!-- Q2 — first thing you see (sp7) -->
+      <div class="cell u-q2" data-reveal>
+        <div class="bx-in" data-tilt>
+          <div class="bx-label">
+            <span class="t">{t.understand.q2Label}</span>
+            <span class="meta">{t.understand.q2Meta}</span>
+          </div>
+          <div class="bx-body">
+            <p class="cell-copy">{t.understand.q2Body}</p>
+            <div class="slot slot-lg">
+              <span class="slot-name">{t.understand.q2SlotName}</span>
+              <span class="slot-hint">{t.understand.q2SlotHint}</span>
+            </div>
+          </div>
+          <div class="bx-foot">
+            {(() => { const [b, rest] = splitFoot(t.understand.q2Foot); return rest ? <Fragment><b>{b}</b> — {rest}</Fragment> : <b>{b}</b>; })()}
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 — who is it for (sp5) -->
+      <div class="cell u-q3" data-reveal>
+        <div class="bx-in" data-tilt>
+          <div class="bx-label">
+            <span class="t">{t.understand.q3Label}</span>
+            <span class="meta">{t.understand.q3Meta}</span>
+          </div>
+          <div class="bx-body">
+            <p class="cell-copy">{t.understand.q3BodyBefore}<strong>{t.understand.q3BodyEm}</strong>{t.understand.q3BodyAfter}</p>
+            <svg class="iso" viewBox="0 0 560 96" width="100%" role="img" aria-label={iso.aria}>
+              <!-- cube 1 -->
+              <g transform="translate(18,18)">
+                <polygon class="f-top" points="0,0 22,-11 44,0 22,11" />
+                <polygon class="f-left" points="0,0 22,11 22,33 0,22" />
+                <polygon class="f-right" points="22,11 44,0 44,22 22,33" />
+              </g>
+              <line class="cn" x1="66" y1="29" x2="146" y2="29" />
+              <polygon class="ar" points="146,25 152,29 146,33" />
+              <!-- cube 2 -->
+              <g transform="translate(158,18)">
+                <polygon class="f-top" points="0,0 22,-11 44,0 22,11" />
+                <polygon class="f-left" points="0,0 22,11 22,33 0,22" />
+                <polygon class="f-right" points="22,11 44,0 44,22 22,33" />
+              </g>
+              <line class="cn" x1="206" y1="29" x2="286" y2="29" />
+              <polygon class="ar" points="286,25 292,29 286,33" />
+              <!-- cube 3 -->
+              <g transform="translate(298,18)">
+                <polygon class="f-top" points="0,0 22,-11 44,0 22,11" />
+                <polygon class="f-left" points="0,0 22,11 22,33 0,22" />
+                <polygon class="f-right" points="22,11 44,0 44,22 22,33" />
+              </g>
+              <line class="cn-last" x1="346" y1="29" x2="426" y2="29" />
+              <polygon class="ar-last" points="426,25 432,29 426,33" />
+              <!-- cube 4 — the PR (accent) -->
+              <g transform="translate(438,18)">
+                <polygon class="pr-top" points="0,0 22,-11 44,0 22,11" />
+                <polygon class="pr-left" points="0,0 22,11 22,33 0,22" />
+                <polygon class="pr-right" points="22,11 44,0 44,22 22,33" />
+              </g>
+              <!-- labels -->
+              <text class="lbl" x="40" y="78" text-anchor="middle">{iso.steps[0]}</text>
+              <text class="lbl" x="180" y="78" text-anchor="middle">{iso.steps[1]}</text>
+              <text class="lbl" x="320" y="78" text-anchor="middle">{iso.steps[2]}</text>
+              <text class="lbl lbl-last" x="460" y="78" text-anchor="middle">{iso.steps[3]}</text>
+            </svg>
+            <div class="slot slot-sm">
+              <span class="slot-name">{t.understand.q3SlotName}</span>
+              <span class="slot-hint">{t.understand.q3SlotHint}</span>
+            </div>
+          </div>
+          <div class="bx-foot">
+            {(() => { const [b, rest] = splitFoot(t.understand.q3Foot); return rest ? <Fragment><b>{b}</b> — {rest}</Fragment> : <b>{b}</b>; })()}
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 — what to try first (sp12, terminal + copy 2-col) -->
+      <div class="cell u-q4" data-reveal>
+        <div class="bx-in" data-tilt>
+          <div class="bx-label">
+            <span class="t">{t.understand.q4Label}</span>
+            <span class="meta">{t.understand.q4Meta}</span>
+          </div>
+          <div class="bx-body">
+            <div class="q4-grid">
+              <div class="term">
+                <div class="term-bar">
+                  <span class="term-dots" aria-hidden="true"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span>
+                  <span class="term-title">{t.understand.q4TermTitle}</span>
+                </div>
+                <div class="term-body">
+                  <div><span class="t-ps" aria-hidden="true">$</span> <span class="t-cmd">{cmdHead}<span class="str">{cmdStr}</span></span></div>
+                  <div class="t-comment">{t.understand.q4Comment}</div>
+                  <div class="t-out">{t.understand.q4Out}</div>
+                </div>
+              </div>
+              <div class="q4-copy">
+                <p class="cell-copy">{t.understand.q4BodyBefore}<strong class="cmd">{t.understand.q4BodyCmd}</strong>{t.understand.q4BodyAfter}</p>
+                <p class="cell-copy dim">{t.understand.q4Dim}</p>
+                <div><a class="inline-link" href={docsHref}>{t.understand.q4Link}</a></div>
+                <!-- owner add-on 2026-09-20: /docs/ + /blog/ into the funnel (links only) -->
+                <p class="more">
+                  <span class="more-label">{t.understand.moreLabel}:</span>
+                  <a class="inline-link" href={docsHref}>{t.understand.moreDocs}</a>
+                  <span class="more-sep" aria-hidden="true">·</span>
+                  <a class="inline-link" href={blogRoot}>{t.understand.moreBlog}</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="bx-foot">
+            {(() => { const [b, rest] = splitFoot(t.understand.q4Foot); return rest ? <Fragment><b>{b}</b> — {rest}</Fragment> : <b>{b}</b>; })()}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .understand {
+    padding: 84px 0 60px;
+  }
+
+  /* Q1 opener — qk mono + big mono h2 (mint em) + lead */
+  .qk {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+  .qk .h {
+    color: var(--accent);
+  }
+  .q1 h2 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(23px, 3.1vw, 37px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 14px 0 16px;
+    max-width: 900px;
+  }
+  .q1 h2 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .lead {
+    max-width: 760px;
+    font-size: 15.5px;
+    color: var(--text);
+  }
+  .lead code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: var(--radius);
+  }
+
+  /* stats rail (REUSED hero.stats data) */
+  .ustats {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 30px 0 34px;
+  }
+  .ustats div {
+    flex: 1 1 180px;
+    padding: 12px 18px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    border-left: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .ustats div:first-child {
+    border-left: 0;
+  }
+  .ustats b {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* bento grid — sp7 / sp5 / sp12 per hand-off */
+  .ugrid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--bento-gap);
+  }
+  .cell {
+    min-width: 0;
+  }
+  .u-q2 {
+    grid-column: span 7;
+  }
+  .u-q3 {
+    grid-column: span 5;
+  }
+  .u-q4 {
+    grid-column: 1 / 13;
+  }
+
+  /* bento anatomy (as built GetWakii.astro — bg-card, radius-cell) */
+  .bx-in {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 250ms ease, border-color 250ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .bx-in:hover {
+      border-color: var(--accent);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px rgba(69, 224, 168, 0.07);
+    }
+  }
+  .bx-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+  }
+  .bx-label .t {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .bx-label .t::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .bx-label .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+  .bx-body {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+  }
+  .cell-copy {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.65;
+    font-family: var(--font-sans);
+  }
+  .cell-copy.dim {
+    color: var(--text-dim);
+    font-size: 13.5px;
+  }
+  .cell-copy strong.cmd {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text);
+  }
+  .bx-foot {
+    margin-top: auto;
+    padding: 14px 20px 16px;
+    border-top: 1px dashed var(--border);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+  .bx-foot b {
+    color: var(--warn);
+    font-weight: 500;
+  }
+
+  /* isometric pipeline — token-bound fills (never prototype hex) */
+  .iso {
+    max-width: 520px;
+    display: block;
+  }
+  .iso .f-top {
+    fill: var(--border);
+    stroke: var(--border-strong);
+  }
+  .iso .f-left {
+    fill: var(--panel);
+    stroke: var(--border-strong);
+  }
+  .iso .f-right {
+    fill: var(--bg-raised);
+    stroke: var(--border-strong);
+  }
+  .iso .pr-top {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .iso .pr-left {
+    fill: var(--accent-dim);
+    stroke: var(--accent);
+  }
+  .iso .pr-right {
+    fill: var(--accent-dim);
+    stroke: var(--accent);
+    fill-opacity: 0.72;
+  }
+  .iso .cn {
+    stroke: var(--border-strong);
+    stroke-dasharray: 3 4;
+  }
+  .iso .cn-last {
+    stroke: var(--accent-dim);
+    stroke-dasharray: 3 4;
+  }
+  .iso .ar {
+    fill: var(--border-strong);
+  }
+  .iso .ar-last {
+    fill: var(--accent-dim);
+  }
+  .iso .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    fill: var(--text-dim);
+  }
+  .iso .lbl-last {
+    fill: var(--accent);
+    font-weight: 600;
+  }
+
+  /* screenshot slot — honest placeholder frame (hand-off: may sit empty) */
+  .slot {
+    position: relative;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 22px 18px 30px;
+    text-align: center;
+    overflow: hidden;
+    min-height: 150px;
+  }
+  .slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.45;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+  }
+  .slot::after {
+    content: 'screenshot — placeholder frame';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .slot-name {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+  .slot-hint {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-dim);
+    max-width: 300px;
+    line-height: 1.6;
+  }
+  .slot-lg {
+    min-height: 200px;
+  }
+  .slot-sm {
+    min-height: 118px;
+  }
+
+  /* terminal chrome (Q4) — traffic dots in brand tokens */
+  .term {
+    background: var(--panel);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    align-self: start;
+    width: 100%;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-raised);
+  }
+  .term-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .term-dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .term-dots .d1 {
+    background: var(--red);
+  }
+  .term-dots .d2 {
+    background: var(--warn);
+  }
+  .term-dots .d3 {
+    background: var(--accent);
+  }
+  .term-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+    margin-left: 6px;
+  }
+  .term-body {
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 2.05;
+    overflow-x: auto;
+  }
+  .t-ps {
+    color: var(--accent);
+  }
+  .t-cmd {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .t-cmd .str {
+    color: var(--warn);
+  }
+  .t-comment {
+    color: var(--text-faint);
+  }
+  .t-out {
+    color: var(--text-dim);
+  }
+
+  /* Q4 2-col */
+  .q4-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .q4-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .inline-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent-dim);
+    padding-bottom: 1px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .inline-link:hover {
+      border-bottom-style: solid;
+    }
+  }
+
+  /* owner add-on: keep-reading line (docs + blog into the funnel) */
+  .more {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .more .inline-link {
+    font-size: 11.5px;
+  }
+  .more-sep {
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 980px) {
+    .u-q2,
+    .u-q3 {
+      grid-column: 1 / 13;
+    }
+  }
+  @media (max-width: 720px) {
+    .understand {
+      padding: 72px 0 48px;
+    }
+    .q4-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

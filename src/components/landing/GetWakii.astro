@@ -1,19 +1,25 @@
 ---
 /**
  * Landing — Get Wakii section (SF-3 FI-297 → upgraded FI-300 SF-3 FI-303).
- * "Bento Dispatch" mini-bento per docs/superpowers/designs/sf-downloads-direction.md
- * (BINDING, Surface 3): gw-a download (PRIMARY, flag-aware G-A) + gw-b from
- * source (SECONDARY) + gw-c mobile teaser. Copy = keys only — getWakii (SF-1
+ * Mini-bento per docs/superpowers/designs/ux-funnel-direction.md "Terminal
+ * Conveyor" (BINDING — SUPERSEDES sf-downloads-direction.md for the download
+ * surfaces; VU-9 SF-3 consumers-rewire): gw-a download (PRIMARY, flag-aware
+ * G-A) + gw-b from source (SECONDARY) + gw-c mobile teaser. Structure
+ * unchanged from the FI-300 as-built. Copy = keys only — getWakii (SF-1
  * pre-add, VI-approved) + downloads.* slices (SF-1 store); the two hand-off
  * micro-copy strings missing from the key store are inline drafts (EN+VI
  * parallel) flagged for the SF-4 G-D copy gate — never hardcoded EN-only.
  *
- * Flags + URLs come from src/config.ts directly (same state every consumer
- * renders). Anchor #get-wakii kept verbatim (G-F). Entrance via .reveal +
- * shared initMotion() (wire-only). Key files are NOT edited (SF-1 owns them).
+ * Flags come from src/config.ts; download URLs + asset names come from the
+ * release-resolution module src/utils/release.ts (D5 consumers-rewire —
+ * no direct DOWNLOAD_URLS / MOBILE_STORE_URLS imports; same resolved state
+ * /download renders, version-consistency AC8). Anchor #get-wakii kept
+ * verbatim (G-F). Entrance via .reveal + shared initMotion() (wire-only).
+ * Key files are NOT edited (SF-1 owns them).
  */
 import type { LandingStrings } from '../../i18n/landing';
-import { DOWNLOADS_LIVE, DOWNLOAD_URLS, MOBILE_LIVE, MOBILE_STORE_URLS } from '../../config';
+import { DOWNLOADS_LIVE, MOBILE_LIVE } from '../../config';
+import { getRelease } from '../../utils/release';
 import { en as dlEn, vi as dlVi } from '../../i18n/downloads';
 
 interface Props {
@@ -26,14 +32,18 @@ const prefix = t.lang === 'vi' ? '/vi' : '';
 const downloadHref = `${prefix}/download`;
 const docsHref = `${prefix}/docs/getting-started/`;
 
-// Factual asset names from config (SF-2 pattern — no version claims: no source).
-const macosAsset = DOWNLOAD_URLS.macos.split('/').pop() || '';
-const windowsAsset = DOWNLOAD_URLS.windows.split('/').pop() || '';
+// D5 — resolved release data (per-asset validated; pin fallback).
+const release = await getRelease();
+// Best-available mac asset for the single landing button: arm64, else x64.
+const macosAsset = release.assets.macosArm64.name ?? release.assets.macosX64.name ?? '';
+const macosUrl = release.assets.macosArm64.url ?? release.assets.macosX64.url;
+const windowsAsset = release.assets.windows.name ?? '';
+const windowsUrl = release.assets.windows.url;
 
 // Teaser badge state — per-badge partial-fill-safe, same condition as the
 // MobileConnect component so landing and /download always agree (G-A2).
-const iosLive = MOBILE_LIVE && Boolean(MOBILE_STORE_URLS.ios);
-const androidLive = MOBILE_LIVE && Boolean(MOBILE_STORE_URLS.android);
+const iosLive = MOBILE_LIVE && Boolean(release.mobileIos);
+const androidLive = MOBILE_LIVE && Boolean(release.assets.androidApk.url);
 
 // Hand-off micro-copy absent from the key store → inline EN/VI drafts (G-D).
 const gwA =
@@ -72,11 +82,15 @@ const noteTail = noteRest.join(' — ');
             {
               DOWNLOADS_LIVE ? (
                 <div class="btn-col">
-                  <a class="btn btn-primary" href={DOWNLOAD_URLS.macos}>
-                    {dl.desktop.live.btnMacos}
-                  </a>
-                  {DOWNLOAD_URLS.windows ? (
-                    <a class="btn btn-ghost" href={DOWNLOAD_URLS.windows}>
+                  {macosUrl ? (
+                    <a class="btn btn-primary" href={macosUrl}>
+                      {dl.desktop.live.btnMacos}
+                    </a>
+                  ) : (
+                    <span class="btn btn-soon">{dl.desktop.live.btnMacos}</span>
+                  )}
+                  {windowsUrl ? (
+                    <a class="btn btn-ghost" href={windowsUrl}>
                       {dl.desktop.live.btnWindows}
                     </a>
                   ) : (
@@ -97,8 +111,8 @@ const noteTail = noteRest.join(' — ');
           {
             DOWNLOADS_LIVE && (
               <div class="bx-foot">
-                <div><b>{dl.desktop.live.warnMacos}</b></div>
-                {DOWNLOAD_URLS.windows && <div><b>{dl.desktop.live.warnWindows}</b></div>}
+                {macosUrl && <div><b>{dl.desktop.live.warnMacos}</b></div>}
+                {windowsUrl && <div><b>{dl.desktop.live.warnWindows}</b></div>}
               </div>
             )
           }
@@ -132,7 +146,7 @@ const noteTail = noteRest.join(' — ');
             <div class="badges">
               {
                 iosLive ? (
-                  <a class="badge" href={MOBILE_STORE_URLS.ios}>
+                  <a class="badge" href={release.mobileIos}>
                     <span class="os"></span>
                     <b>{dl.mobile.badgeIos}</b>
                   </a>
@@ -145,7 +159,7 @@ const noteTail = noteRest.join(' — ');
               }
               {
                 androidLive ? (
-                  <a class="badge" href={MOBILE_STORE_URLS.android}>
+                  <a class="badge" href={release.assets.androidApk.url}>
                     <span class="os">▶</span>
                     <b>{dl.mobile.badgeAndroid}</b>
                   </a>

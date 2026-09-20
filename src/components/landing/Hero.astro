@@ -12,7 +12,11 @@ interface Props {
 }
 const { strings } = Astro.props;
 const t = strings;
-const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
+const prefix = t.lang === 'vi' ? '/vi' : '';
+const docsHref = `${prefix}/docs/getting-started/`;
+// VU-9 SF-2 CTA split (hand-off D8 PIN): primary → /download, ghost → repo;
+// the old guide CTA demotes to a text link inside the micro line.
+const downloadHref = `${prefix}/download`;
 ---
 
 <header class="hero" data-tilt-host>
@@ -27,9 +31,14 @@ const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
           : 'Describe an idea and the pipeline runs: plan, parallel agents, verify gates, one clean PR.'}
       </p>
       <div class="cta-row">
-        <a href={REPO_URL} class="btn btn-primary">{t.hero.ctaPrimary}</a>
-        <a href={docsHref} class="btn btn-ghost">{t.hero.ctaGhost}</a>
+        <a href={downloadHref} class="btn btn-primary">{t.hero.ctaDownload}</a>
+        <a href={REPO_URL} class="btn btn-ghost">{t.hero.ctaBuild}</a>
       </div>
+      <p class="cta-micro">
+        {t.hero.ctaMicro}
+        <span class="sep" aria-hidden="true">·</span>
+        <a class="guide" href={docsHref}>{t.hero.ctaGhost}</a>
+      </p>
       <div class="hero-stats">
         {t.hero.stats.map((s) => (
           <div class="hs"><div class="v">{s.v}</div><div class="k">{s.k}</div></div>
@@ -135,6 +144,30 @@ const docsHref = (t.lang === 'vi' ? '/vi' : '') + '/docs/getting-started/';
   .btn-ghost:hover {
     border-color: var(--accent);
     color: var(--accent);
+  }
+  /* micro line under the CTA split — "free · open source · unsigned build"
+     + the demoted guide text-link (ctaGhost kept for GetWakii gw-b) */
+  .cta-micro {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .cta-micro .sep {
+    color: var(--text-faint);
+    margin: 0 8px;
+  }
+  .cta-micro .guide {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border-strong);
+    padding-bottom: 1px;
+  }
+  .cta-micro .guide:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
   .hero-stats {
     margin-top: 44px;

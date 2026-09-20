@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VU-9 · UX funnel — direction C · best-studio bespoke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== tokens (pinned — terminal-mono) ===== */
+  :root{
+    --bg:#0A0E0D; --bg-raised:#101614; --card:#131A17; --border:#1E2A26; --border-strong:#2B4234;
+    --accent:#45E0A8; --accent-dim:#2A6B52; --accent-soft:rgba(69,224,168,.1);
+    --text:#D7E2DD; --text-dim:#6B7A74; --text-faint:#5A7163;
+    --warn:#E8A33D; --panel:#0D1310; --bg-deep:#04140D; --red:#E5654F;
+    --grid:rgba(69,224,168,.05);
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font:400 15.5px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--bg-deep)}
+  img{display:block;max-width:100%}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+  #surface-1,#surface-2{scroll-margin-top:76px}
+
+  /* ===== top chrome ===== */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(10,14,13,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .topbar-in{max-width:1160px;margin:0 auto;padding:12px clamp(16px,4vw,32px);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px;font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
+  .brand img{width:20px;height:20px;border-radius:5px}
+  .brand em{font-style:normal;color:var(--text-faint)}
+  .topnav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .al{font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);border-radius:6px;padding:8px 11px;transition:border-color .15s,color .15s}
+  .al:hover{border-color:var(--accent-dim);color:var(--text)}
+  .al b{color:var(--accent);font-weight:600;margin-right:6px}
+  .dir-badge{font:700 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dim);background:var(--accent-soft);border-radius:6px;padding:8px 11px}
+
+  /* ===== kicker / section head ===== */
+  .kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;font:600 11px/1.5 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim)}
+  .kicker .h{color:var(--accent);margin-right:8px}
+  .kicker .meta{color:var(--text-faint);font-weight:500;letter-spacing:.08em;text-transform:lowercase}
+  .shead{margin:64px 0 26px;display:flex;flex-direction:column;gap:16px}
+  .shead h2{font:700 clamp(26px,3.4vw,36px)/1.12 var(--mono);letter-spacing:-.01em;color:var(--text)}
+  .shead .sub{color:var(--text-dim);max-width:660px;font-size:15px}
+  .hrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .facts{font:500 11.5px/1 var(--mono);letter-spacing:.06em;color:var(--text-dim)}
+  .facts b{color:var(--accent);font-weight:600}
+
+  /* ===== pill / date / chip ===== */
+  .pill{display:inline-flex;align-items:center;gap:8px;font:600 12.5px/1 var(--mono);letter-spacing:.04em;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-dim);border-radius:999px;padding:8px 14px;white-space:nowrap}
+  .pill i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .date{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font:600 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-dim);border-radius:999px;padding:6px 11px;white-space:nowrap}
+  .chip i{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)}
+  .chip[hidden]{display:none}
+
+  /* ===== mock tags ===== */
+  .mocktag{display:inline-block;font:500 10px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);border:1px dashed var(--border-strong);background:var(--panel);border-radius:6px;padding:6px 10px}
+  .dtag{display:block;border:1px dashed var(--border-strong);border-radius:8px;background:var(--panel);padding:10px 14px;font:500 10.5px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px}
+  .dtag b{color:var(--accent-dim);font-weight:600}
+
+  /* ===== canvas (grid-bg hero) ===== */
+  .canvas{position:relative;border:1px solid var(--border);border-radius:14px;background:var(--bg-raised);overflow:hidden}
+  .canvas::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 75% 90% at 50% 18%,#000 30%,transparent 100%);
+    mask-image:radial-gradient(ellipse 75% 90% at 50% 18%,#000 30%,transparent 100%)}
+  .canvas .mocktag{position:absolute;top:14px;right:14px;z-index:2}
+  .hero-in{position:relative;z-index:1;padding:clamp(40px,7vw,72px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:20px;align-items:flex-start;max-width:1160px;margin:0 auto}
+  .hero-brand{display:flex;align-items:center;gap:11px;font:600 14px/1 var(--mono);letter-spacing:.14em;text-transform:lowercase;color:var(--text)}
+  .hero-brand img{width:26px;height:26px;border-radius:7px}
+  .hero-in h1{font:700 clamp(30px,4.6vw,52px)/1.08 var(--mono);letter-spacing:-.02em;color:var(--text);max-width:760px}
+  .hero-in h1 em{font-style:normal;color:var(--accent)}
+  .hero-sub{font:400 14px/1.6 var(--sans);color:var(--text-dim)}
+  .hero-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+  .micro{font:500 10.5px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)}
+
+  /* ===== bento cell anatomy ===== */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+  .sp4{grid-column:span 4}.sp5{grid-column:span 5}.sp6{grid-column:span 6}.sp7{grid-column:span 7}.sp12{grid-column:span 12}
+  @media(max-width:920px){.sp4,.sp5,.sp6,.sp7{grid-column:span 12}}
+  .bx{display:flex;min-width:0}
+  .bx-in{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--card);border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  @media(hover:hover){
+    .bx:hover .bx-in{transform:translateY(-3px);border-color:var(--accent-dim);box-shadow:0 0 0 1px var(--accent-soft),0 18px 44px -20px rgba(69,224,168,.35)}
+  }
+  .bx-label{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border-bottom:1px solid var(--border);padding:9px 14px;font:600 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+  .bx-label .g{color:var(--accent);margin-right:7px}
+  .bx-label .meta{color:var(--text-faint);font-weight:500;letter-spacing:.06em;text-transform:lowercase;white-space:nowrap}
+  .bx-body{padding:20px;display:flex;flex-direction:column;gap:14px;flex:1;min-width:0}
+  .bx-body p{color:var(--text)}
+  .bx-body p.dim{color:var(--text-dim)}
+  .bx-foot{margin-top:auto;border-top:1px dashed var(--border-strong);padding:9px 14px;font:500 10.5px/1.7 var(--mono);letter-spacing:.02em;color:var(--text-dim)}
+  .bx-foot b{color:var(--warn);font-weight:600}
+  .stub .bx-in{border-style:dashed;border-color:var(--border)}
+  .stub .bx-body{color:var(--text-faint);font:500 11px/1.7 var(--mono);letter-spacing:.04em}
+  .bx-primary .bx-in{border-color:var(--accent-dim);box-shadow:0 0 0 1px var(--accent-soft),0 24px 60px -34px rgba(69,224,168,.4)}
+
+  /* ===== flow line / team strip ===== */
+  .flow{font:500 11px/1.9 var(--mono);letter-spacing:.05em;color:var(--text-faint)}
+  .flow b{color:var(--accent-dim);font-weight:500}
+  .team{display:flex;flex-direction:column;gap:10px}
+  .team-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:600 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .team-h .on{color:var(--accent)}
+  .agents{display:flex;flex-wrap:wrap;gap:8px}
+  .agent{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--panel);border-radius:6px;padding:6px 9px;font:500 10.5px/1 var(--mono);letter-spacing:.04em;color:var(--text-dim)}
+  .agent i{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 5px rgba(69,224,168,.8)}
+
+  /* ===== cmd block ===== */
+  .cmd{display:flex;align-items:center;gap:10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font:500 12.5px/1.5 var(--mono);white-space:nowrap;overflow-x:auto;max-width:100%}
+  .cmd .ps{color:var(--text-faint)}
+  .cmd .c{color:var(--accent)}
+  .cmd code{color:var(--text);font:inherit}
+  .copy{margin-left:auto;font:600 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);background:none;border:1px solid var(--border);border-radius:6px;padding:6px 8px;cursor:pointer;transition:color .15s,border-color .15s}
+  .copy:hover{color:var(--accent);border-color:var(--accent-dim)}
+
+  /* ===== screenshot slots ===== */
+  .slot{min-height:150px;border:1.5px dashed var(--border-strong);border-radius:10px;background:var(--bg-raised);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;text-align:center;padding:18px}
+  .slot .s1{font:600 11px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim)}
+  .slot .s2{font:500 9.5px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)}
+  .slot.slim{min-height:116px}
+
+  /* ===== buttons ===== */
+  .btn{display:inline-flex;align-items:center;gap:8px;font:600 13px/1.4 var(--mono);letter-spacing:.02em;color:var(--text);background:transparent;border:1px solid var(--border-strong);border-radius:8px;padding:12px 16px;text-decoration:none;cursor:pointer;text-align:left;transition:border-color .15s,background .15s,filter .15s;max-width:100%}
+  .btn::before{content:'> ';color:var(--accent);font-weight:700}
+  .btn:hover{border-color:var(--accent-dim);background:var(--accent-soft)}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:var(--bg-deep)}
+  .btn-primary::before{content:'> ';color:var(--bg-deep);font-weight:700}
+  .btn-primary:hover{background:var(--accent);filter:brightness(1.07)}
+  .btn-soon{border-style:dashed;color:var(--text-faint);cursor:default;background:none}
+  .btn-soon::before{content:'> ';color:var(--text-faint)}
+  .btn-soon:hover{border-color:var(--border-strong);background:none}
+  .btn-sm{padding:9px 12px;font-size:11.5px}
+  .btn-big{flex-direction:column;align-items:flex-start;gap:5px;padding:18px 22px;border-radius:10px}
+  .btn-big::before{display:none}
+  .btn-big .bl{font:600 15px/1.3 var(--mono)}
+  .btn-big .bl::before{content:'> ';font-weight:700}
+  .btn-big .bf{font:500 10.5px/1.4 var(--mono);opacity:.72}
+  .btngroup{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btncol{display:flex;flex-direction:column;gap:10px;align-items:flex-start;min-width:0}
+  .fn{font:500 10.5px/1.6 var(--mono);letter-spacing:.02em;color:var(--text-faint);overflow-wrap:anywhere}
+  .fn::before{content:'file — ';color:var(--border-strong)}
+  .note{font:500 11px/1.7 var(--mono);color:var(--text-dim)}
+
+  /* ===== boundary / footer ===== */
+  .boundary{margin:72px 0 8px}
+  .boundary-in{border-top:1px dashed var(--border-strong);padding-top:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:500 10px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint)}
+  .endfoot{margin:72px 0 40px;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+  .endfoot .row{display:flex;gap:10px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<!-- ===== page chrome (not part of either surface) ===== -->
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Indha2lpIOKAlCBtb25vZ3JhbSBpY29uIj4KICA8IS0tIHdha2lpIGljb24gc3ltYm9sIOKAlCAiVGhlIE1vbm9ncmFtIiAoY2hvc2VuIDIwMjYtMDktMDUsIDMtZGlyZWN0aW9uIGRyYWZ0KS4KICAgICAgIE1hc3RlciBmaWxlIGZvciByZXVzZTogZmF2aWNvbiAocHVibGljL2Zhdmljb24uc3ZnIGlzIHRoZSBzbWFsbC1zaXplCiAgICAgICB0d2luKSwgR2l0SHViIGF2YXRhciwgb2ctaW1hZ2UsIEVsZWN0cm9uIGFwcCBpY29uIHNvdXJjZS4KICAgICAgIEJyYW5kOiBkYXJrIHRpbGUgIzEzMUExN+KGkiMwNDE0MEQsIG1pbnQgc3Ryb2tlICM0NUUwQTgsIGRvdCAjRDdFMkRELiAtLT4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTMxQTE3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA0MTQwRCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNMjYgNDIgTDQ0IDg4IEw2NCA0OCBMODQgODggTDEwMiA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNDVFMEE4IiBzdHJva2Utd2lkdGg9IjEzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8Y2lyY2xlIGN4PSIxMDYiIGN5PSI4NiIgcj0iOC41IiBmaWxsPSIjRDdFMkREIi8+Cjwvc3ZnPgo=" alt="wakii icon">
+      wakii <em>/ ux-funnel vu-9</em>
+    </span>
+    <nav class="topnav">
+      <a class="al" href="#surface-1"><b>01</b>landing — understand</a>
+      <a class="al" href="#surface-2"><b>02</b>/download</a>
+    </nav>
+    <span class="dir-badge">direction C</span>
+  </div>
+</header>
+
+<main>
+  <!-- ============================================================
+       SURFACE 1 — landing understand-layer (in context)
+       ============================================================ -->
+  <section id="surface-1">
+    <div class="wrap">
+      <div class="shead">
+        <div class="kicker"><span><span class="h">##</span>surface 1 — landing · understand-layer</span><span class="meta">// ships directly after the hero</span></div>
+      </div>
+
+      <!-- mock hero — reduced, position only -->
+      <div class="canvas">
+        <span class="mocktag">// mock — reduced hero · position only</span>
+        <div class="hero-in">
+          <span class="hero-brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Indha2lpIOKAlCBtb25vZ3JhbSBpY29uIj4KICA8IS0tIHdha2lpIGljb24gc3ltYm9sIOKAlCAiVGhlIE1vbm9ncmFtIiAoY2hvc2VuIDIwMjYtMDktMDUsIDMtZGlyZWN0aW9uIGRyYWZ0KS4KICAgICAgIE1hc3RlciBmaWxlIGZvciByZXVzZTogZmF2aWNvbiAocHVibGljL2Zhdmljb24uc3ZnIGlzIHRoZSBzbWFsbC1zaXplCiAgICAgICB0d2luKSwgR2l0SHViIGF2YXRhciwgb2ctaW1hZ2UsIEVsZWN0cm9uIGFwcCBpY29uIHNvdXJjZS4KICAgICAgIEJyYW5kOiBkYXJrIHRpbGUgIzEzMUExN+KGkiMwNDE0MEQsIG1pbnQgc3Ryb2tlICM0NUUwQTgsIGRvdCAjRDdFMkRELiAtLT4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTMxQTE3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA0MTQwRCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0idXJsKCNiZykiLz4KICA8cGF0aCBkPSJNMjYgNDIgTDQ0IDg4IEw2NCA0OCBMODQgODggTDEwMiA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNDVFMEE4IiBzdHJva2Utd2lkdGg9IjEzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8Y2lyY2xlIGN4PSIxMDYiIGN5PSI4NiIgcj0iOC41IiBmaWxsPSIjRDdFMkREIi8+Cjwvc3ZnPgo=" alt="wakii icon">wakii</span>
+          <h1>An agentic IDE with <em>a team inside.</em></h1>
+          <p class="hero-sub">Open source · fork of Orca · superpowers built in · zero setup.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#surface-2">build from source</a>
+            <span class="micro">free · open source · unsigned build</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== THE DELIVERABLE — understand-layer section ===== -->
+      <div style="margin-top:56px">
+        <span class="dtag"><b>// deliverable</b> — this exact section inserts after the hero · answers four questions in copy</span>
+        <div class="kicker" style="margin-bottom:22px"><span><span class="h">##</span>understand</span><span class="meta">// answers 01–04 · no tour video</span></div>
+        <h2 style="font:700 clamp(24px,3vw,32px)/1.15 var(--mono);letter-spacing:-.01em;margin-bottom:24px">Four answers, then you decide.</h2>
+
+        <div class="grid">
+          <!-- 01 · what -->
+          <div class="bx sp7">
+            <div class="bx-in">
+              <div class="bx-label"><span><span class="g">▸</span>what is it?</span><span class="meta">// 01</span></div>
+              <div class="bx-body">
+                <p>Wakii is an open-source agentic IDE — a fork of Orca with a superpowers team built in. The plugin ships inside the app, the kit installs itself, and the whole thing is on by default: open a project and the team is already staffed.</p>
+                <p class="dim">Not a chat sidebar bolted onto an editor. The IDE, the panel and the workflow are one product.</p>
+              </div>
+              <div class="bx-foot">fork of orca · plugin bundled · kit auto-installs into ~/.claude · on by default</div>
+            </div>
+          </div>
+
+          <!-- 02 · who -->
+          <div class="bx sp5">
+            <div class="bx-in">
+              <div class="bx-label"><span><span class="g">▸</span>who is it for?</span><span class="meta">// 02</span></div>
+              <div class="bx-body">
+                <p>For developers who delegate. You hand over an idea; the team plans it in a bracket, builds it, and pushes the work through review gates B0–B5 while the watchdog keeps every agent honest.</p>
+                <div class="flow">idea <b>→</b> bracket <b>→</b> gates b0–b5 <b>→</b> 1 pr</div>
+                <div class="slot slim">
+                  <span class="s1">bracket canvas</span>
+                  <span class="s2">screenshot — placeholder frame</span>
+                </div>
+              </div>
+              <div class="bx-foot">you watch it run in the story view · 1 PR per story</div>
+            </div>
+          </div>
+
+          <!-- 03 · first look -->
+          <div class="bx sp7">
+            <div class="bx-in">
+              <div class="bx-label"><span><span class="g">▸</span>opening it, what do you see?</span><span class="meta">// 03</span></div>
+              <div class="bx-body">
+                <p>The Superpowers panel — your team, already online, before you've asked for anything.</p>
+                <div class="team">
+                  <div class="team-h"><span>superpowers team</span><span class="on">9/9 online</span></div>
+                  <div class="agents">
+                    <span class="agent"><i></i>agent 01</span><span class="agent"><i></i>agent 02</span><span class="agent"><i></i>agent 03</span><span class="agent"><i></i>agent 04</span><span class="agent"><i></i>agent 05</span><span class="agent"><i></i>agent 06</span><span class="agent"><i></i>agent 07</span><span class="agent"><i></i>agent 08</span><span class="agent"><i></i>agent 09</span>
+                  </div>
+                </div>
+                <div class="slot">
+                  <span class="s1">⚡ superpowers panel</span>
+                  <span class="s2">screenshot — placeholder frame</span>
+                </div>
+              </div>
+              <div class="bx-foot">9 agents · roles assigned per story · zero setup</div>
+            </div>
+          </div>
+
+          <!-- 04 · try first -->
+          <div class="bx sp5">
+            <div class="bx-in">
+              <div class="bx-label"><span><span class="g">▸</span>what do you try first?</span><span class="meta">// 04</span></div>
+              <div class="bx-body">
+                <p>Open any project and type one command:</p>
+                <div class="cmd"><span class="ps">$</span><span><span class="c">/superpowers</span> <code>"add a dark-mode toggle"</code></span><button class="copy" type="button" data-copy='/superpowers "add a dark-mode toggle"'>copy</button></div>
+                <p class="dim">The team takes it from there — plan, build, review, PR. You typed one line.</p>
+                <div class="slot slim">
+                  <span class="s1">main window</span>
+                  <span class="s2">screenshot — placeholder frame</span>
+                </div>
+              </div>
+              <div class="bx-foot">0 setup steps · nothing to configure first</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mock bento below — reduced, position only -->
+      <div style="margin-top:56px">
+        <div class="kicker" style="margin-bottom:18px"><span><span class="h">##</span>mock — features bento</span><span class="meta">// reduced · position only</span></div>
+        <div class="grid">
+          <div class="bx sp4 stub"><div class="bx-in"><div class="bx-label"><span><span class="g">▸</span>feature cell</span><span class="meta">// mock</span></div><div class="bx-body">// real bento cell renders here</div></div></div>
+          <div class="bx sp4 stub"><div class="bx-in"><div class="bx-label"><span><span class="g">▸</span>feature cell</span><span class="meta">// mock</span></div><div class="bx-body">// real bento cell renders here</div></div></div>
+          <div class="bx sp4 stub"><div class="bx-in"><div class="bx-label"><span><span class="g">▸</span>feature cell</span><span class="meta">// mock</span></div><div class="bx-body">// real bento cell renders here</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="boundary wrap"><div class="boundary-in"><span>// surface boundary</span><span>scroll — surface 2 below</span></div></div>
+
+  <!-- ============================================================
+       SURFACE 2 — /download restructured
+       ============================================================ -->
+  <section id="surface-2">
+    <div class="wrap">
+      <div class="shead">
+        <div class="kicker"><span><span class="h">##</span>download</span><span class="meta">// one primary action · every warning in print</span></div>
+        <div class="hrow">
+          <h2>Get Wakii.</h2>
+          <span class="pill"><i></i>v1.4.213 · latest</span>
+          <span class="date">published 2026-09-20</span>
+        </div>
+        <p class="facts"><b>9</b> agents · <b>0</b> setup steps · <b>1</b> PR per story</p>
+        <p class="sub">One build per machine. Every build is free, open source, and unsigned — the warnings below are part of the product, not fine print we hope you skip.</p>
+      </div>
+
+      <!-- primary action -->
+      <div class="grid">
+        <div class="bx sp12 bx-primary">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>primary — get wakii</span><span class="meta">// detected: <span id="det">macos · apple silicon</span></span></div>
+            <div class="bx-body" style="gap:16px">
+              <div class="btngroup">
+                <a class="btn btn-primary btn-big" id="primaryBtn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-arm64.dmg">
+                  <span class="bl" id="primaryLabel">get wakii for mac — apple silicon</span>
+                  <span class="bf" id="primaryFile">Wakii-1.4.213-arm64.dmg</span>
+                </a>
+                <span class="chip" data-for="mac-arm"><i></i>→ for your machine</span>
+                <a class="btn" id="altBtn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-x64.dmg">
+                  <span class="bl" id="altLabel">mac — intel (x64)</span>&nbsp;&nbsp;<span class="fn" id="altFile" style="display:inline">Wakii-1.4.213-x64.dmg</span>
+                </a>
+              </div>
+              <p class="note" id="primaryNote">unsure which chip? apple menu → about this mac.</p>
+            </div>
+            <div class="bx-foot"><b>unsigned build</b> — free · open source · macos: system settings → privacy &amp; security → open anyway · windows: smartscreen → more info → run anyway</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- all builds matrix -->
+      <div class="kicker" id="builds" style="margin:44px 0 18px"><span><span class="h">//</span>all builds — nothing hidden</span><span class="meta">// pick yours · the chip only highlights, never hides</span></div>
+      <div class="grid">
+
+        <!-- macos -->
+        <div class="bx sp6">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>macos</span><span class="meta">// two builds</span></div>
+            <div class="bx-body" style="gap:16px">
+              <div class="btncol">
+                <div class="btngroup"><a class="btn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-arm64.dmg">apple silicon (arm64)</a><span class="chip" data-for="mac-arm"><i></i>→ for your machine</span></div>
+                <span class="fn">Wakii-1.4.213-arm64.dmg</span>
+              </div>
+              <div class="btncol">
+                <div class="btngroup"><a class="btn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/Wakii-1.4.213-x64.dmg">intel (x64)</a><span class="chip" data-for="mac-intel" hidden><i></i>→ for your machine</span></div>
+                <span class="fn">Wakii-1.4.213-x64.dmg</span>
+              </div>
+            </div>
+            <div class="bx-foot"><b>unsigned build</b> — after download: system settings → privacy &amp; security → open anyway</div>
+          </div>
+        </div>
+
+        <!-- windows -->
+        <div class="bx sp6">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>windows</span><span class="meta">// one installer</span></div>
+            <div class="bx-body" style="gap:14px">
+              <div class="btncol">
+                <div class="btngroup"><a class="btn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/orca-windows-setup.exe">windows (.exe)</a><span class="chip" data-for="win" hidden><i></i>→ for your machine</span></div>
+                <span class="fn">orca-windows-setup.exe</span>
+              </div>
+              <p class="note">filename kept from upstream orca — renamed nothing, hid nothing.</p>
+            </div>
+            <div class="bx-foot"><b>unsigned build</b> — smartscreen: more info → run anyway</div>
+          </div>
+        </div>
+
+        <!-- mobile -->
+        <div class="bx sp6">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>mobile</span><span class="meta">// coming along</span></div>
+            <div class="bx-body" style="gap:14px">
+              <div class="btncol">
+                <a class="btn" href="https://github.com/wakii-dev/wakii/releases/download/v1.4.213/app-release.apk">android (.apk)</a>
+                <span class="fn">app-release.apk</span>
+              </div>
+              <span class="btn btn-soon">ios — coming soon</span>
+            </div>
+            <div class="bx-foot"><b>side-load only</b> — no store listing yet · ios: coming soon, no store link</div>
+          </div>
+        </div>
+
+        <!-- linux -->
+        <div class="bx sp6">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>linux</span><span class="meta">// source only</span></div>
+            <div class="bx-body" style="gap:14px">
+              <div class="btncol">
+                <a class="btn" href="https://github.com/wakii-dev/wakii">build from source</a>
+                <span class="fn">github.com/wakii-dev/wakii</span>
+              </div>
+              <p class="note">no packaged build in this release — clone and build.</p>
+            </div>
+            <div class="bx-foot"><b>no installer</b> — and no os chip: we don't guess on linux</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- first-run strip -->
+      <div class="kicker" style="margin:44px 0 18px"><span><span class="h">//</span>first run — three steps after install</span><span class="meta">// then getting-started takes over</span></div>
+      <div class="grid">
+        <div class="bx sp4">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>step 01 — open a project</span><span class="meta">// 1/3</span></div>
+            <div class="bx-body">
+              <p>Any folder with code in it. Open it the way you'd open any editor.</p>
+            </div>
+            <div class="bx-foot">nothing to configure yet</div>
+          </div>
+        </div>
+        <div class="bx sp4">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>step 02 — kit installs itself</span><span class="meta">// 2/3</span></div>
+            <div class="bx-body">
+              <p>First launch writes the superpowers kit into <span style="font-family:var(--mono);font-size:.92em;color:var(--accent)">~/.claude</span>. You run nothing.</p>
+            </div>
+            <div class="bx-foot">0 setup steps · on by default</div>
+          </div>
+        </div>
+        <div class="bx sp4">
+          <div class="bx-in">
+            <div class="bx-label"><span><span class="g">▸</span>step 03 — describe your first idea</span><span class="meta">// 3/3</span></div>
+            <div class="bx-body" style="gap:12px">
+              <div class="cmd"><span class="ps">$</span><span><span class="c">/superpowers</span> <code>"your idea"</code></span></div>
+              <a class="btn btn-sm" href="/docs/getting-started/">open getting-started</a>
+            </div>
+            <div class="bx-foot">the full walkthrough lives in getting-started</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- end of direction -->
+      <footer class="endfoot">
+        <div class="row">
+          <a class="btn btn-sm" href="https://github.com/wakii-dev/wakii">github.com/wakii-dev/wakii</a>
+          <a class="btn btn-sm" href="https://github.com/wakii-dev/wakii/releases">release notes — v1.4.213</a>
+        </div>
+        <span class="micro">wakii · free · open source · unsigned builds · 9 agents · 0 setup steps · 1 pr per story</span>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var rel = function(f){ return 'https://github.com/wakii-dev/wakii/releases/download/v1.4.213/' + f; };
+  var UA = (navigator.userAgent || '').toLowerCase();
+  var PL = (navigator.platform || '').toLowerCase();
+  var os = /win/.test(UA) || /win/.test(PL) ? 'windows'
+        : (/mac/.test(UA) || /mac/.test(PL) ? 'mac'
+        : (/linux|x11/.test(UA) ? 'linux' : 'unknown'));
+  var arch = null; /* 'arm' | 'x86' | null(unknown) */
+
+  var R = {
+    macarm: {
+      l:'get wakii for mac — apple silicon', f:'Wakii-1.4.213-arm64.dmg', h:rel('Wakii-1.4.213-arm64.dmg'), chip:'mac-arm',
+      alt:{ l:'mac — intel (x64)', f:'Wakii-1.4.213-x64.dmg', h:rel('Wakii-1.4.213-x64.dmg') },
+      note:'unsure which chip? apple menu → about this mac.'
+    },
+    macintel: {
+      l:'get wakii for mac — intel (x64)', f:'Wakii-1.4.213-x64.dmg', h:rel('Wakii-1.4.213-x64.dmg'), chip:'mac-intel',
+      alt:{ l:'mac — apple silicon (arm64)', f:'Wakii-1.4.213-arm64.dmg', h:rel('Wakii-1.4.213-arm64.dmg') },
+      note:'intel mac — the x64 build is your primary.'
+    },
+    win: {
+      l:'get wakii for windows', f:'orca-windows-setup.exe', h:rel('orca-windows-setup.exe'), chip:'win',
+      alt:{ l:'mac + linux builds below', f:'', h:'#builds' },
+      note:'windows may flag the unsigned build — smartscreen: more info → run anyway.'
+    },
+    other: {
+      l:'get wakii — pick your build', f:'', h:'#builds', chip:null, alt:null,
+      note:'os not detected — every build is listed below, nothing hidden.'
+    }
+  };
+
+  function set(key){
+    var r = R[key];
+    var b = document.getElementById('primaryBtn');
+    if(!b) return;
+    b.href = r.h;
+    document.getElementById('primaryLabel').textContent = r.l;
+    var pf = document.getElementById('primaryFile');
+    pf.textContent = r.f; pf.style.display = r.f ? '' : 'none';
+    var a = document.getElementById('altBtn'), af = document.getElementById('altFile');
+    if(r.alt){
+      a.style.display = ''; a.href = r.alt.h;
+      a.querySelector('.bl').textContent = r.alt.l;
+      af.textContent = r.alt.f; af.style.display = r.alt.f ? 'inline' : 'none';
+    } else { a.style.display = 'none'; }
+    document.getElementById('primaryNote').textContent = r.note;
+    var chips = document.querySelectorAll('.chip[data-for]');
+    for(var i=0;i<chips.length;i++){
+      chips[i].hidden = (chips[i].getAttribute('data-for') !== r.chip);
+    }
+  }
+
+  function apply(){
+    var d = document.getElementById('det');
+    if(os === 'mac'){
+      set(arch === 'x86' ? 'macintel' : 'macarm');
+      d.textContent = arch === 'x86' ? 'macos · intel' : (arch === 'arm' ? 'macos · apple silicon' : 'macos');
+    } else if(os === 'windows'){
+      set('win'); d.textContent = 'windows';
+    } else {
+      set('other'); d.textContent = os === 'linux' ? 'linux' : 'unknown';
+    }
+  }
+  apply();
+
+  /* refine mac arch where the browser can tell us (chromium high-entropy) */
+  try{
+    if(navigator.userAgentData && navigator.userAgentData.getHighEntropyValues){
+      navigator.userAgentData.getHighEntropyValues(['architecture','platform']).then(function(v){
+        var p = String(v.platform || '').toLowerCase();
+        if(p === 'mac os' || p === 'macos'){
+          arch = v.architecture === 'arm' ? 'arm' : (v.architecture === 'x86' ? 'x86' : null);
+          apply();
+        }
+      }).catch(function(){});
+    }
+  }catch(e){}
+
+  /* copy-to-clipboard on the command block */
+  var copies = document.querySelectorAll('[data-copy]');
+  for(var j=0;j<copies.length;j++){
+    (function(btn){
+      btn.addEventListener('click', function(){
+        var t = btn.getAttribute('data-copy');
+        var done = function(){ var o = btn.textContent; btn.textContent = 'copied'; setTimeout(function(){ btn.textContent = o; }, 1200); };
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, done); } else { done(); }
+      });
+    })(copies[j]);
+  }
+})();
+</script>
+
+<!-- ================================================================
+     DIRECTION C — design note (VU-9 / SF-1 · wakii-site)
+     ================================================================
+     STUDIO (best-studio bespoke, chosen seriously):
+       TEENAGE ENGINEERING — utilitarian honesty.
+
+     Why TE for "onboarding an agentic IDE": TE designs machines whose
+     panels tell you the truth before you touch them — every control is
+     silkscreened with exactly what it does, state is shown as LEDs not
+     marketing, and the quick-start is "make sound in 10 seconds".
+     An agentic IDE asking a first-time dev for trust has the same job.
+
+     Principles applied (philosophy, not their portfolio):
+     1. ONE PRIMARY CONTROL (TE's single large encoder):
+        /download is restructured around exactly one oversized primary
+        button ("get wakii for <your os>"); every other build is ghost,
+        and "coming soon" is dashed. Nothing competes with it.
+     2. SILKSCREEN LABELING — print the real spec on the panel:
+        bx-label bars ("▸ macos · // two builds"), exact asset
+        filenames printed verbatim (Wakii-1.4.213-arm64.dmg), real
+        version pill v1.4.213 · latest + published 2026-09-20, and
+        orca-windows-setup.exe KEPT unrenamed with a note explaining
+        why — renaming would be dishonest.
+     3. UTILITARIAN HONESTY — the spec sticker on the bottom plate:
+        bx-foot = fine print that must be read. Every download CTA
+        carries its unsigned-build warning in <b> amber (macOS Open
+        Anyway / SmartScreen Run anyway); iOS is "coming soon" with no
+        fake store link; Linux gets "no installer, no os chip".
+     4. EXPOSED STATE (channel LEDs):
+        the "9/9 online" agent strip mirrors the real Superpowers
+        panel state — team visible before you ask for anything.
+     5. PLAY-FIRST ONBOARDING (make sound in 10 seconds):
+        understand-layer cell 04 IS the quick-start: one command
+        (/superpowers "…"), and the /download first-run strip is the
+        quick-start card packed in the box (open project → kit
+        auto-installs → describe first idea).
+
+     FORM-Q5 — visual motif, sourced FROM THE CONTENT:
+       The motif is the terminal session itself: every interactive
+       element opens with the prompt "> " and the page's final object
+       is an executable command (/superpowers "…") — because Wakii's
+       core interaction is literally "type one line, receive one PR".
+       The secondary motif is the status line ("9/9 online", "detected:
+       macos · apple silicon") lifted from the product's own panel.
+
+     Facts used (nothing invented): v1.4.213 · 2026-09-20; assets
+     Wakii-1.4.213-arm64.dmg / Wakii-1.4.213-x64.dmg /
+     orca-windows-setup.exe / app-release.apk; unsigned build; mobile
+     coming soon; 9 agents / 0 setup steps / 1 PR per story;
+     "story view" (never "Stories tab").
+     ================================================================ -->
+</body>
+</html>

@@ -6,11 +6,13 @@
  * Rendered for both locales: / (EN) and /vi/ (VI) pass their string map.
  *
  * Ownership (FI-294 componentize, SF-1): each section component in
- * src/components/landing/ is owned by its SF — GetWakii.astro → SF-3,
- * Workflow.astro + Philosophy.astro → SF-4, the rest read-only.
+ * src/components/landing/ is owned by its SF — Understand.astro → SF-2
+ * (VU-9), GetWakii.astro → SF-3, Workflow.astro + Philosophy.astro → SF-4,
+ * the rest read-only.
  */
 import type { LandingStrings } from '../i18n/landing';
 import Hero from './landing/Hero.astro';
+import Understand from './landing/Understand.astro';
 import Bento from './landing/Bento.astro';
 import ZeroSetup from './landing/ZeroSetup.astro';
 import Workflow from './landing/Workflow.astro';
@@ -27,6 +29,7 @@ const { strings } = Astro.props;
 ---
 
 <Hero strings={strings} />
+<Understand strings={strings} />
 <Bento strings={strings} />
 <ZeroSetup strings={strings} />
 <Workflow strings={strings} />

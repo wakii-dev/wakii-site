@@ -1,0 +1,37 @@
+VU-9 SF-2 — test run evidence (wakii-site)
+HEAD chain: 21a366c (docs ritual) ← 90873a5 (evidence v1) ← 5e4cdc0 (hero CTA split, code)
+Code commits: 5e4cdc0 feat(hero) + 920014d feat(landing) — verification run on 5e4cdc0 build;
+docs commits after are evidence/log only (no code surface). This file refreshed at 21a366c.
+Date: 2026-09-20
+
+tdd: skipped-tdd: repo has no unit-test suite for Astro components (B1 WARN 0 test
+files = normal per kit); verification = full build + deterministic DOM asserts +
+3-tier browser walkthrough (below).
+
+[1] BUILD — pnpm build (check-blog-slug-parity + check-blog-utils + check-blog-content
+    + astro build + check-og): 267 page(s) built, exit 0.
+    OG OK: 240 posts · sitemap 266 · robots pinned (no change vs SF-1 baseline).
+
+[2] DOM TIER (curl served HTML, EN + VI, cid-tolerant asserts — 40/40 PASS):
+    - section#understand once per locale; order hero < understand < #features; #get-wakii intact
+    - AC1 content-inspection: q1/q2/q3/q4 copy present EN+VI (4 câu nằm trong copy section)
+    - hero exit criteria 3 href: primary=/download (VI /vi/download) + ctaMicro;
+      ghost=REPO_URL + ctaBuild; guide demoted text-link → getting-started;
+      gw-b GetWakii ghost → docs UNCHANGED; ctaPrimary not rendered, kept in store
+    - stats rail reuses hero.stats (9/0/1); feet bold-lead splits (q2/q3/q4)
+    - moreDocs → /docs/ (VI /vi/docs/), moreBlog → /blog/ (VI /vi/blog/) — owner add-on
+    - SVG aria-label EN+VI; iso fills token-bound (grep dist css: fill:var(--border)/var(--accent),
+      no prototype hex); slot grid-bg 28px; placeholder caption honest
+[3] VISUAL TIER (real pixels, coordinator Read images):
+    - headless Chrome same build: desktop 1440px full landing (hero CTA split +
+      understand Q1/stats/Q2+slot-lg/Q3+iso+slot-sm/Q4 terminal+more-line, feet amber)
+    - mobile-390 iframe probe: EN+VI hero stack + full understand section — no overflow
+[4] FLOW TIER (trusted input, Orca browser):
+    - click hero primary (@e37) → location.path=/download (≤1 click AC)
+    - runtime: data-reveal present (15), initMotion anim on, hero/bento reveal
+      cleanup verified (attrs removed on animationend — FI-304 contract)
+      NOTE: Orca webview animation clock froze mid-session (env artifact, probe:
+      getAnimations currentTime stuck 0 while playState=running) — end-states
+      verified via headless same-build pixels; no page JS errors (headless console
+      clean; the one `orca console` line proven tooling artifact — page ships 1 bundle).
+[5] /download reachable 200 EN+VI (flow target).

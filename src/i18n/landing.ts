@@ -1,6 +1,15 @@
 /**
  * Landing strings — v2 "Modern Bento Premium" (direction-d3-bento.html).
- * PLACEHOLDER copy; EN is source of truth. SF-2 owns real landing copy.
+ * EN is source of truth; VI mirrors it at merge (VU-9 ack rule).
+ *
+ * COPY OWNERSHIP (VU-9 SF-1 update — supersedes the blanket placeholder
+ * note): OWNED = hero CTA-split keys (ctaDownload/ctaBuild/ctaMicro) +
+ * the `understand` group (design hand-off:
+ * docs/superpowers/designs/ux-funnel-direction.md). ctaPrimary stays in
+ * the store but goes orphan once SF-2 retargets the Hero (cleanup
+ * candidate then); ctaGhost STAYS — still consumed by GetWakii gw-b.
+ * STILL PLACEHOLDER: bento / zero / workflow / faq / philosophy /
+ * workflowDeep / getWakii copy (final pass out of VU-9 scope — D4).
  * Bento mockup data (nodes/agents/gates/watchdog) lives here so the mockup
  * kit components (src/components/mockups/) stay pure renderers with props.
  */
@@ -34,7 +43,56 @@ export interface LandingStrings {
     taglineCode: string;
     ctaPrimary: string;
     ctaGhost: string;
+    /** VU-9 SF-1 CTA split — new primary → /download, new ghost → REPO_URL.
+     *  ctaPrimary above stays in the store (orphan after SF-2 retargets the
+     *  Hero); ctaGhost above STAYS — consumer GetWakii gw-b. */
+    ctaDownload: string;
+    ctaBuild: string;
+    ctaMicro: string;
     stats: { v: string; k: string }[];
+  };
+  /** VU-9 SF-1 — understand-layer, inserted right after the hero (design
+   *  hand-off: docs/superpowers/designs/ux-funnel-direction.md). Answers the
+   *  4 newcomer questions in copy (D1); q2/q3/q4 carry screenshot placeholder
+   *  slots (real shots land via SF-2 GAP); moreDocs/moreBlog = owner add-on
+   *  links into /docs/ + /blog/ (links only — docs/blog content untouched). */
+  understand: {
+    q1Kicker: string;
+    titleBefore: string;
+    titleHighlight: string;
+    titleAfter: string;
+    leadBefore: string;
+    leadCode: string;
+    leadAfter: string;
+    q2Label: string;
+    q2Meta: string;
+    q2Body: string;
+    q2SlotName: string;
+    q2SlotHint: string;
+    q2Foot: string;
+    q3Label: string;
+    q3Meta: string;
+    q3BodyBefore: string;
+    q3BodyEm: string;
+    q3BodyAfter: string;
+    q3SlotName: string;
+    q3SlotHint: string;
+    q3Foot: string;
+    q4Label: string;
+    q4Meta: string;
+    q4TermTitle: string;
+    q4Cmd: string;
+    q4Comment: string;
+    q4Out: string;
+    q4BodyBefore: string;
+    q4BodyCmd: string;
+    q4BodyAfter: string;
+    q4Dim: string;
+    q4Link: string;
+    moreLabel: string;
+    moreDocs: string;
+    moreBlog: string;
+    q4Foot: string;
   };
   bento: {
     kicker: string;
@@ -84,13 +142,6 @@ export interface LandingStrings {
   };
   zero: { status: string; title: string; desc: string }[];
   workflow: { kicker: string; title: string; sub: string; stages: string[]; planNote: string; legend: string; note: string };
-  quickstart: {
-    kicker: string;
-    title: string;
-    steps: { n: string; comment: string; title: string; desc: string; cmd: string }[];
-    more: string;
-    moreLink: string;
-  };
   faq: { kicker: string; title: string; more: string; moreLink: string; items: { q: string; a: string }[] };
   /** Philosophy section (SF-4 wires markup) — 8 pillars, condensed from story-workflow.md */
   philosophy: {
@@ -108,7 +159,8 @@ export interface LandingStrings {
     gatesIntro: string;
     gates: { id: string; label: string; desc: string }[];
   };
-  /** Get Wakii / download section (SF-3 replaces quickstart with this) */
+  /** Get Wakii / download section (replaced the removed quickstart group —
+   *  VU-9 SF-1 orphan cleanup; SF-3 rewires its data to the resolution module) */
   getWakii: {
     kicker: string;
     title: string;
@@ -164,11 +216,57 @@ export const en: LandingStrings = {
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build from source',
     ctaGhost: 'read the guide',
+    ctaDownload: 'download wakii',
+    ctaBuild: 'build from source',
+    ctaMicro: 'free · open source · unsigned build',
     stats: [
       { v: '9', k: 'agents, role-gated' },
       { v: '0', k: 'setup steps' },
       { v: '1', k: 'PR per story' },
     ],
+  },
+  understand: {
+    q1Kicker: 'q1 — what is wakii?',
+    titleBefore: 'Wakii is an agentic IDE with a ',
+    titleHighlight: 'superpowers team',
+    titleAfter: ' built in.',
+    leadBefore:
+      'A free, open-source fork of Orca. Nine agents plan, build, verify, and watch each other\'s work behind gates B0–B5. The plugin ships inside the app and the kit lands in ',
+    leadCode: '~/.claude',
+    leadAfter: ' on first run — zero setup steps.',
+    q2Label: 'q2 — open the app: what do you see first?',
+    q2Meta: 'team = online',
+    q2Body:
+      'The superpowers panel. All nine agents are already in there, marked online — each with a distinct role in one pipeline, and a watchdog on the floor. No wizard, no config file, nothing to toggle.',
+    q2SlotName: '⚡ superpowers panel',
+    q2SlotHint: '9 agents online · watchdog active · zero-setup state',
+    q2Foot: '0 setup steps — the panel is live before your first click',
+    q3Label: 'q3 — who is wakii for?',
+    q3Meta: "delegate, don't drive",
+    q3BodyBefore:
+      'Devs who want to hand off the mechanical middle. You give Wakii an idea; the team brackets it, works it behind gates B0–B5, and hands back ',
+    q3BodyEm: 'one clean, verified PR',
+    q3BodyAfter: '. You review the diff, not the process.',
+    q3SlotName: 'bracket canvas',
+    q3SlotHint: 'every story leaves a readable bracket — open it in the story view',
+    q3Foot: '1 PR per story — verified through gates B0–B5',
+    q4Label: 'q4 — what should i try first?',
+    q4Meta: 'one command',
+    q4TermTitle: 'wakii — first run',
+    q4Cmd: '/superpowers "<your idea, one line>"',
+    q4Comment: '// e.g. /superpowers "add a /metrics endpoint — with tests"',
+    q4Out: '→ team picked it up · bracket created · gates queued',
+    q4BodyBefore: 'In the superpowers panel, type ',
+    q4BodyCmd: '/superpowers',
+    q4BodyAfter:
+      ' plus your idea. The team takes it from there: bracket, gates, PR. No flags, no config, no second command to learn.',
+    q4Dim:
+      "That's the whole interface. Everything else — planning, verification, the watchdog — happens where you can watch it.",
+    q4Link: 'first-run walkthrough — getting-started',
+    moreLabel: 'keep reading',
+    moreDocs: '/docs/getting-started/ — how to use wakii',
+    moreBlog: '/blog/ — what\'s new from github',
+    q4Foot: 'try this first — one command, no flags, no config',
   },
   bento: {
     kicker: 'features // live demos',
@@ -271,17 +369,6 @@ export const en: LandingStrings = {
     legend: '▮ highlighted stage = agents executing concurrently',
     note: 'The pipeline runs in the open. Track every slice, gate and verdict live in the Superpowers panel and the bracket canvas — while the watchdog makes sure nothing stalls.',
   },
-  quickstart: {
-    kicker: 'getting started',
-    title: 'quickstart — 3 steps',
-    steps: [
-      { n: 'step 01', comment: '// build', title: 'Build Wakii', desc: 'Clone and build from source. One command, fully self-contained.', cmd: 'git clone wakii && make' },
-      { n: 'step 02', comment: '// open', title: 'Open a project', desc: 'The kit installs itself on first launch. Nothing to configure.', cmd: 'wakii ./your-project' },
-      { n: 'step 03', comment: '// delegate', title: 'Describe an idea', desc: 'The team plans, executes in parallel, hands you one verified PR.', cmd: '/superpowers "add dark mode"' },
-    ],
-    more: 'just the teaser — the',
-    moreLink: 'full usage guide',
-  },
   faq: {
     kicker: 'faq',
     title: 'frequently asked',
@@ -362,11 +449,57 @@ export const vi: LandingStrings = {
     taglineCode: '~/.claude',
     ctaPrimary: 'get wakii — build từ mã nguồn',
     ctaGhost: 'đọc hướng dẫn',
+    ctaDownload: 'tải wakii',
+    ctaBuild: 'build từ mã nguồn',
+    ctaMicro: 'miễn phí · mã nguồn mở · bản build chưa ký',
     stats: [
       { v: '9', k: 'agents, phân vai' },
       { v: '0', k: 'bước cài đặt' },
       { v: '1', k: 'PR mỗi story' },
     ],
+  },
+  understand: {
+    q1Kicker: 'q1 — wakii là gì?',
+    titleBefore: 'Wakii là một agentic IDE với ',
+    titleHighlight: 'team superpowers',
+    titleAfter: ' có sẵn.',
+    leadBefore:
+      'Fork mã nguồn mở miễn phí của Orca. Chín agent lên kế hoạch, xây, verify và canh công việc của nhau sau các gates B0–B5. Plugin nằm sẵn trong app và kit tự cài vào ',
+    leadCode: '~/.claude',
+    leadAfter: ' ngay lần chạy đầu — không bước cài đặt.',
+    q2Label: 'q2 — mở app lên: thấy gì đầu tiên?',
+    q2Meta: 'team = online',
+    q2Body:
+      'Superpowers panel. Cả chín agent đã ở đó, đánh dấu online — mỗi agent một vai trò riêng trong cùng một pipeline, và một watchdog luôn trực. Không wizard, không file config, không gì phải bật.',
+    q2SlotName: '⚡ superpowers panel',
+    q2SlotHint: '9 agents online · watchdog hoạt động · trạng thái zero-setup',
+    q2Foot: '0 bước cài đặt — panel sống trước cả cú click đầu tiên của bạn',
+    q3Label: 'q3 — wakii dành cho ai?',
+    q3Meta: 'giao việc, không lái',
+    q3BodyBefore:
+      'Devs muốn giao phần việc cơ học ở giữa. Bạn đưa Wakii một ý tưởng; team dựng bracket, làm việc sau các gates B0–B5, và trao lại ',
+    q3BodyEm: 'một PR sạch, đã verify',
+    q3BodyAfter: '. Bạn review diff, không review quy trình.',
+    q3SlotName: 'bracket canvas',
+    q3SlotHint: 'mỗi story để lại một bracket đọc được — mở trong story view',
+    q3Foot: '1 PR mỗi story — được verify qua gates B0–B5',
+    q4Label: 'q4 — thử gì đầu tiên?',
+    q4Meta: 'một lệnh',
+    q4TermTitle: 'wakii — lần chạy đầu',
+    q4Cmd: '/superpowers "<ý tưởng của bạn, một dòng>"',
+    q4Comment: '// vd: /superpowers "thêm /metrics endpoint — kèm tests"',
+    q4Out: '→ team nhận việc · bracket tạo xong · gates xếp hàng',
+    q4BodyBefore: 'Trong superpowers panel, gõ ',
+    q4BodyCmd: '/superpowers',
+    q4BodyAfter:
+      ' cộng với ý tưởng của bạn. Team lo phần còn lại: bracket, gates, PR. Không flags, không config, không lệnh thứ hai phải học.',
+    q4Dim:
+      'Đó là toàn bộ giao diện. Mọi thứ khác — lập kế hoạch, verification, watchdog — diễn ra ngay nơi bạn nhìn thấy.',
+    q4Link: 'walkthrough lần chạy đầu — getting-started',
+    moreLabel: 'đọc tiếp',
+    moreDocs: '/docs/getting-started/ — hướng dẫn sử dụng wakii',
+    moreBlog: '/blog/ — công nghệ mới từ github',
+    q4Foot: 'thử cái này trước — một lệnh, không flags, không config',
   },
   bento: {
     kicker: 'tính năng // demo trực tiếp',
@@ -468,17 +601,6 @@ export const vi: LandingStrings = {
     planNote: '(subtask linear)',
     legend: '▮ stage nổi bật = các agent chạy đồng thời',
     note: 'Pipeline chạy công khai. Theo dõi từng slice, gate và verdict trực tiếp trong Superpowers panel và bracket canvas — trong khi watchdog đảm bảo không gì bị stall.',
-  },
-  quickstart: {
-    kicker: 'bắt đầu',
-    title: 'quickstart — 3 bước',
-    steps: [
-      { n: 'bước 01', comment: '// build', title: 'Build Wakii', desc: 'Clone và build từ mã nguồn. Một lệnh, tự chứa đầy đủ.', cmd: 'git clone wakii && make' },
-      { n: 'bước 02', comment: '// mở', title: 'Mở một dự án', desc: 'Kit tự cài ngay lần mở đầu tiên. Không cần cấu hình gì.', cmd: 'wakii ./your-project' },
-      { n: 'bước 03', comment: '// giao việc', title: 'Mô tả ý tưởng', desc: 'Team lên kế hoạch, chạy song song, trao bạn một PR đã verify.', cmd: '/superpowers "thêm dark mode"' },
-    ],
-    more: 'chỉ là teaser —',
-    moreLink: 'toàn bộ hướng dẫn sử dụng',
   },
   faq: {
     kicker: 'faq',
