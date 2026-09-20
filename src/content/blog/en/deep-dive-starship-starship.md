@@ -5,6 +5,7 @@ pubDate: "2026-10-20"
 category: "tech"
 tags: ["terminal", "cli", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-starship-starship.png"
 ---
 
 The shell prompt is the text you look at most in a working day — and the cheapest signal for answering a question that repeats all day long: "which repo am I in, which branch, is the tree dirty." In a workflow that runs several worktrees in parallel, the question becomes "which SF's worktree am I in" — grabbing the wrong worktree means editing the wrong branch. Starship answers with the prompt line itself: 59,816 stars, 2,654 forks, ISC license (per GitHub API on 2026-09-08), self-described in the README as "The minimal, blazing-fast, and infinitely customizable prompt for any shell!" ([starship/starship](https://github.com/starship/starship), GitHub API 2026-09-08). Behind the marketing line is an architecture worth studying: how to distribute one binary across many environments, and how to handle a user's broken config.

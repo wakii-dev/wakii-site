@@ -5,6 +5,7 @@ pubDate: "2026-10-25"
 category: "tech"
 tags: ["gates", "evidence", "agents", "qa"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-leonxlnx-unlazy.png"
 ---
 
 Start with a correction: the name "unlazy" sounds like an image lazy-loading library — and the original brief for this post guessed exactly that. The GitHub API on 2026-09-08 says otherwise: Leonxlnx/unlazy is an "Anti-laziness skill for AI agents" ([repo description](https://github.com/Leonxlnx/unlazy)) — 3,168 stars, MIT, created 2026-08-09. "Laziness" here has nothing to do with deferring image loads; it is the habit of finishing early — an agent reporting "done" while the work is not done. This repo pushes back against that habit with machinery: runnable gates written before the work starts, and evidence in place of confident assertions.

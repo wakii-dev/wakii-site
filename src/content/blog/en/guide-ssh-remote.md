@@ -5,6 +5,7 @@ pubDate: "2026-09-21"
 category: "tutorial"
 tags: ["guide", "cli", "worktree"]
 draft: false
+heroImage: "/blog/heroes/guide-ssh-remote.png"
 ---
 
 The machine you type on is not always the right place to run the work: builds

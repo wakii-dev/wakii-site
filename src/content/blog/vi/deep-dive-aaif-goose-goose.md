@@ -5,6 +5,7 @@ pubDate: "2026-10-08"
 category: "tech"
 tags: ["agents", "cli", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-aaif-goose-goose.png"
 ---
 
 Phần lớn agent dev sống trong editor: mở IDE, gõ prompt, đọc kết quả ngay tại đó. goose chọn hướng khác — nó là một tiến trình chạy trên máy bạn, có desktop app, CLI và API riêng, và công việc không bó trong việc code. Repo đang ở 54.022 sao theo GitHub API ngày 2026-09-08, vẫn push trong đúng ngày hôm đó, và thuộc Agentic AI Foundation tại Linux Foundation. Điều đáng học không phải con số sao, mà là ba cơ chế: việc lặp lại được đóng thành recipe YAML, scheduler lộ ra cho agent như một extension bình thường, và goose dùng chính nó làm reviewer trong CI của chính nó.

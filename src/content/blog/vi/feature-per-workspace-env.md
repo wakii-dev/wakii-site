@@ -5,6 +5,7 @@ pubDate: "2026-09-18"
 category: "tech"
 tags: ["features", "worktree", "cli"]
 draft: false
+heroImage: "/blog/heroes/feature-per-workspace-env.png"
 ---
 
 Bài trước trong loạt này đã chặn một nửa của bài toán song song: hai agent đứng

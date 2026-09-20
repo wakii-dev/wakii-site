@@ -5,6 +5,7 @@ pubDate: "2026-08-24"
 category: "tech"
 tags: ["memory", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/story-memory-learning-loop.png"
 ---
 
 A later story should know what the first story paid to learn. Not because

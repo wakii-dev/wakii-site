@@ -5,6 +5,7 @@ pubDate: "2026-09-19"
 category: "tech"
 tags: ["features", "mobile"]
 draft: false
+heroImage: "/blog/heroes/feature-notification-keyboard.png"
 ---
 
 An agent partway through a pipeline stops — not because something broke, but

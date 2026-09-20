@@ -5,6 +5,7 @@ pubDate: "2026-08-21"
 category: "tech"
 tags: ["agents", "supervised", "workflow"]
 draft: false
+heroImage: "/blog/heroes/nine-agents-separated-powers.png"
 ---
 
 Nghe nói "đội AI làm việc thay bạn", hình ảnh hiện ra thường là một agent

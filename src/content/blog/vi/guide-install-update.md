@@ -5,6 +5,7 @@ pubDate: "2026-09-19"
 category: "tutorial"
 tags: ["guide", "release", "wakii"]
 draft: false
+heroImage: "/blog/heroes/guide-install-update.png"
 ---
 
 Hướng dẫn cài đặt thường dừng ở "tải về và mở lên". Với một công cụ chạy agent

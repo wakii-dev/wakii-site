@@ -5,6 +5,7 @@ pubDate: "2026-09-13"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-web-design-guidelines.png"
 ---
 
 Một trang UI đẹp trong ảnh vẫn có thể sai ở những chỗ camera không chụp được. Focus ring đã bị xoá bằng `outline: none`? Ảnh không thấy, vì ảnh không có focus. Nút icon thiếu `aria-label`? Ảnh vẫn nguyên. Animation trang trí chạy mãi không tắt theo `prefers-reduced-motion`? Ảnh là một khung hình tĩnh. `/web-design-guidelines` — một skill trong nhóm design của kit Wakii — được dựng cho đúng lớp lỗi đó: review code UI qua một danh sách quy tắc cụ thể, mỗi rule kiểm được bằng code, không cần cảm nhận.

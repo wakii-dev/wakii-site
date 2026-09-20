@@ -5,6 +5,7 @@ pubDate: "2026-10-09"
 category: "tech"
 tags: ["memory", "agents", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-deusdata-codebase-memory-mcp.png"
 ---
 
 Agents read code by opening files one at a time — and every session starts from zero. On a large repository that retains nothing: today the agent knows which function calls `ProcessOrder`, and the next session asks again as if yesterday never happened. DeusData/codebase-memory-mcp takes a different path: a pure-C MCP server that compiles the codebase into a SQLite knowledge graph that survives sessions — 42,644 stars per the GitHub API on 2026-09-08, less than seven months after the repo was created (2026-02-24). This post reads the actual code to answer three questions: what the memory holds, how it stays fresh, and how it travels with a team.

@@ -5,6 +5,7 @@ pubDate: "2026-09-02"
 category: "build-log"
 tags: ["release", "build-log", "wakii"]
 draft: false
+heroImage: "/blog/heroes/shipping-cadence-two-releases-one-day.png"
 ---
 
 Many teams working with AI agents treat a release as an event: weeks of changes bundled up, code frozen, a long test pass, and only then the nerve to cut a version. [Log #1](/blog/building-wakii-in-the-open-log-1/) of this series recorded release 1.4.199 that way too — one line among the week's notes. Behind that line sits a mechanism worth examining: how a process that hands work to an agent team managed to cut two releases and one Android pre-release in a single day without strain. This post takes that mechanism apart using public evidence — no storytelling, and no generalizing beyond what the release history proves.

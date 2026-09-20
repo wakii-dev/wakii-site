@@ -5,6 +5,7 @@ pubDate: "2026-10-13"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-foundationagents-metagpt.png"
 ---
 
 Multi-agent systems tend to collapse into one shape: a group chat, several AIs, questions bouncing back and forth, and nobody able to point at the final product. MetaGPT — a project with 70,263 stars and an MIT license (per GitHub API on 2026-09-08) — takes a different route: it simulates a software company staffed with product managers, architects, project managers, engineers and QA. What is worth learning is that conversation inside this company is nearly banned: each role communicates with the next only through structured artifacts that act as contracts between departments. This way of standardizing handoff keeps its value even now that the original project has slowed down.

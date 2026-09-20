@@ -5,6 +5,7 @@ pubDate: "2026-09-28"
 category: "tech"
 tags: ["oss", "upstream", "git"]
 draft: false
+heroImage: "/blog/heroes/oss-upstream-sync.png"
 ---
 
 A fork is a ship leaving port — and the upstream never waits for it. The parent project keeps committing every day, changing APIs, refactoring the very spots you just built on. "Living with your parent project" is therefore not a state but a verb, repeated forever: pull, merge, resolve, repeat. An earlier post in this blog covered the keep-up strategy at the level of principles; this one goes down to the mechanics — which remotes, which branches, which commands measure divergence, and which layers collect conflicts. Every git output in this post is real, captured on a local clone of the product repo, and you can rerun each command on a fork of your own.

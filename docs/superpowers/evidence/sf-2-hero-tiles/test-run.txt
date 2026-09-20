@@ -1,0 +1,37 @@
+SF-2 Hero tile toàn bộ post (VU-7, epic VU-5) — test evidence 2026-09-20
+code commits: 1506331 (script) · ae23ad3 (frontmatter 94+94) · 6b4e6cf (119 tiles + og-default)
+tdd: skipped-tdd: render pipeline là binary-asset step, repo không có unit-test harness cho asset generation; verification = --check IHDR + build xanh + visual QA (B1 WARN 0 test = expected cho repo static này)
+
+[1] render: node scripts/render-blog-heroes.mjs
+    → exit 0, "✓ 119 heroes rendered", 0 WARN UNQUANTIZED (grep log = 0)
+
+[2] --check: node scripts/render-blog-heroes.mjs --check
+    → 119/119 "✓ ... 1200×630" (IHDR), exit 0
+
+[3] size gate: find public/blog/heroes -name "*.png" -size +100k → 0 file
+    max tile 40138 B; og-default.png 26438 B (từ 163159 B); tổng heroes/ 4.5MB
+
+[4] build: npm run build → exit 0, 267 pages; dist/blog/heroes = 119 PNG
+
+[5] DOM dist checks:
+    og:image EN review  = https://wakii.xyz/blog/heroes/review-ai-agents-from-your-phone.png
+    og:image VI review  = SAME path (EN+VI cùng file ảnh) ✓
+    og:image log-1      = https://wakii.xyz/og-default.png (fallback sống) ✓
+    detail review: <img class="bd-hero" width="1200" height="630" loading="eager"> ✓
+    detail log-1: bd-hero count = 0 (pin) ✓
+    listing index: og-default chỉ xuất hiện 1 lần = meta của chính trang (không phải card band) ✓
+
+[6] visual QA (Read PNG thật — Tầng 2):
+    review-ai-agents-from-your-phone.png (78 chars, dài nhất): wrap 3 dòng, không tràn ✓
+    guide-custom-skill-101.png: "# tutorial" label ✓
+    building-wakii-in-the-open-log-2.png: "# build log" label + em-dash glyph ✓
+    og-default.png: ~/wakii. + tagline, quantize sạch ✓
+    (78-char + cả 3 category coverage qua page shots bên dưới)
+
+[7] flow QA (serve dist :4399 — Tầng 3, headless Chrome pixel):
+    EN detail: hero dưới meta row, layout nguyên ✓
+    VI detail /vi/blog/review-ai-agents-from-your-phone/: "Duyệt AI agents từ điện thoại…"
+    — diacritics glyph đúng, hero (tile EN mirror) hiện ✓
+    listing /blog/: featured cell hero slot đầy, không vỡ ✓
+    log-1 detail: không hero img (fallback) ✓
+    mobile-390 (iframe probe dist/_probe390): hero scale đúng, không vỡ ✓

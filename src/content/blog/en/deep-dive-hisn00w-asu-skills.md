@@ -5,6 +5,7 @@ pubDate: "2026-10-24"
 category: "tech"
 tags: ["skills", "agents", "workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hisn00w-asu-skills.png"
 ---
 
 A skills pack for a non-coding niche — preparing job applications in Chinese — created on August 12, 2026 reached 4,025 stars per the GitHub API on 2026-09-08, under a month. That number tells a story bigger than the repo: skills have become a distributable content format — whoever writes the content well owns the product, and the agent harness is just the runtime that runs it. Hisn00w's ASu-skills is a sample of this phenomenon done with real engineering discipline: one source of skills, many harnesses, and a catalog reconciled by machine.

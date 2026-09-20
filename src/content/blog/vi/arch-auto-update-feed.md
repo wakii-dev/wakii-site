@@ -5,6 +5,7 @@ pubDate: "2026-09-27"
 category: "tech"
 tags: ["architecture", "release"]
 draft: false
+heroImage: "/blog/heroes/arch-auto-update-feed.png"
 ---
 
 Nút "Download" trên trang này chỉ là nửa đầu của câu chuyện. Nửa còn lại bắt đầu khi app đã nằm trong máy: nó biết có bản mới bằng cách nào, vì sao một release đang được đăng giữa chừng không làm ai tải dở, và từ trạng thái "có bản mới" tới "đã cài xong" phải đi qua những chốt nào. Toàn bộ code auto-update của Wakii nằm trong repo công khai `wakii-dev/wakii`; bài này đi theo đúng dòng đời một bản cập nhật — từ GitHub Releases tới nút relaunch trong app.

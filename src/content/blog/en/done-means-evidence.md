@@ -5,6 +5,7 @@ pubDate: "2026-08-31"
 category: "tech"
 tags: ["qa", "evidence", "story-workflow"]
 draft: false
+heroImage: "/blog/heroes/done-means-evidence.png"
 ---
 
 An agent works fast and reports even faster: "task done, self-checked." The

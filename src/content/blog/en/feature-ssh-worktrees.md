@@ -5,6 +5,7 @@ pubDate: "2026-09-16"
 category: "tech"
 tags: ["features", "cli", "worktree"]
 draft: false
+heroImage: "/blog/heroes/feature-ssh-worktrees.png"
 ---
 
 The previous post in this series ended on a physical conclusion: real parallelism starts on disk — one task, one worktree, one branch per worktree. But not every repo lives on your machine: an internal repo sits behind a jump host, a build box lives in another office, a shared box belongs to the whole team. The familiar route is to ssh in and clone manually into a shared directory — and every lesson about "the last writer overwrites the first" comes back intact. Wakii takes a different route: it treats the SSH target as the starting point of a worktree, and it handles the hard part of connectivity — authentication, aliases, clone failures — as code that must be readable.

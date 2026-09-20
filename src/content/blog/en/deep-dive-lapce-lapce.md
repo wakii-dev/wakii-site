@@ -5,6 +5,7 @@ pubDate: "2026-10-22"
 category: "tech"
 tags: ["architecture", "features", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-lapce-lapce.png"
 ---
 
 Every editor written in Rust promises speed; Lapce puts "Lightning-fast And Powerful Code Editor" right in its README. Anyone can print a slogan — the lesson is in the chain of architectural decisions behind it: a rope buffer with revisions, a UI split into its own process over RPC, and plugins running inside a WASI sandbox. With 38,834 stars, an Apache-2.0 license, and a fresh push on the same day as the probe (per GitHub API on 2026-09-08), the project is pre-1.0 yet its architecture is more mature than its version number.

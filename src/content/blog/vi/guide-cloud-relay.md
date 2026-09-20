@@ -5,6 +5,7 @@ pubDate: "2026-09-22"
 category: "tutorial"
 tags: ["guide", "architecture"]
 draft: false
+heroImage: "/blog/heroes/guide-cloud-relay.png"
 ---
 
 Agent chạy lâu nhất thường dừng vì lý do ngớ ngẩn nhất: bạn đóng laptop.

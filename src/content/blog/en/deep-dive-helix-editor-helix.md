@@ -5,6 +5,7 @@ pubDate: "2026-10-21"
 category: "tech"
 tags: ["design", "architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-helix-editor-helix.png"
 ---
 
 In an era where editors race to embed AI assistants, Helix goes the other way: a modal editor written in Rust, no plugin system, no AI features, and a README that lists exactly four capabilities. With 46,133 stars and an MPL-2.0 license (per GitHub API on 2026-09-08), it sits among the most trusted editors in the modal class — and its three design decisions are worth disassembling more than its feature list.

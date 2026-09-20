@@ -5,6 +5,7 @@ pubDate: "2026-10-12"
 category: "tech"
 tags: ["architecture", "cli", "terminal"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-neovim-neovim.png"
 ---
 
 Every editor has plugins. Few editors turn themselves into a platform other people can build on. Neovim — 102,219 stars per GitHub API, 2026-09-08 — is one of them: nearly all of the editor's capability sits behind a structured API, and an LSP client lives right in the core. This post reads the actual neovim/neovim repository to answer three questions: how a fork keeps its parent's community, how an editor becomes a platform, and where machines check ground truth before humans do.

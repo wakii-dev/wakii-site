@@ -5,6 +5,7 @@ pubDate: "2026-09-22"
 category: "tutorial"
 tags: ["guide", "worktree", "git"]
 draft: false
+heroImage: "/blog/heroes/guide-worktree-workflow.png"
 ---
 
 One worktree per task is the unit of isolation that makes parallel agents

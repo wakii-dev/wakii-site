@@ -5,6 +5,7 @@ pubDate: "2026-09-03"
 category: "build-log"
 tags: ["build-log", "story-workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/blog-story-case-study.png"
 ---
 
 The case-study genre has a built-in weak point: the writer is both author and

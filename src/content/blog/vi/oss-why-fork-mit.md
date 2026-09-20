@@ -5,6 +5,7 @@ pubDate: "2026-09-27"
 category: "tech"
 tags: ["oss", "license", "fork"]
 draft: false
+heroImage: "/blog/heroes/oss-why-fork-mit.png"
 ---
 
 Fork một dự án mã nguồn mở là thao tác ba phút: bấm nút, đổi remote, đẩy code. Phần ít người bàn tới nằm ở giấy phép và ở sự công khai — vì sao chọn MIT, vì sao giữ nguyên dòng credit của dự án mẹ, và vì sao để cả thế giới đọc được lịch sử fork. Với Wakii, đó không phải mục pháp lý để cho có: đó là toàn bộ lời hứa của dự án. Bài này không kể hành động fork — bài trước đó đã kể rồi — mà đọc thẳng các file làm bằng chứng: LICENSE, README, footer của site, và cho bạn thấy open source ở đây là một lựa chọn có chủ đích, chạy được kiểm chứng bằng vài lệnh.

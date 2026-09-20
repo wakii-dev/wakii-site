@@ -5,6 +5,7 @@ pubDate: "2026-10-25"
 category: "tech"
 tags: ["agents", "workflow", "memory", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-yetone-cumora.png"
 ---
 
 Một repo 3 tuần tuổi đã 3.524 sao theo GitHub API ngày 2026-09-08 — không ít nơi vội gọi là "repo AI đang lên". Nhưng thứ khiến Cumora xứng đáng một bài deep-dive không phải con số sao, mà là một file docs: `docs/COORDINATION.md`, nơi tác giả liệt kê "anti-patterns we learned the hard way so the same mistakes don't recur" ([`COORDINATION.md` @ `7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md)) — phản-pattern va thật, kèm commit và số thất bại. Một repo trẻ ghi lại cả những gì nó làm sai là hiếm.

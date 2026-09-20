@@ -5,6 +5,7 @@ pubDate: "2026-10-09"
 category: "tech"
 tags: ["memory", "agents", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-deusdata-codebase-memory-mcp.png"
 ---
 
 Agent đọc code bằng cách mở file từng cái một — và mỗi phiên lại mở lại từ đầu. Trên một repo lớn, cách đó không giữ được gì: hôm nay agent biết hàm nào gọi `ProcessOrder`, phiên sau hỏi lại như chưa từng có ngày hôm qua. DeusData/codebase-memory-mcp chọn hướng khác: một MCP server viết bằng C thuần, nén codebase thành knowledge graph SQLite tồn tại qua các phiên — 42.644 sao theo GitHub API ngày 2026-09-08, chưa đầy bảy tháng sau ngày tạo repo (2026-02-24). Bài này đọc code thật của repo để trả lời ba câu hỏi: memory giữ gì, làm sao nó không stale, và nó đi theo team ra sao.

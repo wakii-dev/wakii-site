@@ -5,6 +5,7 @@ pubDate: "2026-10-19"
 category: "tech"
 tags: ["terminal", "cli", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-burntsushi-ripgrep.png"
 ---
 
 Agent không đọc một repo bằng cách mở từng file. Nó đọc bằng tìm: tìm tên hàm, tìm thông báo lỗi, tìm pattern cấu hình — rồi chỉ mở đúng những file cần mở. Trong vòng lặp đó, công cụ tìm chính là mắt. ripgrep (rg) của Andrew Gallant là con mắt đó cho rất nhiều lập trình viên và rất nhiều agent: 68.084 sao, 2.752 fork, license Unlicense (theo GitHub API ngày 2026-09-08), mô tả chính thức của repo tóm gọn mọi thứ: "ripgrep recursively searches directories for a regex pattern while respecting your gitignore" ([BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep), GitHub API ngày 2026-09-08). Nhưng con số sao chưa nói hết điều đáng học — cách repo này cân bằng giữa hiệu năng, mặc định đúng và sự trung thực về giới hạn mới là bài học.

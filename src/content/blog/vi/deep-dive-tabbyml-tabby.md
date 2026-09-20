@@ -5,6 +5,7 @@ pubDate: "2026-10-23"
 category: "tech"
 tags: ["architecture", "license", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-tabbyml-tabby.png"
 ---
 
 Hầu hết trợ lý code mặc định một hướng di chuyển: code của bạn đi lên API của hãng, gợi ý đi xuống. Tabby đi chiều ngược lại — server chạy trên hạ tầng của bạn, model tải về chạy tại chỗ, gợi ý sinh ra trong mạng nội bộ. Repo công khai trên GitHub với 33.869 sao theo GitHub API ngày 2026-09-08, nhưng chi tiết đáng học nhất lại nằm ở file LICENSE — nơi GitHub API trả về NOASSERTION thay vì một nhãn sạch. Đọc cả hai thứ đó cùng nhau là bài học đầy đủ về một dự án tự host.

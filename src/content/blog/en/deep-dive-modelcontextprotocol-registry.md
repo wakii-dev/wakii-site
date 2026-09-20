@@ -5,6 +5,7 @@ pubDate: "2026-10-11"
 category: "tech"
 tags: ["oss", "architecture", "license"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-modelcontextprotocol-registry.png"
 ---
 
 The MCP ecosystem is growing fast: thousands of servers written by authors who have never met, and every MCP client has to answer the same question — what do you trust enough to install? modelcontextprotocol/registry is the ecosystem's official answer: a central directory where a client looks up what a server is, which versions exist, where to install from, and who owns that name. The repo's README keeps it short: an *"app store for MCP servers"* (source: [README](https://github.com/modelcontextprotocol/registry/blob/739b70e8bc1bea203c5a35ab699f1df51d091568/README.md)). Snapshot taken 2026-09-08: 7,227 stars, latest push 2026-09-05; the repo is publicly available on GitHub, and the GitHub API reports its license as NOASSERTION, so terms of use follow the LICENSE file in the repo (per the GitHub API on 2026-09-08). This post is not written from memory — it reads the README, the Go code, and the live API.

@@ -5,6 +5,7 @@ pubDate: "2026-10-19"
 category: "tech"
 tags: ["terminal", "cli", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-burntsushi-ripgrep.png"
 ---
 
 An agent does not read a repository by opening every file. It reads by searching: find a function name, find an error message, find a config pattern — then open only the files that matter. In that loop, the search tool is the eye. ripgrep (rg) by Andrew Gallant is that eye for a large share of developers and agents: 68,084 stars, 2,752 forks, Unlicense license (per GitHub API on 2026-09-08), and an official description that compresses the whole story: "ripgrep recursively searches directories for a regex pattern while respecting your gitignore" ([BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep), GitHub API 2026-09-08). The star count is not the interesting part. The way this repo balances performance, correct defaults, and honesty about its own limits is.

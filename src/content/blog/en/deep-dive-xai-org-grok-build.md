@@ -5,6 +5,7 @@ pubDate: "2026-10-10"
 category: "tech"
 tags: ["agents", "architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-xai-org-grok-build.png"
 ---
 
 The 2026 agent-CLI race keeps repeating one pattern: every large model house ends up writing its own harness for its own model. Anthropic has Claude Code, Google has Gemini CLI, and xAI has grok-build — public on GitHub since mid-July this year. This post is not a feature review; it reads grok-build as a data point of that pattern, through three questions: how is the code organized, what is welded to the house model, and which ports open to the outside world.

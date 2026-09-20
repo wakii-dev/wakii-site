@@ -5,6 +5,7 @@ pubDate: "2026-10-21"
 category: "tech"
 tags: ["design", "architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-helix-editor-helix.png"
 ---
 
 Trong thời đại editor đua nhau nhúng trợ lý AI, Helix đi chiều ngược: một modal editor viết bằng Rust, không plugin system, không tính năng AI, và README chỉ liệt kê đúng bốn tính năng. Với 46.133 sao và license MPL-2.0 (theo GitHub API ngày 2026-09-08), đây là editor thuộc nhóm được tin dùng nhất trong lớp modal — và ba quyết định thiết kế của nó đáng gỡ ra xem hơn cả danh sách tính năng.

@@ -5,6 +5,7 @@ pubDate: "2026-10-20"
 category: "tech"
 tags: ["terminal", "cli", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-starship-starship.png"
 ---
 
 Prompt shell là dòng chữ bạn nhìn nhiều nhất trong ngày làm việc — và cũng là tín hiệu rẻ nhất để trả lời câu hỏi lập đi lập lại: "mình đang ở repo nào, nhánh nào, cây có bẩn không". Trong workflow chạy nhiều worktree song song, câu hỏi đó thành "mình đang ở worktree của SF nào" — nhầm worktree là sửa nhầm nhánh. Starship trả lời bằng chính dòng prompt: 59.816 sao, 2.654 fork, license ISC (theo GitHub API ngày 2026-09-08), README tự mô tả — "The minimal, blazing-fast, and infinitely customizable prompt for any shell!" ([starship/starship](https://github.com/starship/starship), GitHub API ngày 2026-09-08). Đằng sau dòng quảng cáo là một kiến trúc đáng học về cách phân phối một binary lên nhiều môi trường và cách xử lý config của người dùng.

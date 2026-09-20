@@ -5,6 +5,7 @@ pubDate: "2026-09-19"
 category: "tech"
 tags: ["features", "mobile"]
 draft: false
+heroImage: "/blog/heroes/feature-notification-keyboard.png"
 ---
 
 Một agent đang chạy dở pipeline thì dừng lại — không phải vì lỗi, mà vì nó đặt

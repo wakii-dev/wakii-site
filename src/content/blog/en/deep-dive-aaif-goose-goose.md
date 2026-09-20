@@ -5,6 +5,7 @@ pubDate: "2026-10-08"
 category: "tech"
 tags: ["agents", "cli", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-aaif-goose-goose.png"
 ---
 
 Most dev agents live inside an editor: open the IDE, type a prompt, read the answer right there. goose takes a different road — it is a process running on your machine, with its own desktop app, CLI, and API, and its job is not limited to code. The repo sits at 54,022 stars per the GitHub API on 2026-09-08, was pushed to on that very day, and belongs to the Agentic AI Foundation at the Linux Foundation. The interesting part is not the star count but three mechanisms: repetitive work gets packaged as YAML recipes, the scheduler is exposed to the agent as an ordinary extension, and goose uses itself as the reviewer in its own CI.

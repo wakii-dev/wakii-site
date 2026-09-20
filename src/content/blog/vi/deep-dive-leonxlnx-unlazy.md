@@ -5,6 +5,7 @@ pubDate: "2026-10-25"
 category: "tech"
 tags: ["gates", "evidence", "agents", "qa"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-leonxlnx-unlazy.png"
 ---
 
 Mở đầu bằng một chỉnh sai: tên "unlazy" nghe như một thư viện tối ưu lazy-load ảnh — đề bài gốc của bài này cũng đoán vậy. GitHub API ngày 2026-09-08 nói ngược lại: Leonxlnx/unlazy là "Anti-laziness skill for AI agents" ([mô tả repo](https://github.com/Leonxlnx/unlazy)) — một skill chống bệnh "lười" của AI agent, 3.168 sao, MIT, tạo ngày 09-08-2026. Chủ đề "lười" ở đây không phải lazy-load ảnh mà là thói quen kết thúc sớm: agent báo cáo "xong" trong khi việc chưa xong. Repo này phản lại đúng thói quen đó bằng máy móc: gates chạy được viết trước khi làm, và bằng chứng thay cho lời khẳng định tự tin.

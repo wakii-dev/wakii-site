@@ -5,6 +5,7 @@ pubDate: "2026-09-23"
 category: "tutorial"
 tags: ["guide", "cli"]
 draft: false
+heroImage: "/blog/heroes/guide-multi-session-ports.png"
 ---
 
 Một agent làm việc thì màn hình rộng dư dùng. Chạy song song ba agent — ba

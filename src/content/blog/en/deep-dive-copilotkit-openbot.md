@@ -5,6 +5,7 @@ pubDate: "2026-10-24"
 category: "tech"
 tags: ["agents", "gates", "supervised", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-copilotkit-openbot.png"
 ---
 
 CopilotKit is known for the framework that embeds copilot UI into React apps. OpenBot, which they published on August 17, 2026, is something else: a complete template — a team of AI coworkers, each with a computer of its own, running on your infrastructure, where no action reaches that computer without passing a single gateway that decides and records. For anyone building agent products — ourselves included — the value of this repo is not the sample chat bot. It is how firmly the template holds the agent's hands.

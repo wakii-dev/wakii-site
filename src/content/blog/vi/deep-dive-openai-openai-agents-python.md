@@ -5,6 +5,7 @@ pubDate: "2026-10-16"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-openai-openai-agents-python.png"
 ---
 
 Nhiều framework multi-agent giải bài điều phối bằng cách chồng thêm lớp: khai báo vai, runtime actor, hay quy trình chuẩn tài liệu hoá. OpenAI Agents SDK — 29,267 stars, MIT license, theo GitHub API ngày 2026-09-08 — đi theo chiều ngược lại: giữ bề mặt nhỏ nhất có thể. Một agent là một dataclass; một handoff là một tool; một guardrail là một hàm chạy song song; tracing thì được dựng thành hạng mục sản phẩm riêng. Bài này đọc code thật trong `src/agents` (main tại commit `544b8b0`, ngày 2026-09-08) để xem bốn primitive ấy lắp vào nhau ra sao, và Wakii mượn được điều gì về cách đặt gate.

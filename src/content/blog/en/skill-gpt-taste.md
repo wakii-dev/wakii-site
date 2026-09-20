@@ -5,6 +5,7 @@ pubDate: "2026-09-11"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-gpt-taste.png"
 ---
 
 Ask three agents to build the same landing page and you get back three pages that look like one. They don't share ideas — they share biases: a six-line heading squeezed into a narrow container, the same left/right layout repeated page after page, "SECTION 01" labels sprouting under every section. That's not bad taste; that's the statistical default of a language model. The Wakii kit ships one skill built specifically to fight it: /gpt-taste — and this post reads its source to see what it bans, and when it's allowed on stage.

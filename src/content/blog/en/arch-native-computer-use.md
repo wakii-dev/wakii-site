@@ -5,6 +5,7 @@ pubDate: "2026-09-25"
 category: "tech"
 tags: ["architecture", "agents", "electron"]
 draft: false
+heroImage: "/blog/heroes/arch-native-computer-use.png"
 ---
 
 When an agent decides to "click button X" on your desktop, that decision is not a click. Between the intent and the pixel sits a whole pipeline: parameters must pass validation, a provider must be selected for the operating system, a native module must execute in its own process, and the outcome must be evidenced before it is reported back. This post walks that pipeline through the real code in the public `wakii-dev/wakii` repo — the `src/main/computer/` and `native/` directories — so you can see exactly which boundary sits where.
