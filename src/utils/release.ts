@@ -59,7 +59,7 @@ export interface ReleaseInfo {
   mobileIos: string | null;
 }
 
-const API_URL = `${REPO_URL.replace('https://github.com', 'https://api.github.com')}/releases/latest`;
+const API_URL = `${REPO_URL.replace('https://github.com', 'https://api.github.com/repos')}/releases/latest`;
 const FETCH_TIMEOUT_MS = 3000;
 
 interface GithubReleasePayload {
@@ -170,8 +170,11 @@ export function getRelease(): Promise<ReleaseInfo> {
       let info: ReleaseInfo;
       try {
         info = await fetchLatestRelease();
-      } catch {
-        info = pinRelease(); // fetch fail/timeout/bad payload → full pin
+      } catch (err) {
+        // fetch fail/timeout/bad payload → full pin; the reason is logged
+        // so a pinned (stale-looking) build is never silent about why.
+        console.warn(`[release] github fetch failed — using pin ${LATEST_RELEASE.tag}:`, err);
+        info = pinRelease();
       }
       await writeArtifact(info);
       return info;
