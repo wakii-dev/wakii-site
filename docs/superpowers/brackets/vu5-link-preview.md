@@ -1,6 +1,6 @@
-# Story: FI-PENDING — Link preview đầy đủ thông tin (social unfurl card)
+# Story: VU-5 — Link preview đầy đủ thông tin (social unfurl card)
 
-Destination: story/fi-pending-link-preview
+Destination: story/vu5-link-preview
 
 ## SF-1 OG meta contract
 Tier: 0

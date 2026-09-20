@@ -2,7 +2,7 @@
 
 > Đọc file này THAY VÌ tự tổng hợp từ bracket + epic + comments.
 > Epic spec: `docs/superpowers/specs/2026-09-20-link-preview-design.md` (rev 3).
-> Bracket: `docs/superpowers/brackets/fi-pending-link-preview.md` (remap khi có epic ID).
+> Bracket: `docs/superpowers/brackets/vu5-link-preview.md` (epic VU-5).
 > Pack này slice sẵn: spec phần SF-1 + touch map + acceptance + boundary.
 
 ## Spec slice (chỉ phần SF-1 chịu trách nhiệm)
