@@ -21,7 +21,7 @@ Tier: 1
 linear: VU-12
 What: Phase 1/2 — shippable: implement hand-off SF-1 — version resolution build-time fetch (timeout ~3s) + per-asset validation từ cùng API response + fallback pin + release-meta.json artifact; consumers-rewire (GetWakii meta-line + MobileConnect QR → resolved module; exit: grep direct consumers DOWNLOAD_URLS/MOBILE_STORE_URLS ngoài module = 0); OS-detect PE (highlight rule D6: aria-current + chip "→ cho máy bạn", không ẩn nút, Linux/unknown không highlight) + no-JS fallback đầy đủ + contract amend (motion + accuracy-gates + 2 design-binding comments → trỏ hand-off mới); macOS arm64+x64 buttons; first-run 3-step strip → getting-started; layout-restructure = SPINE (mọi task đụng DownloadPage.astro TUẦN TỰ sau nó; contract-amend CUỐI); G-I warn; README.md wording = mô tả cơ chế fetch (orca README = OWNER manual step trong release checklist — ngoài repo); EN+VI wire; mobile-390; accuracy recheck. Demo: /download hiện version thật + đúng arch, ≤1 click tới installer.
 Depends on: SF-1
-Tasks: version-resolution / consumers-rewire / release-meta-artifact / layout-restructure-spine / arch-buttons / os-detect-pe / first-run-strip / contract-amend / en-vi-wire / accuracy-recheck / mobile-390 / visual-qa
+Tasks: version-resolution / consumers-rewire / release-meta-artifact / layout-restructure-spine / arch-buttons / os-detect-pe / first-run-strip / contract-amend / en-vi-wire / accuracy-recheck / check-og-desc-min / mobile-390 / visual-qa
 
 ## SF-4 Funnel convergence QA
 Tier: 2
