@@ -5,7 +5,7 @@
  * chỉ assert + viết báo cáo markdown (mặc định in ra stdout).
  *
  * Chain audit (ACCEPTANCE SF-4):
- *   C1  hero → /download ≤1 click (primary) + ghost → REPO_URL — 4 pages
+ *   C1  hero → /download ≤1 click (primary) + ghost → REPO_URL — 2 landing pages
  *   C2  /download → installer ≤2 click tổng: 4 asset href == dist/release-meta.json
  *       (cùng resolved source SF-3), + release-notes/tag + nightly + build-from-source
  *   C3  version consistency GetWakii (landing) ↔ /download ↔ release-meta:
@@ -89,7 +89,12 @@ const internalTargets = new Set(); // hrefs seen (C5 dedupe report)
 for (const [pg, h] of Object.entries(H)) {
   if (!pg.startsWith('landing')) continue;
   const dl = pg === 'landingEn' ? '/download' : '/vi/download';
-  const as = anchorsOf(h.slice(0, h.indexOf('id="understand"')));
+  const heroCut = h.indexOf('id="understand"');
+  if (heroCut < 0) {
+    warn(`C1 ${pg}`, 'hero chain — không tìm thấy id="understand" để giới hạn vùng hero', 'check lại cấu trúc landing');
+    continue;
+  }
+  const as = anchorsOf(h.slice(0, heroCut));
   const primary = as.find((a) => a.href === dl);
   const repo = as.find((a) => a.href === 'https://github.com/wakii-dev/wakii');
   check(
@@ -173,7 +178,6 @@ function resolveInternal(href, fromPage) {
   let rel = path.replace(/^\//, '');
   if (rel === '') rel = 'index.html';
   else if (!/\.[a-z]+$/.test(rel)) rel += '/index.html';
-  else if (rel.endsWith('/')) rel += 'index.html';
   const file = join(DIST, rel);
   if (!existsSync(file)) return [false, null];
   if (anchor) {
@@ -234,14 +238,15 @@ for (const [pg, hRaw] of Object.entries(H)) {
   const head = hRaw.slice(0, hRaw.indexOf('</head>'));
   const can = head.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
   const hl = head.match(/<link rel="alternate" hreflang="vi" href="([^"]+)"/)?.[1];
+  const hle = head.match(/<link rel="alternate" hreflang="en" href="([^"]+)"/)?.[1];
   const hlx = head.match(/<link rel="alternate" hreflang="x-default" href="([^"]+)"/)?.[1];
   const desc = head.match(/<meta name="description" content="([^"]*)"/)?.[1];
   const og = ['og:title', 'og:description', 'og:image', 'og:type', 'og:site_name', 'og:locale'].every((p) => head.includes(`property="${p}"`));
   const tw = head.includes('name="twitter:card"');
   const exp = metaExpect[pg];
   check(`C8 ${pg}`, 'canonical + hreflang(en/vi/x-default) + desc + og/twitter',
-    can === exp.can && hl === exp.vi && !!hlx && !!desc && desc.length > 50 && og && tw,
-    `can:${can} vi:${hl} desc:${desc ? desc.length + 'ch' : 'MISSING'} og:${og} tw:${tw}`);
+    can === exp.can && hl === exp.vi && !!hle && !!hlx && !!desc && desc.length > 50 && og && tw,
+    `can:${can} en:${hle} vi:${hl} desc:${desc ? desc.length + 'ch' : 'MISSING'} og:${og} tw:${tw}`);
 }
 
 // ── C9 VI parity rendered ──────────────────────────────────────────────

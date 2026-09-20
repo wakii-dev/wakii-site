@@ -33,9 +33,9 @@
 
 ## Regime-paired verdict (dest vs base, cùng regime)
 - **home / warm**: dest median 100.0 (n=4) vs base median 100 (n=5) → delta +0.0 → PASS
-- **home / cold**: dest median 88.5 (n=2) vs base median 88.0 (n=1) → delta +0.5 → PASS (no-regression; floor máy — base cũng 88.0 < 90)
+- **home / cold**: dest median 88.5 (n=2) vs base median 88.0 (n=1) → delta +0.5 → PASS (no-regression — floor throttle máy, base cùng mức 88.0; warm regime mới là steady-state user)
 - **dl / warm**: dest median 100.0 (n=2) vs base median 100.0 (n=4) → delta +0.0 → PASS
-- **dl / cold**: dest median 91.0 (n=4) vs base median 91.0 (n=2) → delta +0.0 → PASS (no-regression; floor máy — base cũng 91.0 < 90)
+- **dl / cold**: dest median 91.0 (n=4) vs base median 91.0 (n=2) → delta +0.0 → PASS (delta +0.0; ≥90 tự thân ĐẠT ở /download cả khi cold)
 
 ## A11y (cùng runs)
 - base dl: [90.0, 90.0, 90.0, 90.0, 90.0, 90.0] (median 90.0)

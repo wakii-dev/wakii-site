@@ -7,18 +7,13 @@
 
 | Gate | Kết quả | Evidence |
 |---|---|---|
-| Funnel chain hero→/download ≤1 click | PASS (click thật EN+VI) | flow-report.md · shots |
-| /download → installer ≤2 click tổng | PASS (nút = 1 click thẳng file GitHub) | funnel-crawl C2 |
-| Không link chết trong chain | PASS SAU FIX F1 (28 PASS · 0 FAIL) | funnel-crawl-report.md |
-| AC1 — 4 câu trong copy section | PASS EN+VI | funnel-crawl C9 + rm-m390/rm-d1440 shots |
-| Version consistency GetWakii ↔ /download | PASS — mọi version string = v1.4.213 (0 stale) | funnel-crawl C3 |
-| first-run → docs liền mạch | PASS (click thật → "Getting started"/"Bắt đầu") | flow-report.md |
+| Funnel chain hero→/download ≤1 click | PASS (click thật EN+VI) | flow-visual-a11y-report.md §1 · shots |
 | Anchors (#get-wakii, nav, footer) | PASS | funnel-crawl C6 |
 | Blog CTA → /download (5 posts × 2 locale) | PASS | funnel-crawl C7 |
 | VI parity + ACK-or-default | PASS rendered; ACK = ship-draft (xử lý bên dưới) | funnel-crawl C9 + epic comment |
-| mobile-390 sweep 2 pages × 2 locale | ALL-PASS (overflow 4/4 + 12 shots) | shots/m390-*, ov-* |
+| mobile-390 sweep 2 pages × 2 locale | ALL-PASS (overflow 4/4 đo máy + 12 shots) | flow-visual-a11y-report.md §2 · shots/m390-* |
 | Perf budget (AC7 protocol PIN) | **PASS** — warm 100=100 (delta +0.0, ≥90 ✓, ±5 ✓); cold = floor máy hit cả 2 phía (88/88.5, 91=91); CLS 0 · TBT 0 | perf-budget.md |
-| A11y sweep | **PASS, KHÔNG tụt** — landing **92** (base 90, tăng), download 90 (=base, systemic cap); aria-current ✓ · focus ring ✓ · reduced-motion path ✓ | perf-budget.md (bảng a11y) + flow-visual-a11y-report.md §4 |
+| A11y sweep | **PASS, KHÔNG tụt** — landing **92** (base 90, tăng), download 90 (=base, systemic cap); aria-current ✓ · focus ring ✓ · reduced-motion path ✓ | perf-budget.md (bảng a11y) · flow-visual-a11y-report.md §4 |
 | Meta/OG consistency | PASS (canonical/hreflang/desc/og/twitter 4 pages) | funnel-crawl C8 |
 
 ## B. Phát hiện trong run (fix đã land / đang xử lý)
@@ -32,7 +27,7 @@
 2. **Deploy tay**: `npx vercel deploy --prod --scope 1foxglobal --yes` (CD-on-push chưa bật — VERCEL_TOKEN chưa set; login vuhoi).
 3. **Domain wakii.xyz** — nếu chưa add: runbook `docs/knowledge/runbooks/link-preview-domain.md` (canonical hiện trỏ `https://wakii.xyz/` — trang sống khi domain active).
 4. **README re-pin version** — release checklist epic: bump pin khi có release mới = 2 dòng URL `src/config.ts` + README deployment + orca README (owner manual, ngoài repo). Hiện build tự fetch releases/latest (source=fetched v1.4.213) + pin fallback — không cần re-pin thủ công trừ khi GitHub API block.
-5. **Screenshots thật cho slot** (SF-2/3 GAP) — owner chụp 2-4 ảnh: (a) superpowers panel sau lần mở đầu (understand q2), (b) bracket canvas / story view (understand q3), (c) main window (download page). Đang là placeholder frame có label trung thực — khôngclaim screenshot thật.
+5. **Screenshots thật cho slot** (SF-2/3 GAP) — owner chụp 2-4 ảnh: (a) superpowers panel sau lần mở đầu (understand q2), (b) bracket canvas / story view (understand q3), (c) main window (download page). Đang là placeholder frame có label trung thực — không claim screenshot thật.
 6. **orca README** (repo wakii, ngoài site) — phần install hướng dẫn khớp wording mới nếu cần.
 
 ## D. Report card — test thật cho owner (5 phút)

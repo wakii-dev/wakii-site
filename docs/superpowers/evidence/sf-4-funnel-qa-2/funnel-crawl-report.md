@@ -1,6 +1,6 @@
 # Funnel convergence crawl — SF-4 (VU-13)
 
-dist: `dist` · release-meta: `1.4.213` (source=fetched) · 2026-09-20T11:34:53.320Z
+dist: `dist` · release-meta: `1.4.213` (source=fetched) · 2026-09-20T12:01:36.189Z
 
 **28 PASS · 1 WARN · 0 FAIL**
 
@@ -19,10 +19,10 @@ dist: `dist` · release-meta: `1.4.213` (source=fetched) · 2026-09-20T11:34:53.
 - **PASS** C6 landingEn — #get-wakii verbatim + nav anchors (#features/#workflow/#faq) — get-wakii:true nav:true
 - **PASS** C6 landingVi — #get-wakii verbatim + nav anchors (#features/#workflow/#faq) — get-wakii:true nav:true
 - **PASS** C7 blog-CTA — 5 posts × 2 locale có CTA → /download (agentic-landscape-50-projects, arch-auto-update-feed, arch-ci-gates, arch-electron-process-model, arch-native-computer-use) — 5/5 × 2 ✓
-- **PASS** C8 landingEn — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/ vi:https://wakii.xyz/vi/ desc:109ch og:true tw:true
-- **PASS** C8 downloadEn — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/download/ vi:https://wakii.xyz/vi/download/ desc:109ch og:true tw:true
-- **PASS** C8 landingVi — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/vi/ vi:https://wakii.xyz/vi/ desc:103ch og:true tw:true
-- **PASS** C8 downloadVi — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/vi/download/ vi:https://wakii.xyz/vi/download/ desc:96ch og:true tw:true
+- **PASS** C8 landingEn — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/ en:https://wakii.xyz/ vi:https://wakii.xyz/vi/ desc:109ch og:true tw:true
+- **PASS** C8 downloadEn — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/download/ en:https://wakii.xyz/download/ vi:https://wakii.xyz/vi/download/ desc:109ch og:true tw:true
+- **PASS** C8 landingVi — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/vi/ en:https://wakii.xyz/ vi:https://wakii.xyz/vi/ desc:103ch og:true tw:true
+- **PASS** C8 downloadVi — canonical + hreflang(en/vi/x-default) + desc + og/twitter — can:https://wakii.xyz/vi/download/ en:https://wakii.xyz/download/ vi:https://wakii.xyz/vi/download/ desc:96ch og:true tw:true
 - **PASS** C9 landing VI — 4 kickers q1–q4 + copy VI thật — 4/4 kickers
 - **PASS** C9 download VI — nhóm upgrade có bản VI (arch/phiên bản/first-run/G-I/nightly) — 6/6 markers
 - **PASS** C9 placeholders — không TODO/PLACEHOLDER/lorem trên VI pages — sạch

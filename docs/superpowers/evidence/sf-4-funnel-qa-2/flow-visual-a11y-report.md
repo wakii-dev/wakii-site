@@ -51,5 +51,5 @@ Mobile-390 (iframe probe same-origin `dist/_probe390/`, window 390 clamp gotcha)
 | OS-detect highlight | `aria-current="true"` đúng 1/trang download (EN+VI) + text chip "→ FOR YOUR MACHINE / CHO MÁY BẠN" ✓ |
 | Keyboard focus nút tải | `.focus()` nhận + outline UA `auto 3px` còn nguyên (không bị xoá outline) ✓ |
 | Reduced-motion path | render đầy đủ static (shots rm-*) — hợp đồng motion.css `html.anim` gate ✓ |
-| Lighthouse a11y | (điền — perf-budget.md chạy cùng categories) |
+| Lighthouse a11y | landing dest **92** (base 90 — tăng), /download 90 (=base) — chi tiết perf-budget.md §A11y |
 | Contrast/cap | Lighthouse a11y ~90 = systemic cap đã biết (không tụt thêm) |
