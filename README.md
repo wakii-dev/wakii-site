@@ -97,11 +97,17 @@ production URL: `https://wakii.xyz` — sitemap and `robots.txt` derive from
 `SITE_URL` in `src/config.ts`.
 
 > `REPO_URL` points to the public product repo
-> [`wakii-dev/wakii`](https://github.com/wakii-dev/wakii), where release
-> `v1.4.205` (Latest) hosts the desktop builds (`Wakii-1.4.205-arm64.dmg`
-> Apple Silicon, `...-x64.dmg` Intel, `orca-windows-setup.exe` Windows)
-> plus the Android APK. `DOWNLOADS_LIVE` and `MOBILE_LIVE` are on; all
-> platforms link real release assets.
+> [`wakii-dev/wakii`](https://github.com/wakii-dev/wakii). Download URLs are
+> **resolved at build time**: `src/utils/release.ts` fetches the GitHub API
+> `releases/latest` (one call per build, 3s timeout) and validates every
+> asset name against that same response (`Wakii-<version>-arm64.dmg` Apple
+> Silicon, `...-x64.dmg` Intel, `orca-windows-setup.exe` Windows, plus the
+> Android APK). When the fetch or an asset is missing, the build falls back
+> to the pinned release (`LATEST_RELEASE` + `RELEASE_PIN_URLS` in
+> `src/config.ts` — bump the pin when a release is dropped) and a missing
+> pin hides the button instead of ever linking a 404. Each build records
+> what it resolved in `dist/release-meta.json`. `DOWNLOADS_LIVE` and
+> `MOBILE_LIVE` are on; all platforms link real release assets.
 
 </details>
 
