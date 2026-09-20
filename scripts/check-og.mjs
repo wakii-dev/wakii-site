@@ -5,7 +5,8 @@
  *
  * Default mode — walk every *.html under dist/ and assert the SF-1 meta
  * contract holds everywhere:
- *   - og:title / og:description (non-empty, never the bare SITE_TAGLINE
+ *   - og:title / og:description (non-empty, never the bare SITE_TAGLINE;
+ *     desc-min: ≥55 chars on share surfaces FAIL, others WARN)
  *     fallback) / og:image (absolute https on the site origin, .png,
  *     file EXISTS in dist) / og:type / og:site_name / og:locale
  *     (en-US | vi_VN, consistent with the vi/ path prefix) /
@@ -155,6 +156,11 @@ const failures = [];
 function fail(file, reason) {
   failures.push(`  ✗ ${file}: ${reason}`);
 }
+/* Non-blocking notes (desc-min on non-share surfaces) — printed, never exit-1. */
+const warnings = [];
+function warn(file, reason) {
+  warnings.push(`  ⚠ ${file}: ${reason}`);
+}
 
 /* ── --live: network probe, never fails (D9) ─────────────────────────── */
 
@@ -233,6 +239,21 @@ for (const abs of htmlFiles) {
   if (!ogTitle.trim()) fail(file, 'og:title empty');
   if (!ogDesc.trim()) fail(file, 'og:description empty');
   if (ogDesc.trim() === SITE_TAGLINE) {
+  // desc-min (owner request 09-20): share surfaces (landing, /download, blog
+  // posts) hard-fail below the 55-char share-card floor; other surfaces warn.
+  {
+    const descLen = ogDesc.trim().length;
+    const isPost = Boolean(postSlugOf(file));
+    const isShareSurface =
+      file === 'index.html' || file === 'vi/index.html' ||
+      file === 'download/index.html' || file === 'vi/download/index.html' ||
+      isPost;
+    if (descLen < 55) {
+      const reason = `og:description ${descLen} chars < 55 (share-card floor)`;
+      if (isShareSurface) fail(file, reason);
+      else warn(file, `${reason} — non-share surface`);
+    }
+  }
     fail(file, 'og:description is the bare SITE_TAGLINE fallback (page must pass its own description)');
   }
   if (!['website', 'article'].includes(meta.get('og:type') ?? '')) {
@@ -365,6 +386,10 @@ if (!existsSync(robotsFile)) {
   fail('robots.txt', 'content drifted from the pinned template (src/pages/robots.txt.ts)');
 }
 
+if (warnings.length > 0) {
+  console.log(`⚠ check-og warnings (${warnings.length}):`);
+  for (const w of warnings) console.log(w);
+}
 if (failures.length > 0) {
   console.error(`✗ check-og FAILED (${failures.length} violation${failures.length === 1 ? '' : 's'}):`);
   for (const f of failures) console.error(f);
