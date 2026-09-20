@@ -35,3 +35,8 @@ tdd: skipped-tdd: render pipeline là binary-asset step, repo không có unit-te
     listing /blog/: featured cell hero slot đầy, không vỡ ✓
     log-1 detail: không hero img (fallback) ✓
     mobile-390 (iframe probe dist/_probe390): hero scale đúng, không vỡ ✓
+
+--- addendum 2026-09-20 (post-review docs commits) ---
+addendum commits: c79aa97 (evidence) · e3d1e9a (improvements-log learnings — docs-only)
+re-verify sau addendum: --check 119/119 pass (IHDR 1200×630) · merged tree trên dest @ 7546f06
+(SF-1 66230fc + SF-2) build exit 0, 267 pages, dist/blog/heroes = 119 PNG — combo xanh
