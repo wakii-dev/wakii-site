@@ -87,3 +87,20 @@ tdd: skipped-tdd: post-build assertion scripts ARE the test harness in this
     card mẫu. Registered SAME-COMMIT: MOC.md (Runbooks section) +
     README.md mục lục + frontmatter.md enum extension (type: runbook —
     schema authority update, lý do trong audit comment VU-8).
+
+[10] Independent code-review addendum (2026-09-20):
+    - verdict trên diff 13c1763..0c69390: CHANGES-REQUESTED — 1 P1
+      (crawler-probe no-arg default: argv[indexOf('--url')+1] khi thiếu
+      flag → argv[0] = node binary qua guard startsWith('-') → base URL
+      sai; repro thật in heading node-bin path + ERR_INVALID_URL; evidence
+      [6] chỉ từng chạy qua --url nên default chưa được test) + 3 P2.
+    - fix 94be283: indexOf guard 1 dòng; REQUIRED gate thêm og:type +
+      twitter:image:alt (P2 contract-alignment); headline strip formatting
+      (P2 cosmetic). Re-verify sau fix: no-arg in đúng
+      "http://localhost:4321" (ECONNREFUSED sạch), --url :4393 → 5/5
+      crawlers × 2 pages exit 0 với REQUIRED mới (twitter:image:alt in
+      10/10 blocks), check-og 267 pages exit 0, full chain build exit 0
+      (build-3 log kết thúc ✓ OG OK).
+    - P2 ghi nhận KHÔNG sửa: og:image:type PNG assert là fail-loud
+      documented — hero JPG đầu tiên sẽ đỏ build, nới assert khi editorial
+      đổi format (đã note trong header check-og).
