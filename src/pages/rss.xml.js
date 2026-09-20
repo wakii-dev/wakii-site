@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { SITE_NAME, SITE_URL } from '../config';
+import { SITE_NAME, SITE_URL, OG_BASE_URL } from '../config';
 import { blogSlug } from '../content.config';
 
 /**
@@ -28,7 +28,8 @@ export async function GET(context) {
       const locale = post.id.startsWith('vi/') ? 'vi' : 'en';
       const prefix = locale === 'vi' ? '/vi' : '';
       const link = `${prefix}/blog/${blogSlug(post.id)}/`;
-      const image = new URL(post.data.heroImage ?? '/og-default.png', site).href;
+      // media URLs resolve on OG_BASE_URL (image-host fallback — see config.ts)
+      const image = new URL(post.data.heroImage ?? '/og-default.png', OG_BASE_URL).href;
       return {
         title: post.data.title,
         description: post.data.description,

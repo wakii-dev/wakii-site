@@ -43,6 +43,20 @@ node scripts/check-og.mjs --live
 - Sau khi add: kỳ vọng `PASS 200` × 3 (`/`, `/og-default.png`, 1 post mẫu).
   3/3 PASS 200 = domain phục vụ thật, sang bước 3.
 
+## Bước 2b — Flip OG_BASE_URL (sau khi domain live)
+
+Image URLs (og:image, twitter:image, RSS media) đang resolve trên
+`OG_BASE_URL = https://wakii-site.vercel.app` (fallback host — config.ts).
+Domain sống rồi thì flip 1 dòng về canonical:
+
+```
+src/config.ts:  export const OG_BASE_URL = 'https://wakii.xyz';
+```
+
+Build + `npm run check:og` (og:image chấp nhận cả 2 origin nên flip không
+vỡ gate) → deploy. Bỏ qua bước này nếu muốn giữ vercel.app làm image host
+(crawlers không đòi hỏi og:image cùng origin với og:url).
+
 ## Bước 3 — Đuổi cache crawler (sau khi domain live)
 
 Crawler cache card theo URL; phần lớn share cũ là fetch-fail (host 404) nên
