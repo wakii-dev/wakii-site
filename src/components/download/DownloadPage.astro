@@ -1,25 +1,49 @@
 ---
 /**
- * Download page body (SF-2, FI-302) — shared by /download (EN) and
- * /vi/download (VI) (pattern: RoadmapPage.astro, FI-297). Design binding 1:1:
- * docs/superpowers/designs/sf-downloads-direction.md "Bento Dispatch" —
- * whole page = asymmetric bento 12-col, every install target is a cell.
+ * Download page body (SF-2 FI-302 → restructured VU-9 SF-3) — shared by
+ * /download (EN) and /vi/download (VI) (pattern: RoadmapPage.astro,
+ * FI-297). Design binding 1:1: docs/superpowers/designs/ux-funnel-direction.md
+ * "Terminal Conveyor" Surface 2 (SUPERSEDES sf-downloads-direction.md for
+ * /download surfaces) — asymmetric bento around ONE primary action
+ * (macOS arm64, btn-xl), real version pill, first-run strip; the nightly
+ * cell stays LAST as the power-user cell.
  *
  * Content = src/i18n/downloads.ts (SF-1 pre-add, KEY-OWNERSHIP: no new keys
- * here — gaps are flagged to epic FI-300, never hardcoded). Flags + URLs
- * from src/config.ts. Motion = shared initMotion() only (data-reveal).
+ * here — gaps are flagged to epic VU-9, never hardcoded). Version/date/
+ * download URLs come from the release-resolution module src/utils/release.ts
+ * (D5: build-time fetch + per-asset validation + pinned fallback — never
+ * hardcoded, never a 404: a target missing from both fetched and pinned
+ * data renders no button at all). Flags from src/config.ts.
  *
- * Accuracy gates (hand-off table + spec G-A/G-I):
- *   - changelog / checksums cells are NOT rendered: no release data source
- *     exists yet (fake version/hash = dead claim).
- *   - version pill NOT rendered (no version field in config).
- *   - flag=false → dashed non-href soon buttons, follow-releases becomes
- *     the primary path; flag=true → real DOWNLOAD_URLS buttons + warn (G-I).
- * Deviations from the prototype are logged in the FI-302 audit comment.
+ * Motion contract: the shared initMotion() util does ALL entrance work
+ * (data-reveal per cell, once per page). The OS-detect block in the
+ * <script> is this page's ONE progressive-enhancement script (D6) with a
+ * full no-JS fallback: the server-rendered page is complete — every
+ * button, no chip, no highlight.
+ *
+ * Accuracy gates (hand-off + spec G-A/G-I/G-QR, updated for D5/D6):
+ *   - version pill + published date render ONLY from resolved/pinned
+ *     release data (fetch result or the LATEST_RELEASE pin) — never
+ *     fabricated; no release data → no version rendered.
+ *   - changelog / checksums cells are still NOT rendered: no release-hash
+ *     source exists (fake checksum = dead claim).
+ *   - G-I unsigned-build warn stays on EVERY download CTA: macOS primary
+ *     foot, Windows foot, MobileConnect G-QR caption cell, nightly warn.
+ *   - flag semantics unchanged (G-B): flag=false → dashed non-href soon
+ *     buttons, warn hidden; flag=true → real release URLs + warn (G-I).
+ *     DOWNLOAD_URLS / MOBILE_STORE_URLS are consumed only by
+ *     src/utils/release.ts (consumers-rewire exit: zero direct consumers
+ *     anywhere else).
+ *   - OS-detect (D6) is highlight-only: aria-current on the card + a text
+ *     chip ("→ for your machine"); buttons never hidden or reordered;
+ *     Linux/unknown → no highlight; inside the macOS card there is NO
+ *     arch highlight (both buttons equal weight, arm64 first; the only
+ *     arch refinement is a userAgentData tag swap, fail-silent).
  */
 import Base from '../../layouts/Base.astro';
 import MobileConnect from './MobileConnect.astro';
-import { DOWNLOADS_LIVE, DOWNLOAD_URLS, MOBILE_LIVE, MOBILE_STORE_URLS, REPO_URL } from '../../config';
+import { DOWNLOADS_LIVE, MOBILE_LIVE, REPO_URL } from '../../config';
+import { getRelease } from '../../utils/release';
 import type { DownloadStrings } from '../../i18n/downloads';
 import '../../styles/motion.css';
 
@@ -29,88 +53,258 @@ interface Props {
 const { t } = Astro.props;
 const isVi = t.lang === 'vi';
 
-// Flag-conditional SEO + hero copy (dual-variant keys, G-D)
+// D5 — one resolved release per build (fetch once per process, per-asset
+// validation, pinned fallback; artifact dist/release-meta.json).
+const release = await getRelease();
+const rel = release.assets;
+const up = t.upgrade;
+
+// Flag semantics (G-B — unchanged): flag=false demotes every CTA to a
+// dashed non-href soon button; layout, keys and copy stay identical.
+const live = DOWNLOADS_LIVE;
+
+// Flag-conditional SEO (dual-variant keys, G-D) — visible head swaps to
+// upgrade.head.* below; the SEO description stays on page.* keys.
 const description = DOWNLOADS_LIVE ? t.page.live.description : t.page.notLive.description;
-const sub = DOWNLOADS_LIVE ? t.page.live.sub : t.page.notLive.sub;
 
 const releasesUrl = `${REPO_URL}/releases`;
+// Release-notes target: the resolved tag page (real — the tag IS the
+// source of version); without a resolved version, the releases list.
+const latestTagUrl = release.version ? `${REPO_URL}/releases/tag/${release.tag}` : releasesUrl;
 const gettingStarted = isVi ? '/vi/docs/getting-started/' : '/docs/getting-started/';
-const guideLabel = isVi
-  ? '→ hướng dẫn đầy đủ: /vi/docs/getting-started/'
-  : '→ full guide: /docs/getting-started/';
+const publishedDate = release.publishedAt ? release.publishedAt.slice(0, 10) : null;
 
-// Real asset names from config (factual — used as cell meta, no size/OS claims)
-const macosAsset = DOWNLOAD_URLS.macos.split('/').pop() || '';
-const windowsAsset = DOWNLOAD_URLS.windows.split('/').pop() || '';
-
-const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
+// Mobile cell state (G-A2 partial-fill-safe): live when the flag is on AND
+// a real store/apk URL resolves; else the honest dashed placeholder.
+const mobileLive = MOBILE_LIVE && Boolean(release.mobileIos || rel.androidApk.url);
 ---
 
 <Base title={t.page.title} description={description}>
   <header class="dl-hero">
     <div class="wrap">
-      <div class="kicker">{t.page.kicker}</div>
-      <h1>{t.page.h2}</h1>
-      <p class="sub">{sub}</p>
+      <div class="dl-head">
+        <div>
+          <div class="kicker">get-wakii</div>
+          <h1>{up.head.title}</h1>
+          <p class="sub">{up.head.lead}</p>
+        </div>
+        <div class="dl-meta">
+          {release.version && (
+            <span class="vpill"><span class="dot"></span>v{release.version} · {up.version.pillSuffix}</span>
+          )}
+          {publishedDate && <span class="dl-date">{up.version.publishedLabel} {publishedDate}</span>}
+          <span class="micro">{up.head.micro}</span>
+        </div>
+      </div>
     </div>
   </header>
 
   <section class="dl-section">
     <div class="wrap">
       <div class="bento">
-        <!-- macOS -->
-        <div class="bx sp6" data-reveal>
+        <!-- PRIMARY — macOS, one card for both arches (arm64 first, equal
+             weight — D6 forbids arch highlighting inside this card) -->
+        <div class="bx sp8 os-card" data-os="macos" data-reveal>
           <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.desktop.tabMacos}</span><span class="meta">{macosAsset}</span></div>
-            <div class="bx-body">
-              <div class="cell-os-head">
-                <div class="cell-logo">◆</div>
-                <h2>{t.desktop.tabMacos}</h2>
-              </div>
-              {DOWNLOADS_LIVE ? (
-                <div class="btn-row">
-                  <a class="btn btn-primary" href={DOWNLOAD_URLS.macos}>{t.desktop.live.btnMacos}</a>
-                </div>
-              ) : (
-                <span class="btn btn-soon">{t.desktop.live.btnMacos}</span>
-              )}
-              {DOWNLOADS_LIVE && <div class="bx-foot"><b>{t.desktop.live.warnMacos}</b></div>}
+            <div class="bx-label">
+              <span class="t">{up.primary.label}</span>
+              <span class="meta"><span class="chip">{up.osChip}</span></span>
             </div>
+            <div class="bx-body">
+              {
+                live && rel.macosArm64.url ? (
+                  <div class="arch">
+                    <div class="arch-row">
+                      <a class="btn btn-primary btn-xl" href={rel.macosArm64.url}>
+                        {up.primary.btnArm64}
+                      </a>
+                      <span class="arch-tag on" data-arch-tag="arm64">
+                        {up.primary.tagArm64}
+                      </span>
+                      <span class="arch-tag" data-arch-tag="archYours">
+                        {up.archYours}
+                      </span>
+                    </div>
+                    <span class="fname">{rel.macosArm64.name}</span>
+                  </div>
+                ) : (
+                  <span class="btn btn-soon">{up.primary.btnArm64}</span>
+                )
+              }
+              {
+                live && rel.macosArm64.url && rel.macosX64.url && (
+                  <div class="or">{up.primary.or}</div>
+                )
+              }
+              {
+                rel.macosX64.url ? (
+                  live ? (
+                    <div class="arch">
+                      <div class="arch-row">
+                        <a class="btn btn-ghost btn-block" href={rel.macosX64.url}>
+                          {up.primary.btnX64}
+                        </a>
+                      </div>
+                      <span class="fname">{rel.macosX64.name}</span>
+                    </div>
+                  ) : (
+                    <span class="btn btn-soon">{up.primary.btnX64}</span>
+                  )
+                ) : null
+              }
+              <p class="dl-note">{up.primary.note}</p>
+            </div>
+            {
+              live && (rel.macosArm64.url || rel.macosX64.url) && (
+                <div class="bx-foot">
+                  <b>{up.primary.foot}</b>
+                </div>
+              )
+            }
           </div>
         </div>
 
-        <!-- Windows -->
-        <div class="bx sp6" data-reveal>
-          <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.desktop.tabWindows}</span><span class="meta">{windowsAsset}</span></div>
-            <div class="bx-body">
-              <div class="cell-os-head">
-                <div class="cell-logo">⊞</div>
-                <h2>{t.desktop.tabWindows}</h2>
+        <!-- right rail: version (stack top) + main-window slot (stack bottom) -->
+        <div class="sp4 stack">
+          <div class="bx" data-reveal>
+            <div class="bx-in">
+              <div class="bx-label">
+                <span class="t">{up.version.label}</span>
+                <span class="meta">{up.version.pillSuffix}</span>
               </div>
-              {DOWNLOADS_LIVE && DOWNLOAD_URLS.windows ? (
-                <div class="btn-row">
-                  <a class="btn btn-primary" href={DOWNLOAD_URLS.windows}>{t.desktop.live.btnWindows}</a>
+              <div class="bx-body ver-body">
+                {release.version && <div class="ver-big">v{release.version}</div>}
+                {publishedDate && (
+                  <div class="ver-sub">{up.version.publishedLabel} {publishedDate}</div>
+                )}
+                <div class="ver-notes">
+                  <a class="inline-link" href={latestTagUrl} rel="noopener">
+                    {up.version.notesLink}
+                  </a>
                 </div>
-              ) : (
-                <span class="btn btn-soon">{t.desktop.live.btnWindows}</span>
-              )}
-              {DOWNLOADS_LIVE && DOWNLOAD_URLS.windows && (
-                <div class="bx-foot"><b>{t.desktop.live.warnWindows}</b></div>
-              )}
+              </div>
+              <div class="bx-foot">{up.version.foot}</div>
             </div>
+          </div>
+          <div class="slot slot-lg" data-reveal>
+            <span class="slot-name">{up.mainWindowSlot.name}</span>
+            <span class="slot-hint">{up.mainWindowSlot.hint}</span>
           </div>
         </div>
 
-        <!-- mobile connect (jumbo, component reused by SF-3) -->
-        <div class="bx sp8" data-reveal>
-          <MobileConnect t={t.mobile} />
+        <!-- windows -->
+        <div class="bx sp4 os-card" data-os="windows" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">{up.windows.label}</span>
+              <span class="meta"><span class="chip">{up.osChip}</span></span>
+            </div>
+            <div class="bx-body">
+              {
+                live && rel.windows.url ? (
+                  <>
+                    <a class="btn btn-ghost btn-block" href={rel.windows.url}>
+                      {up.windows.btn}
+                    </a>
+                    <span class="fname">{rel.windows.name}</span>
+                  </>
+                ) : (
+                  <span class="btn btn-soon">{up.windows.btn}</span>
+                )
+              }
+              <p class="dl-note">{up.windows.orcaNote}</p>
+            </div>
+            {
+              live && rel.windows.url && (
+                <div class="bx-foot">
+                  <b>{up.windows.foot}</b>
+                </div>
+              )
+            }
+          </div>
         </div>
 
-        <!-- Nightly (issue #2) — rolling pre-release for power users; stable above stays the default -->
+        <!-- linux — honest: no packaged binary, source only -->
+        <div class="bx sp4" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">{up.linux.label}</span>
+              <span class="meta">{up.linux.meta}</span>
+            </div>
+            <div class="bx-body">
+              <p class="cell-copy">{up.linux.body}</p>
+              <a class="btn btn-ghost btn-block" href={REPO_URL} rel="noopener">
+                {up.linux.btn}
+              </a>
+            </div>
+            <div class="bx-foot">{up.linux.foot}</div>
+          </div>
+        </div>
+
+        <!-- mobile: live = MobileConnect innards (QR + badges, resolved apk
+             URL); else the honest dashed placeholder (upgrade.mobile.*) -->
+        {
+          mobileLive ? (
+            <div class="bx sp4 os-card" data-os="android" data-reveal>
+              <MobileConnect t={t.mobile} osChip={up.osChip} />
+            </div>
+          ) : (
+            <div class="bx sp4 soon-cell" data-reveal>
+              <div class="bx-in">
+                <div class="bx-label">
+                  <span class="t">{up.mobile.label}</span>
+                  <span class="meta">{up.mobile.meta}</span>
+                </div>
+                <div class="bx-body">
+                  <p class="cell-copy">{up.mobile.body}</p>
+                  <span class="btn btn-soon btn-block">{up.mobile.btn}</span>
+                </div>
+                <div class="bx-foot">{up.mobile.apkFoot}</div>
+              </div>
+            </div>
+          )
+        }
+
+        <!-- first-run strip (AC5): the three steps right after install -->
         <div class="bx sp12" data-reveal>
           <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.desktop.nightly.title}</span><span class="meta">nightly</span></div>
+            <div class="bx-label">
+              <span class="t">{up.firstRun.label}</span>
+              <span class="meta">{up.firstRun.meta}</span>
+            </div>
+            <div class="bx-body fr-body">
+              <div class="steps">
+                {
+                  up.firstRun.steps.map((step, i) => (
+                    <>
+                      {i > 0 && <div class="step-arrow" aria-hidden="true">→</div>}
+                      <div class="step">
+                        <span class="step-n">{step.n}</span>
+                        <b class="step-title">{step.title}</b>
+                        <span class="step-desc">{step.desc}</span>
+                      </div>
+                    </>
+                  ))
+                }
+              </div>
+              <div>
+                <a class="btn btn-ghost" href={gettingStarted}>
+                  {up.firstRun.cta}
+                </a>
+              </div>
+            </div>
+            <div class="bx-foot">{up.firstRun.foot}</div>
+          </div>
+        </div>
+
+        <!-- Nightly — power-user rolling build; stable above stays the
+             default. Kept verbatim from FI-302, placed last per hand-off. -->
+        <div class="bx sp12" data-reveal>
+          <div class="bx-in">
+            <div class="bx-label">
+              <span class="t">{t.desktop.nightly.title}</span>
+              <span class="meta">nightly</span>
+            </div>
             <div class="bx-body">
               <p class="nightly-desc">{t.desktop.nightly.desc}</p>
               <div class="btn-row">
@@ -119,62 +313,6 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
                 </a>
               </div>
               <div class="bx-foot"><b>{t.desktop.nightly.warn}</b></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- iOS cell — soon-cell while mobile is not live; store link once it is
-             (hand-off: "MOBILE_LIVE=true → cell thành link store, agent quyết
-             theo data thật"). Empty iOS URL keeps the honest coming-soon state. -->
-        <div class:list={['bx', 'sp4', !(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && 'soon-cell']} data-reveal>
-          <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.mobile.badgeIos}</span></div>
-            <div class="bx-body">
-              {MOBILE_LIVE && MOBILE_STORE_URLS.ios ? (
-                <>
-                  <div class="cell-os-head">
-                    <div class="cell-logo"></div>
-                    <h2>{t.mobile.badgeIos}</h2>
-                  </div>
-                  <a class="btn btn-primary" href={MOBILE_STORE_URLS.ios}>{t.mobile.badgeIos} →</a>
-                </>
-              ) : (
-                <>
-                  <div class="cell-os-head">
-                    <div class="cell-logo dashed"></div>
-                    <h2>{t.mobile.badgeIos}</h2>
-                  </div>
-                  <p class="cell-copy">{t.mobile.notLive.comingSoon}</p>
-                </>
-              )}
-            </div>
-            {!(MOBILE_LIVE && MOBILE_STORE_URLS.ios) && (
-              <div class="bx-foot"><a href={releasesUrl}>{t.mobile.notLive.followUpdates} →</a></div>
-            )}
-          </div>
-        </div>
-
-        <!-- build from source (always available) -->
-        <div class="bx sp6" data-reveal>
-          <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.desktop.notLive.buildFromSource}</span></div>
-            <div class="bx-body">
-              <p class="cell-copy">{DOWNLOADS_LIVE ? t.desktop.live.sourceAlt : t.desktop.notLive.note}</p>
-              <div class="term">
-                <div class="term-cmd"><span class="ps">$</span>{cloneCmd}</div>
-                <div class="term-cmd"><span class="ps">$</span>make install</div>
-              </div>
-              <a class="btn btn-ghost" href={gettingStarted}>{guideLabel}</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- follow releases (primary path while flag=false) -->
-        <div class="bx sp6" data-reveal>
-          <div class="bx-in">
-            <div class="bx-label"><span class="t">{t.desktop.notLive.followReleases}</span></div>
-            <div class="bx-body">
-              <a class:list={['btn', DOWNLOADS_LIVE ? 'btn-ghost' : 'btn-primary']} href={releasesUrl}>github releases →</a>
             </div>
           </div>
         </div>
@@ -220,8 +358,55 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     font-family: var(--font-sans);
   }
 
-  /* ---- bento grid (12-col; macOS/Windows equal per user request 2026-09-05 —
-     overrides hand-off 7+5; changelog/checksums dropped per accuracy gate) ---- */
+  /* ---- dl-head: title trái, version/meta phải-trên (hand-off Surface 2) */
+  .dl-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .dl-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .vpill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 6px;
+    padding: 6px 13px;
+    white-space: nowrap;
+  }
+  .vpill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(69, 224, 168, 0.6);
+  }
+  .dl-date {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+  .micro {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ---- bento grid (12-col; asymmetric primary-spine per hand-off:
+       macOS sp8 → right rail sp4 → windows/linux/mobile sp4 → strip sp12
+       → nightly sp12 last) ---- */
   .dl-section {
     padding: 44px 0 96px;
   }
@@ -239,8 +424,17 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
   .sp4 {
     grid-column: span 4;
   }
-  .sp6 {
-    grid-column: span 6;
+  .sp12 {
+    grid-column: 1 / 13;
+  }
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+  .stack .slot {
+    flex: 1;
   }
 
   /* ---- card anatomy ---- */
@@ -297,11 +491,6 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     gap: 16px;
     flex: 1;
   }
-  .bx-body h2 {
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0;
-  }
   .cell-copy {
     font-size: 13px;
     color: var(--text-dim);
@@ -328,32 +517,175 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
   .bx-foot a:hover {
     text-decoration: underline;
   }
-
-  /* ---- OS cell head ---- */
-  .cell-os-head {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .cell-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    border: 1px solid var(--border-strong);
-    display: grid;
-    place-items: center;
-    font-size: 20px;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .cell-logo.dashed {
-    background: transparent;
-    border-style: dashed;
-  }
   .soon-cell .bx-in {
     border-style: dashed;
     opacity: 0.75;
+  }
+
+  /* ---- D6 OS-detect: chip ẩn mặc định (no-JS = không chip), PE thêm .on;
+     highlight = border + glow nhẹ trên card, cue non-color kèm chip text */
+  .chip {
+    display: none;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .chip.on {
+    display: inline-block;
+  }
+  .os-hit :global(.bx-in) {
+    border-color: var(--accent-dim);
+    box-shadow:
+      0 0 0 1px var(--accent-soft),
+      0 0 26px rgba(69, 224, 168, 0.07);
+  }
+
+  /* ---- arch rows (macOS primary card) ---- */
+  .arch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .arch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .or {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .or::before,
+  .or::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .arch-tag {
+    display: none;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .arch-tag.on {
+    display: inline-block;
+  }
+  .dl-note {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    font-family: var(--font-sans);
+  }
+  .fname {
+    font-size: 11px;
+    color: var(--text-faint);
+    word-break: break-all;
+  }
+
+  /* ---- version cell ---- */
+  .ver-body {
+    gap: 8px;
+  }
+  .ver-big {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .ver-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+  .ver-notes {
+    margin-top: 6px;
+  }
+  .inline-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent-dim);
+    padding-bottom: 1px;
+  }
+  .inline-link:hover {
+    border-bottom-style: solid;
+  }
+
+  /* ---- screenshot slot (hand-off: dashed frame + grid-bg 28px + caption) */
+  .slot {
+    position: relative;
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 22px 18px 30px;
+    text-align: center;
+    overflow: hidden;
+    min-height: 150px;
+  }
+  .slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.45;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, #000 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, #000 20%, transparent 80%);
+  }
+  .slot-name {
+    position: relative;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+  .slot-hint {
+    position: relative;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    max-width: 300px;
+    line-height: 1.6;
+  }
+  .slot::after {
+    content: 'screenshot — placeholder frame';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .slot-lg {
+    min-height: 200px;
   }
 
   /* ---- buttons (hand-off: mono 13px "> " prefix) ---- */
@@ -411,31 +743,65 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
   .btn-soon::before {
     content: '◦ ';
   }
-
-  /* ---- terminal mockup (build-from-source cell) ---- */
-  .term {
-    background: var(--bg-deep);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    font-size: 12px;
-    line-height: 1.9;
-    overflow-x: auto;
-    white-space: nowrap;
+  .btn-xl {
+    width: 100%;
+    padding: 17px 26px;
+    justify-content: center;
   }
-  .term-cmd {
+  .btn-block {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ---- first-run strip ---- */
+  .fr-body {
+    gap: 18px;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 26px 1fr 26px 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .step-n {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+  }
+  .step-title {
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--text);
   }
-  .ps {
-    color: var(--text-faint);
-    margin-right: 8px;
+  .step-desc {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .step-arrow {
+    align-self: center;
+    text-align: center;
+    font-size: 15px;
+    color: var(--accent-dim);
   }
 
-  /* ---- responsive (hand-off: @980 sp8/sp4 → full, @720 all full, gap 12,
-     wrap 20, h1 30px, mob-grid stack) ---- */
+  /* ---- responsive (hand-off: @980 sp8/stack full + sp4 → span 6;
+     @720 all full, gap 12, steps stack dọc, dl-head stack) ---- */
   @media (max-width: 980px) {
-    .sp8,
     .sp4 {
+      grid-column: span 6;
+    }
+    .sp8,
+    .stack {
       grid-column: 1 / 13;
     }
   }
@@ -446,8 +812,20 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     .bento {
       gap: 12px;
     }
-    .sp6 {
+    .stack {
+      gap: 12px;
+    }
+    .sp8,
+    .sp4,
+    .stack {
       grid-column: 1 / 13;
+    }
+    .dl-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .dl-meta {
+      align-items: flex-start;
     }
     h1 {
       font-size: 30px;
@@ -455,12 +833,72 @@ const cloneCmd = `git clone ${REPO_URL.replace('https://', '')} wakii`;
     .dl-hero {
       padding-top: 56px;
     }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .step-arrow {
+      transform: rotate(90deg);
+    }
   }
 </style>
 
 <script>
-  // SF-2 motion contract: consume the shared util, nothing custom.
-  // data-reveal lives on each outer .bx; hero renders immediately.
+  // ---- motion contract (FI-304 / VU-9 hand-off): the shared util does all
+  // entrance work; initMotion() once per page, nothing custom. The block
+  // below is this page's SINGLE progressive-enhancement script (D6).
   import { initMotion } from '../motion';
   initMotion();
+
+  // ---- D6 OS-detect — HIGHLIGHT ONLY ----
+  // Rule: macOS visitor → macOS card, Windows → Windows card, Android →
+  // mobile card; Linux/unknown → no highlight at all. The cue is
+  // non-color: aria-current="true" on the card + a text chip (".chip.on")
+  // in the label meta. Buttons are NEVER hidden or reordered. Inside the
+  // macOS card there is NO arch highlight (both buttons keep equal
+  // weight, arm64 first) — the only arch refinement is the arm64 tag
+  // swap via navigator.userAgentData.getHighEntropyValues(['architecture'])
+  // (fail-silent, default stays arm64). Detection reads
+  // navigator.platform / userAgentData.platform ONLY (plus the Android
+  // user-agent disambiguation — navigator.platform misses it); no other
+  // fingerprinting. No-JS: nothing here runs — the rendered page is
+  // already complete.
+  {
+    const nav = navigator as Navigator & {
+      userAgentData?: {
+        platform?: string;
+        getHighEntropyValues?: (hints: string[]) => Promise<{ architecture?: string }>;
+      };
+    };
+    const plat = `${nav.userAgentData?.platform ?? ''} ${navigator.platform ?? ''}`;
+    const ua = navigator.userAgent || '';
+    let os: 'macos' | 'windows' | 'android' | null = null;
+    if (/mac/i.test(plat)) {
+      // iPadOS reports MacIntel — an iPad is not a macOS download target.
+      os = navigator.maxTouchPoints > 1 ? null : 'macos';
+    } else if (/win/i.test(plat)) {
+      os = 'windows';
+    } else if (/android/i.test(ua)) {
+      os = 'android'; // navigator.platform says "Linux armv8…" on Android
+    }
+    if (os) {
+      const card = document.querySelector<HTMLElement>(`[data-os="${os}"]`);
+      if (card) {
+        card.classList.add('os-hit');
+        card.setAttribute('aria-current', 'true');
+        card.querySelector<HTMLElement>('.chip')?.classList.add('on');
+        if (os === 'macos') {
+          nav.userAgentData
+            ?.getHighEntropyValues?.(['architecture'])
+            .then((hint) => {
+              if (hint && hint.architecture === 'x86') {
+                card.querySelectorAll<HTMLElement>('[data-arch-tag]').forEach((tag) => {
+                  tag.classList.toggle('on', tag.dataset.archTag === 'archYours');
+                });
+              }
+            })
+            .catch(() => {});
+        }
+      }
+    }
+  }
 </script>

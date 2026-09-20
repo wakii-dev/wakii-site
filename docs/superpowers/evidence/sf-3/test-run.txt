@@ -1,0 +1,75 @@
+VU-12 / SF-3 Download page upgrade — test run evidence
+(this file is its own evidence commit — the hash cannot reference itself;
+B1 anchors: HEAD~1 = 3ee747c = final code commit)
+code commits: 3ee747c (P2 fixes, final code) ← 5e5e129 (layout spine)
+  ← 9248565 (API URL fix) ← 3afaf64 (consumers-rewire) ← 006b3e7 (core)
+  — build/DOM/visual facts evidenced against 5e5e129; the two P2 fixes
+  (3ee747c: .or divider live-gating + artifact warn-log) are no-ops for
+  flag=true rendering, re-verified by a green rebuild afterwards
+date: 2026-09-20
+
+tdd: skipped-tdd: static SSG page + build-time resolution module — repo has
+  no unit-test runner (precedent: VU-5/VU-8 check CLIs are the harness);
+  verification = production build + post-build gates + 3-tier browser
+  evidence below (implementer eyeballed every screenshot).
+
+build: `pnpm build` → 267 pages, exit 0
+  ✓ check:og PASS (267 pages · 240 posts: 238 hero/2 og-default · size gate
+    120 PNG ≤ 100KB max 39KB · sitemap 266 URLs · robots pinned)
+  ✓ `pnpm check:jsonld` PASS (267 pages · BlogPosting 240 · BreadcrumbList 6
+    · Blog 2)
+  ✓ artifact dist/release-meta.json: source=fetched, version 1.4.213 (tag
+    v1.4.213, published 2026-09-20T06:01:27Z), 4/4 assets source=fetched
+    (arm64.dmg / x64.dmg / orca-windows-setup.exe / app-release.apk)
+
+DOM (tier 1 — dist grep + headless dump, same build):
+  - /download + /vi/download: vpill "v1.4.213 · latest"/"v1.4.213 · mới
+    nhất" == artifact version; ver-big v1.4.213; published 2026-09-20;
+    notes link → releases/tag/v1.4.213
+  - 4/4 download hrefs per locale, each exactly once, all v1.4.213 ==
+    artifact URLs: Wakii-1.4.213-arm64.dmg / Wakii-1.4.213-x64.dmg /
+    orca-windows-setup.exe / app-release.apk
+  - fname under each button == artifact asset names; landing GetWakii
+    meta-line "Wakii-1.4.213-arm64.dmg · orca-windows-setup.exe" == artifact
+    names (version-consistency AC8)
+  - QR path-data in dist == QR regenerated from the resolved apk URL (MATCH)
+  - consumers-rewire exit: code consumers of DOWNLOAD_URLS / MOBILE_STORE_URLS
+    outside src/utils/release.ts = 0 (only comments mention the rule)
+
+FLOW (tier 3):
+  - JS-on dump (macOS UA): aria-current="true" + chip.on ONLY on the
+    [data-os=macos] card; windows/android cards plain; arch-tag default
+    arm64 on / archYours off (headless UA has no x86 hint)
+  - no-JS: server HTML IS the no-JS ground truth (PE only adds) — 4/4
+    buttons server-rendered, 0 chip.on, 0 os-hit, 0 os-detect
+    aria-current (the only aria-current="true" in raw HTML is the
+    pre-existing Base language-switcher link)
+  - ≤1 click to installer: primary anchor href IS the .dmg release URL;
+    windows cell → .exe; android badge + QR → resolved apk
+  - first-run strip CTA → /docs/getting-started/ (VI → /vi/docs/…), strip
+    meta shows the locale-aware path
+
+VISUAL (tier 2 — headless Chrome screenshots of this same dist, reduced-
+motion so every cell renders; implementer Read each image):
+  - dl-en-1440 / dl-vi-1440: Terminal Conveyor Surface 2 per hand-off —
+    kicker `## get-wakii`, dl-meta phải-trên (vpill dot + published +
+    micro), macOS sp8 primary (btn-xl mint + tagArm64 + fname, `or`
+    divider, ghost x64 + fname, note, G-I foot), version rail + main-window
+    slot (dashed + grid-bg + placeholder caption), windows/linux/mobile
+    sp4 row, first-run strip sp12, nightly sp12 LAST; chip "→ FOR YOUR
+    MACHINE" visible on the highlighted macOS card; VI parity full
+    (mới nhất / CHO MÁY BẠN / HOẶC / phát hành)
+  - dl-980 (900px viewport): sp8 + stack full width, sp4 → span 6 (windows
+    + linux share a row, mobile wraps) — hand-off responsive contract
+  - dl-390 (390px iframe probe): every cell stacks full width, dl-head
+    stacks, steps go vertical with rotated arrows, QR fits — ALL-PASS
+
+known-noted (non-blocking, for SF-4/convergence):
+  - build-time fetch is unauthenticated (60/hr per IP): on a rate-limited
+    CI the build falls back to the pin and logs `[release] github fetch
+    failed — using pin …` (observed working when the API URL 404ed before
+    the /repos fix); artifact source=pinned makes the fallback visible.
+  - android OS-detect highlight only exists on the live mobile cell
+    (MobileConnect innards); the flag-false dashed soon-cell has no
+    data-os, so an Android visitor gets no highlight there (honest empty
+    state, edge only when MOBILE_LIVE flips).
