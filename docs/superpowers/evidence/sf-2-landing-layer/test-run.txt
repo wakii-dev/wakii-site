@@ -1,6 +1,7 @@
 VU-9 SF-2 — test run evidence (wakii-site)
-HEAD (code): 5e4cdc0 feat(hero): VU-9 SF-2 — CTA split (primary → /download + micro, ghost → repo)
-Prev commit: 920014d feat(landing): VU-9 SF-2 — understand section (4-question layer, Terminal Conveyor)
+HEAD chain: 21a366c (docs ritual) ← 90873a5 (evidence v1) ← 5e4cdc0 (hero CTA split, code)
+Code commits: 5e4cdc0 feat(hero) + 920014d feat(landing) — verification run on 5e4cdc0 build;
+docs commits after are evidence/log only (no code surface). This file refreshed at 21a366c.
 Date: 2026-09-20
 
 tdd: skipped-tdd: repo has no unit-test suite for Astro components (B1 WARN 0 test
