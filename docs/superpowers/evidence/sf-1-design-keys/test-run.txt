@@ -1,0 +1,10 @@
+VU-9 SF-1 (VU-10) — test run evidence
+HEAD: 288f83b docs(ritual): VU-9 SF-1 — flag story-verify BRACKET unbound variable (P6)
+(code chain: daeec85 keys+cleanup+hand-off → 20cd490 review-P2 fix → 288f83b P6 flag; merged to dest as 88c8f31 + addendum ce10577)
+tdd: skipped-tdd: i18n key pre-add + docs only — no runtime surface (new keys unconsumed by design until SF-2/SF-3); verified via full build + browser look-unchanged instead; repo has no i18n unit tests
+
+build: pnpm build (merged dest, re-run sau mỗi merge) → 267 pages, exit 0; check-og PASS (240 posts: 238 hero tile / 2 og-default · sitemap 266 URLs · robots pinned)
+quickstart cleanup: interface + EN + VI removed (ex-landing.ts :87/:274/:472); grep t.quickstart consumers = 0 (only 2 stale comment refs in src/pages/{,vi/}skills.astro — comment-only, flagged in hand-off)
+keys symmetry: understand group ×3 (interface/EN/VI) · upgrade group ×3 · hero adds ctaDownload/ctaBuild/ctaMicro ×2 (EN+VI) · hero.ctaGhost values intact (consumer GetWakii:117) · ctaPrimary kept (orphan after SF-2 — flagged)
+browser (Rule 0): astro preview :4322 → /, /vi/, /download, /vi/download all HTTP 200 · #get-wakii present on landing EN+VI (absent on /download pages — anchor lives on landing by design) · screenshots /tmp/vu9-live-{landing,dl}-1440.png + vu9-live-landing-390.png → look UNCHANGED vs pre-story (keys not yet consumed; reveal-on-scroll opacity-0 in full-page shots is the pre-existing motion contract, not a regression)
+console: static build — only pre-existing initMotion() runs, untouched in this diff; npx playwright screenshot CLI path cannot capture console output (flagged honestly; deterministic DOM checks via curl above)
