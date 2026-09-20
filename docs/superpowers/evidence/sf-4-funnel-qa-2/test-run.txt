@@ -1,0 +1,27 @@
+SF-4 funnel convergence QA — test-run evidence (VU-13)
+code commit: 3cf4ab5 (HEAD~1 tại commit này) · worktree sf-4-funnel-qa-2 · base story/vu9-ux-funnel @ cd0346e
+
+[1] Build dest (có fix F1 af5d5b9/merge cd0346e):
+    pnpm build → exit 0 · 267 pages · check:og PASS (240 posts: 238 hero/2 og-default · sitemap 266 · robots pinned)
+
+[2] funnel-crawl (scripts/funnel-crawl.mjs, tự viết — 28 assertions):
+    node scripts/funnel-crawl.mjs --dist dist --out docs/superpowers/evidence/sf-4-funnel-qa-2/funnel-crawl-report.md
+    → ✓ funnel-crawl PASS (28 checks, 1 warn) · 0 FAIL
+    (lần đầu 4 FAIL: 2 script-bug đã sửa + F1 dead-link /docs/escalated → coordinator fix af5d5b9 → re-crawl 0 FAIL)
+
+[3] Flow walkthrough (orca browser, trusted click — EN + VI):
+    / →click hero "download wakii"→ /download →click "read getting-started"→ /docs/getting-started/ ✓ console 0 err
+    /vi/ →click "tải wakii"→ /vi/download →click "đọc getting-started"→ /vi/docs/getting-started/ ✓ console 0 err
+
+[4] mobile-390 (iframe probe same-origin dist/_probe390/):
+    overflow scan 4/4 PASS (scrollWidth=375, wideElems=0) · 12 screenshots shots/ (4 desktop + 8 m390/rm)
+
+[5] Perf budget AC7 (Lighthouse 13.5.0, baseline db0dc4c vs dest cd0346e, cùng máy+cùng port :4401, 13+1 runs):
+    regime-paired: warm 100=100 home · 100=100 dl (delta +0.0) · cold = floor máy cả 2 phía (88/88.5, 91=91)
+    CLS 0 · TBT 0 mọi run · a11y: landing dest 92 (base 90 ↑), dl 90 (=base) → PASS (perf-budget.md)
+
+[6] A11y sweep: aria-current OS-detect 1/trang (EN+VI) · focus ring auto 3px còn nguyên · reduced-motion path render đủ
+
+Kết luận: ACCEPTANCE SF-4 đủ — audit-only, không sửa src (trừ improvements-log entries).
+
+tdd: skipped-tdd: SF-4 audit-only QA — KHÔNG có production code thay đổi (scripts/funnel-crawl.mjs là audit tool chạy-1-lần với assertions tự kể trong report); bằng chứng = crawl report + flow console + screenshots + Lighthouse JSON, không phải unit test RED→GREEN.
