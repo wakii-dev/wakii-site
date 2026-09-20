@@ -258,7 +258,8 @@ for (const abs of htmlFiles) {
   // `title — wakii`, alt is the raw title; equality would false-fail any
   // title that already embeds the site name.
   const alt = meta.get('twitter:image:alt') ?? '';
-  const headline = ogTitle.endsWith(` — ${SITE_NAME}`) ? ogTitle.slice(0, -( ` — ${SITE_NAME}`.length)) : ogTitle;
+  const fullTitleSuffix = ` — ${SITE_NAME}`;
+  const headline = ogTitle.endsWith(fullTitleSuffix) ? ogTitle.slice(0, -fullTitleSuffix.length) : ogTitle;
   if (!alt.trim()) fail(file, 'twitter:image:alt empty');
   else if (!alt.includes(headline)) {
     fail(file, `twitter:image:alt must contain the headline ${JSON.stringify(headline)} (got ${JSON.stringify(alt)})`);

@@ -28,9 +28,19 @@ const CRAWLERS = [
 ];
 
 /** Keys every crawler must see for the unfurl card to be complete. */
-const REQUIRED = ['og:title', 'og:description', 'og:image', 'og:site_name', 'og:locale', 'twitter:image'];
+const REQUIRED = [
+  'og:title',
+  'og:description',
+  'og:image',
+  'og:site_name',
+  'og:locale',
+  'og:type',
+  'twitter:image',
+  'twitter:image:alt',
+];
 
-const argUrl = process.argv[process.argv.indexOf('--url') + 1];
+const urlIdx = process.argv.indexOf('--url');
+const argUrl = urlIdx !== -1 ? process.argv[urlIdx + 1] : undefined;
 const base = (argUrl && !argUrl.startsWith('-') ? argUrl : 'http://localhost:4321').replace(/\/$/, '');
 
 /* Pages: landing + first EN post from dist (derived, deterministic). */
@@ -99,7 +109,7 @@ for (const page of pages) {
     }
     const missing = REQUIRED.filter((k) => !meta.get(k)?.trim());
     missingTotal += missing.length;
-    for (const k of ['og:title', 'og:description', 'og:image', 'og:site_name', 'og:locale', 'og:type', 'twitter:card', 'twitter:image']) {
+    for (const k of ['og:title', 'og:description', 'og:image', 'og:site_name', 'og:locale', 'og:type', 'twitter:card', 'twitter:image', 'twitter:image:alt']) {
       const v = meta.get(k);
       console.log(`    ${k.padEnd(15)} ${v ? clip(v) : '— MISSING —'}`);
     }
