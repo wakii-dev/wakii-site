@@ -5,6 +5,7 @@ pubDate: "2026-10-14"
 category: "tech"
 tags: ["agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-crewaiinc-crewai.png"
 ---
 
 Framework multi-agent thường hỏng theo một trong hai kiểu: agent là đống prompt tự do mà không ai review nổi, hoặc pipeline cứng đến mức không diễn đạt nổi một phán đoán giữa chừng. crewAI — 58.233 sao, license MIT, theo GitHub API ngày 2026-09-08 — chọn lối khác: vai của agent là dữ liệu khai báo, và bài toán điều phối tách làm hai runtime. Crew cho phần muốn tự chủ, Flow cho phần cần thứ tự. Bài này đọc thẳng code trong `lib/crewai/src/crewai` (main tại commit `34199c2`, ngày 2026-09-08) để xem cách họ cắt bài toán — và vì sao cách cắt đó hạ giá thành đọc-hiểu.

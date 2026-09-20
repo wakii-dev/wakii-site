@@ -5,6 +5,7 @@ pubDate: "2026-10-10"
 category: "tech"
 tags: ["agents", "architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-xai-org-grok-build.png"
 ---
 
 Cuộc đua agent CLI năm 2026 lặp lại một quy luật: nhà model nào đủ lớn cũng tự viết harness cho model của mình. Anthropic có Claude Code, Google có Gemini CLI, và xAI có grok-build — công khai trên GitHub từ giữa tháng 7 năm nay. Bài này đọc grok-build như một điểm dữ liệu của pattern trên, qua ba câu hỏi: repo tổ chức code ra sao, gắn chặt những gì vào model nhà, và mở cổng nào ra bên ngoài.

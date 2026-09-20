@@ -5,6 +5,7 @@ pubDate: "2026-09-26"
 category: "tech"
 tags: ["architecture", "design", "wakii"]
 draft: false
+heroImage: "/blog/heroes/arch-site-bento-tokens.png"
 ---
 
 The homepage of wakii.xyz looks like a bento board: cells of uneven sizes, sitting next to each other yet deliberately off-rhythm. That sense of discipline does not come from a UI framework. It comes from an old systems convention: a single source of truth. For this site, that source is a token file of roughly 45 lines. This post dissects how it works: the token contract, the 12-column grid, and a real overflow lesson learned when one cell had to host a fixed 680px board.

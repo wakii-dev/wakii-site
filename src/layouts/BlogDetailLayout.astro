@@ -13,7 +13,8 @@
  * "article" + publishedTime + og:image absolute via new URL(ogImage,
  * Astro.site) in Base. FI-349 SF-1 wiring: ogImage is the post heroImage
  * when declared, else the /og-default.png fallback (building-wakii-…-log-1
- * exercises the fallback on purpose).
+ * exercises the fallback on purpose). VU-5 SF-1 completes the contract:
+ * ogImageAlt (title), article:author and article:tag now flow to Base too.
  */
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
@@ -142,6 +143,9 @@ const related = relatedPosts(entry, posts);
   ogType="article"
   publishedTime={entry.data.pubDate.toISOString()}
   ogImage={entry.data.heroImage ?? '/og-default.png'}
+  ogImageAlt={entry.data.title}
+  articleAuthor={entry.data.author}
+  articleTags={entry.data.tags}
 >
   <div class="bd-shell">
     <aside class="bd-sidebar">

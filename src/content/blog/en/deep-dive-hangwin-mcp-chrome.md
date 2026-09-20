@@ -5,6 +5,7 @@ pubDate: "2026-10-11"
 category: "tech"
 tags: ["features", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hangwin-mcp-chrome.png"
 ---
 
 Most browser automation tools for agents take the same road: launch a separate, pristine browser — usually headless. Clean, yes, but it is the agent's browser: no logins of yours, no session cookies, none of your configuration. hangwin/mcp-chrome picks the opposite side: instead of issuing the agent a fresh browser, it opens the Chrome you are already using to agent control. This post dissects how the repo does it with three pieces — an extension, a native host, and MCP — and reads one number that is hard to ignore: 12,393 stars on a repo whose main branch has been quiet since 2026-01-06 (per the GitHub API on 2026-09-08).

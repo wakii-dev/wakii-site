@@ -5,6 +5,7 @@ pubDate: "2026-08-25"
 category: "tech"
 tags: ["guardrails", "workflow", "agents"]
 draft: false
+heroImage: "/blog/heroes/defensive-by-design.png"
 ---
 
 Most software defends in exactly one direction: against the user —

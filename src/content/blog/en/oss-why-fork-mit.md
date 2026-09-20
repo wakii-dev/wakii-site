@@ -5,6 +5,7 @@ pubDate: "2026-09-27"
 category: "tech"
 tags: ["oss", "license", "fork"]
 draft: false
+heroImage: "/blog/heroes/oss-why-fork-mit.png"
 ---
 
 Forking an open-source project is a three-minute operation: click the button, swap the remote, push. The part people discuss far less is the license and the publicity — why choose MIT, why keep the upstream credit lines intact, and why let the whole world read the fork's history. For Wakii this is not legal boilerplate: it is the entire promise of the project. This post does not narrate the act of forking — an earlier post already did that — but reads the files that prove it: the LICENSE, the README, the site footer, and shows that open source here is a deliberate choice you can verify with a few commands.

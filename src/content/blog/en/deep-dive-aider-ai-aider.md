@@ -5,6 +5,7 @@ pubDate: "2026-10-08"
 category: "tech"
 tags: ["cli", "git", "agents"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-aider-ai-aider.png"
 ---
 
 Before dozens of AI coding agents appeared and vanished, there was aider: an LLM pair programming tool that runs directly in your terminal, past 48,827 stars per the GitHub API on 2026-09-08. The repo publishes a metric few tools would dare to print: a "Singularity 88%" badge on its README — the percentage of new code in its latest release written by aider itself. The reason to read about aider today is not the ranking, though. It is how the repo designs its harness: aider never lets the model touch a codebase like a stranger. It wires the entire edit lifecycle into the git model every developer already knows — commit, diff, undo.

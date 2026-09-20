@@ -5,6 +5,7 @@ pubDate: "2026-09-07"
 category: "tutorial"
 tags: ["skills", "agents", "wakii"]
 draft: false
+heroImage: "/blog/heroes/skills-catalog-tour.png"
 ---
 
 Bài giới thiệu về "AI agent có kỹ năng" thường dừng ở chữ: kể tên vài skill,

@@ -5,6 +5,7 @@ pubDate: "2026-10-07"
 category: "tech"
 tags: ["agents", "memory", "features"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-headroomlabs-ai-headroom.png"
 ---
 
 Agent code tốn tiền không chỉ vì model đắt, mà vì ngữ cảnh bẩn. Một lệnh search trả về trăm kết quả JSON; một log dump nặng vài chục nghìn token; phần lớn là nhiễu lặp lại. Model đọc cả, bạn trả tiền cho cả — và đôi khi vẫn bỏ sót đúng dòng FATAL giữa đống nhiễu. Headroom đánh vào đúng điểm đó: nén mọi thứ agent đọc trước khi chúng tới model, ngay trên máy bạn.

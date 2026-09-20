@@ -5,6 +5,7 @@ pubDate: "2026-09-12"
 category: "tech"
 tags: ["skills", "design", "features"]
 draft: false
+heroImage: "/blog/heroes/skill-image-to-code.png"
 ---
 
 Bạn có một ảnh thiết kế đẹp — một hero, một form, một card pricing — và muốn nó thành component thật. Cách mặc định của AI là nhìn lướt ảnh rồi code theo trí nhớ về "trang web đẹp", và kết quả thường trượt về một mẫu quen thuộc: gradient tím, card lồng trong card, khoảng cách dồn cục — đúng danh sách "slop" mà skill trong bài này lập ra để chống. `image-to-code` trong kit của Wakii đảo thứ tự đó: ảnh là nguồn, code là bản dịch. Bài này đọc skill như một tài liệu nghề, trích đúng những luật nó lập ra, rồi vẽ ranh giới của nó.

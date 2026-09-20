@@ -5,6 +5,7 @@ pubDate: "2026-10-15"
 category: "tech"
 tags: ["architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-exo-explore-exo.png"
 ---
 
 Running a frontier model demands memory far beyond any single personal machine: DeepSeek v3.1 at 8-bit — 671 billion parameters per the exo README benchmarks — does not fit on one device. The familiar paths are buying an expensive GPU rig, or settling for a small model on one machine. exo — repo exo-explore/exo, 47,308 stars per the GitHub API on 2026-09-08 — takes a third path: connect the devices you already have into a cluster, then split the model across them. This post reads exo's actual code to see how a peer-to-peer cluster with no fixed coordinator server organizes itself.

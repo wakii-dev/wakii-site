@@ -5,6 +5,7 @@ pubDate: "2026-08-22"
 category: "tech"
 tags: ["gates", "guardrails", "story-workflow"]
 draft: false
+heroImage: "/blog/heroes/gates-not-trust-rule-zero.png"
 ---
 
 Trong báo cáo tiến độ của bất kỳ agent nào, câu nguy hiểm nhất là "nó chạy

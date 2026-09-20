@@ -5,6 +5,7 @@ pubDate: "2026-10-17"
 category: "tech"
 tags: ["agents", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-qwenlm-qwen-agent.png"
 ---
 
 Phần lớn framework agent tranh nhau giúp bạn đổi model bằng một dòng config. QwenLM/Qwen-Agent chọn chiều ngược lại: framework chỉ phục một họ model, gắn chặt từ format tool-call tới từng ví dụ chạy. Cược đó không nhỏ — repo ~17 nghìn star (theo GitHub API ngày 2026-09-08) và tự nhận là backend đang chạy thật của Qwen Chat. Bài này mổ cơ chế gắn chặt đó: nó nằm ở dòng code nào, mua được gì, và nên đọc số tự khai của loại repo này ra sao.

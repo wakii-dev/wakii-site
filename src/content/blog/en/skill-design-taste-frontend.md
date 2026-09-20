@@ -5,6 +5,7 @@ pubDate: "2026-09-12"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-design-taste-frontend.png"
 ---
 
 The worst-looking UI doesn't show up during mocking. At that stage every direction is still open, nothing is precious yet. Bad UI shows up at the end: the page is built, the tests are green, and someone notices the row of three identical cards, the headline screaming in oversized type, the testimonial customer named "John Doe". `/design-taste-frontend` exists for exactly that moment: an audit-first skill in the Wakii design kit that takes no part in building and only steps on stage once the page exists and needs to be scrutinized.

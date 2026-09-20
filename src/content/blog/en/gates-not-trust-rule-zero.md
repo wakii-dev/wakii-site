@@ -5,6 +5,7 @@ pubDate: "2026-08-22"
 category: "tech"
 tags: ["gates", "guardrails", "story-workflow"]
 draft: false
+heroImage: "/blog/heroes/gates-not-trust-rule-zero.png"
 ---
 
 In any agent's progress report, the most dangerous sentence is "it works

@@ -5,6 +5,7 @@ pubDate: "2026-10-17"
 category: "tech"
 tags: ["agents", "qa"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-camel-ai-camel.png"
 ---
 
 Hầu hết framework multi-agent trả lời cùng một câu hỏi: làm sao để nhiều agent phối hợp hoàn thành công việc. CAMEL hỏi một câu khác: làm sao để agent sinh ra dữ liệu đủ sạch để dùng cho nghiên cứu. Repo camel-ai/camel — 17.685 sao theo GitHub API ngày 2026-09-08, giấy phép Apache-2.0 — xuất phát từ một paper về role-playing giữa hai agent, rồi lớn thành hạ tầng sinh dữ liệu và benchmark cho nghiên cứu agent quy mô lớn. Bài này đi qua ba tầng trong code thật của repo: phiên hội thoại, bộ lọc dữ liệu, benchmark — để xem một repo nghiên cứu đo chất lượng bằng cái gì, thay vì tin cảm giác.

@@ -5,6 +5,7 @@ pubDate: "2026-09-05"
 category: "tech"
 tags: ["og", "seo", "wakii"]
 draft: false
+heroImage: "/blog/heroes/og-article-contract-anatomy.png"
 ---
 
 Dán một link bài viết vào Facebook, X hay Zalo, bạn thấy (hoặc không thấy) một

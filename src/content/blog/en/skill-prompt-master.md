@@ -5,6 +5,7 @@ pubDate: "2026-09-15"
 category: "tech"
 tags: ["skills", "workflow"]
 draft: false
+heroImage: "/blog/heroes/skill-prompt-master.png"
 ---
 
 You write prompts every day — for chatbots, for IDEs, for image generators — and most of the time the prompt comes from inspiration: a few vague sentences — send, wrong result, rewrite, wrong again. The Wakii skills kit contains a skill that sees this differently. prompt-master — one of the kit's 13 public skills as of this writing, 2026-09-08 — makes a one-line claim: a prompt is not a question repeated on inspiration; it is a product with a spec — extracted intent, a chosen target tool, an output format locked up front. This post reads the skill's source file to see how that claim is enforced.

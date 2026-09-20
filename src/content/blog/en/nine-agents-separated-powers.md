@@ -5,6 +5,7 @@ pubDate: "2026-08-21"
 category: "tech"
 tags: ["agents", "supervised", "workflow"]
 draft: false
+heroImage: "/blog/heroes/nine-agents-separated-powers.png"
 ---
 
 Ask what "a team of AI agents working for you" looks like and the picture

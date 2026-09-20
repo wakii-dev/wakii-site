@@ -5,6 +5,7 @@ pubDate: "2026-09-27"
 category: "tech"
 tags: ["architecture", "release"]
 draft: false
+heroImage: "/blog/heroes/arch-auto-update-feed.png"
 ---
 
 The "Download" button on this site is only the first half of the story. The other half begins once the app is on your machine: how it learns a new version exists, why a release being published mid-rollout never hands anyone a half-uploaded file, and which gates stand between "update available" and "installed". All of Wakii's auto-update code lives in the public repo `wakii-dev/wakii`; this post follows the full lifecycle of one update — from GitHub Releases to the relaunch button in the app.

@@ -5,6 +5,7 @@ pubDate: "2026-10-23"
 category: "tech"
 tags: ["architecture", "license", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-tabbyml-tabby.png"
 ---
 
 Most code assistants assume one direction of travel: your code goes up to a vendor's API, suggestions come back down. Tabby runs the opposite way — the server runs on your infrastructure, models are downloaded and executed locally, suggestions are generated inside your own network. The repository is public on GitHub with 33,869 stars per the GitHub API on 2026-09-08, but the most teachable detail sits in the LICENSE file — where the GitHub API reports NOASSERTION instead of a clean label. Reading both together is the full lesson in self-hosting a project like this.

@@ -5,6 +5,7 @@ pubDate: "2026-10-24"
 category: "tech"
 tags: ["agents", "gates", "supervised", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-copilotkit-openbot.png"
 ---
 
 CopilotKit nổi tiếng với bộ công cụ nhúng copilot UI vào app React. Nhưng OpenBot — repo họ công khai từ ngày 17-08-2026 — không phải một framework nữa. Đây là một template hoàn chỉnh: một đội "AI coworker", mỗi con có máy tính riêng, chạy trên hạ tầng của bạn, và — điều đáng đọc nhất — không một hành động nào tới được máy đó nếu không đi qua một gateway duy nhất quyết định và ghi lại. Với đội xây Wakii, giá trị của repo này không nằm ở chat bot mẫu, mà ở cách nó chặn tay agent.

@@ -5,6 +5,7 @@ pubDate: "2026-09-01"
 category: "tech"
 tags: ["qa", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/convergence-qa-last-tier.png"
 ---
 
 Dự án dài có một nỗi sợ đặc trưng của đoạn cuối: càng gần đích, càng không ai

@@ -5,6 +5,7 @@ pubDate: "2026-10-17"
 category: "tech"
 tags: ["agents", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-qwenlm-qwen-agent.png"
 ---
 
 Most agent frameworks compete on swapping models with one line of config. QwenLM/Qwen-Agent goes the other way: a framework serving a single model family, coupled down to the tool-call format and every runnable example. That bet is not small — the repo sits around 17k stars (per GitHub API on 2026-09-08) and claims to be the live backend of Qwen Chat. This post dissects that coupling: which lines of code carry it, what it buys, and how to read a repo's self-reported numbers.

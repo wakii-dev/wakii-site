@@ -5,6 +5,7 @@ pubDate: "2026-10-22"
 category: "tech"
 tags: ["architecture", "features", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-lapce-lapce.png"
 ---
 
 Editor viết bằng Rust nào cũng hứa tốc độ; Lapce ghi hẳn "Lightning-fast And Powerful Code Editor" vào README. Slogan thì ai cũng có — cái đáng học nằm ở chuỗi quyết định kiến trúc đằng sau: buffer dạng rope kèm revision, UI tách tiến trình qua RPC, plugin chạy trong sandbox WASI. Với 38.834 sao, license Apache-2.0 và lần push mới nhất cùng ngày probe (theo GitHub API ngày 2026-09-08), dự án vẫn pre-1.0 nhưng kiến trúc đã trưởng thành hơn số phiên bản của nó.

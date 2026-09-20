@@ -5,6 +5,7 @@ pubDate: "2026-10-19"
 category: "tech"
 tags: ["architecture", "worktree", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-coder-code-server.png"
 ---
 
 One repo lives on your company machine, another on a VPS, another on your personal laptop — the familiar routine is cloning to each machine, rebuilding the environment everywhere, then sacrificing a weekend to version drift. Coder's code-server flips the direction: the code stays on the server, and VS Code is brought to your browser. With 79,234 stars, 6,844 forks, and an MIT license (per GitHub API on 2026-09-08), this is not an experiment project — and its architecture is worth more attention than the star count.

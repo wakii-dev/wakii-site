@@ -5,6 +5,7 @@ pubDate: "2026-09-07"
 category: "tutorial"
 tags: ["skills", "agents", "wakii"]
 draft: false
+heroImage: "/blog/heroes/skills-catalog-tour.png"
 ---
 
 Introductions to "AI agents with skills" usually stop at prose: name a few

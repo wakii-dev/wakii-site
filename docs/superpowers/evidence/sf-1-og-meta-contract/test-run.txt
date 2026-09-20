@@ -1,0 +1,45 @@
+VU-6 / SF-1 OG meta contract — test run evidence
+code commit: 4d9a3d4 (HEAD~1 of this evidence commit)
+date: 2026-09-20
+
+tdd: skipped-tdd: static meta/layout SF — repo has no unit-test runner
+  (scripts/* are standalone check CLIs); verified per context-pack
+  self-verify contract: green build + manual dist inspection + check:jsonld,
+  plus 3-tier browser verification (Rule 0).
+
+[1] npm run build (pre-checks: slug-parity, blog-utils, blog-content)
+    -> [build] 267 page(s) built in 9.46s — COMPLETE, exit 0
+
+[2] dist sweep (all 267 html pages):
+    - meta description empty: 0/267
+    - description == SITE_TAGLINE: 0/267 (landing EN fixed in ea8c296)
+    - pairwise-duplicate descriptions: none
+    - og:locale vs pathname mismatch: 0 (vi/* -> vi_VN, rest -> en-US)
+
+[3] npm run check:jsonld
+    -> strict coverage OK (batch-3: 50 slugs x 2 locales = 100 files)
+    -> JSON-LD OK (267 pages checked - BlogPosting 240 - BreadcrumbList 6 - Blog 2), exit 0
+
+[4] view-source post EN (/blog/agentic-landscape-50-projects/) + VI twin:
+    og:title, og:description, og:image absolute (https://wakii.xyz/...),
+    og:site_name=wakii, og:locale en-US|vi_VN + alternate,
+    og:image:type=image/png, twitter:image + twitter:image:alt (name=),
+    article:author, article:tag x5, og:image:alt=post title
+    (FI-349 dead wiring fixed), icons: apple-touch-icon + favicon.ico
+    before favicon.svg.
+
+[5] Rule 0 browser verification (3 tiers), preview :4391:
+    - T1 DOM: live eval landing/post/docs — 8/8 meta + 3 icon links present
+    - T2 VISUAL: headless Chrome screenshots (landing, post, docs,
+      icon test page incl. favicon.ico decode) — layouts intact, brand
+      monogram renders; orca-browser pixel fallback per FI-464 note
+    - T3 FLOW: orca browser trusted input chain / -> /blog ->
+      /blog/deep-dive-leonxlnx-unlazy/ -> /docs/getting-started/,
+      meta measured live on every screen, console errors: 0
+    (note: one navigation used focus+Enter after a CDP click no-op'd on
+    an anchor-scrolled landing — gotcha already on file, not a site bug)
+
+[6] independent code-reviewer (cyan): APPROVED — 0xP0, 0xP1, 2xP2
+    (P2 notes: og:image:type hardcode OK while SF-2 pins PNG tiles;
+    DocsLayout ?? fallback conforms to spec "undefined -> fallback",
+    empty-string edge caught by SF-3 sweep). CHECKLIST-4Q: 4x PASS.

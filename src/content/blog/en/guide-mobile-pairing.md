@@ -5,6 +5,7 @@ pubDate: "2026-09-20"
 category: "tutorial"
 tags: ["guide", "mobile"]
 draft: false
+heroImage: "/blog/heroes/guide-mobile-pairing.png"
 ---
 
 Agents run long jobs, and you do not sit next to the machine for all of it.

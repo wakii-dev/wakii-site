@@ -5,6 +5,7 @@ pubDate: "2026-10-23"
 category: "tech"
 tags: ["architecture", "electron", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-anywhere-labs-dsh-desktop.png"
 ---
 
 Một repo tạo ngày 13-08-2026 đã đạt 24.444 sao theo GitHub API ngày 2026-09-08 — chưa đầy một tháng. Điều đáng đọc không phải con số, mà là câu trả lời cho một câu hỏi mà mọi đội xây sản phẩm trên nền agent đều gặp: khi nền tảng bạn bọc liên tục nhích, làm sao mở rộng mà không biến thành một bản fork cứng, xa rời upstream chỉ sau vài tháng? Câu trả lời của DSH Desktop nằm gọn trong mô tả repo: 「万物皆插件」 ([mô tả repo](https://github.com/anywhere-labs/dsh-desktop), probe 2026-09-08) — mọi thứ đều là plugin, và chính desktop cũng là một plugin.

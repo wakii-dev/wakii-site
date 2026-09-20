@@ -5,6 +5,7 @@ pubDate: "2026-09-26"
 category: "tech"
 tags: ["architecture", "design", "wakii"]
 draft: false
+heroImage: "/blog/heroes/arch-site-bento-tokens.png"
 ---
 
 Trang chủ của wakii.xyz trông như một chiếc bảng bento: các cell to nhỏ không đều, đặt cạnh nhau mà vẫn lệch nhịp có chủ đích. Cảm giác "đều tăm tắp" đó không đến từ một UI framework, mà từ một quy ước cũ kỹ của ngành hệ thống: một nguồn sự thật duy nhất. Với site này, nguồn đó là một file token khoảng 45 dòng. Bài này mổ cơ chế của nó: hợp đồng token, grid 12 cột, và bài học overflow thật khi một cell phải chứa một bảng vẽ 680px cố định.

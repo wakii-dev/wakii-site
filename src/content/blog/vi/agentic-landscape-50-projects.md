@@ -5,6 +5,7 @@ pubDate: "2026-09-08"
 category: "tech"
 tags: ["landscape", "agents", "oss", "mcp", "workflow"]
 draft: false
+heroImage: "/blog/heroes/agentic-landscape-50-projects.png"
 ---
 
 Một năm trước, "agentic coding" là một câu hỏi. Hôm nay nó là một ngành có bản đồ riêng.

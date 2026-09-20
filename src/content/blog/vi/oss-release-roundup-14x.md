@@ -5,6 +5,7 @@ pubDate: "2026-09-29"
 category: "tech"
 tags: ["oss", "release"]
 draft: false
+heroImage: "/blog/heroes/oss-release-roundup-14x.png"
 ---
 
 Release notes là tài liệu công khai nhất của một dự án: ai cũng đọc được, và chính vì thế cũng là chỗ dễ nhất để phóng đại — tính năng được kể theo hướng đẹp nhất, con số trôi qua mà không ai kiểm. Bài này làm chiều ngược lại với dòng release 1.4.x của Wakii: kê khai inventory những gì thực sự ra, mỗi mục gắn về một dòng notes nguyên văn, một commit, hoặc một lệnh bạn gõ lại được. Bài không kể nhịp phát hành — chuyện đó đã có bài [riêng](/vi/blog/shipping-cadence-two-releases-one-day/). Bài này kể nội dung: cái nào thuộc bản nào, lấy từ đâu, và cái nào không tồn tại.

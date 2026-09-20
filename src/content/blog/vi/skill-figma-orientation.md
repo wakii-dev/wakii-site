@@ -5,6 +5,7 @@ pubDate: "2026-09-14"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-figma-orientation.png"
 ---
 
 Agent có trong tay tool Figma không có nghĩa là agent biết bắt đầu từ đâu. Trước khi vẽ được node đầu tiên, nó phải trả lời một câu hỏi thấp hơn: tác vụ này thuộc loại nào — đọc canvas, ghi canvas, dịch design thành code, hay dựng diagram? Chọn sai loại là gọi sai tool, và một số cú gọi sai không báo lỗi tại chỗ mà để lại hậu quả khó truy về sau. Skill `/figma-orientation` trong kit Wakii được viết cho đúng khoảnh khắc đó: một lớp mỏng đứng trước tác vụ Figma, đọc ý định, rồi mới trỏ đường.

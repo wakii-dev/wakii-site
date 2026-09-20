@@ -5,6 +5,7 @@ pubDate: "2026-09-07"
 category: "build-log"
 tags: ["build-log", "wakii", "release"]
 draft: false
+heroImage: "/blog/heroes/building-wakii-in-the-open-log-2.png"
 ---
 
 Log #1 ended with a promise: this series continues. The second log keeps it in the series' own spirit — tell what is running, and attach every number to a command you can rerun yourself. This entry covers no new feature. It covers the numbers of the very story writing this blog, a production project running the same process in another repo, and a metrics table captured on the writing date.

@@ -5,6 +5,7 @@ pubDate: "2026-09-23"
 category: "tutorial"
 tags: ["guide", "cli"]
 draft: false
+heroImage: "/blog/heroes/guide-multi-session-ports.png"
 ---
 
 One agent at work, and the screen has room to spare. Three agents in

@@ -5,6 +5,7 @@ pubDate: "2026-10-14"
 category: "tech"
 tags: ["agents", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hkuds-nanobot.png"
 ---
 
 Most agent frameworks pitch you on quantity: how many roles, how many orchestration patterns, how many abstractions. HKUDS/nanobot goes the other way — a personal agent that runs in a WebUI, a terminal, or a chat app, with a very tightly wrapped core. Its README introduces it as "an ultra-lightweight, open-source, self-hosted personal AI agent framework" (repo [HKUDS/nanobot](https://github.com/HKUDS/nanobot), MIT license per GitHub API on 2026-09-08, 47,883 stars per GitHub API on 2026-09-08). What is worth learning is not the feature list but how they keep the surface small on purpose: configuration is data, persona is Markdown, and everything extensible lives outside the core. This article dissects those four architecture decisions against real code at commit `104917a`.

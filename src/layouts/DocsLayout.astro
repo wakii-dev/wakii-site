@@ -28,8 +28,15 @@ const idx = slugs.indexOf(slug);
 const prev = idx > 0 ? entries[idx - 1] : null;
 const next = idx >= 0 && idx < entries.length - 1 ? entries[idx + 1] : null;
 const href = (s: string) => (locale === 'vi' ? `/vi/docs/${s}/` : `/docs/${s}/`);
+/**
+ * D5 hardening (VU-5 SF-1): description undefined → title-based per-locale
+ * instead of falling through to Base's SITE_TAGLINE default. Latent-only
+ * today — all 10 docs carry frontmatter descriptions.
+ */
+const resolvedDescription =
+  description ?? `${title} — ${locale === 'vi' ? 'tài liệu wakii' : 'wakii docs'}`;
 ---
-<Base title={title} description={description}>
+<Base title={title} description={resolvedDescription}>
   <div class="docs-shell">
     <aside class="docs-sidebar">
       <div class="docs-eyebrow">~/docs</div>

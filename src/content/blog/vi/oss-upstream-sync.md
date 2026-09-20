@@ -5,6 +5,7 @@ pubDate: "2026-09-28"
 category: "tech"
 tags: ["oss", "upstream", "git"]
 draft: false
+heroImage: "/blog/heroes/oss-upstream-sync.png"
 ---
 
 Một fork là một con tàu rời cảng — và upstream không bao giờ chờ nó. Dự án mẹ vẫn commit mỗi ngày, vẫn đổi API, vẫn refactor chỗ bạn vừa xây. "Sống cùng dự án mẹ" vì thế không phải một trạng thái mà là một động từ, lặp lại mãi: kéo, gộp, giải va chạm, lặp lại. Bài trước trong blog này đã kể chiến lược giữ nhịp ở tầm nguyên tắc; bài này đi xuống tầng cơ khí — remote nào, nhánh nào, đo phân kỳ bằng lệnh nào, và xung đột thường tích ở lớp nào. Toàn bộ output git trong bài là thật, chụp trên bản clone cục bộ của repo sản phẩm, và bạn chạy lại được từng lệnh trên fork của chính mình.

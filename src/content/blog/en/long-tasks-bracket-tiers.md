@@ -5,6 +5,7 @@ pubDate: "2026-08-27"
 category: "tech"
 tags: ["story-workflow", "workflow", "linear"]
 draft: false
+heroImage: "/blog/heroes/long-tasks-bracket-tiers.png"
 ---
 
 A long project rarely dies from a shortage of work — it dies because nobody

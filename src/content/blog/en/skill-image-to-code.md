@@ -5,6 +5,7 @@ pubDate: "2026-09-12"
 category: "tech"
 tags: ["skills", "design", "features"]
 draft: false
+heroImage: "/blog/heroes/skill-image-to-code.png"
 ---
 
 You have a beautifully designed image — a hero, a form, a pricing card — and you want it as a real component. The default AI move is to glance at it and code from memory of "what good websites look like", and the result slides toward a familiar template: purple gradients, cards nested in cards, cramped spacing — exactly the slop list this skill writes down to fight. `image-to-code` in Wakii's kit flips the order: the image is the source, the code is the translation. This post reads the skill as a craft document, quotes the rules it actually sets, then draws its boundary.

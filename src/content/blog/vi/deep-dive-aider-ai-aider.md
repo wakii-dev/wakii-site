@@ -5,6 +5,7 @@ pubDate: "2026-10-08"
 category: "tech"
 tags: ["cli", "git", "agents"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-aider-ai-aider.png"
 ---
 
 Trước khi hàng chục agent coding sinh ra rồi biến mất, đã có aider: công cụ pair programming với LLM chạy thẳng trong terminal, vượt mốc 48.827 stars theo GitHub API ngày 2026-09-08. Repo này còn công bố một chỉ số hiếm tool nào dám ghi lên mặt chữ: badge "Singularity 88%" trên README — phần trăm code mới của release cuối được viết bởi chính aider. Nhưng lý do đáng đọc về aider hôm nay không phải vị thế, mà là cách repo thiết kế harness: aider không để model đụng vào codebase như khách lạ. Nó nhét toàn bộ vòng đời chỉnh sửa vào mô hình git mà dev nào cũng biết — commit, diff, undo.

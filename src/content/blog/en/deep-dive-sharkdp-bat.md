@@ -5,6 +5,7 @@ pubDate: "2026-10-20"
 category: "tech"
 tags: ["terminal", "cli", "features"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-sharkdp-bat.png"
 ---
 
 A transcript of thousands of lines of bare code — no color, no line numbers, no indication of what just changed — tires human eyes and wastes agent tokens. bat by David Peter addresses exactly that: 60,388 stars, 1,643 forks, Apache-2.0 license (per GitHub API on 2026-09-08), with a README intro that keeps it brief — "A cat(1) clone with syntax highlighting and Git integration" ([sharkdp/bat](https://github.com/sharkdp/bat), GitHub API 2026-09-08). But the interesting part is not "pretty-printing files." It is how the repo decides its output for EACH kind of consumer: humans at a terminal get color and a pager, while any process that pipes bat's output gets plain text.

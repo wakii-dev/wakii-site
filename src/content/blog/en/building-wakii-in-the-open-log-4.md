@@ -5,6 +5,7 @@ pubDate: "2026-09-30"
 category: "build-log"
 tags: ["build-log", "wakii", "evidence"]
 draft: false
+heroImage: "/blog/heroes/building-wakii-in-the-open-log-4.png"
 ---
 
 [Log #3](/blog/building-wakii-in-the-open-log-3/) covered the frame: FI-349 rebuilt the blog and closed as PR #2. This log covers what sits inside the frame — the twenty longform posts of story FI-359, each in a VI and an EN version. The interesting part is not the number twenty. It is the editorial framework built alongside them to keep those twenty posts honest: a matrix locked before writing began, a word-counting lint that accepts no excuses, and a forbidden list that ships with the build. The story closed as PR #3 — and the work did not end there: after the merge came an integration pass worth its own detail.

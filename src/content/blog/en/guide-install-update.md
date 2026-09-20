@@ -5,6 +5,7 @@ pubDate: "2026-09-19"
 category: "tutorial"
 tags: ["guide", "release", "wakii"]
 draft: false
+heroImage: "/blog/heroes/guide-install-update.png"
 ---
 
 Install guides usually stop at "download and open". For a tool that runs agents

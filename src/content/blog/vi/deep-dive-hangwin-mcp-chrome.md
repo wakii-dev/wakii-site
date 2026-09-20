@@ -5,6 +5,7 @@ pubDate: "2026-10-11"
 category: "tech"
 tags: ["features", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hangwin-mcp-chrome.png"
 ---
 
 Phần lớn công cụ browser automation cho agent đi cùng một con đường: khởi động browser riêng, sạch bong, thường headless. Nhưng đó là browser của agent — không có đăng nhập của bạn, không có cookie phiên. hangwin/mcp-chrome chọn phía đối diện: thay vì cấp agent một browser mới, nó mở đúng Chrome bạn đang dùng ra cho agent điều khiển. Bài này mổ xẻ ba mảnh làm nên điều đó — extension, native host, MCP — và đọc một con số khó bỏ qua: 12.393 sao trên một repo có nhánh chính im lặng từ 2026-01-06 (theo GitHub API ngày 2026-09-08).

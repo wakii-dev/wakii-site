@@ -5,6 +5,7 @@ pubDate: "2026-09-18"
 category: "tech"
 tags: ["features", "worktree", "cli"]
 draft: false
+heroImage: "/blog/heroes/feature-per-workspace-env.png"
 ---
 
 The previous post in this series closed half of the parallelism problem: two

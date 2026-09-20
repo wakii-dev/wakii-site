@@ -5,6 +5,7 @@ pubDate: "2026-10-18"
 category: "tech"
 tags: ["agents", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hkuds-deepcode.png"
 ---
 
 A research repo approaching 16,500 stars usually carries a fixed suspicion:

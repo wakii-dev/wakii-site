@@ -5,6 +5,7 @@ pubDate: "2026-09-26"
 category: "tech"
 tags: ["architecture", "wakii"]
 draft: false
+heroImage: "/blog/heroes/arch-site-motion-i18n.png"
 ---
 
 Mở wakii.xyz và cuộn: các cell bento hiện dần lần lượt, nghiêng nhẹ theo con trỏ. Bấm chuyển sang tiếng Việt ở góc phải: URL nhảy thành `/vi/`, toàn bộ chữ đổi, bố cục giữ nguyên. Hai hiện tượng đó do hai hệ thống gọn đến bất ngờ gánh vác: một file motion duy nhất cho cả site, và một kiến trúc i18n hai tầng. Bài này mổ cả hai — contract data-attribute của motion, và cách EN/VI chia nhau ở tầng routing cùng tầng nội dung.

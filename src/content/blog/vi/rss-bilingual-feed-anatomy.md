@@ -5,6 +5,7 @@ pubDate: "2026-09-06"
 category: "tech"
 tags: ["rss", "wakii", "workflow"]
 draft: false
+heroImage: "/blog/heroes/rss-bilingual-feed-anatomy.png"
 ---
 
 Ai theo dõi blog này bằng reader RSS chỉ cần một địa chỉ: `/rss.xml`. Nhưng

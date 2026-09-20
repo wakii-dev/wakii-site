@@ -5,6 +5,7 @@ pubDate: "2026-09-17"
 category: "tech"
 tags: ["features", "android", "mobile"]
 draft: false
+heroImage: "/blog/heroes/feature-emulator-android.png"
 ---
 
 Một flow mobile chỉ thật sự chạy khi nó chạy trên thiết bị: nút bấm nằm đúng chỗ,

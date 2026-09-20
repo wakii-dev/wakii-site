@@ -5,6 +5,7 @@ pubDate: "2026-10-21"
 category: "tech"
 tags: ["terminal", "architecture", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-sxyazi-yazi.png"
 ---
 
 A terminal file manager sounds like a relic — until you open a directory with tens of thousands of files on a 4K screen and want to preview images, watch videos, and filter filenames without leaving the keyboard. Yazi — the name means "duck" — by sxyazi is modern in exactly that sense: 42,043 stars, 1,009 forks, MIT license (per GitHub API on 2026-09-08), with an official description of "Blazing fast terminal file manager written in Rust, based on async I/O" ([sxyazi/yazi](https://github.com/sxyazi/yazi), GitHub API 2026-09-08). The interesting part is not the speed. It is how the repo organizes a complex TUI application: looking at its workspace is like reading a complete architecture map.
