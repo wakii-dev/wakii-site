@@ -1,6 +1,7 @@
 VU-12 / SF-3 Download page upgrade — test run evidence
 (this file is its own evidence commit — the hash cannot reference itself;
-B1 anchors: HEAD~1 = 3ee747c = final code commit)
+prior evidence commit = e030bda — same content, amended for the
+gate-derived path sf-3-download-upgrade/; final code commit = 3ee747c)
 code commits: 3ee747c (P2 fixes, final code) ← 5e5e129 (layout spine)
   ← 9248565 (API URL fix) ← 3afaf64 (consumers-rewire) ← 006b3e7 (core)
   — build/DOM/visual facts evidenced against 5e5e129; the two P2 fixes
