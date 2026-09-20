@@ -27,7 +27,6 @@ const { strings } = Astro.props;
 const t = strings;
 const prefix = t.lang === 'vi' ? '/vi' : '';
 const docsHref = `${prefix}/docs/getting-started/`;
-const docsRoot = `${prefix}/docs/`;
 const blogRoot = `${prefix}/blog/`;
 
 // Hand-off signature diagram strings absent from the key store → inline
@@ -177,7 +176,7 @@ function splitFoot(s: string): [string, string] {
                 <!-- owner add-on 2026-09-20: /docs/ + /blog/ into the funnel (links only) -->
                 <p class="more">
                   <span class="more-label">{t.understand.moreLabel}:</span>
-                  <a class="inline-link" href={docsRoot}>{t.understand.moreDocs}</a>
+                  <a class="inline-link" href={docsHref}>{t.understand.moreDocs}</a>
                   <span class="more-sep" aria-hidden="true">·</span>
                   <a class="inline-link" href={blogRoot}>{t.understand.moreBlog}</a>
                 </p>
