@@ -5,6 +5,7 @@ pubDate: "2026-08-31"
 category: "tech"
 tags: ["git", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/one-branch-one-pr.png"
 ---
 
 Một story dài không phải công việc của một agent: bracket chia nó thành các

@@ -5,6 +5,7 @@ pubDate: "2026-10-04"
 category: "tech"
 tags: ["agents", "workflow", "oss", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-punkpeye-awesome-mcp-servers.png"
 ---
 
 A new protocol becomes real when it gets a directory. For MCP (Model Context Protocol), that directory is punkpeye's awesome-mcp-servers: 94,614 stars, 15,881 forks, MIT license, last push on 2026-09-07 (per GitHub API on 2026-09-08). Most people open this list to find one server for one need. This post reads it differently: as a health index of the whole ecosystem — which domains are crowded, how fast new entries are born, and whether a list of several thousand items can still be curated by hand.

@@ -28,7 +28,7 @@ visibility: internal     # LUÔN internal cho toàn KB
 confidence: high         # high | medium | low
 sources: [<relative path hoặc URL>]   # ít nhất 1 nguồn pin (BẮT BUỘC cho ADR)
 tags: [...]
-type: adr | digest | landscape | lesson | glossary | index
+type: adr | digest | landscape | lesson | glossary | index | runbook
 ---
 ```
 
@@ -48,7 +48,7 @@ chọn convention-only cho đợt này).
 | `confidence` | Độ tin của nội dung: `high` = restatement trung thành từ nguồn đã public trong repo; `medium` = tổng hợp từ nhiều nguồn, có khía cạnh diễn giải; `low` = quan điểm sớm/chưa verify | ADR mặc định `high` vì mỗi ADR có nguồn pin |
 | `sources` | Danh sách path relative hoặc URL — nguồn pin của trang | **bắt buộc ≥1 cho mọi ADR** (restatement phải truy được); trang index/glossary có thể trỏ spec KB |
 | `tags` | Tự do, kebab-case, VI hoặc EN | dùng nhất quán với glossary |
-| `type` | 1 trong 6 giá trị enum: `adr` (10 file trong `adr/`) · `digest` (bản tóm tắt 1 artifact — chưa dùng ở SF-1, dành cho bài tóm tắt tương lai) · `landscape` (`references.md`) · `lesson` (`lessons/index.md`) · `glossary` (`glossary.md`) · `index` (README, MOC, frontmatter — trang điều hướng) | chọn đúng để agent parse được |
+| `type` | 1 trong 7 giá trị enum: `adr` (10 file trong `adr/`) · `digest` (bản tóm tắt 1 artifact — chưa dùng ở SF-1, dành cho bài tóm tắt tương lai) · `landscape` (`references.md`) · `lesson` (`lessons/index.md`) · `glossary` (`glossary.md`) · `index` (README, MOC, frontmatter — trang điều hướng) · `runbook` (`runbooks/` — quy trình vận hành cho owner/agent, mở 2026-09-20 story VU-5 SF-3) | chọn đúng để agent parse được |
 
 ## `visibility: internal` là marker thông tin — KHÔNG bảo vệ (D6)
 

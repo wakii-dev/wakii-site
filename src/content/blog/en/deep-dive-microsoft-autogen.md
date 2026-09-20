@@ -5,6 +5,7 @@ pubDate: "2026-10-13"
 category: "tech"
 tags: ["agents", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-microsoft-autogen.png"
 ---
 
 AutoGen is one of Microsoft's most visible multi-agent frameworks — 60,866 stars per

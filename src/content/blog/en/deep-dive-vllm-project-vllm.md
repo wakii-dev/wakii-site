@@ -5,6 +5,7 @@ pubDate: "2026-10-12"
 category: "tech"
 tags: ["architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-vllm-project-vllm.png"
 ---
 
 When an LLM has to serve many requests at once, the GPU is rarely short on math — it is short on room to put it. Every token being generated drags along a KV-cache: the entire "memory" of everything the model has processed so far, sitting on expensive VRAM. The previous generation of serving software allocated this memory with a familiar mistake: reserve the maximum region up front for every request and waste whatever goes unused. vLLM, which started at UC Berkeley's Sky Computing Lab, solved this by borrowing a technique operating systems have proven for decades: paging memory.

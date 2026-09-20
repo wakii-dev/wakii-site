@@ -5,6 +5,7 @@ pubDate: "2026-09-26"
 category: "tech"
 tags: ["architecture", "wakii"]
 draft: false
+heroImage: "/blog/heroes/arch-site-motion-i18n.png"
 ---
 
 Open wakii.xyz and scroll: the bento cells fade in one after another, tilting slightly under the cursor. Click the language switch in the top-right corner: the URL flips to `/vi/`, every word changes, the layout stays. Two surprisingly small systems carry those effects: a single motion file for the whole site, and a two-layer i18n architecture. This post dissects both — the motion util's data-attribute contract, and how EN/VI split at the routing layer and the content layer.

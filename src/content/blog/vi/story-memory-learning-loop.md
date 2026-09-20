@@ -5,6 +5,7 @@ pubDate: "2026-08-24"
 category: "tech"
 tags: ["memory", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/story-memory-learning-loop.png"
 ---
 
 Một story sau nên biết những điều mà story đầu tiên phải trả giá mới học

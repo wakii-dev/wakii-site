@@ -5,6 +5,7 @@ pubDate: "2026-10-16"
 category: "tech"
 tags: ["agents", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-pydantic-pydantic-ai.png"
 ---
 
 Model gọi tool bằng JSON tự do — và thứ làm hỏng production thường không phải logic

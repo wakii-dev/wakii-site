@@ -5,6 +5,7 @@ pubDate: "2026-08-28"
 category: "tech"
 tags: ["worktree", "git", "agents"]
 draft: false
+heroImage: "/blog/heroes/parallel-worktrees-isolation.png"
 ---
 
 Run two agents in parallel on the same project without splitting the working

@@ -5,6 +5,7 @@ pubDate: "2026-09-11"
 category: "tech"
 tags: ["skills", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-gpt-taste.png"
 ---
 
 Cho ba agent cùng dựng một landing page, bạn nhận lại ba trang nhìn như một. Không phải chúng trùng ý tưởng — chúng trùng thiên kiến: heading dài sáu dòng nằm chật trong container hẹp, bố cục trái-phải lặp hết trang này sang trang khác, nhãn kiểu "SECTION 01" mọc dưới từng section. Đó không phải gu thẩm mỹ kém; đó là mặc định thống kê của mô hình ngôn ngữ. Trong kit của Wakii có một skill dựng riêng để chống lại chính xác điều đó: /gpt-taste — và bài này đọc source của nó để xem nó cấm gì, cũng như nó được lên sân khấu lúc nào.

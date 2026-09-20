@@ -5,6 +5,7 @@ pubDate: "2026-09-01"
 category: "tech"
 tags: ["qa", "story-workflow", "workflow"]
 draft: false
+heroImage: "/blog/heroes/convergence-qa-last-tier.png"
 ---
 
 Long projects develop a specific fear near the end: the closer to the finish

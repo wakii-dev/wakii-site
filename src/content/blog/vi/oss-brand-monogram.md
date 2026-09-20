@@ -5,6 +5,7 @@ pubDate: "2026-09-28"
 category: "tech"
 tags: ["oss", "design", "wakii"]
 draft: false
+heroImage: "/blog/heroes/oss-brand-monogram.png"
 ---
 
 Icon là chi tiết dễ bị coi là vặt — cho đến khi dự án của bạn là một fork, và icon trở thành ranh giới bản sắc rõ nhất giữa bạn và dự án mẹ. Lúc đó "vẽ cái logo" không còn là chuyện thiết kế thuần: một hình phải sống ở hai repo với hai pipeline xuất khác nhau, một bên là web tiêu thụ vector, một bên là app desktop cần icns và png. Wakii giải bài đó bằng cách hàng đầu của ngành xây tường: một hình học duy nhất, mọi thứ khác sinh ra từ nó. Bài này đọc từng đầu của đường ống đó — từ file SVG trên site đến script dựng icon trong repo sản phẩm — và để chính các file tự chứng minh.

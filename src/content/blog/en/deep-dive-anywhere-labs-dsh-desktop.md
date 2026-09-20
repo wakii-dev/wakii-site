@@ -5,6 +5,7 @@ pubDate: "2026-10-23"
 category: "tech"
 tags: ["architecture", "electron", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-anywhere-labs-dsh-desktop.png"
 ---
 
 A repository created on August 13, 2026 reached 24,444 stars per the GitHub API on 2026-09-08 — under a month. The interesting part is not the number; it is the answer to a question every team building on an agent platform eventually faces: when the platform you wrap keeps moving, how do you extend it without hardening into a fork that drifts from upstream within months? DSH Desktop's answer fits in its own repo description: "万物皆插件" ([repo description](https://github.com/anywhere-labs/dsh-desktop), probed 2026-09-08) — everything is a plugin, and the desktop itself is a plugin too.

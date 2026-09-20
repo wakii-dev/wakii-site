@@ -5,6 +5,7 @@ pubDate: "2026-10-25"
 category: "tech"
 tags: ["agents", "workflow", "memory", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-yetone-cumora.png"
 ---
 
 A three-week-old repo with 3,524 stars per the GitHub API on 2026-09-08 — plenty of places were quick to call it "a rising AI repo." But what makes Cumora worth a deep dive is not the star count. It is one docs file: `docs/COORDINATION.md`, where the author catalogs "anti-patterns we learned the hard way so the same mistakes don't recur" ([`COORDINATION.md` @ `7eec2be`](https://github.com/yetone/cumora/blob/7eec2be2d97388106967a037b4937f447bc2544f/docs/COORDINATION.md)) — real failures, with commits and failure numbers attached. A young repo that records what it got wrong is rare. One that teaches you from it is rarer.

@@ -5,6 +5,7 @@ pubDate: "2026-10-12"
 category: "tech"
 tags: ["architecture", "cli", "terminal"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-neovim-neovim.png"
 ---
 
 Editor nào cũng có plugin. Ít editor nào biến chính mình thành nền tảng mà người khác build lên được. Neovim — 102.219 sao theo GitHub API ngày 2026-09-08 — là một trong số đó: gần như toàn bộ chức năng của editor nằm sau một API có cấu trúc, và một LSP client nằm ngay trong lõi. Bài này đọc repo thật của neovim/neovim để trả lời ba câu hỏi: một fork giữ được cộng đồng của dự án cha bằng cách nào, một editor trở thành platform bằng cách nào, và máy kiểm tra thay con người ở điểm nào.

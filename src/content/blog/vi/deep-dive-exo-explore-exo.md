@@ -5,6 +5,7 @@ pubDate: "2026-10-15"
 category: "tech"
 tags: ["architecture", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-exo-explore-exo.png"
 ---
 
 Chạy một frontier model cần bộ nhớ vượt xa bất kỳ chiếc máy cá nhân nào: DeepSeek v3.1 bản 8-bit — 671 tỷ tham số theo benchmark của README exo — không chiếc máy nào nuốt nổi một mình. Hai lối quen thuộc: mua một trạm GPU đắt đỏ, hoặc bó hẹp với model nhỏ trên một máy. exo — repo exo-explore/exo, 47.308 stars theo GitHub API ngày 2026-09-08 — chọn lối thứ ba: nối những thiết bị sẵn có thành một cụm, rồi chia model cho từng máy. Bài này đọc code thật của exo để xem một cụm p2p không máy chủ điều phối cố định tự tổ chức bằng cơ chế nào.

@@ -5,6 +5,7 @@ pubDate: "2026-10-11"
 category: "tech"
 tags: ["oss", "architecture", "license"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-modelcontextprotocol-registry.png"
 ---
 
 Hệ sinh thái MCP đang nở nhanh: hàng nghìn server do tác giả không quen biết nhau viết, và mỗi MCP client phải trả lời cùng một câu hỏi — tin đâu mà cài? Repo modelcontextprotocol/registry là câu trả lời chính thức của hệ sinh thái: một danh bạ trung tâm, nơi client tra được server này là gì, có phiên bản nào, cài từ đâu, và ai sở hữu cái tên đó. README của repo gọi ngắn gọn: *"app store for MCP servers"* (nguồn: [README](https://github.com/modelcontextprotocol/registry/blob/739b70e8bc1bea203c5a35ab699f1df51d091568/README.md)). Số liệu chụp ngày 2026-09-08: 7.227 stars, lần push gần nhất 2026-09-05; repo công khai trên GitHub, GitHub API ghi license NOASSERTION nên điều kiện sử dụng theo LICENSE trong repo (theo GitHub API ngày 2026-09-08). Bài này không tả theo trí nhớ — nó đọc README, code Go và API thật của registry.

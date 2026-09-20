@@ -5,6 +5,7 @@ pubDate: "2026-09-29"
 category: "tech"
 tags: ["architecture", "qa", "workflow"]
 draft: false
+heroImage: "/blog/heroes/arch-ci-gates.png"
 ---
 
 Quy trình story của Wakii được kể nhiều về các gate người — những điểm dừng độc lập trước khi một việc được tính xong. Ít được kể hơn là tầng nằm dưới các gate đó: gate máy, tự chạy, tự loại, không cần ai nhớ gọi. Bài này đọc tầng đó trực tiếp từ file, trên hai repo: build chain của chính site bạn đang đọc, và pipeline cut release của product. Bài cũng chỉ một chỗ hiếm gặp trong file CI — nơi workflow ghi rõ điều nó không làm, thay vì để người đọc tự đoán.

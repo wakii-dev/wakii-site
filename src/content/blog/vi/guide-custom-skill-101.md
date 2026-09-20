@@ -5,6 +5,7 @@ pubDate: "2026-09-21"
 category: "tutorial"
 tags: ["guide", "skills"]
 draft: false
+heroImage: "/blog/heroes/guide-custom-skill-101.png"
 ---
 
 Agent của bạn biết chuẩn commit của team, nhưng mỗi phiên vẫn phải nhắc lại.

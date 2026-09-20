@@ -5,6 +5,7 @@ pubDate: "2026-09-22"
 category: "tutorial"
 tags: ["guide", "worktree", "git"]
 draft: false
+heroImage: "/blog/heroes/guide-worktree-workflow.png"
 ---
 
 Mỗi task một worktree là đơn vị tách biệt khiến agent chạy song song an toàn

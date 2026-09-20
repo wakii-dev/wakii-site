@@ -22,7 +22,7 @@
  *   --check  verify existing PNG dimensions without re-rendering (IHDR read).
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -80,12 +80,18 @@ function wrap(text, size) {
     }
   }
   if (line) lines.push(line);
-  return lines.slice(0, 4);
+  return lines;
 }
 
-function heroSvg(title, category) {
+function heroSvg(title, category, slug) {
   const size = title.length <= 40 ? 60 : title.length <= 70 ? 52 : 44;
   const lines = wrap(title, size);
+  if (lines.length > 4) {
+    throw new Error(
+      `hero tile for ${slug}: title wraps to ${lines.length} lines (> 4) — the tile would clip it. ` +
+      `Shorten the title (${title.length} chars): "${title}"`,
+    );
+  }
   const lineHeight = Math.round(size * 1.28);
   const titleStart = 560 - lines.length * lineHeight - 76;
   const categoryLabels = { tutorial: 'tutorial', tech: 'tech notes', 'build-log': 'build log' };
@@ -128,6 +134,30 @@ function pngSize(path) {
   return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
 }
 
+/** Quantize a rendered PNG in place with pngquant (spec D7, story VU-5 SF-2).
+ *  Exit 99 = quality floor missed (pngquant refuses to write a bad conversion,
+ *  so the original stays intact): retry ONCE at 50-90, then keep the original
+ *  PNG + loud WARN — never skip silently, never abort the batch. */
+function quantize(pngPath, slug) {
+  const pass = (q) => {
+    try {
+      execFileSync('pngquant', ['--force', '--ext', '.png', `--quality=${q}`, '--', pngPath], { stdio: 'pipe' });
+      return true;
+    } catch (err) {
+      if (err.status === 99) return false;
+      throw new Error(
+        `pngquant failed on ${slug}.png (exit ${err.status ?? err.code}): ${err.message}. ` +
+        'Dev-machine dependency — install with: brew install pngquant',
+      );
+    }
+  };
+  if (pass('70-95')) return true;
+  console.warn(`⚠ ${slug}.png below 70-95 quality floor — retrying once at 50-90`);
+  if (pass('50-90')) return true;
+  console.warn(`⚠ WARN ${slug}.png kept UNQUANTIZED ${Math.round(statSync(pngPath).size / 1024)}KB — pngquant quality floor missed twice, ≤100KB target NOT met for this file`);
+  return false;
+}
+
 if (CHECK_ONLY) {
   let bad = 0;
   for (const slug of HERO_SLUGS) {
@@ -149,11 +179,12 @@ if (CHECK_ONLY) {
 }
 
 mkdirSync(outDir, { recursive: true });
+let unquantized = 0;
 for (const slug of HERO_SLUGS) {
   const { title, category } = readTitleAndCategory(slug);
   const svgPath = join(outDir, `${slug}.svg`);
   const pngPath = join(outDir, `${slug}.png`);
-  writeFileSync(svgPath, heroSvg(title, category));
+  writeFileSync(svgPath, heroSvg(title, category, slug));
   execFileSync(CHROME, [
     '--headless=new',
     '--disable-gpu',
@@ -168,6 +199,8 @@ for (const slug of HERO_SLUGS) {
     console.error(`✗ ${slug}.png rendered ${w}×${h}, expected 1200×630 — NOT overwriting a bad tile silently`);
     process.exit(1);
   }
-  console.log(`✓ ${slug}.png ${w}×${h} (${title})`);
+  if (!quantize(pngPath, slug)) unquantized += 1;
+  console.log(`✓ ${slug}.png ${w}×${h} ${Math.round(statSync(pngPath).size / 1024)}KB (${title})`);
 }
 console.log(`✓ ${HERO_SLUGS.length} heroes rendered to public/blog/heroes/`);
+if (unquantized > 0) console.warn(`⚠ ${unquantized} tile(s) kept unquantized (see WARN above) — report them in the story audit`);

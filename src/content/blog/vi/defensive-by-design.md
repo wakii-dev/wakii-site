@@ -5,6 +5,7 @@ pubDate: "2026-08-25"
 category: "tech"
 tags: ["guardrails", "workflow", "agents"]
 draft: false
+heroImage: "/blog/heroes/defensive-by-design.png"
 ---
 
 Phần lớn phần mềm phòng thủ theo một hướng duy nhất: chống người dùng —

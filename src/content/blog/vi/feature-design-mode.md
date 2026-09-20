@@ -5,6 +5,7 @@ pubDate: "2026-09-16"
 category: "tech"
 tags: ["features", "design"]
 draft: false
+heroImage: "/blog/heroes/feature-design-mode.png"
 ---
 
 Bạn nhìn thấy nút bị lệch. Agent đọc code. Giữa hai người là một khoảng trống:

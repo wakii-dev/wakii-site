@@ -5,6 +5,7 @@ pubDate: "2026-10-18"
 category: "tech"
 tags: ["terminal", "cli"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-ast-grep-ast-grep.png"
 ---
 
 grep works on text: you hand it a string, it returns the lines containing that string. But code is not plain text — code is a syntax tree. Rename a variable, wrap a line, add parentheses: the meaning stays the same while grep's result changes. The ast-grep/ast-grep repo — 15,799 stars, MIT licensed, per the GitHub API on 2026-09-08 — goes the other way: it finds and fixes code by structure, using patterns that look like the code you are looking for.

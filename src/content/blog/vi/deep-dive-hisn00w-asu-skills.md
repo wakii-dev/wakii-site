@@ -5,6 +5,7 @@ pubDate: "2026-10-24"
 category: "tech"
 tags: ["skills", "agents", "workflow", "evidence"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-hisn00w-asu-skills.png"
 ---
 
 Một bộ skill cho niche phi-lập-trình — chuẩn bị xin việc tiếng Trung — tạo ngày 12-08-2026 đã đạt 4.025 sao theo GitHub API ngày 2026-09-08, chưa đầy một tháng. Con số đó kể một câu chuyện lớn hơn repo: skill đã trở thành một dạng nội dung phân phối được — ai viết nội dung tốt, người đó có sản phẩm; harness agent chỉ là runtime để chạy nó. ASu-skills của Hisn00w là một mẫu hiện tượng này làm đúng kỷ luật kỹ thuật: một nguồn skill, nhiều harness, và catalog do máy đối chiếu.

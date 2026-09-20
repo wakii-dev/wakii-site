@@ -5,6 +5,7 @@ pubDate: "2026-09-16"
 category: "tech"
 tags: ["features", "design"]
 draft: false
+heroImage: "/blog/heroes/feature-design-mode.png"
 ---
 
 You can see the misaligned button. The agent can read code. Between the two of

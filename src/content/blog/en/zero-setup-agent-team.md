@@ -5,6 +5,7 @@ pubDate: "2026-08-20"
 category: "tutorial"
 tags: ["workflow", "agents", "autonomy"]
 draft: false
+heroImage: "/blog/heroes/zero-setup-agent-team.png"
 ---
 
 Developer tools usually open with a three-screen README: install this dependency,

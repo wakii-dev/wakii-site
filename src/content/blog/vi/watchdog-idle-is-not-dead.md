@@ -5,6 +5,7 @@ pubDate: "2026-08-23"
 category: "tech"
 tags: ["story-workflow", "workflow", "guardrails"]
 draft: false
+heroImage: "/blog/heroes/watchdog-idle-is-not-dead.png"
 ---
 
 Canh một story dài, câu hỏi lặp lại nhiều nhất không phải là "làm đến đâu"

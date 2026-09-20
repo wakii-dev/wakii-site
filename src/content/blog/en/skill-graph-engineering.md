@@ -5,6 +5,7 @@ pubDate: "2026-09-14"
 category: "tech"
 tags: ["skills", "architecture", "design"]
 draft: false
+heroImage: "/blog/heroes/skill-graph-engineering.png"
 ---
 
 Agents have two classic weaknesses. One: they forget everything they know about your world the moment it falls outside the context window. Two: they stumble when a big job has to be split across several hands. The two problems sound identical — "the agent isn't smart enough" — but they are different in kind, and they call for two different data structures. The `/graph-engineering` skill in the Wakii kit opens with exactly that distinction: knowledge graphs answer what an agent remembers; task graphs answer how agents coordinate. This post walks both halves in the order the skill teaches them, then reads one real story from this site backward to show the second half is not theory.

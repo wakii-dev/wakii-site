@@ -5,6 +5,7 @@ pubDate: "2026-08-28"
 category: "tech"
 tags: ["worktree", "git", "agents"]
 draft: false
+heroImage: "/blog/heroes/parallel-worktrees-isolation.png"
 ---
 
 Cho hai agent chạy song song trên cùng một dự án mà không tách không gian làm

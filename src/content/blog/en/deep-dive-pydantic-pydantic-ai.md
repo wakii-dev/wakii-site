@@ -5,6 +5,7 @@ pubDate: "2026-10-16"
 category: "tech"
 tags: ["agents", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-pydantic-pydantic-ai.png"
 ---
 
 Models call tools with free-form JSON — and what breaks production is usually not

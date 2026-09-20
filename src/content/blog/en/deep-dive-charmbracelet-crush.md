@@ -5,6 +5,7 @@ pubDate: "2026-10-09"
 category: "tech"
 tags: ["terminal", "cli", "design"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-charmbracelet-crush.png"
 ---
 
 Coding agents that live in the terminal are usually built in a hurry: one input box, output scrolling past, and diffs you have to open a separate editor to read properly. Crush takes the opposite approach. It comes from Charm — the team behind bubbletea and lipgloss, the TUI libraries most Go terminal apps are built on — and it brings that same standard of TUI craft to an agent tool. What is worth reading here is not the feature list but the interaction design: how diffs are rendered, how the agent asks for permission, and what changes when the terminal is treated like a product.

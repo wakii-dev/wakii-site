@@ -5,6 +5,7 @@ pubDate: "2026-09-02"
 category: "build-log"
 tags: ["release", "build-log", "wakii"]
 draft: false
+heroImage: "/blog/heroes/shipping-cadence-two-releases-one-day.png"
 ---
 
 Nhiều đội dùng agent AI coi "release" là sự kiện lớn: gom hàng tuần thay đổi, đóng băng code, chạy một đợt kiểm thử dài, rồi mới dám cắt bản. [Log #1](/vi/blog/building-wakii-in-the-open-log-1/) của chuỗi này cũng ghi release 1.4.199 theo kiểu đó — một dòng sự kiện trong tuần. Nhưng phía sau dòng sự kiện là một cơ chế đáng nói hơn: vì sao quy trình dồn việc cho đội agent lại cắt được hai release và một pre-release Android trong cùng một ngày mà không phải gồng. Bài này bóc cơ chế đó từ bằng chứng công khai — không kể chuyện, và không khái quát những gì lịch release chưa chứng minh.

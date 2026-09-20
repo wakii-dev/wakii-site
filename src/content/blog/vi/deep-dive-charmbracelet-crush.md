@@ -5,6 +5,7 @@ pubDate: "2026-10-09"
 category: "tech"
 tags: ["terminal", "cli", "design"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-charmbracelet-crush.png"
 ---
 
 Agent coding chạy trong terminal thường bị làm vội: một khung nhập lệnh, output cuộn lên, muốn đọc diff cho rõ thì phải mở editor riêng. Crush đi theo hướng ngược lại. Nó đến từ Charm — nhóm đứng sau bubbletea và lipgloss, những thư viện TUI quen thuộc của hệ sinh thái Go — và mang đúng tiêu chuẩn làm TUI đó vào một công cụ agent. Điều đáng đọc không phải danh sách feature, mà interaction design: diff hiện ra sao, agent hỏi quyền thế nào, và gì thay đổi khi terminal được đối xử như một sản phẩm.

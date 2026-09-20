@@ -5,6 +5,7 @@ pubDate: "2026-10-19"
 category: "tech"
 tags: ["architecture", "worktree", "oss"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-coder-code-server.png"
 ---
 
 Một repo nằm trên máy công ty, một trên VPS, một trên laptop cá nhân — cách làm quen thuộc là kéo code về từng máy, dựng lại môi trường ở mỗi nơi, rồi hy sinh cuối tuần cho lệch phiên bản. code-server của Coder chọn chiều ngược lại: code đứng yên trên server, còn VS Code được đưa tới trình duyệt. Với 79.234 sao, 6.844 fork và license MIT (theo GitHub API ngày 2026-09-08), đây không phải dự án experiment — và kiến trúc của nó đáng đọc hơn cả con số sao.

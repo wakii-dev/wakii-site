@@ -5,6 +5,7 @@ pubDate: "2026-09-20"
 category: "tutorial"
 tags: ["guide", "mobile"]
 draft: false
+heroImage: "/blog/heroes/guide-mobile-pairing.png"
 ---
 
 Agent chạy việc dài, và bạn không ngồi cạnh máy suốt mấy tiếng đó. Câu hỏi thật

@@ -5,6 +5,7 @@ pubDate: "2026-10-20"
 category: "tech"
 tags: ["terminal", "cli", "features"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-sharkdp-bat.png"
 ---
 
 Một transcript dài hàng nghìn dòng code trần trụi không có màu, không đánh số, không biết dòng nào vừa sửa — người đọc mỏi mắt, agent parse mỏi token. bat của David Peter giải đúng bài đó: 60.388 sao, 1.643 fork, license Apache-2.0 (theo GitHub API ngày 2026-09-08), README tự giới thiệu gọn lỏn — "A cat(1) clone with syntax highlighting and Git integration" ([sharkdp/bat](https://github.com/sharkdp/bat), GitHub API ngày 2026-09-08). Nhưng điều đáng học không phải là "in file đẹp lên"; mà là cách repo này quyết định output cho TỪNG loại người tiêu dùng: người đọc ở terminal nhận màu và pager, còn process khác cắm ống vào thì nhận plain text.

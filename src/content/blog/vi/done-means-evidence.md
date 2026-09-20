@@ -5,6 +5,7 @@ pubDate: "2026-08-31"
 category: "tech"
 tags: ["qa", "evidence", "story-workflow"]
 draft: false
+heroImage: "/blog/heroes/done-means-evidence.png"
 ---
 
 Một agent làm việc nhanh và báo kết quả còn nhanh hơn: "task xong, đã tự kiểm."

@@ -1,0 +1,106 @@
+VU-8 / SF-3 Domain runbook + QA harness + convergence — test run evidence
+code commit: 0c69390 (HEAD~1 of this evidence commit)
+date: 2026-09-20
+
+tdd: skipped-tdd: post-build assertion scripts ARE the test harness in this
+  repo (no unit-test runner; same precedent as check-jsonld.mjs) — validated
+  on the real dist plus a 6-class negative tamper suite (each assert proven
+  RED on tampered dist, GREEN after restore).
+
+[1] pnpm run build (wire chain: slug-parity + blog-utils + blog-content +
+    astro build + check:og) -> 267 pages, exit 0, chain log ends
+    "✓ OG OK (267 pages checked · 240 posts: 238 hero tile / 2 og-default ·
+    size gate 120 PNG ≤ 100KB (max 39KB) · sitemap 266 URLs · robots pinned)"
+
+[2] check-og asserts (default mode, khuôn check-jsonld):
+    - every page: og:title/og:description (≠ SITE_TAGLINE)/og:image absolute
+      https on origin + .png + file EXISTS in dist/og:type/og:site_name/
+      og:locale (en-US|vi_VN + path-consistency)/og:image:type PNG
+    - post pages path-derived (khuôn expectedTypes, 0 hand-enumeration):
+      twitter:image:alt CONTAINS headline (og:title = fullTitle `— wakii`,
+      strip-suffix derived), article:published_time Date-parseable,
+      og:image resolution — hero → existing dist/blog/heroes/*.png,
+      hero-less → absolute og-default (2 = log-1 EN+VI; KHÔNG hardcode count,
+      only resolution correctness is gated)
+    - extraction note: Astro leaves < > unescaped inside attribute values
+      (valid HTML5) — meta/link tag regex is quote-aware, else
+      "story/<epic>-<slug>" in a description truncated the tag mid-value
+      (first run false-positive 3 "empty" og:descriptions — fixed, re-run
+      clean; documented as a learning)
+
+[3] NEGATIVE tamper suite (meta-test: every class RED naming the file, then
+    GREEN after restore):
+    1. og:site_name removed          -> exit 1 "must be \"wakii\" (got missing)"
+    2. twitter:image:alt swapped     -> exit 1 containment violation
+    3. tile inflated to 150KB        -> exit 1 size gate "150KB > 100KB"
+    4. og:image tile deleted         -> exit 1 "file missing from dist"
+       (both EN+VI twins named)
+    5. robots.txt Disallow drift     -> exit 1 "drifted from pinned template"
+    6. sitemap URL removed           -> exit 1 "1 indexable page(s) absent"
+
+[4] node scripts/check-og.mjs --live (D9 — never fails the build):
+    WARN 404  https://wakii.xyz/
+    WARN 404  https://wakii.xyz/og-default.png
+    WARN 404  https://wakii.xyz/blog/agentic-landscape-50-projects/
+    "~ live: 0/3 URLs return 200 — domain not serving yet (expected until
+    the owner adds wakii.xyz; see runbook)" — EXIT 0 (expected state
+    2026-09-20: DEPLOYMENT_NOT_FOUND until owner dashboard action)
+
+[5] RSS (rss.xml.js): <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    python3 ElementTree strict parse OK · 240 items = 240 <media:content>
+    = 240 <guid> · every url absolute https://wakii.xyz + medium="image" ·
+    238 hero tiles + 2 og-default (matches dist resolution) · every
+    media:content target file exists in dist. Bilingual contract kept:
+    no <language> added; media:content concatenated into the SAME
+    customData string as <guid>; namespace via the rss() xmlns option.
+
+[6] Crawler probe (scripts/crawler-probe.mjs, astro preview :4393, real
+    HTTP per UA): 5/5 crawlers (facebookexternalhit, Twitterbot,
+    Slackbot-LinkExpanding, TelegramBot, Discordbot) see complete og meta
+    on / and /blog/agentic-landscape-50-projects/ — post shows hero tile
+    og:image + og:type article; landing shows owner-ACK'd EN description.
+    PROBE_EXIT=0.
+
+[7] Convergence audit:
+    - npm run check:jsonld -> exit 0 (267 pages · BlogPosting 240 ·
+      Breadcrumb 6 · Blog 2; strict coverage 100 files) — regression guard
+      intact (JSON-LD image origin untouched)
+    - derived post count: 240 non-draft content files = 240 dist post
+      pages (only non-post dir: dist/blog/heroes = tiles)
+    - og:locale samples: EN post en-US, VI twin vi_VN (+ all-267
+      path-consistency assert in [2])
+    - sitemap: 266 URLs == canonical-derived indexable set (267 pages
+      minus noindex 404); robots.txt byte== pinned template
+
+[8] Rule 0 three tiers (this SF is script/runbook/RSS — no UI surface):
+    - T1 DOM (HỖ TRỢ): check-og whole-dist exit 0 + tamper suite RED
+    - T2 VISUAL (BẰNG CHỨNG): crawler-UA probe tables — real HTTP responses
+      per real crawler UA from a live preview server (each row IS what the
+      crawler's fetcher sees); no pixel surface to screenshot in this SF —
+      declared honestly rather than forced
+    - T3 FLOW (CHUẨN ĐOÁN): wired build chain green -> --live WARN format
+      correct -> RSS strict-parse clean -> probe green -> jsonld green
+
+[9] Owner runbook: docs/knowledge/runbooks/link-preview-domain.md
+    (frontmatter 9 field, type runbook) — add wakii.xyz + www (redirect
+    apex) trong Vercel dashboard, verify bằng --live, purge FB/Zalo cache,
+    card mẫu. Registered SAME-COMMIT: MOC.md (Runbooks section) +
+    README.md mục lục + frontmatter.md enum extension (type: runbook —
+    schema authority update, lý do trong audit comment VU-8).
+
+[10] Independent code-review addendum (2026-09-20):
+    - verdict trên diff 13c1763..0c69390: CHANGES-REQUESTED — 1 P1
+      (crawler-probe no-arg default: argv[indexOf('--url')+1] khi thiếu
+      flag → argv[0] = node binary qua guard startsWith('-') → base URL
+      sai; repro thật in heading node-bin path + ERR_INVALID_URL; evidence
+      [6] chỉ từng chạy qua --url nên default chưa được test) + 3 P2.
+    - fix 94be283: indexOf guard 1 dòng; REQUIRED gate thêm og:type +
+      twitter:image:alt (P2 contract-alignment); headline strip formatting
+      (P2 cosmetic). Re-verify sau fix: no-arg in đúng
+      "http://localhost:4321" (ECONNREFUSED sạch), --url :4393 → 5/5
+      crawlers × 2 pages exit 0 với REQUIRED mới (twitter:image:alt in
+      10/10 blocks), check-og 267 pages exit 0, full chain build exit 0
+      (build-3 log kết thúc ✓ OG OK).
+    - P2 ghi nhận KHÔNG sửa: og:image:type PNG assert là fail-loud
+      documented — hero JPG đầu tiên sẽ đỏ build, nới assert khi editorial
+      đổi format (đã note trong header check-og).

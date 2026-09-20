@@ -5,6 +5,7 @@ pubDate: "2026-10-10"
 category: "tech"
 tags: ["guide", "agents", "workflow"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-microsoft-mcp-for-beginners.png"
 ---
 
 Khi Microsoft dựng hẳn curriculum 13 module chỉ để dạy Model Context Protocol (MCP), tín hiệu lớn hơn nội dung: MCP đủ chín để có giáo trình chuẩn. Repo microsoft/mcp-for-beginners đạt 17.170 sao (theo GitHub API ngày 2026-09-08) không phải vì chứa code hiếm — toàn bộ là học liệu — mà vì nó là câu trả lời chính thống cho câu hỏi "học MCP bắt đầu từ đâu". Bài này đọc curriculum như một artifact: thứ tự dạy gì, bài học thiết kế ra sao, và cái đó nói lên điều gì về độ chín của hệ sinh thái.

@@ -5,6 +5,7 @@ pubDate: "2026-09-17"
 category: "tech"
 tags: ["features", "android", "mobile"]
 draft: false
+heroImage: "/blog/heroes/feature-emulator-android.png"
 ---
 
 A mobile flow only proves itself on a device: the button sits where it should,

@@ -5,6 +5,7 @@ pubDate: "2026-09-21"
 category: "tutorial"
 tags: ["guide", "skills"]
 draft: false
+heroImage: "/blog/heroes/guide-custom-skill-101.png"
 ---
 
 Your agent knows the team's commit conventions — but you repeat them every

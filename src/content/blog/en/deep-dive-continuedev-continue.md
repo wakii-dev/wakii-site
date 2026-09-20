@@ -5,6 +5,7 @@ pubDate: "2026-10-22"
 category: "tech"
 tags: ["agents", "workflow", "architecture"]
 draft: false
+heroImage: "/blog/heroes/deep-dive-continuedev-continue.png"
 ---
 
 While the market raced to ship brand-new AI IDEs, Continue went the other way: keep your existing VS Code or JetBrains setup, and attach an AI assistant to the editor you already use. How they did it — collecting models, rules, context, and MCP tools into one config file — is still worth reading today, even after the project stopped. Because per the GitHub API on 2026-09-08, this 35,833-star repository has switched to read-only, and the way a large project winds down gracefully is a lesson as technical as anything else in it.

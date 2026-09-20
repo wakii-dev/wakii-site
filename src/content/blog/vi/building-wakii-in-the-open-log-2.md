@@ -5,6 +5,7 @@ pubDate: "2026-09-07"
 category: "build-log"
 tags: ["build-log", "wakii", "release"]
 draft: false
+heroImage: "/blog/heroes/building-wakii-in-the-open-log-2.png"
 ---
 
 Log #1 kết thúc bằng lời hứa: chuỗi này tiếp tục. Log thứ hai giữ lời đó theo đúng tinh thần của chuỗi: kể cái đang chạy, và gắn mỗi con số vào một lệnh bạn tự chạy lại được. Lần này không kể tính năng mới. Lần này kể các con số của chính story đang viết blog này, một dự án production chạy cùng quy trình ở một repo khác, và bảng số liệu chụp tại ngày viết.
