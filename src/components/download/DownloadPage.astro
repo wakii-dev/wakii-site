@@ -132,7 +132,9 @@ const mobileLive = MOBILE_LIVE && Boolean(release.mobileIos || rel.androidApk.ur
                 )
               }
               {
-                rel.macosArm64.url && rel.macosX64.url && <div class="or">{up.primary.or}</div>
+                live && rel.macosArm64.url && rel.macosX64.url && (
+                  <div class="or">{up.primary.or}</div>
+                )
               }
               {
                 rel.macosX64.url ? (

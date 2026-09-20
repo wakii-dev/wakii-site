@@ -153,8 +153,10 @@ async function writeArtifact(info: ReleaseInfo): Promise<void> {
       assets: info.assets,
     };
     await writeFile(join(dir, 'release-meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
-  } catch {
-    // best-effort artifact — never fail a build over it
+  } catch (err) {
+    // best-effort artifact — never fail a build over it, but leave a trace:
+    // a missing release-meta.json should be explainable from the build log.
+    console.warn('[release] artifact write failed:', err);
   }
 }
 
