@@ -18,6 +18,16 @@ export const REPO_URL = 'https://github.com/wakii-dev/wakii';
  */
 export const SITE_URL = 'https://wakii.xyz';
 
+/**
+ * Host that serves og:image / RSS media assets while wakii.xyz is not yet
+ * attached to this project (owner action — see
+ * docs/knowledge/runbooks/link-preview-domain.md). Canonical/og:url stay on
+ * SITE_URL; only image-type URLs (share cards, RSS media) resolve against
+ * this base so crawlers get a 200 instead of the wakii.xyz 404.
+ * FLIP TO SITE_URL when the domain is verified live (check-og --live).
+ */
+export const OG_BASE_URL = 'https://wakii-site.vercel.app';
+
 export const SITE_NAME = 'wakii';
 
 /**

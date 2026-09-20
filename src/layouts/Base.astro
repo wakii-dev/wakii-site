@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_NAME, SITE_TAGLINE } from '../config';
+import { SITE_NAME, SITE_TAGLINE, OG_BASE_URL } from '../config';
 
 interface Props {
   title: string;
@@ -86,8 +86,10 @@ const ogLocaleAlternate = isVi ? 'en-US' : 'vi_VN';
     <link rel="alternate" hreflang="vi" href={new URL(viPath, Astro.site)} />
     <link rel="alternate" hreflang="x-default" href={new URL(canonicalPath, Astro.site)} />
     <!-- Open Graph + Twitter card (FI-339 SF-1; VU-5 SF-1 completes the contract).
-         og:url mirrors canonical; og:image is absolute via new URL(ogImage,
-         Astro.site) — see Props contract above. -->
+         og:url mirrors canonical (SITE_URL). og:image resolves against
+         OG_BASE_URL (image-host fallback — wakii.xyz is 404 until the owner
+         attaches the domain; flip OG_BASE_URL to SITE_URL then). See
+         docs/knowledge/runbooks/link-preview-domain.md. -->
     <meta property="og:title" content={fullTitle} />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:description" content={description} />
@@ -98,7 +100,7 @@ const ogLocaleAlternate = isVi ? 'en-US' : 'vi_VN';
     {articleTags?.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={ogLocaleAlternate} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:image" content={new URL(ogImage, OG_BASE_URL)} />
     <!-- og-default + every hero tile are PNG (SF-2 pins 1200×630 PNG tiles). -->
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
@@ -106,7 +108,7 @@ const ogLocaleAlternate = isVi ? 'en-US' : 'vi_VN';
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <!-- Twitter reads name= attributes — property= mirrors are not guaranteed. -->
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    <meta name="twitter:image" content={new URL(ogImage, OG_BASE_URL)} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
     <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} blog`} href="/rss.xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

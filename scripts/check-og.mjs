@@ -49,10 +49,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const distDir = join(root, 'dist');
 const LIVE = process.argv.includes('--live');
 
-const { SITE_URL, SITE_NAME, SITE_TAGLINE } = await import(
+const { SITE_URL, SITE_NAME, SITE_TAGLINE, OG_BASE_URL } = await import(
   new URL('../src/config.ts', import.meta.url)
 );
 const site = new URL(SITE_URL).origin;
+// og:image lives on OG_BASE_URL while wakii.xyz is 404 (owner domain action)
+const ogBase = new URL(OG_BASE_URL).origin;
 
 /** Recursive *.html walk (dist/ missing → empty; caller reports). */
 function walkHtml(dir) {
@@ -84,6 +86,19 @@ function absoluteSiteUrl(u) {
   try {
     const parsed = new URL(u);
     return parsed.protocol === 'https:' && parsed.origin === site;
+  } catch {
+    return false;
+  }
+}
+
+/** og:image may resolve on either origin (SITE_URL canonical or the
+ * OG_BASE_URL image-host fallback — see config.ts). Other URL fields stay
+ * site-origin strict. */
+function absoluteOgImageUrl(u) {
+  if (typeof u !== 'string' || u === '') return false;
+  try {
+    const parsed = new URL(u);
+    return parsed.protocol === 'https:' && (parsed.origin === site || parsed.origin === ogBase);
   } catch {
     return false;
   }
@@ -144,7 +159,7 @@ function fail(file, reason) {
 /* ── --live: network probe, never fails (D9) ─────────────────────────── */
 
 if (LIVE) {
-  const targets = [`${site}/`, `${site}/og-default.png`];
+  const targets = [`${site}/`, `${site}/og-default.png`, `${ogBase}/`, `${ogBase}/og-default.png`];
   const postDirs = existsSync(join(distDir, 'blog'))
     ? readdirSync(join(distDir, 'blog'), { withFileTypes: true })
         .filter((e) => e.isDirectory() && e.name !== 'category')
@@ -233,15 +248,15 @@ for (const abs of htmlFiles) {
     fail(file, `og:locale "${ogLocale}" inconsistent with ${isVi ? 'a vi/' : 'an EN'} path`);
   }
 
-  // og:image — absolute on origin, PNG, and the file actually ships.
-  if (!absoluteSiteUrl(ogImage)) {
-    fail(file, 'og:image not absolute https on site origin');
+  // og:image — absolute https on SITE or OG_BASE origin, PNG, ships in dist.
+  if (!absoluteOgImageUrl(ogImage)) {
+    fail(file, `og:image not absolute https on ${site} or ${ogBase}`);
   } else {
     let imgPath = '';
     try {
       imgPath = new URL(ogImage).pathname;
     } catch {
-      /* unreachable — absoluteSiteUrl passed */
+      /* unreachable — absoluteOgImageUrl passed */
     }
     if (!imgPath.endsWith('.png') || meta.get('og:image:type') !== 'image/png') {
       fail(file, `og:image must be a PNG declared as image/png (got ${imgPath} / type "${meta.get('og:image:type')}")`);
@@ -273,7 +288,7 @@ for (const abs of htmlFiles) {
   // Resolution correctness — hero → existing dist tile; hero-less → the
   // absolute og-default. No hero-count gate (editorial batches may ship
   // hero-less posts; only WRONG resolution fails).
-  if (absoluteSiteUrl(ogImage)) {
+  if (absoluteOgImageUrl(ogImage)) {
     const imgPath = new URL(ogImage).pathname;
     if (imgPath === OG_DEFAULT) {
       ogDefaultPosts++;
