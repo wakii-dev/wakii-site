@@ -1,10 +1,11 @@
 /**
  * Roadmap data — Now / Next / Later for /roadmap (SF-3).
- * FI-294 base list, updated 2026-09-12 per owner instruction ("dựa vào
+ * FI-294 base list, updated 2026-10-10 per owner instruction ("dựa vào
  * những gì chúng ta đang làm") — reflects what actually shipped and what
- * is in flight: blog live (120+ posts), knowledge base shipped (FI-409),
- * learning loop ADOPT issues landed in product (v1.4.200–205), ADE
- * knowledge layer next (wakii#38).
+ * is in flight: blog live (240+ posts), knowledge base shipped (FI-409),
+ * Orchestrated HITL kit 2.22 shipped (pane-watch, BA Layer, --local,
+ * driver hardening — PR #129/#134/#135, app 1.4.222), downloads live
+ * every platform, ADE knowledge layer next (wakii#38).
  *
  * Milestones use vague time frames (quarters/years), never far dates.
  *
@@ -64,9 +65,9 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
         {
           title: 'Blog & field notes',
           desc_en:
-            'A living blog, 120+ bilingual posts from real builds — repo deep-dives, workflow, guides, build logs. New posts on a steady cadence.',
+            'A living blog, 240+ bilingual posts from real builds — repo deep-dives, workflow, guides, build logs. New posts on a steady cadence.',
           desc_vi:
-            'Blog sống, hơn 120 bài song ngữ từ build thật — deep-dive repo, workflow, hướng dẫn, nhật ký. Bài mới theo nhịp đều.',
+            'Blog sống, hơn 240 bài song ngữ từ build thật — deep-dive repo, workflow, hướng dẫn, nhật ký. Bài mới theo nhịp đều.',
         },
         {
           title: 'Knowledge base',
@@ -74,6 +75,13 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
             'A structured internal knowledge base — decision records, 50 repo deep-dives, glossary, map of content — written machine-readable so our own agents can query it.',
           desc_vi:
             'Kho tri thức nội bộ có cấu trúc — ADR quyết định, 50 bản deep-dive repo, bảng thuật ngữ, bản đồ nội dung — viết chuẩn máy đọc được để chính agents của chúng tôi tra được.',
+        },
+        {
+          title: 'Orchestrated HITL kit (2.22)',
+          desc_en:
+            'The story team ships end-to-end without bypassing you: agents spawn least-privilege, approval requests reach you with context, and a pane watchdog pagers when a worker stalls. Shipped across kit 2.22 + app 1.4.222.',
+          desc_vi:
+            'Story team chạy end-to-end mà không vòng qua bạn: agent spawn đặc quyền tối thiểu, yêu cầu duyệt tới bạn kèm ngữ cảnh, pane-watch gọi khi worker stalls. Ship trong kit 2.22 + app 1.4.222.',
         },
         ...(downloadsLive ? [DOWNLOADS_LIVE_ITEM] : []),
       ],
@@ -89,6 +97,13 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
             'Expose the knowledge base over MCP so any agent client can query our decisions, repo research and lessons — the mem0/letta pattern applied to our own stack.',
           desc_vi:
             'Mở kho tri thức cho agents qua MCP để mọi agent client tra được quyết định, nghiên cứu repo và bài học — pattern mem0/letta áp lên stack của chúng tôi.',
+        },
+        {
+          title: 'Fork-native PR visibility',
+          desc_en:
+            'PR status for every remote of a fork — not just the default. The driver and the roadmap both read the room across remotes.',
+          desc_vi:
+            'PR status cho mọi remote của một fork — không chỉ remote mặc định. Driver và roadmap đều đọc được bức tranh đa remote.',
         },
         {
           title: 'Contributions in 3D',
