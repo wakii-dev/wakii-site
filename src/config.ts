@@ -39,6 +39,15 @@ export const DOC_SLUGS = [
   'story-workflow',
   'agents-and-kit',
   'faq',
+  'worktrees',
+  'terminal',
+  'design-mode',
+  'linear',
+  'ssh',
+  'annotate-ai-diff',
+  'file-explorer',
+  'cli',
+  'mobile',
 ] as const;
 
 export type DocSlug = (typeof DOC_SLUGS)[number];
