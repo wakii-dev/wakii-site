@@ -78,14 +78,14 @@ export const DOWNLOADS_LIVE = true;
 
 /**
  * Fallback pin (D5) — used when the build-time GitHub fetch fails or a
- * release asset is missing/renamed. v1.4.205 was the last hand-pinned
- * cut (2026-09-12; the same release first shipped the Android APK —
- * newer than the mobile-android-v0.0.48 pre-release).
+ * release asset is missing/renamed. v1.4.222 is the current hand-pinned
+ * cut (2026-10-10; verified all four pinned asset names exist on the
+ * release before bumping).
  */
 export const LATEST_RELEASE = {
-  tag: 'v1.4.205',
-  version: '1.4.205',
-  publishedAt: '2026-09-12',
+  tag: 'v1.4.222',
+  version: '1.4.222',
+  publishedAt: '2026-10-10',
 } as const;
 
 /**
@@ -107,10 +107,10 @@ export type ReleaseAssetKey = keyof typeof RELEASE_ASSET_FILES;
 
 /** Pinned download URL — the per-target fallback (D5). */
 export const RELEASE_PIN_URLS: Record<ReleaseAssetKey, string> = {
-  macosArm64: `${REPO_URL}/releases/download/v1.4.205/Wakii-1.4.205-arm64.dmg`,
-  macosX64: `${REPO_URL}/releases/download/v1.4.205/Wakii-1.4.205-x64.dmg`,
-  windows: `${REPO_URL}/releases/download/v1.4.205/orca-windows-setup.exe`,
-  androidApk: `${REPO_URL}/releases/download/v1.4.205/app-release.apk`,
+  macosArm64: `${REPO_URL}/releases/download/v1.4.222/Wakii-1.4.222-arm64.dmg`,
+  macosX64: `${REPO_URL}/releases/download/v1.4.222/Wakii-1.4.222-x64.dmg`,
+  windows: `${REPO_URL}/releases/download/v1.4.222/orca-windows-setup.exe`,
+  androidApk: `${REPO_URL}/releases/download/v1.4.222/app-release.apk`,
 };
 
 /**
