@@ -56,6 +56,7 @@ const UI: Record<
     pitch: string;
     cta: string;
     back: string;
+    all: string;
   }
 > = {
   en: {
@@ -67,6 +68,7 @@ const UI: Record<
     pitch: 'Wakii is an agentic IDE with a built-in superpowers team.',
     cta: 'get wakii',
     back: '← all posts',
+    all: 'all posts →',
   },
   vi: {
     navLabel: 'Điều hướng blog',
@@ -77,6 +79,7 @@ const UI: Record<
     pitch: 'Wakii là IDE agentic với đội AI agent superpowers đi kèm.',
     cta: 'tải wakii',
     back: '← tất cả bài viết',
+    all: 'tất cả bài viết →',
   },
 };
 const ui = UI[locale];
@@ -97,6 +100,16 @@ const posts = (
 const href = (s: string) => (locale === 'vi' ? `/vi/blog/${s}/` : `/blog/${s}/`);
 const listingHref = locale === 'vi' ? '/vi/blog/' : '/blog/';
 
+/**
+ * Sidebar recency cap (review 10-11): the docs-shell sidebar mirrored ALL
+ * posts — 120 links / ~25 KB of nav HTML (~50% of the page) on every detail
+ * page, tabbed through before the article. Cap to the newest slice; the
+ * full list lives at the listing page (linked below the list). Pager +
+ * related still draw from the full pool above.
+ */
+const SIDEBAR_MAX = 12;
+const sidebarPosts = posts.slice(0, SIDEBAR_MAX);
+
 /** SF-4 wiring: the meta category chip links to its taxonomy page. */
 const categoryHref =
   locale === 'vi' ? `/vi/blog/category/${entry.data.category}/` : `/blog/category/${entry.data.category}/`;
@@ -106,6 +119,12 @@ const categoryHref =
  * same resolution the og contract uses in Base.
  */
 const postUrl = new URL(Astro.url.pathname, Astro.site).toString();
+/** Org default ("Wakii team"); a named human author gets Person (schema.org:
+ * Organization is wrong for individuals — future multi-author union, FI-349 D4). */
+const authorNode =
+  entry.data.author === 'Wakii team'
+    ? { '@type': 'Organization', name: entry.data.author }
+    : { '@type': 'Person', name: entry.data.author };
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -113,7 +132,7 @@ const jsonld = {
   description: entry.data.description,
   image: new URL(entry.data.heroImage ?? '/og-default.png', Astro.site).toString(),
   datePublished: entry.data.pubDate.toISOString(),
-  author: { '@type': 'Organization', name: entry.data.author },
+  author: authorNode,
   mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   url: postUrl,
 };
@@ -148,27 +167,11 @@ const related = relatedPosts(entry, posts);
   articleTags={entry.data.tags}
 >
   <div class="bd-shell">
-    <aside class="bd-sidebar">
-      <div class="bd-eyebrow">~/blog</div>
-      <nav aria-label={ui.navLabel}>
-        <ul>
-          {posts.map((p, i) => {
-            const s = blogSlug(p.id);
-            return (
-              <li>
-                <a href={href(s)} aria-current={s === slug ? 'page' : undefined}>
-                  <span class="bd-idx">{String(i + 1).padStart(2, '0')}</span>
-                  {p.data.title}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-      <div class="bd-lang">
-        <LangSwitcher viExists={viExists} />
-      </div>
-    </aside>
+    {/*
+      Article first in DOM — keyboard/screen-reader reach the content without
+      tabbing the sidebar; desktop puts the rail back on the left via CSS
+      order below (mobile keeps content-first, no order swap needed).
+    */}
     <article class="bd-article">
       <div class="bd-crumb"><a href={listingHref}>~/blog</a>/{slug}</div>
       <div class="bd-meta">
@@ -182,13 +185,15 @@ const related = relatedPosts(entry, posts);
       </div>
       <h1>{entry.data.title}</h1>
       {entry.data.heroImage && (
+        /* Decorative — the h1 directly below announces the same title
+           (alt={title} made screen readers say it twice). */
         <img
           class="bd-hero"
           src={entry.data.heroImage}
           width={1200}
           height={630}
           loading="eager"
-          alt={entry.data.title}
+          alt=""
         />
       )}
       <div class="prose">
@@ -236,6 +241,28 @@ const related = relatedPosts(entry, posts);
         </span>
       </nav>
     </article>
+    <aside class="bd-sidebar">
+      <div class="bd-eyebrow">~/blog</div>
+      <nav aria-label={ui.navLabel}>
+        <ul>
+          {sidebarPosts.map((p, i) => {
+            const s = blogSlug(p.id);
+            return (
+              <li>
+                <a href={href(s)} aria-current={s === slug ? 'page' : undefined}>
+                  <span class="bd-idx">{String(i + 1).padStart(2, '0')}</span>
+                  {p.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+        <a class="bd-all" href={listingHref}>{ui.all}</a>
+      </nav>
+      <div class="bd-lang">
+        <LangSwitcher viExists={viExists} />
+      </div>
+    </aside>
   </div>
   {/* JSON.stringify does not escape "<" — a future title/description holding
       "</script>" could terminate the element early. Escape it (review P2). */}
@@ -271,6 +298,9 @@ const related = relatedPosts(entry, posts);
     display: flex;
     flex-direction: column;
     gap: 24px;
+    /* Article is first in the markup (content-first tab order); the rail
+       goes back to the left column on desktop via order only. */
+    order: -1;
   }
   .bd-eyebrow {
     font-family: var(--font-display);
@@ -317,6 +347,17 @@ const related = relatedPosts(entry, posts);
   }
   .bd-sidebar a[aria-current='page'] .bd-idx {
     color: var(--accent-dim);
+  }
+  /* Full-list escape hatch below the recency-capped rail. */
+  .bd-sidebar .bd-all {
+    display: inline-block;
+    margin: 10px 0 0 13px;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-decoration: none;
+  }
+  .bd-sidebar .bd-all:hover {
+    color: var(--accent);
   }
   .bd-lang {
     font-family: var(--font-display);
@@ -570,14 +611,11 @@ const related = relatedPosts(entry, posts);
       gap: 32px;
       padding: 48px 20px 96px;
     }
-    /* Reading-first on mobile: article lên trên, sidebar (list + lang)
-       xuống dưới (context pack: "sidebar xuống dưới/ẩn hợp lý"). */
+    /* Reading-first on mobile: sidebar (list + lang) xuống dưới — DOM đã
+       article-first nên chỉ cần bỏ sticky (không còn order swap). */
     .bd-sidebar {
       position: static;
-      order: 2;
-    }
-    .bd-article {
-      order: 1;
+      order: 0;
     }
   }
   /* Reveal nhẹ hơn bxreveal (28px quá mạnh cho prose) — vẫn transform/opacity
