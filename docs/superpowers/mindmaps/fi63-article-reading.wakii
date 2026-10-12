@@ -18,48 +18,97 @@
       "kind": "sf",
       "title": "Prose foundation — typography + measure + tables",
       "tier": 0,
-      "summary": "Phase 1/3 — shippable độc lập: mở bất kỳ bài (EN/VI) thấy cột đọc ~68ch, chữ ≥16px line-height 1.75, heading hết faux-bold (weights ⊆ 400/500); bảng markdown render có header + cell padding, mobile 375px cuộn ngang trong cột không tràn; blockquote accent tint, ảnh đồng bộ hero. Context pack: docs/superpowers/contexts/article-reading-sf-1.md"
+      "summary": "Phase 1/3 — shippable độc lập: mở bất kỳ bài (EN/VI) thấy cột đọc ~68ch, chữ ≥16px line-height 1.75, heading hết faux-bold (weights ⊆ 400/500); bảng markdown render có header + cell padding, mobile 375px cuộn ngang trong cột không tràn; blockquote accent tint, ảnh đồng bộ hero. Context pack: docs/superpowers/contexts/article-reading-sf-1.md",
+      "linear": "FI-65"
     },
     {
       "id": "sf-2",
       "kind": "sf",
       "title": "Code block UX + heading anchors",
       "tier": 1,
-      "summary": "Mỗi code block có nhãn ngôn ngữ + nút copy (bấm → ✓ vào clipboard, bàn phím dùng được, no-JS ẩn nút); hover/focus heading h2-h3 hiện link anchor, bấm copy URL section; EN+VI đúng labels. Merge ĐẦU TIÊN tier 1. Context pack: docs/superpowers/contexts/article-reading-sf-2.md"
+      "summary": "Mỗi code block có nhãn ngôn ngữ + nút copy (bấm → ✓ vào clipboard, bàn phím dùng được, no-JS ẩn nút); hover/focus heading h2-h3 hiện link anchor, bấm copy URL section; EN+VI đúng labels. Merge ĐẦU TIÊN tier 1. Context pack: docs/superpowers/contexts/article-reading-sf-2.md",
+      "linear": "FI-66"
     },
     {
       "id": "sf-3",
       "kind": "sf",
       "title": "Reading navigation — TOC scrollspy + progress + back-to-top",
       "tier": 1,
-      "summary": "Đọc bài dài: TOC trong sticky rail (trên recent-posts, mục đang đọc tự highlight khi cuộn, rail tự cuộn khi 10+ mục); thanh tiến độ mỏng đầu trang; nút về-đầu; mobile 375px chỉ có TOC box collapse đầu bài (mặc định đóng); pager hiển thị category + date giữ nguyên prev-cũ/next-mới. Context pack: docs/superpowers/contexts/article-reading-sf-3.md"
+      "summary": "Đọc bài dài: TOC trong sticky rail (trên recent-posts, mục đang đọc tự highlight khi cuộn, rail tự cuộn khi 10+ mục); thanh tiến độ mỏng đầu trang; nút về-đầu; mobile 375px chỉ có TOC box collapse đầu bài (mặc định đóng); pager hiển thị category + date giữ nguyên prev-cũ/next-mới. Context pack: docs/superpowers/contexts/article-reading-sf-3.md",
+      "linear": "FI-67"
     },
     {
       "id": "sf-4",
       "kind": "sf",
       "title": "Follow surface — RSS + subscription affordances",
       "tier": 1,
-      "summary": "Đọc xong bài thấy khối follow giữa Related và CTA: link RSS feed thật (/rss.xml) + nút copy feed URL (✓ feedback, no-JS vẫn còn link); EN+VI copy đúng ngôn ngữ; static không backend. Merge CUỐI tier 1. Context pack: docs/superpowers/contexts/article-reading-sf-4.md"
+      "summary": "Đọc xong bài thấy khối follow giữa Related và CTA: link RSS feed thật (/rss.xml) + nút copy feed URL (✓ feedback, no-JS vẫn còn link); EN+VI copy đúng ngôn ngữ; static không backend. Merge CUỐI tier 1. Context pack: docs/superpowers/contexts/article-reading-sf-4.md",
+      "linear": "FI-68"
     },
     {
       "id": "sf-5",
       "kind": "sf",
       "title": "Convergence QA + release checkpoint",
       "tier": 2,
-      "summary": "Phase 3/3 — shippable: toàn bộ trải nghiệm đọc liền mạch EN+VI, desktop+375px, keyboard-only + reduced-motion; build + check:jsonld xanh; coexistence 3 enhancement không lỗi console; JS thêm ≤120 dòng, CLS ≤0.02; security-audit sạch P0/P1; visual sign-off coordinator → sẵn sàng PR. Context pack: docs/superpowers/contexts/article-reading-sf-5.md"
+      "summary": "Phase 3/3 — shippable: toàn bộ trải nghiệm đọc liền mạch EN+VI, desktop+375px, keyboard-only + reduced-motion; build + check:jsonld xanh; coexistence 3 enhancement không lỗi console; JS thêm ≤120 dòng, CLS ≤0.02; security-audit sạch P0/P1; visual sign-off coordinator → sẵn sàng PR. Context pack: docs/superpowers/contexts/article-reading-sf-5.md",
+      "linear": "FI-69"
     }
   ],
   "edges": [
-    { "from": "epic", "to": "sf-1", "rel": "contains" },
-    { "from": "epic", "to": "sf-2", "rel": "contains" },
-    { "from": "epic", "to": "sf-3", "rel": "contains" },
-    { "from": "epic", "to": "sf-4", "rel": "contains" },
-    { "from": "epic", "to": "sf-5", "rel": "contains" },
-    { "from": "sf-2", "to": "sf-1", "rel": "depends-on" },
-    { "from": "sf-3", "to": "sf-1", "rel": "depends-on" },
-    { "from": "sf-4", "to": "sf-1", "rel": "depends-on" },
-    { "from": "sf-5", "to": "sf-2", "rel": "depends-on" },
-    { "from": "sf-5", "to": "sf-3", "rel": "depends-on" },
-    { "from": "sf-5", "to": "sf-4", "rel": "depends-on" }
+    {
+      "from": "epic",
+      "to": "sf-1",
+      "rel": "contains"
+    },
+    {
+      "from": "epic",
+      "to": "sf-2",
+      "rel": "contains"
+    },
+    {
+      "from": "epic",
+      "to": "sf-3",
+      "rel": "contains"
+    },
+    {
+      "from": "epic",
+      "to": "sf-4",
+      "rel": "contains"
+    },
+    {
+      "from": "epic",
+      "to": "sf-5",
+      "rel": "contains"
+    },
+    {
+      "from": "sf-2",
+      "to": "sf-1",
+      "rel": "depends-on"
+    },
+    {
+      "from": "sf-3",
+      "to": "sf-1",
+      "rel": "depends-on"
+    },
+    {
+      "from": "sf-4",
+      "to": "sf-1",
+      "rel": "depends-on"
+    },
+    {
+      "from": "sf-5",
+      "to": "sf-2",
+      "rel": "depends-on"
+    },
+    {
+      "from": "sf-5",
+      "to": "sf-3",
+      "rel": "depends-on"
+    },
+    {
+      "from": "sf-5",
+      "to": "sf-4",
+      "rel": "depends-on"
+    }
   ]
 }
