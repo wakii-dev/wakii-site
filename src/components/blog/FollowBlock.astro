@@ -1,0 +1,160 @@
+---
+/**
+ * FollowBlock (SF-4, FI-68) — follow surface đặt giữa Related và after-CTA:
+ * điểm kết-thúc-đọc, thời điểm tự nhiên để mời đọc giả theo dõi blog.
+ *
+ * Nội dung: link RSS feed thật (/rss.xml — feed bilingual DUY NHẤT, contract
+ * FI-339 SF-1; KHÔNG tạo feed mới, KHÔNG đụng Base.astro — autodiscovery đã
+ * có ở Base:113) + nút copy feed URL (clipboard API, feedback ✓).
+ *
+ * no-JS contract: nút copy render ẩn (hidden) — script enhancement là người
+ * mở; tắt JS thì link RSS vẫn thấy + bấm được. KHÔNG email/newsletter
+ * (cần backend — MUST-NOT). i18n strings sống NGAY TRONG file này (en+vi)
+ * — KHÔNG thêm key vào UI record của layout (P0 strings rule); KHÔNG tái
+ * dùng chuỗi rail `rssFeed: 'rss feed →'` (ngữ cảnh listing, khác giọng).
+ */
+import { SITE_URL } from '../../config';
+
+interface Props {
+  /** Locale của trang bài viết — chọn bộ copy (default en). */
+  locale: 'en' | 'vi';
+}
+
+const STRINGS: Record<'en' | 'vi', { title: string; body: string; link: string; copy: string; copied: string }> = {
+  en: {
+    title: 'Follow the blog',
+    body: 'New posts land straight in your reader — no inbox required.',
+    link: 'RSS feed',
+    copy: 'Copy feed URL',
+    copied: 'Copied ✓',
+  },
+  vi: {
+    title: 'Theo dõi blog',
+    body: 'Bài mới hiện thẳng trong reader của bạn — không cần hộp thư.',
+    link: 'bản tin RSS',
+    copy: 'Copy URL bản tin',
+    copied: 'Đã copy ✓',
+  },
+};
+
+const { locale } = Astro.props;
+const t = STRINGS[locale] ?? STRINGS.en;
+// Feed readers cần URL tuyệt đối → resolve /rss.xml qua site (config fallback
+// cùng pattern rss.xml.js).
+const feedUrl = new URL('/rss.xml', Astro.site ?? SITE_URL).href;
+---
+
+<section class="fb-follow" aria-label={t.title}>
+  <h2 class="fb-title">{t.title}</h2>
+  <p class="fb-body">{t.body}</p>
+  <div class="fb-actions">
+    <a class="fb-link" href="/rss.xml">{t.link} →</a>
+    <button
+      class="fb-copy"
+      type="button"
+      hidden
+      data-feed-url={feedUrl}
+      data-copied={t.copied}
+      aria-label={t.copy}
+    >
+      {t.copy}
+    </button>
+    {/* SR feedback cho copy (a11y) — nút tự đổi nhãn là chưa đủ với SR. */}
+    <span class="fb-status" role="status" aria-live="polite"></span>
+  </div>
+</section>
+
+<style>
+  /* Cùng họ bento với after-CTA liền kề nhưng phân biệt: đây là FOLLOW
+     (mềm, accent-soft nền) — không phải CTA mua (fill accent đậm). */
+  .fb-follow {
+    margin-top: 40px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
+    background: var(--accent-soft);
+    font-family: var(--font-display);
+  }
+  .fb-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin: 0 0 6px;
+  }
+  .fb-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-faint);
+    margin: 0 0 14px;
+  }
+  .fb-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+  }
+  .fb-link {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .fb-link:hover {
+    text-decoration: underline;
+  }
+  .fb-copy {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    color: var(--text-faint);
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-btn);
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+  .fb-copy:hover:not(:disabled) {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+  .fb-copy:disabled {
+    color: var(--accent);
+    cursor: default;
+  }
+  .fb-status {
+    font-size: 12px;
+    color: var(--accent);
+  }
+  @media (max-width: 800px) {
+    .fb-follow {
+      margin-top: 32px;
+      padding: 16px 18px;
+    }
+  }
+</style>
+
+<script>
+  // Copy feed URL — enhancement-only. no-JS: nút còn hidden, link RSS là
+  // fallback vĩnh viễn. Clipboard bị chặn (http/permission) → im lặng, link
+  // vẫn đóng vai trò đường chính.
+  const btn = document.querySelector<HTMLButtonElement>('.fb-copy');
+  if (btn) {
+    btn.hidden = false;
+    const status = btn.parentElement?.querySelector<HTMLElement>('.fb-status');
+    let revert: ReturnType<typeof setTimeout> | undefined;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.feedUrl ?? '');
+        if (status) status.textContent = btn.dataset.copied ?? '✓';
+        btn.disabled = true;
+        clearTimeout(revert);
+        revert = setTimeout(() => {
+          if (status) status.textContent = '';
+          btn.disabled = false;
+        }, 2000);
+      } catch {
+        /* clipboard unavailable — visible /rss.xml link stays the path */
+      }
+    });
+  }
+</script>

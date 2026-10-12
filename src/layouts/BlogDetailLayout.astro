@@ -19,6 +19,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import BlogToc from '../components/BlogToc.astro';
+import FollowBlock from '../components/blog/FollowBlock.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import '../styles/motion.css';
 import { getCollection } from 'astro:content';
@@ -217,6 +218,9 @@ const related = relatedPosts(entry, posts);
           </ul>
         </section>
       )}
+      {/* SF-4 (FI-68) — follow surface tại điểm kết-thúc-đọc, GIỮA related
+          và after-CTA. Additive-only: không đụng region nào khác. */}
+      <FollowBlock locale={locale} />
       <div class="bd-after">
         <p>{ui.pitch}</p>
         <a class="bd-cta" href={locale === 'vi' ? '/vi/download/' : '/download/'}>{ui.cta}</a>
