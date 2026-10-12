@@ -282,6 +282,13 @@ const related = relatedPosts(entry, posts);
   }
 </script>
 
+<script>
+  // SF-2 (FI-66) — code copy buttons + heading anchors. Separate module
+  // (P0-2, own region) so SF-3/SF-4 stay conflict-free on this append point.
+  import { initCodeEnhancements } from '../scripts/blog/code-enhancements';
+  initCodeEnhancements();
+</script>
+
 <style>
   .bd-shell {
     display: grid;
@@ -691,5 +698,65 @@ const related = relatedPosts(entry, posts);
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* ---- SF-2 (FI-66) region: code label/copy + heading anchors ----
+     Additive-only (SF-1 declarations untouched). The shell div + button +
+     anchor links are JS-injected (no-JS = none of these exist); the language
+     label is CSS-only via data-language attr (probe: present on every shiki
+     pre) so it survives no-JS. */
+  .bd-article :global(.code-shell) {
+    position: relative;
+  }
+  .bd-article :global(.prose pre[data-language]::before) {
+    content: attr(data-language);
+    display: block;
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .bd-article :global(.code-copy) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--text-faint);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-btn);
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+  .bd-article :global(.code-copy:hover) {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+  .bd-article :global(.code-copy:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  /* Anchor link — always faintly visible (NOT hover-only, spec P0-3);
+     hover/focus-within strengthens. Focusable via keyboard (native <a>). */
+  .bd-article :global(.prose .heading-anchor) {
+    margin-left: 8px;
+    font-size: 0.75em;
+    color: var(--accent-dim);
+    text-decoration: none;
+    opacity: 0.45;
+  }
+  .bd-article :global(.prose h2:hover .heading-anchor),
+  .bd-article :global(.prose h3:hover .heading-anchor),
+  .bd-article :global(.prose h2:focus-within .heading-anchor),
+  .bd-article :global(.prose h3:focus-within .heading-anchor) {
+    opacity: 1;
+    color: var(--accent);
+  }
+  .bd-article :global(.heading-anchor:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 </style>
