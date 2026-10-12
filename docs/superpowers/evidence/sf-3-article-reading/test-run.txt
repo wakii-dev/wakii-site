@@ -1,6 +1,6 @@
 SF-3 reading navigation (FI-67) — test-run evidence
-code commit: 9c34229 (HEAD~1 — code) + review-fix commit · worktree sf-3-article-reading
-base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
+code commits: 9c34229 (code chính) + 40fd595 (review-fix P1/P2 — HEAD tại evidence này)
+worktree sf-3-article-reading · base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
 
 [0] Môi trường: worktree mới checkout CRLF (core.autocrlf=true) → check-blog-content
     fail "frontmatter missing" toàn bộ (JS regex `.` không match \r) — đã normalize
