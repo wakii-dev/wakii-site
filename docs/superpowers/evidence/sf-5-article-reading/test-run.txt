@@ -138,3 +138,17 @@ tdd: skipped-tdd: SF-5 là QA/audit — không có production code mới ngoài 
 script evidence; bằng chứng = build/jsonld gates + 8 CDP walkthrough JSON +
 clipboard probes + 8 screenshots trong dir này, theo gate "behavior đầu-cuối +
 npm run build xanh" của story.
+
+[11] Cross-check findings (code-reviewer độc lập thứ 2 trên 781181f..daeee71 —
+  cũng VERDICT APPROVED 0 P0/P1; các P2 sau thuộc code SF-3/SF-4 ĐÃ MERGE,
+  SF-5 KHÔNG sửa (boundary) — coordinator backlog):
+  - P2 BlogToc.astro:63 — box TOC là <details> không bọc <nav> → aria-label
+    inert; mobile mất TOC landmark parity với rail (probe vẫn đo được cả 2 vì
+    selector .toc--*, không phải landmark query).
+  - P2 FollowBlock.astro:155-157 — clipboard catch im lặng khác convention
+    console.warn của code-enhancements (CHECKLIST-4Q câu 3: PASS-có-ghi-chú —
+    link RSS là đường chính quan sát được, đủ).
+  - P2 khác: decodeURIComponent không guard (reading-nav.ts:65 — input là
+    href nội bộ do chính pipeline sinh, risk thấp), dead key ui.contents
+    (BlogDetailLayout), locale parse inconsistency (startsWith vs exact),
+    Chrome path hardcode trong helper dev-only.
