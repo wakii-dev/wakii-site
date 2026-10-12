@@ -152,3 +152,7 @@ npm run build xanh" của story.
     href nội bộ do chính pipeline sinh, risk thấp), dead key ui.contents
     (BlogDetailLayout), locale parse inconsistency (startsWith vs exact),
     Chrome path hardcode trong helper dev-only.
+
+## Re-run @ HEAD 6f96f48 (2026-10-12 20:26, coordinator refresh)
+npm run build: EXIT 0 — astro complete + OG OK (285 pages · 240 posts · sitemap 284 URLs)
+Frontmatter: commit 6f96f48 (cross-check reviewer #2 APPROVED 0 P0/P1) — trước đó: c6700ad gates xanh + 8 CDP walkthrough + security audit CLEAN; f99685f review fixes 1 P1 shortvw re-run.
