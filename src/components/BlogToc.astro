@@ -1,9 +1,20 @@
 ---
 /**
  * Blog table of contents — h2 only, rendered when the post has >= 3 h2
- * (long-form gate). Anchors use the ids Astro's markdown pipeline generates:
- * `headings[].slug` (from `render()`) equals the id attribute on the
- * rendered <h2> (verified: `<h2 id="kebab-case">` in dist docs pages).
+ * (long-form gate; 240 posts currently pass, gate is for future posts).
+ * Anchors use the ids Astro's markdown pipeline generates: `headings[].slug`
+ * (from `render()`) equals the id attribute on the rendered <h2>.
+ *
+ * SF-3 (FI-67) dual-render rewrite (P0-1, spec PINNED): the component renders
+ * TWICE per page with a `variant` prop —
+ *  - `rail`  : sticky-rail nav for the desktop sidebar (hidden ≤800px);
+ *  - `box`   : details/summary collapsed box at the top of .prose
+ *              (hidden >800px). CSS toggles visibility — the box cannot be
+ *              repositioned into the aside via CSS (grid siblings).
+ * The two variants are separate landmarks with DIFFERENT aria-labels (never
+ * two landmarks with the same name), and all labels are en+vi INSIDE this
+ * component — the layout UI record must NOT gain new keys (P0 strings rule).
+ * No-JS fallback: both variants are static anchor lists — links work as-is.
  */
 interface Heading {
   depth: number;
@@ -12,25 +23,34 @@ interface Heading {
 }
 
 interface Props {
-  /** headings array from `await render(entry)` — filtered to h2 here. */
   headings: Heading[];
-  /** Box label — locale-dependent (EN "Contents" / VI "Nội dung"). */
-  label?: string;
+  /** `rail` = desktop sidebar nav · `box` = collapsed details in .prose. */
+  variant: 'rail' | 'box';
+  /** Page locale — picks the en/vi label pair below. */
+  locale: 'en' | 'vi';
 }
 
-const { headings, label = 'Contents' } = Astro.props;
+/** Labels en+vi live HERE (not in the layout UI record). Landmark names
+ * differ per variant so the page never has two same-named navs. */
+const LABELS: Record<'en' | 'vi', { rail: string; box: string }> = {
+  en: { rail: 'On this page', box: 'Contents' },
+  vi: { rail: 'Trong bài này', box: 'Nội dung' },
+};
+
+const { headings, variant, locale } = Astro.props;
 const items = headings.filter((h) => h.depth === 2);
 const show = items.length >= 3;
+const label = LABELS[locale][variant];
 ---
 
 {
-  show && (
-    <nav class="toc" aria-label="toc">
+  show && variant === 'rail' && (
+    <nav class="toc toc--rail" aria-label={label}>
       <p class="toc-label">{label}</p>
-      <ul>
+      <ul class="toc-list">
         {items.map((h) => (
           <li>
-            <a href={`#${h.slug}`}>{h.text}</a>
+            <a class="toc-link" href={`#${h.slug}`}>{h.text}</a>
           </li>
         ))}
       </ul>
@@ -38,13 +58,24 @@ const show = items.length >= 3;
   )
 }
 
+{
+  show && variant === 'box' && (
+    <details class="toc toc--box">
+      <summary class="toc-label">{label}</summary>
+      <ul class="toc-list">
+        {items.map((h) => (
+          <li>
+            <a class="toc-link" href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
 <style>
   .toc {
-    border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 0 0 28px;
-    font-family: var(--font-mono);
+    font-family: var(--font-display);
   }
   .toc-label {
     font-size: 11px;
@@ -53,23 +84,87 @@ const show = items.length >= 3;
     color: var(--text-faint);
     margin: 0 0 10px;
   }
-  .toc ul {
+  .toc-list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .toc li {
-    margin: 0 0 6px;
-  }
-  .toc li:last-child {
-    margin-bottom: 0;
-  }
-  .toc a {
+  .toc-link {
     color: var(--text-dim);
     text-decoration: none;
     font-size: 13px;
+    display: block;
+    padding: 2px 0;
   }
-  .toc a:hover {
+  .toc-link:hover {
     color: var(--accent);
+  }
+  /* Scrollspy state — aria-current="location" set by reading-nav; highlight
+     is NOT color-only (weight/accent + left bar so SR/keyboard see it). */
+  .toc-link[aria-current='location'] {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .toc--rail .toc-link {
+    border-left: 1px solid transparent;
+    margin-left: -1px;
+    padding-left: 10px;
+  }
+  .toc--rail .toc-link[aria-current='location'] {
+    border-left-color: var(--accent);
+  }
+
+  /* ---- rail variant (sidebar) — own scroll so 10+ h2 never push the
+     recent-posts list / lang switcher out of the sticky rail (P1-5:
+     short-viewport 375×~700). max-height = viewport − sticky top 96px −
+     bottom breathing room. position:relative makes link offsetTop
+     rail-relative for the scrollspy auto-scroll in reading-nav. ---- */
+  .toc--rail {
+    position: relative;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    /* Sidebar (bd-sidebar) là flex column với max-height + internal scroll —
+       flex-shrink mặc định sẽ nén child overflow:auto về 0 (min-height auto
+       → 0 cho scroll container). Giữ rail ở đúng chiều cao của nó; phần dư
+       (recent-posts) do aside scroll xử lý. */
+    flex-shrink: 0;
+  }
+
+  /* ---- box variant (top of .prose, default COLLAPSED) ---- */
+  .toc--box {
+    border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 0 0 28px;
+  }
+  .toc--box summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .toc--box summary::-webkit-details-marker {
+    display: none;
+  }
+  .toc--box summary::before {
+    content: '+ ';
+    color: var(--accent);
+  }
+  .toc--box[open] summary::before {
+    content: '− ';
+  }
+  .toc--box ul {
+    margin-top: 12px;
+  }
+
+  /* Dual-render visibility toggle (P0-1): exactly ONE TOC per viewport —
+     rail only >800px, box only ≤800px (breakpoint 800px hiện có). */
+  @media (max-width: 800px) {
+    .toc--rail {
+      display: none;
+    }
+  }
+  @media (min-width: 801px) {
+    .toc--box {
+      display: none;
+    }
   }
 </style>
