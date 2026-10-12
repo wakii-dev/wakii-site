@@ -1,0 +1,25 @@
+SF-4 test-run — 2026-10-12T17:04:44+07:00
+HEAD: d0cc410b880e5b45cd78509a343e15a29d2064b8
+branch: story-fi63-article-reading-sf-4
+
+== npm run build ==
+[2m17:05:18[22m [32m✓ Completed in 12.16s.
+[39m
+[2m17:05:18[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m17:05:18[22m [34m[build][39m 285 page(s) built in [1m23.23s[22m
+[2m17:05:18[22m [34m[build][39m [1mComplete![22m
+✓ OG OK (285 pages checked · 240 posts: 238 hero tile / 2 og-default · size gate 120 PNG ≤ 100KB (max 39KB) · sitemap 284 URLs · robots pinned)
+BUILD-EXIT=0
+
+== npm run check:jsonld ==
+
+✓ strict coverage OK (batch-3: 50 slugs × 2 locales = 100 files present)
+✓ JSON-LD OK (285 pages checked · BlogPosting 240 · BreadcrumbList 6 · Blog 2)
+JSONLD-EXIT=0
+
+== CDP copy probe (functional, browser thật) ==
+COPY-PROBE RESULT: {"clip":"https://wakii.xyz/rss.xml","statusText":"Copied ✓","btnDisabled":true,"btnLabel":"Copy feed URL"}
+(chạy lần 1 tại 15:0x — log đầy đủ trong docs/superpowers/evidence/sf-4-article-reading/README.md)
+
+tdd: skipped-tdd: static site, no test framework — assertion gates thay thế (npm run build chain: check-blog-slug-parity + check-blog-utils + check-blog-content + astro build + check-og, EXIT 0) + check:jsonld + CDP functional probe clipboard (evidence README); assert tautology không thể xảy ra vì không có unit test tự viết
+code-commit: b7c9d38 (HEAD lúc chạy test-run lại: build+jsonld xanh đã ghi ở trên — không re-run vì không có thay đổi code)
