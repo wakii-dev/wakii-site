@@ -23,5 +23,11 @@
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
