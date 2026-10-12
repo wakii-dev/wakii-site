@@ -61,7 +61,12 @@ const label = LABELS[locale][variant];
 {
   show && variant === 'box' && (
     <details class="toc toc--box">
-      <summary class="toc-label">{label}</summary>
+      <summary class="toc-label">
+        {/* Marker as aria-hidden span — a ::before on summary itself would put
+            "+/−" into the accessibility tree (SR đọc "plus Nội dung"). */}
+        <span class="toc-marker" aria-hidden="true" />
+        {label}
+      </summary>
       <ul class="toc-list">
         {items.map((h) => (
           <li>
@@ -144,11 +149,11 @@ const label = LABELS[locale][variant];
   .toc--box summary::-webkit-details-marker {
     display: none;
   }
-  .toc--box summary::before {
+  .toc--box .toc-marker::before {
     content: '+ ';
     color: var(--accent);
   }
-  .toc--box[open] summary::before {
+  .toc--box[open] .toc-marker::before {
     content: '− ';
   }
   .toc--box ul {
@@ -156,13 +161,15 @@ const label = LABELS[locale][variant];
   }
 
   /* Dual-render visibility toggle (P0-1): exactly ONE TOC per viewport —
-     rail only >800px, box only ≤800px (breakpoint 800px hiện có). */
+     rail only >800px, box only ≤800px (breakpoint 800px hiện có). Dùng
+     `not all and (max-width)` chứ không `min-width:801px`: khoảng mở (800,801)
+     (viewport lẻ do zoom/device-pixel-ratio) phải thuộc đúng 1 phía. */
   @media (max-width: 800px) {
     .toc--rail {
       display: none;
     }
   }
-  @media (min-width: 801px) {
+  @media not all and (max-width: 800px) {
     .toc--box {
       display: none;
     }

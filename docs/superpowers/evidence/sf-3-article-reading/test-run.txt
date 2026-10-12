@@ -1,5 +1,6 @@
 SF-3 reading navigation (FI-67) — test-run evidence
-code commit: 9c34229 (HEAD) · worktree sf-3-article-reading · base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
+code commit: 9c34229 (HEAD~1 — code) + review-fix commit · worktree sf-3-article-reading
+base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
 
 [0] Môi trường: worktree mới checkout CRLF (core.autocrlf=true) → check-blog-content
     fail "frontmatter missing" toàn bộ (JS regex `.` không match \r) — đã normalize
@@ -62,8 +63,31 @@ code commit: 9c34229 (HEAD) · worktree sf-3-article-reading · base story-fi63-
     reading-nav.ts (mới), evidence/, scripts/sf3-shot.mjs. motion.ts / Base.astro /
     tokens.css / DocsLayout.astro / JSON-LD: 0 dòng.
 
-tdd: skipped-tdd: SF-3 là enhancement JS nhỏ (94 dòng) không có unit-test harness
+tdd: skipped-tdd: SF-3 là enhancement JS nhỏ (~104 dòng) không có unit-test harness
 trong repo (build checks là check-*.mjs content/og, không phải test runner);
 bằng chứng behavior = CDP state probes (aria-current/progress/topVisible đọc
 trực tiếp runtime) + screenshot BEFORE/AFTER EN+VI desktop+mobile trong dir này,
 theo đúng gate "behavior đầu-cuối + npm run build xanh".
+
+[6] Code-review round 1 (code-reviewer subagent): CHANGES-REQUESTED 2 P1 → đã fix
+    + verify lại bằng CDP trên build cuối (re-run EXIT 0):
+
+    P1-1 media-gap (800,801) mở → 2 TOC cùng lúc (vi phạm pinned invariant):
+    `min-width:801px` → `not all and (max-width: 800px)` (BlogToc.astro).
+    Verify: CDP device-metrics 799/800/801/802 → visible `.toc` = 1 ở cả 4 width.
+
+    P1-2 back-to-top ẩn vẫn tab-được (opacity:0 không ra khỏi tab order,
+    WCAG 2.4.7): thêm visibility:hidden + .is-visible visibility:visible
+    (transition delay .2s chống giật fade-out). Verify: computed
+    visibility hidden/0 opacity ở top · visible/1 ở bottom.
+
+    P2 đã fix (rẻ, cùng region): setActive change-guard (bỏ DOM churn +
+    smooth-restart mỗi scroll frame) · Map slug→[links] (rail+box twins cùng
+    aria-current — mobile box highlight giờ hoạt động: CDP đo được
+    `.toc--box .toc-link[aria-current]` ở 375px) · marker +/− chuyển sang
+    span[aria-hidden] (trước đây pseudo-content vào a11y tree — SR đọc
+    "plus Nội dung"). P2 bỏ qua (ngoài region/evidence-only): dead key
+    `contents` trong UI record (dọn dẹp thuộc SF khác), random CDP port của
+    sf3-shot.mjs (tool evidence, không ship).
+
+    JS quota sau fix: reading-nav.ts = 104 dòng — vẫn ≤120.

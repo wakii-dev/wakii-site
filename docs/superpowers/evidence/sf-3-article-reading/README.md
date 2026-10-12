@@ -59,10 +59,21 @@ VI:     {"scrollY":707, "progress":"scaleX(0.6002)", "current":"#bước-tiếp-
 - **No-JS:** 2 variant TOC là anchor list tĩnh (link + id từ markdown
   pipeline); progress/button là JS-injected → tự ẩn. Đã verify HTML tĩnh
   trong dist có đầy đủ link.
-- **JS quota:** `reading-nav.ts` = 94 dòng (cả comment) —≤120 quota chung
+- **JS quota:** `reading-nav.ts` = 104 dòng (cả comment) — ≤120 quota chung
   SF-2/3/4.
 - **reduced-motion:** scrollspy/progress/back-to-top vẫn hoạt động (chức năng,
   không phải trang trí); chỉ bỏ smooth-scroll + transition (CSS media query).
 - **a11y:** TOC link là `<a href="#id">` native (Tab + Enter); `aria-current`
   đọc được bởi SR; progress `aria-hidden` (redundant); button có
-  aria-label locale.
+  aria-label locale; nút ẩn dùng `visibility:hidden` (ra khỏi tab order);
+  marker +/− là `span[aria-hidden]` (pseudo-content không vào a11y tree).
+
+## Review round 1 (code-reviewer) — 2 P1 đã fix + verify CDP
+
+| Finding | Fix | Verify |
+|---|---|---|
+| P1: media-gap (800,801) — cả 2 TOC hiện cùng lúc ở viewport lẻ | `min-width:801px` → `not all and (max-width:800px)` | CDP 799/800/801/802 → visible `.toc` = 1 |
+| P1: back-to-top ẩn vẫn tab-được (WCAG 2.4.7) | `visibility:hidden` + `.is-visible{visibility:visible}` | computed hidden/0 @top · visible/1 @bottom |
+| P2: scrollspy chỉ highlight rail (map last-wins) | Map slug→[links], set cả rail + box twins | CDP 375px: `.toc--box .toc-link[aria-current]` ✓ |
+| P2: setActive chạy mỗi frame không guard | `if (id === currentId) return` | code |
+| P2: summary `::before "+ "` vào a11y tree | marker `span[aria-hidden]` | code + SR tree |

@@ -779,15 +779,25 @@ const related = relatedPosts(entry, posts);
     opacity: 0;
     transform: translateY(8px);
     pointer-events: none;
+    /* visibility (không chỉ opacity) — nút ẩn phải ra KHỎI tab order
+       (review P1: opacity:0 vẫn focus được = focus-point vô hình, WCAG 2.4.7).
+       Delay để nút kịp fade-out trước khi biến mất. */
+    visibility: hidden;
     transition:
       opacity 0.2s ease,
-      transform 0.2s ease;
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
     z-index: 40;
   }
   .reading-top.is-visible {
     opacity: 1;
     transform: none;
     pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0s;
   }
   .reading-top:hover {
     background: color-mix(in srgb, var(--accent) 85%, white);

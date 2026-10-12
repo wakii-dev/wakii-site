@@ -56,28 +56,38 @@ export function initReadingNav(): void {
   update();
 
   /* ---- scrollspy: aria-current="location" + rail auto-scroll ---- */
-  const links = new Map<string, HTMLAnchorElement>();
+  // Map slug → ALL matching links (rail + box twins) so the mobile box
+  // highlight works too (document order puts rail last — a 1-link map would
+  // leave the visible box link unhighlighted).
+  const links = new Map<string, HTMLAnchorElement[]>();
   document.querySelectorAll<HTMLAnchorElement>('.toc-link').forEach((a) => {
-    if (a.hash) links.set(decodeURIComponent(a.hash.slice(1)), a);
+    if (!a.hash) return;
+    const key = decodeURIComponent(a.hash.slice(1));
+    links.set(key, [...(links.get(key) ?? []), a]);
   });
   const headings = [...links.keys()]
     .map((id) => document.getElementById(id))
     .filter((h): h is HTMLElement => h !== null);
   if (headings.length === 0) return;
 
+  let currentId = '';
   const setActive = (id: string) => {
-    links.forEach((a) => a.removeAttribute('aria-current'));
-    const a = links.get(id);
-    if (!a) return;
-    a.setAttribute('aria-current', 'location');
-    // Keep the active item inside the rail's own scroll area (rail is
-    // position:relative → offsetTop is rail-relative). No-op without overflow.
-    const rail = a.closest('.toc--rail');
-    if (rail instanceof HTMLElement) {
-      rail.scrollTo({
-        top: a.offsetTop - rail.clientHeight / 2 + a.offsetHeight / 2,
-        behavior: smooth,
-      });
+    if (id === currentId) return; // per-frame guard — skip DOM churn + smooth-restart
+    currentId = id;
+    for (const group of links.values()) {
+      for (const a of group) a.removeAttribute('aria-current');
+    }
+    for (const a of links.get(id) ?? []) {
+      a.setAttribute('aria-current', 'location');
+      // Keep the active item inside the rail's own scroll area (rail is
+      // position:relative → offsetTop is rail-relative). No-op without overflow.
+      const rail = a.closest('.toc--rail');
+      if (rail instanceof HTMLElement) {
+        rail.scrollTo({
+          top: a.offsetTop - rail.clientHeight / 2 + a.offsetHeight / 2,
+          behavior: smooth,
+        });
+      }
     }
   };
   const scan = () => {
