@@ -22,3 +22,4 @@ COPY-PROBE RESULT: {"clip":"https://wakii.xyz/rss.xml","statusText":"Copied ✓"
 (chạy lần 1 tại 15:0x — log đầy đủ trong docs/superpowers/evidence/sf-4-article-reading/README.md)
 
 tdd: skipped-tdd: static site, no test framework — assertion gates thay thế (npm run build chain: check-blog-slug-parity + check-blog-utils + check-blog-content + astro build + check-og, EXIT 0) + check:jsonld + CDP functional probe clipboard (evidence README); assert tautology không thể xảy ra vì không có unit test tự viết
+code-commit: b7c9d38 (HEAD lúc chạy test-run lại: build+jsonld xanh đã ghi ở trên — không re-run vì không có thay đổi code)
