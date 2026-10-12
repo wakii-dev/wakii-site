@@ -1,0 +1,132 @@
+SF-5 (FI-69) — Convergence QA + release checkpoint · test-run
+Date: 2026-10-12 · worktree sf-5-article-reading @ daeee71 (+ SF-5 evidence commit)
+Server: astro preview :4400 (dist build cục bộ; 4399 bị stale preview session khác)
+
+[1] Build gates
+  npm run build      → EXIT 0 (285 pages · sitemap-index.xml created · og check:
+                       240 posts 238 hero-tile / 2 og-default · max PNG 39KB ≤ 100KB)
+  npm run check:jsonld → EXIT 0 (chạy RỜI RẠCH, không nằm trong build chain — P1:
+                       285 pages · BlogPosting 240 · BreadcrumbList 6 · Blog 2)
+  Sitemap thủ công   → dist/sitemap-0.xml: 284 <loc> · 248 blog URLs
+                       (124 EN + 124 VI) ✓
+
+[2] Region-integrity diff (task 8)
+  git diff origin/story-fi63-article-reading-sf-1..daeee71 (layout): các dòng bị
+  ĐỔI duy nhất = region SF-3 được phép (BlogToc call-site dual-render, pager
+  title→span, 1 dòng revealChildren selector, comment). SỐ dòng khớp pattern
+  declaration SF-1 (68ch/16px/1.75/table/th/td/blockquote/weight500) bị xóa: 0.
+  Story diff 781181f..daeee71: motion.ts / Base.astro / DocsLayout.astro /
+  content.config.ts / global.css = 0 file chạm (grep --name-only → rỗng).
+  → rule additive-only của SF-1 GIỮ NGUYÊN. PASS
+
+[3] Cross-SF walkthrough (Rule 0 — browser thật, CDP; 2 locale × desktop + 375px)
+  Bài mẫu: skill-brainstorm (11 h2, ~1550 từ, 6 code fence) EN+VI;
+  agentic-landscape-50-projects (9 h2, 65 dòng bảng) cho table sweep.
+  File: walk-en-desktop.json · walk-vi-desktop.json · walk-en-375-short.json
+        walk-vi-375.json · walk-en-375-table.json · walk-en-keyboard.json
+        walk-en-reduced.json · walk-en-nojs.json
+  Kết quả chung mọi run:
+  - Console: 0 ERROR. Chỉ có warning "[code-enhancements] clipboard write
+    failed" khi probe tự click copy TRƯỚC khi grant permission — đúng đường
+    fallback thiết kế (console.warn có dấu vết, nút giữ trạng thái copy).
+  - Coexistence: code-shell/copy + heading-anchor + TOC (rail+box) + progress +
+    back-to-top + FollowBlock cùng mounted; landmarks phân biệt
+    (EN: "Blog pagination"/"On this page"/"Blog navigation"; VI: "Phân trang
+    bài viết"/"Trong bài này"/"Điều hướng blog") — không duplicate same-name.
+  - TOC dual-render: ĐÚNG 1 variant visible/viewport (rail desktop, box 375,
+    bothVisible=false mọi run — breakpoint `not all and (max-width)`).
+  - Scrollspy: aria-current="location" chạy EN + VI (slug dấu
+    "#spec-là-sản-phẩm-sáu-section-sống-trong-repo" khớp); progress transform
+    scaleX khớp scroll fraction (0.35→0.350042); back-to-top hiện >1 viewport,
+    click → scrollY 0.
+  - Code copy (success path, clipboard granted — clip-en/clip-vi.json):
+    clipboard == nội dung code, feedback "✓ copied"/"✓ đã sao chép".
+  - Heading anchor: hash jump + clipboard full URL (EN+VI, có dấu) + "✓" swap.
+  - FollowBlock copy: clipboard https://wakii.xyz/rss.xml, status
+    "Copied ✓"/"Đã copy ✓" (role=status aria-live), nút disabled tạm.
+  PASS
+
+[4] Mobile 375px + short-viewport sweep (P1-5)
+  375×700 (short): rail ẩn, box visible, không 2 TOC cùng lúc; bảng rộng
+  (walk-en-375-table.json): tableScrollable=true, pageHorizOverflow=FALSE
+  (cuộn trong cột, không tràn trang); rail không che recent-posts/lang
+  (sidebar mobile = static flow dưới bài). Shots: after-en-375-*.png,
+  after-vi-375-bottom.png, after-en-375-table.png.
+  Desktop short-viewport 1440×700 (short-viewport-desktop.json): rail visible,
+  KHÔNG tràn viewport, recent-posts có trong sidebar, lang scrollIntoView được
+  (sidebar internal scroll hoạt động — P1-5). PASS
+
+[5] A11y audit
+  - Keyboard-only (walk-en-keyboard.json): 25 affordance mới focusable,
+    :focus-visible có styling (outline accent); back-to-top ra KHỎI tab order
+    khi ẩn (visibility:hidden — review P1 SF-3); fb-copy vào tab order khi JS
+    bật, ẩn khi no-JS (hiddenOutOfTab=true).
+  - Reduced-motion (walk-en-reduced.json): media matched, progress VẪN chạy
+    (function không phải décor), revealAnimated=0 (không animation trang trí),
+    scroll behavior auto (không smooth).
+  - SR labels: aria-current="location" trên TOC link; aria-live copy feedback
+    (code copy span + fb-status role=status); landmarks aria-label phân biệt
+    (xem [3]); hero img alt="" (decorative, h1 liền kề). PASS
+
+[6] Perf binary (P1-9)
+  - CLS: 0.0000 trên MỌI run (≤0.02) — PerformanceObserver layout-shift
+    buffered, có scroll. PASS
+  - JS budget ≤120 dòng QUA CẢ 2 module — FINDING, see [7].
+
+[7] FINDING — JS quota (escalate coordinator, KHÔNG tự sửa)
+  Đếm reproducible (grep -vE comment/blank):
+    code-enhancements.ts = 68 dòng thực thi (90 tổng)
+    reading-nav.ts       = 72 dòng thực thi (104 tổng)
+  Nghiêm ngặt nhất (executable, cross-module): 68+72 = 140 > 120 → TRƯỢT budget.
+  Nguyên nhân: review-fix a11y đã merge của SF-2/SF-3 (evidence SF-3 tự ghi
+  reading-nav 94→104 dòng cho P1 fixes); 2 SF trước tự chứng nhận riêng lẻ
+  (SF-2: "58 thực thi — quota chia sẻ", SF-3: "94/104 ≤120") — không ai cộng
+  dồn. Boundary SF-5 cấm refactor code SF khác (chỉ fix bug integration) nên
+  KHÔNG trim chui → trả coordinator quyết định: (a) trim 2 module (giảm ~20
+  dòng thực thi, behavior phải re-verify CDP), hoặc (b) amend budget với lý
+  do a11y-fix. Bundle thực tế vẫn nhỏ (2 module, minified vài KB).
+  verdict mục này: FLAG (không chặn user-visible acceptance).
+
+[8] No-JS regression (walk-en-nojs.json)
+  Không JS: 0 console issue; TOC box/rail anchor list tĩnh hoạt động; progress/
+  back-to-top/code-copy/heading-anchor KHÔNG tồn tại (additive by construction);
+  fb-copy còn hidden, link /rss.xml là đường chính. PASS
+
+[9] Security-audit checkpoint (security-audit subagent, read-only)
+  Scope: git diff 781181f..daeee71 (66 file, +1983/-48) + probe scripts SF-5.
+  KẾT QUẢ: SECURITY-AUDIT CLEAN — P0: 0 · P1: 0 · P2: 3 (hygiene):
+  - Secrets/.env: CLEAN (grep added lines: 0 hit thật; chỉ prose spec).
+  - Exec bits: CLEAN (100% mode 100644, 0 mode change).
+  - Deps: story KHÔNG đụng package.json/lockfile, 0 dep mới.
+  - XSS: CLEAN từng sink — code-enhancements (textContent-only, href
+    fragment-only), reading-nav (decodeURIComponent→getElementById an toàn),
+    JSON-LD set:html escape `<` nguyên vẹn (không bị story đụng), BlogToc
+    (Astro auto-escape, fragment-only), FollowBlock (dataset→clipboard,
+    status qua textContent).
+  - Probe scripts: execFile args-array, 0 shell concat, 0 command injection.
+  - CI/deploy: 0 file .github/workflow trong diff.
+  P2-1: package-lock.json untracked chưa quyết (commit chủ đích hay gitignore
+        — coordinator; file phát sinh do npm install trong worktree SF-5).
+  P2-2: CDP port 127.0.0.1 không auth trong helper scripts (dev-only).
+  P2-3: --no-sandbox headless Chrome trong helper SF-4 (dev-only, không mang
+        sang CI shared).
+  → Phase checkpoint KHÔNG bị chặn (không còn P0/P1).
+
+[10] CHECKLIST-4Q (verify.reviewerChecklist — site tĩnh, không DB/backend)
+  1. Network/external call giữa DB Begin/Commit? PASS — N/A: không có DB, không
+     transaction (site static; grep diff: không có client-side fetch/post mới).
+  2. HTTP client/external call có timeout? PASS — N/A: không HTTP client mới;
+     CDP probe scripts dùng fetch local 127.0.0.1 + poll loop 40×250ms
+     (sf5-walkthrough.mjs:36-44) — có giới hạn vòng đời, không ship.
+  3. Error best-effort có dấu vết đọc được? PASS — clipboard fail log
+     console.warn có prefix "[code-enhancements]" (code-enhancements.ts:62,86);
+     FollowBlock catch im lặng CỐ Ý (link RSS là đường chính — FollowBlock.astro
+     comment dòng 156) + nút giữ trạng thái gốc quan sát được.
+  4. Partial-failure batch có compensation/rollback? PASS — N/A: không có batch
+     write ra hệ thống ngoài; các enhancement chỉ DOM-local, fail từng nút
+     không để trạng thái nửa vời (timer revert 2s có clearTimeout guard).
+
+tdd: skipped-tdd: SF-5 là QA/audit — không có production code mới ngoài 2 probe
+script evidence; bằng chứng = build/jsonld gates + 8 CDP walkthrough JSON +
+clipboard probes + 8 screenshots trong dir này, theo gate "behavior đầu-cuối +
+npm run build xanh" của story.

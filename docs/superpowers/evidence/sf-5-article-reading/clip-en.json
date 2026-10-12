@@ -1,0 +1,17 @@
+{
+  "codeCopy": {
+    "expected": "/brainstorm \"idea\"\n    ↓\n[Phase 1] Brainstorming → spec file",
+    "clipboard": "/brainstorm \"idea\"\r\n    ↓\r\n[Phase 1] Brainstorming → spec fi",
+    "feedback": "✓ copied"
+  },
+  "headingAnchor": {
+    "clipboard": "http://localhost:4400/blog/skill-brainstorm/#before-the-first-question-there-is-reading",
+    "feedbackText": "✓",
+    "hash": "#before-the-first-question-there-is-reading"
+  },
+  "followCopy": {
+    "clipboard": "https://wakii.xyz/rss.xml",
+    "status": "Copied ✓",
+    "btnDisabled": true
+  }
+}

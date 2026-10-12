@@ -1,0 +1,15 @@
+{
+  "url": "http://localhost:4400/blog/skill-brainstorm/",
+  "viewport": "1440x900",
+  "reducedMotion": false,
+  "keyboard": false,
+  "noJs": true,
+  "coexistence": "{\"codeShell\":0,\"codeCopy\":0,\"headingAnchors\":0,\"tocRail\":true,\"tocBox\":true,\"landmarks\":[\"Blog pagination\",\"On this page\",\"Blog navigation\"],\"progress\":false,\"backToTop\":false,\"followBlock\":true,\"followCopy\":false}",
+  "tocVisibility": "{\"railVisible\":true,\"boxVisible\":false,\"bothVisible\":false}",
+  "scrollState": "{\"scrollY\":2951,\"ariaCurrent\":null,\"ariaCurrentCount\":0,\"cls\":0}",
+  "backToTopClick": "{\"scrollY\":2951}",
+  "codeCopyFeedback": null,
+  "headingAnchor": "{\"hash\":\"\"}",
+  "tableOverflow": "{\"present\":false}",
+  "consoleIssues": []
+}

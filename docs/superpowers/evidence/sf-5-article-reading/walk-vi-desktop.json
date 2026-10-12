@@ -1,0 +1,18 @@
+{
+  "url": "http://localhost:4400/vi/blog/skill-brainstorm/",
+  "viewport": "1440x900",
+  "reducedMotion": false,
+  "keyboard": false,
+  "noJs": false,
+  "coexistence": "{\"codeShell\":6,\"codeCopy\":6,\"headingAnchors\":5,\"tocRail\":true,\"tocBox\":true,\"landmarks\":[\"Phân trang bài viết\",\"Trong bài này\",\"Điều hướng blog\"],\"progress\":true,\"backToTop\":true,\"followBlock\":true,\"followCopy\":true}",
+  "tocVisibility": "{\"railVisible\":true,\"boxVisible\":false,\"bothVisible\":false}",
+  "scrollState": "{\"scrollY\":2826,\"progressTransform\":\"scaleX(0.5)\",\"backToTopVisible\":true,\"ariaCurrent\":\"#spec-là-sản-phẩm-sáu-section-sống-trong-repo\",\"ariaCurrentCount\":2,\"cls\":0}",
+  "backToTopClick": "{\"scrollY\":0}",
+  "codeCopyFeedback": "sao chép",
+  "headingAnchor": "{\"hash\":\"#tr%C6%B0%E1%BB%9Bc-c%C3%A2u-h%E1%BB%8Fi-%C4%91%E1%BA%A7u-ti%C3%AAn-l%C3%A0-vi%E1%BB%87c-%C4%91%E1%BB%8Dc\",\"label\":\"Liên kết đến mục này\",\"text\":\"#\"}",
+  "tableOverflow": "{\"present\":false}",
+  "consoleIssues": [
+    "warning: [code-enhancements] clipboard write failed",
+    "warning: [code-enhancements] clipboard write failed"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "url": "http://localhost:4400/blog/skill-brainstorm/",
+  "viewport": "1440x900",
+  "reducedMotion": false,
+  "keyboard": "{\"focusableCount\":25,\"focusVisibleCss\":true,\"hiddenOutOfTab\":true}",
+  "noJs": false,
+  "coexistence": "{\"codeShell\":6,\"codeCopy\":6,\"headingAnchors\":5,\"tocRail\":true,\"tocBox\":true,\"landmarks\":[\"Blog pagination\",\"On this page\",\"Blog navigation\"],\"progress\":true,\"backToTop\":true,\"followBlock\":true,\"followCopy\":true}",
+  "tocVisibility": "{\"railVisible\":true,\"boxVisible\":false,\"bothVisible\":false}",
+  "scrollState": "{\"scrollY\":2953,\"progressTransform\":\"scaleX(0.500085)\",\"backToTopVisible\":true,\"ariaCurrent\":\"#the-spec-is-the-product-six-sections-living-in-the-repo\",\"ariaCurrentCount\":2,\"cls\":0}",
+  "backToTopClick": "{\"scrollY\":0}",
+  "codeCopyFeedback": "copy",
+  "headingAnchor": "{\"hash\":\"#before-the-first-question-there-is-reading\",\"label\":\"Link to this section\",\"text\":\"#\"}",
+  "tableOverflow": "{\"present\":false}",
+  "consoleIssues": [
+    "warning: [code-enhancements] clipboard write failed",
+    "warning: [code-enhancements] clipboard write failed"
+  ]
+}
