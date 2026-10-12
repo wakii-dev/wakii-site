@@ -1,0 +1,50 @@
+SF-1 prose foundation (FI-65) — test-run evidence
+code commit: 7178083 (HEAD~1 tại evidence commit này) · worktree sf-1-article-reading · base story-fi63-article-reading @ 41e696e
+
+[0] Môi trường (lý do phải normalize): worktree checkout CRLF (core.autocrlf=true) làm
+    check-blog-content.mjs fail "frontmatter missing" trên toàn bộ file (JS regex `.` không
+    match \r) + astro chưa cài ở worktree mới. Đã normalize working-tree text files LF
+    (git diff HEAD vẫn clean — blob đã LF) + npm install. Sau build EXIT=0. Ghost-M stat-dirty
+    còn lại vô hại (diff HEAD = đúng 1 file SF).
+
+[1] Build: npm run build → EXIT 0 · 285 pages · parity ✓ (120×2) · utils ✓ · content ✓
+    (228 manifest, 0 skipped) · OG ✓ (sitemap 284, robots pinned). Re-run sau P2 comment
+    fix → EXIT 0.
+
+[2] DOM verify (orca browser eval, trước/sau):
+    .prose max-width: none → 686.375px (≈68ch @16px Inter) · font-size 15→16px ·
+    line-height 1.7 (25.5px) → 1.75 (28px) · h2 weight default→500 (23px) · h3 500 (18px) ·
+    strong 500 (chấm dứt faux-bold Inter) · td padding 0px → 8px 12px · th weight 500 +
+    border-bottom var(--border-strong) · blockquote: border-left 2px var(--accent) +
+    bg var(--accent-soft) + radius 0 8px 8px 0 · hero/h1 giữ full-width 733px (P1-4 ✓).
+    390px (iPhone 12 emulation): bảng rộng nhất (post 50-projects, 7 bảng) display block,
+    scrollWidth 400 > clientWidth 350 → scrollable trong cột; documentElement.scrollWidth
+    = 390 = viewport → KHÔNG tràn trang. Sweep faux-bold: 403 element trong .bd-article,
+    0 element Inter có weight ngoài {400,500}.
+
+[3] VISUAL (headless Chrome CÙNG BUILD — orca screenshot dưới device emulation trả ảnh vỡ
+    (nội dung lặp/clipped — tái diễn class lỗi CDP đã biết từ SF-2/SF-24; fallback theo kit
+    note; DOM + FLOW vẫn qua orca browser):
+    desktop 1280: after-en-desktop-full.png · after-desktop-table-50projects.png (header
+    border + padding + row borders) · after-en-desktop-blockquote.png (accent+tint) ·
+    after-en-desktop-table-region.png (typography/code) · after-vi-desktop-full.png
+    mobile 390: before/after-en-390-fullpage.png + crop bảng (before: cells dính nhau
+    "continue35.8k", không border, th faux-bold · after: header styled + padding + cuộn
+    trong cột) · after-vi-390-table.png (dấu VI render đúng trong bảng + line-height)
+
+[4] FLOW (orca browser, scroll toàn bài, error collector):
+    EN /blog/arch-auto-update-feed/: scrolledTo 6825/7715 · 0 JS errors · 0 broken images ·
+    related/CTA/pager render đủ (flow-en-bottom.png)
+    VI /vi/blog/agentic-landscape-50-projects/ (7 bảng): scrolledTo 5693/6583 · 0 errors ·
+    0 broken images · 7/7 bảng styled (td padding 8px 12px)
+
+[5] Boundary: git diff 41e696e..7178083 = đúng 1 file src/layouts/BlogDetailLayout.astro
+    (+76/−18, toàn bộ trong <style>). DocsLayout/Base.astro/motion.ts/content schema/
+    UI record: untouched. Không markup/text change → EN/VI parity tự nhiên.
+    Review: code-reviewer độc lập APPROVED (0 P0/0 P1; P2 comment-drift đã sửa trong
+    7178083; P2 a11y keyboard-scroll bảng mobile = limitation cố ý của phương án
+    CSS-only theo spec, ghi nhận cho SF-5 convergence).
+
+tdd: skipped-tdd: SF-1 là CSS-only (không có unit-test harness cho style; không có
+behavior JS mới) — bằng chứng = build checks + DOM đo trước/sau + screenshot before/
+after + flow walkthrough, theo đúng gate "behavior đầu-cuối + npm run build xanh".
