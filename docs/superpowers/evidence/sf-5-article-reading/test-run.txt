@@ -20,7 +20,9 @@ Server: astro preview :4400 (dist build cục bộ; 4399 bị stale preview sess
   → rule additive-only của SF-1 GIỮ NGUYÊN. PASS
 
 [3] Cross-SF walkthrough (Rule 0 — browser thật, CDP; 2 locale × desktop + 375px)
-  Bài mẫu: skill-brainstorm (11 h2, ~1550 từ, 6 code fence) EN+VI;
+  Bài mẫu: skill-brainstorm (~1550 từ, 6 code fence) EN+VI — grep nguồn đếm
+  11 `##` nhưng RENDERED chỉ 5 h2 (6 `##` còn lại nằm TRONG code fence spec,
+  skill-brainstorm.md:73-95) — khớp headingAnchors:5 mọi run, không thiếu;
   agentic-landscape-50-projects (9 h2, 65 dòng bảng) cho table sweep.
   File: walk-en-desktop.json · walk-vi-desktop.json · walk-en-375-short.json
         walk-vi-375.json · walk-en-375-table.json · walk-en-keyboard.json
@@ -37,10 +39,12 @@ Server: astro preview :4400 (dist build cục bộ; 4399 bị stale preview sess
     bothVisible=false mọi run — breakpoint `not all and (max-width)`).
   - Scrollspy: aria-current="location" chạy EN + VI (slug dấu
     "#spec-là-sản-phẩm-sáu-section-sống-trong-repo" khớp); progress transform
-    scaleX khớp scroll fraction (0.35→0.350042); back-to-top hiện >1 viewport,
+    scaleX khớp scroll fraction (committed: 0.500085 @ desktop 0.5-fraction,
+    0.50005 @ 375, 0.5 @ VI); back-to-top hiện >1 viewport,
     click → scrollY 0.
   - Code copy (success path, clipboard granted — clip-en/clip-vi.json):
-    clipboard == nội dung code, feedback "✓ copied"/"✓ đã sao chép".
+    clipboard == nội dung code (modulo CRLF normalization của Windows —
+    probe cắt 60 ký tự đầu để so), feedback "✓ copied"/"✓ đã sao chép".
   - Heading anchor: hash jump + clipboard full URL (EN+VI, có dấu) + "✓" swap.
   - FollowBlock copy: clipboard https://wakii.xyz/rss.xml, status
     "Copied ✓"/"Đã copy ✓" (role=status aria-live), nút disabled tạm.
@@ -52,9 +56,13 @@ Server: astro preview :4400 (dist build cục bộ; 4399 bị stale preview sess
   (cuộn trong cột, không tràn trang); rail không che recent-posts/lang
   (sidebar mobile = static flow dưới bài). Shots: after-en-375-*.png,
   after-vi-375-bottom.png, after-en-375-table.png.
-  Desktop short-viewport 1440×700 (short-viewport-desktop.json): rail visible,
-  KHÔNG tràn viewport, recent-posts có trong sidebar, lang scrollIntoView được
-  (sidebar internal scroll hoạt động — P1-5). PASS
+  Desktop short-viewport (short-viewport-desktop.json, viewport thực đo
+  1424×605 — hẹp hơn target 1440×700 nên kết luận a fortiori): rail visible,
+  KHÔNG tràn viewport, recent-posts có trong sidebar, langVisibleAfterScroll
+  = TRUE với rect thật (top 578 / bottom 600 ≤ 605) sau scrollIntoView —
+  sidebar internal scroll đưa lang vào view (P1-5). Lưu ý probe v1 bị
+  review P1 (assertion tautology `|| sb.contains(lang)`) — đã fix, re-run,
+  JSON hiện tại là bản đã fix. PASS
 
 [5] A11y audit
   - Keyboard-only (walk-en-keyboard.json): 25 affordance mới focusable,

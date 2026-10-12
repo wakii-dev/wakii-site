@@ -28,6 +28,8 @@ KHÔNG code production.
   buffered) + table overflow + keyboard/reduced/no-JS modes.
 - `scripts/sf5-clipboard.mjs` — grant clipboard permission → click cả 3 copy
   affordances → đọc clipboard thật + ✓ feedback.
+- `scripts/sf5-shortvw.mjs` — desktop short-viewport P1-5: rail/recent-posts/
+  lang trong sticky sidebar internal scroll (langVisibleAfterScroll đo thật).
 - `scripts/sf3-shot.mjs` (của SF-3, reuse) — screenshots + live state.
 
 Server: `npx astro preview --port 4400` (4399 bị preview cũ của session khác

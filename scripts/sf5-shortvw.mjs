@@ -27,14 +27,17 @@ const out = await ev(`JSON.stringify((() => {
   const recent = document.querySelector('.bd-eyebrow');
   const inPage = (el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
   lang.scrollIntoView({ block: 'nearest' });
-  const langVisible = (() => { const r = lang.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; })();
+  const r = lang.getBoundingClientRect();
   return {
     viewport: innerWidth + 'x' + innerHeight,
     railVisible: inPage(rail),
     railScrollable: rail.scrollHeight > rail.clientHeight,
     railMaxNotClippedByPosts: rail.getBoundingClientRect().height <= innerHeight,
     recentPostsInSidebar: !!recent,
-    langScrollableIntoView: langVisible || sb.contains(lang),
+    // ĐO THẬT sau scrollIntoView — không có fallback "contains" (tautology,
+    // review P1): false = lang bị clip, P1-5 fail.
+    langVisibleAfterScroll: r.top >= 0 && r.bottom <= innerHeight && r.height > 0,
+    langRect: { top: Math.round(r.top), bottom: Math.round(r.bottom), height: Math.round(r.height) },
     sidebarScrollable: sb.scrollHeight > sb.clientHeight,
   };
 })())`);
