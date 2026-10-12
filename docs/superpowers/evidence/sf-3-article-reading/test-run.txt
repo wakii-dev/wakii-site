@@ -1,0 +1,93 @@
+SF-3 reading navigation (FI-67) — test-run evidence
+code commits: 9c34229 (code chính) + 40fd595 (review-fix P1/P2 — HEAD tại evidence này)
+worktree sf-3-article-reading · base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
+
+[0] Môi trường: worktree mới checkout CRLF (core.autocrlf=true) → check-blog-content
+    fail "frontmatter missing" toàn bộ (JS regex `.` không match \r) — đã normalize
+    LF cho src/content/blog (git diff HEAD clean — blob đã LF, đúng runbook FI-65) +
+    npm install. Không `git add -A` (phantom CRLF stat-dirty vô hại).
+
+[1] Build: npm run build → EXIT 0 · 285 pages · parity ✓ · utils ✓ · content ✓ ·
+    OG ✓ (sitemap 284 URLs, robots pinned). npm run check:jsonld → ✓ (285 pages,
+    BlogPosting 240, strict coverage 100 files) — chạy RÕ RIỆT sau build.
+
+[2] Behavior verify (headless Chrome + CDP, scripts/sf3-shot.mjs — scroll thật +
+    click; trạng thái đọc trực tiếp qua Runtime.evaluate, evidence PNG trong dir này):
+
+    Dual-render (P0-1): dist HTML có .toc--rail (aria-label "On this page" EN /
+    "Trong bài này" VI) VÀ details.toc--box (summary "Contents"/"Nội dung");
+    rail ẩn ≤800px, box ẩn >800px — không bao giờ 2 TOC cùng viewport. Gate >=3 h2
+    giữ nguyên (bài 1-2 h2 render 0 TOC — verified code path). Box default COLLAPSED
+    (không attr open trong dist HTML).
+
+    Scrollspy: scroll 60% → aria-current="location" chuyển đúng mục
+    (EN #whats-next · VI #bước-tiếp-theo — slug dấu OK); highlight = accent +
+    border-left + weight 500 (KHÔNG color-only). Instant jump 0→95% KHÔNG stale
+    (rect scan trong rAF loop; IO band -60% chỉ là trigger phụ — edge case bắt
+    được khi probe: pure IO miss crossing start+end ngoài band).
+
+    Progress: scaleX(0) ở top · scaleX(0.6) ở 60% · scaleX(0.95) ở 95% —
+    transform-only, aria-hidden, fixed top:58px dưới site-nav.
+
+    Back-to-top: topVisible=false ở scrollY 727 (<1 viewport) · =true ở 1151;
+    aria-label locale ("Back to top"/"Về đầu trang"); JS-injected → no-JS ẩn
+    by construction (dist HTML: 0 phần tử .reading-*).
+
+    Rail sticky (P1-5): BUG tìm thấy + fix trong run — aside cũ 1220px > viewport
+    làm sticky top:96 trôi (rail y=-167 ở 60% scroll) → fix bd-sidebar
+    max-height calc(100vh-128px) + overflow-y auto + rail flex-shrink:0 (flex
+    nén rail về 0 — probe bắt railClientH=0). Sau fix: rail y=96 ổn định khi đọc
+    (drift chỉ ở ~cuối trang, vùng pager — behavior sticky-in-container chuẩn).
+    Short-viewport 900×600 bài 9 h2 (agentic-landscape-50-projects): aside tự
+    cuộn, recent-posts/lang vẫn với được — after-en-desktop-short-viewport-9h2.png.
+
+    Mobile 375px: chỉ box "+ NỘI DUNG" default đóng; click summary mở "−" + list
+    (before/after-en-mobile-375-toc-{collapsed,expanded}.png).
+
+    Reveal selector: '.prose > *:not(.toc)' — TOC box không tham gia reveal
+    (hiển thị tĩnh ngay); motion.ts KHÔNG đụng (chỉ call-site trong layout).
+
+    Pager: category + date hiển thị 2 link ("build log · 2026-09-07" /
+    "tech notes · 2026-09-08"); semantics giữ prev=cũ/next=mới (code path
+    posts[idx+1]/posts[idx-1] KHÔNG đổi).
+
+[3] JS quota: reading-nav.ts = 94 dòng (cả comment) — ≤120 quota chung SF-2/3/4.
+    Module riêng (P0-2) — không file client chung với SF-2/4.
+
+[4] No-JS: 2 variant TOC là anchor list tĩnh trong dist HTML (id từ markdown
+    pipeline); progress/button không tồn tại trong static HTML — additive.
+
+[5] Region check: git diff 320c05a..9c34229 chỉ đụng BlogToc.astro,
+    BlogDetailLayout.astro (additive: placement TOC + chrome CSS + pager region +
+    1 dòng revealChildren + import script; SF-1 prose declarations nguyên vẹn),
+    reading-nav.ts (mới), evidence/, scripts/sf3-shot.mjs. motion.ts / Base.astro /
+    tokens.css / DocsLayout.astro / JSON-LD: 0 dòng.
+
+tdd: skipped-tdd: SF-3 là enhancement JS nhỏ (~104 dòng) không có unit-test harness
+trong repo (build checks là check-*.mjs content/og, không phải test runner);
+bằng chứng behavior = CDP state probes (aria-current/progress/topVisible đọc
+trực tiếp runtime) + screenshot BEFORE/AFTER EN+VI desktop+mobile trong dir này,
+theo đúng gate "behavior đầu-cuối + npm run build xanh".
+
+[6] Code-review round 1 (code-reviewer subagent): CHANGES-REQUESTED 2 P1 → đã fix
+    + verify lại bằng CDP trên build cuối (re-run EXIT 0):
+
+    P1-1 media-gap (800,801) mở → 2 TOC cùng lúc (vi phạm pinned invariant):
+    `min-width:801px` → `not all and (max-width: 800px)` (BlogToc.astro).
+    Verify: CDP device-metrics 799/800/801/802 → visible `.toc` = 1 ở cả 4 width.
+
+    P1-2 back-to-top ẩn vẫn tab-được (opacity:0 không ra khỏi tab order,
+    WCAG 2.4.7): thêm visibility:hidden + .is-visible visibility:visible
+    (transition delay .2s chống giật fade-out). Verify: computed
+    visibility hidden/0 opacity ở top · visible/1 ở bottom.
+
+    P2 đã fix (rẻ, cùng region): setActive change-guard (bỏ DOM churn +
+    smooth-restart mỗi scroll frame) · Map slug→[links] (rail+box twins cùng
+    aria-current — mobile box highlight giờ hoạt động: CDP đo được
+    `.toc--box .toc-link[aria-current]` ở 375px) · marker +/− chuyển sang
+    span[aria-hidden] (trước đây pseudo-content vào a11y tree — SR đọc
+    "plus Nội dung"). P2 bỏ qua (ngoài region/evidence-only): dead key
+    `contents` trong UI record (dọn dẹp thuộc SF khác), random CDP port của
+    sf3-shot.mjs (tool evidence, không ship).
+
+    JS quota sau fix: reading-nav.ts = 104 dòng — vẫn ≤120.

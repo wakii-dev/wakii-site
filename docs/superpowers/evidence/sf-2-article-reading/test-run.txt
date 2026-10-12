@@ -1,0 +1,63 @@
+SF-2 code block UX + heading anchors (FI-66) — test-run evidence
+worktree sf-2-article-reading · branch story-fi63-article-reading-sf-2 · base story-fi63-article-reading @ 320c05a (chứa SF-1 merge)
+
+[0] Môi trường: worktree mới checkout CRLF (core.autocrlf=true) — cùng hiện tượng SF-1:
+    check-blog-content.mjs fail "frontmatter missing" hàng loạt. Normalize LF working-tree
+    cho src/content/blog/**/*.md (git diff HEAD = rỗng — blob đã LF, phantom-M stat-dirty
+    vô hại) + npm install. Build EXIT=0 sau normalize.
+
+[1] PROBE (task 1, chọn label path): build 1 lần → dist/blog/*/index.html. `<pre>` shiki
+    CÓ `data-language` trên 100% code blocks (census toàn bộ 240 bài: bash 70, ts 37,
+    python 37, rust 19, plaintext 178, text 61, json/go/yaml/css/astro/... — KHÔNG có
+    class="language-*" nên fallback decode class không cần) → CHỌN label CSS-only
+    `pre[data-language]::before { content: attr(data-language) }` — sống cả no-JS.
+    PROBE VI heading id sanity: dist/vi/blog/deep-dive-anthropics-claude-code/ — id sinh
+    từ heading dấu: "repo-công-khai-mà-không-chứa-mã-của-tool", "wakii-học-được-gì" —
+    slug sạch (không space/ký tự vỡ), khớp 1:1 với TOC hrefs (P1-6 sanity ✓).
+
+[2] Build: npm run build → EXIT 0 (285 pages · parity ✓ · utils ✓ · content ✓ · OG ✓).
+    npm run check:jsonld → EXIT 0 (285 pages · BlogPosting 240 · BreadcrumbList 6 · Blog 2).
+
+[3] DOM verify (orca browser eval, http://localhost:4321 = astro preview của dist build này):
+    EN /blog/blog-story-case-study/: 8 pre[data-language] → 8 .code-shell + 8 .code-copy +
+    4 h2[id] → 4 .heading-anchor. Click copy: clipboard nhận ĐÚNG code content
+    (pre.querySelector('code').textContent — KHÔNG lẫn text nút), feedback "✓ copied",
+    aria-live="polite", title "Copy code to clipboard"; revert "copy" sau 2s (verify thực).
+    Click anchor: hash cập nhật "#the-parity-gate-lives-in-the-build" (native jump giữ
+    nguyên) + clipboard nhận full URL section
+    http://localhost:4321/blog/blog-story-case-study/#the-parity-gate-lives-in-the-build
+    (QUYẾT ĐỊNH: click anchor = hash jump + copy URL — cả hai, ghi theo task notes),
+    feedback "✓" revert "#" sau 2s.
+    Keyboard: .code-copy focusable (activeElement), Enter kích hoạt copy (clipboard đổi),
+    .heading-anchor focusable, focus-visible CSS rule tồn tại trong stylesheet.
+    VI /vi/blog/blog-story-case-study/ (lang="vi"): "✓ đã sao chép" · "Sao chép mã vào
+    clipboard" · "Liên kết đến mục này" — dict en/vi TRONG module SF-2, locale qua
+    <html lang>, UI record layout 0 key mới (P0 strings rule ✓). VI heading ids dấu sạch.
+    No-JS: static HTML trong dist chứa 0 `<button class="code-copy">`, 0
+    `<a class="heading-anchor">`, 0 .code-shell (chỉ CSS rules nhắc tên class) — heading
+    trơn + code đọc/chép tay được; label CSS-only vẫn hiện (P0-3 ✓).
+    Flow: 0 JS errors, 0 broken images (scroll programmatics của embedded browser bị khóa
+    — limitation nền tảng đã biết, module SF-2 không phụ thuộc scroll: không IO/scroll
+    listener; reveal animation thuộc SF-1/motion, không đụng).
+
+[4] VISUAL (headless Chrome CÙNG BUILD, --virtual-time-budget=8000 cho reveal kịp chạy —
+    orca screenshot dưới device emulation trả ảnh vỡ theo memory):
+    before-en-desktop-top.png / before-en-desktop-full.png — BASE (revert tạm 2 file SF-2 +
+    rebuild): code block TRƠN không label/button, heading không anchor.
+    after-en-desktop-full.png — label JSON/PLAINTEXT/JSX góc trên-trái từng block + nút
+    "copy" trên-phải + anchor "#" mờ cạnh h2 (always-visible 0.45, strengthening trên
+    hover/focus-within — KHÔNG hover-only per P0-3).
+    after-vi-desktop-full.png — "sao chép" + anchor trên heading dấu VI, dấu render đúng.
+    after-en-390-fullpage.png — 390px: label + nút hiển thị, code overflow-x CUỐN TRONG
+    block (nút .code-shell pinned không trôi theo scroll ngang), không tràn trang.
+
+[5] Boundary: git diff 320c05a = đúng 2 file — src/scripts/blog/code-enhancements.ts (MỚI,
+    SF-2 sở hữu, 78 dòng / 58 dòng thực thi — quota ≤120 chia sẻ SF-3/4) +
+    src/layouts/BlogDetailLayout.astro (ADDITIVE: 1 <script> tag mới + 1 style region
+    "SF-2 (FI-66)" đánh dấu riêng cuối <style>; 0 declaration SF-1 bị sửa/xóa).
+    Base.astro / motion.ts / DocsLayout / astro.config.mjs / content schema / UI record:
+    untouched. KHÔNG merge, KHÔNG set Done (thuộc coordinator).
+
+tdd: skipped-tdd: không có unit-test harness cho behavior DOM client (site tĩnh, không
+test runner); bằng chứng = build checks + PROBE dist + DOM eval before/after + clipboard
+thật + keyboard + screenshots — theo đúng gate "behavior đầu-cuối + npm run build xanh".

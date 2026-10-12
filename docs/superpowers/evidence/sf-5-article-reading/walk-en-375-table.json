@@ -1,0 +1,17 @@
+{
+  "url": "http://localhost:4400/blog/agentic-landscape-50-projects/",
+  "viewport": "375x812",
+  "reducedMotion": false,
+  "keyboard": false,
+  "noJs": false,
+  "coexistence": "{\"codeShell\":0,\"codeCopy\":0,\"headingAnchors\":9,\"tocRail\":true,\"tocBox\":true,\"landmarks\":[\"Blog pagination\",\"On this page\",\"Blog navigation\"],\"progress\":true,\"backToTop\":true,\"followBlock\":true,\"followCopy\":true}",
+  "tocVisibility": "{\"railVisible\":false,\"boxVisible\":true,\"bothVisible\":false}",
+  "scrollState": "{\"scrollY\":5011,\"progressTransform\":\"scaleX(0.50005)\",\"backToTopVisible\":true,\"ariaCurrent\":\"#local-inference-5\",\"ariaCurrentCount\":2,\"cls\":0}",
+  "backToTopClick": "{\"scrollY\":0}",
+  "codeCopyFeedback": null,
+  "headingAnchor": "{\"hash\":\"#harnesses-and-coding-agents-12\",\"label\":\"Link to this section\",\"text\":\"#\"}",
+  "tableOverflow": "{\"present\":true,\"tableScrollable\":true,\"pageHorizOverflow\":false}",
+  "consoleIssues": [
+    "warning: [code-enhancements] clipboard write failed"
+  ]
+}

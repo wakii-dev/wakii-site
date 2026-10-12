@@ -19,6 +19,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import BlogToc from '../components/BlogToc.astro';
+import FollowBlock from '../components/blog/FollowBlock.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import '../styles/motion.css';
 import { getCollection } from 'astro:content';
@@ -197,7 +198,10 @@ const related = relatedPosts(entry, posts);
         />
       )}
       <div class="prose">
-        <BlogToc headings={headings} label={ui.contents} />
+        {/* SF-3 dual-render: box variant here (mobile, collapsed details);
+            the rail twin lives in the aside. Visibility is CSS-toggled inside
+            BlogToc (rail >800px / box ≤800px — exactly one per viewport). */}
+        <BlogToc headings={headings} variant="box" locale={locale} />
         <slot />
       </div>
       {related.length > 0 && (
@@ -217,17 +221,27 @@ const related = relatedPosts(entry, posts);
           </ul>
         </section>
       )}
+      {/* SF-4 (FI-68) — follow surface tại điểm kết-thúc-đọc, GIỮA related
+          và after-CTA. Additive-only: không đụng region nào khác. */}
+      <FollowBlock locale={locale} />
       <div class="bd-after">
         <p>{ui.pitch}</p>
         <a class="bd-cta" href={locale === 'vi' ? '/vi/download/' : '/download/'}>{ui.cta}</a>
         <a class="bd-back" href={listingHref}>{ui.back}</a>
       </div>
       <nav class="bd-pager" aria-label={ui.pagerLabel}>
+        {/* SF-3 pager polish: category + date trên mỗi link. Semantics giữ
+            nguyên — prev = bài CŨ hơn, next = MỚI hơn (date-desc list). */}
         <span class="bd-pager-cell">
           {prev && (
             <a class="bd-pager-link" href={href(blogSlug(prev.id))}>
               <span class="bd-pager-dir">← prev</span>
-              {prev.data.title}
+              <span class="bd-pager-title">{prev.data.title}</span>
+              <span class="bd-pager-meta">
+                {CATEGORY_LABELS[locale][prev.data.category] ?? prev.data.category}
+                {' · '}
+                {prev.data.pubDate.toISOString().slice(0, 10)}
+              </span>
             </a>
           )}
         </span>
@@ -235,13 +249,21 @@ const related = relatedPosts(entry, posts);
           {next && (
             <a class="bd-pager-link" href={href(blogSlug(next.id))}>
               <span class="bd-pager-dir">next →</span>
-              {next.data.title}
+              <span class="bd-pager-title">{next.data.title}</span>
+              <span class="bd-pager-meta">
+                {CATEGORY_LABELS[locale][next.data.category] ?? next.data.category}
+                {' · '}
+                {next.data.pubDate.toISOString().slice(0, 10)}
+              </span>
             </a>
           )}
         </span>
       </nav>
     </article>
     <aside class="bd-sidebar">
+      {/* SF-3 rail TOC — above recent-posts; aside sits OUTSIDE .prose so the
+          sticky rail no longer fights the reveal observer (reveal×sticky). */}
+      <BlogToc headings={headings} variant="rail" locale={locale} />
       <div class="bd-eyebrow">~/blog</div>
       <nav aria-label={ui.navLabel}>
         <ul>
@@ -274,12 +296,24 @@ const related = relatedPosts(entry, posts);
   // Tag TRƯỚC initMotion() (observer quét lúc init). Reduced-motion:
   // initMotion early-return + .anim gate → static visible. motion.ts dùng
   // as-is (FI-349 boundary — không đụng core).
+  // SF-3: selector loại TRỪ TOC box (details.toc) — TOC phải hiển thị tĩnh
+  // ngay, không tham gia reveal. Dòng call-site này thuộc REGION SF-3
+  // (motion.ts vẫn locked).
   import { initMotion, revealChildren } from '../components/motion';
+  import { initReadingNav } from '../scripts/blog/reading-nav';
   const article = document.querySelector('.bd-article');
   if (article) {
-    revealChildren(article, '.prose > *');
+    revealChildren(article, '.prose > *:not(.toc)');
     initMotion();
   }
+  initReadingNav();
+</script>
+
+<script>
+  // SF-2 (FI-66) — code copy buttons + heading anchors. Separate module
+  // (P0-2, own region) so SF-3/SF-4 stay conflict-free on this append point.
+  import { initCodeEnhancements } from '../scripts/blog/code-enhancements';
+  initCodeEnhancements();
 </script>
 
 <style>
@@ -296,6 +330,15 @@ const related = relatedPosts(entry, posts);
     top: 96px;
     align-self: start;
     display: flex;
+    /* SF-3 (FI-67): sticky rail must stay pinned while reading. The aside
+       (TOC + 12 posts + lang) is taller than the viewport, so an unconstrained
+       sticky drifts out of view as soon as its bottom hits the shell bottom —
+       scrollspy highlight becomes invisible. Cap the sidebar to the viewport
+       and scroll it internally (grid untouched); recent-posts/lang switcher
+       stay reachable (P1-5). */
+    max-height: calc(100vh - 128px);
+    overflow-y: auto;
+    scrollbar-width: thin;
     flex-direction: column;
     gap: 24px;
     /* Article is first in the markup (content-first tab order); the rail
@@ -464,28 +507,43 @@ const related = relatedPosts(entry, posts);
     margin-bottom: 28px;
   }
   /* Prose (markdown body) — scoped-global vì Content render vào slot.
-     Copied from DocsLayout (docs-shell direction). */
+     SF-1 (FI-65) owns this region: reading measure + typography scale +
+     table styles ported from DocsLayout (in-place, DocsLayout READ-ONLY).
+     After SF-1 merges, tier-1 SFs may ADD rules here but never edit/delete
+     SF-1 declarations (additive-only contract). */
   .bd-article :global(.prose) {
     font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.7;
+    /* Reading measure — .prose ONLY (P1-4): h1/meta/hero/related/pager stay
+       full article-column width (hero 1200×630 must not shrink). */
+    max-width: 68ch;
+    font-size: 16px;
+    line-height: 1.75;
     color: var(--text-dim);
   }
+  /* Explicit weights ⊆ {400, 500} — Inter only loads 400/500 (Base.astro),
+     browser-default 700 on it would synthesize faux-bold (P1-8). */
   .bd-article :global(.prose h2) {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1.3;
     color: var(--text);
     letter-spacing: -0.01em;
-    margin: 40px 0 12px;
+    margin: 44px 0 14px;
   }
   .bd-article :global(.prose h3) {
     font-family: var(--font-display);
-    font-size: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.35;
     color: var(--text);
-    margin: 28px 0 8px;
+    margin: 30px 0 10px;
+  }
+  .bd-article :global(.prose strong) {
+    font-weight: 500;
   }
   .bd-article :global(.prose p) {
-    margin: 0 0 14px;
+    margin: 0 0 16px;
   }
   .bd-article :global(.prose a) {
     color: var(--accent);
@@ -496,15 +554,15 @@ const related = relatedPosts(entry, posts);
   }
   .bd-article :global(.prose ul),
   .bd-article :global(.prose ol) {
-    margin: 0 0 14px;
+    margin: 0 0 16px;
     padding-left: 22px;
   }
   .bd-article :global(.prose li) {
-    margin-bottom: 6px;
+    margin-bottom: 7px;
   }
   .bd-article :global(.prose code) {
     font-family: var(--font-display);
-    font-size: 12.5px;
+    font-size: 13.5px;
     background: var(--bg-raised);
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -523,18 +581,52 @@ const related = relatedPosts(entry, posts);
     background: none;
     border: none;
     padding: 0;
-    font-size: 12.5px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.65;
   }
+  /* Image treatment — synced with .bd-hero (radius-cell + border). */
   .bd-article :global(.prose img) {
     max-width: 100%;
-    border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-cell);
   }
+  /* Blockquote — accent border + soft tint (tokens: accent + accent-soft). */
   .bd-article :global(.prose blockquote) {
-    border-left: 2px solid var(--accent-dim);
-    margin: 0 0 14px;
-    padding-left: 14px;
-    color: var(--text-faint);
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 0 0 18px;
+    padding: 10px 16px;
+    color: var(--text-dim);
+  }
+  .bd-article :global(.prose blockquote p) {
+    margin: 0 0 6px;
+  }
+  .bd-article :global(.prose blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+  /* Tables — ported from DocsLayout.astro:263-281 (blog had NO table rules:
+     ~70 posts/locale rendered bare HTML tables). table font-size 14px —
+     scaled from docs 13.5px for the 16px base (docs base is 15px).
+     th weight 500 (⊆ Inter). */
+  .bd-article :global(.prose table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 18px;
+    font-size: 14px;
+  }
+  .bd-article :global(.prose th) {
+    font-family: var(--font-display);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-align: left;
+    color: var(--text);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 8px 12px;
+  }
+  .bd-article :global(.prose td) {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
   }
   .bd-article :global(.prose hr) {
     border: none;
@@ -605,6 +697,18 @@ const related = relatedPosts(entry, posts);
     font-size: 11px;
     color: var(--accent-dim);
   }
+  /* SF-3 pager polish — title on its own line, category · date beneath. */
+  .bd-pager-title {
+    display: block;
+    max-width: 32ch;
+  }
+  .bd-pager-right .bd-pager-title {
+    margin-left: auto;
+  }
+  .bd-pager-meta {
+    font-size: 11px;
+    color: var(--text-faint);
+  }
   @media (max-width: 800px) {
     .bd-shell {
       grid-template-columns: 1fr;
@@ -612,10 +716,22 @@ const related = relatedPosts(entry, posts);
       padding: 48px 20px 96px;
     }
     /* Reading-first on mobile: sidebar (list + lang) xuống dưới — DOM đã
-       article-first nên chỉ cần bỏ sticky (không còn order swap). */
+       article-first nên chỉ cần bỏ sticky (không còn order swap). SF-3: bỏ
+       luôn cap max-height + internal scroll của desktop (sidebar flow tĩnh). */
     .bd-sidebar {
       position: static;
       order: 0;
+      max-height: none;
+      overflow: visible;
+    }
+    /* Wide-table mobile overflow — CSS-ONLY (spec SF-1): block + scroll
+       trong phạm vi cột đọc, không tràn màn hình. Không wrapper element
+       (wrapper cần JS/rehype — bị cấm). */
+    .bd-article :global(.prose table) {
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
     }
   }
   /* Reveal nhẹ hơn bxreveal (28px quá mạnh cho prose) — vẫn transform/opacity
@@ -632,6 +748,134 @@ const related = relatedPosts(entry, posts);
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  /* ---- SF-2 (FI-66) region: code label/copy + heading anchors ----
+     Additive-only (SF-1 declarations untouched). The shell div + button +
+     anchor links are JS-injected (no-JS = none of these exist); the language
+     label is CSS-only via data-language attr (probe: present on every shiki
+     pre) so it survives no-JS. */
+  .bd-article :global(.code-shell) {
+    position: relative;
+  }
+  .bd-article :global(.prose pre[data-language]::before) {
+    content: attr(data-language);
+    display: block;
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .bd-article :global(.code-copy) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--text-faint);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-btn);
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+  .bd-article :global(.code-copy:hover) {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+  }
+  .bd-article :global(.code-copy:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  /* Anchor link — always faintly visible (NOT hover-only, spec P0-3);
+     hover/focus-within strengthens. Focusable via keyboard (native <a>). */
+  .bd-article :global(.prose .heading-anchor) {
+    margin-left: 8px;
+    font-size: 0.75em;
+    color: var(--accent-dim);
+    text-decoration: none;
+    opacity: 0.45;
+  }
+  .bd-article :global(.prose h2:hover .heading-anchor),
+  .bd-article :global(.prose h3:hover .heading-anchor),
+  .bd-article :global(.prose h2:focus-within .heading-anchor),
+  .bd-article :global(.prose h3:focus-within .heading-anchor) {
+    opacity: 1;
+    color: var(--accent);
+  }
+  .bd-article :global(.heading-anchor:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+
+<style is:global>
+  /* SF-3 fixed chrome — elements are JS-injected by reading-nav (no JS →
+     they never exist → no-JS hidden by construction), so these rules must be
+     global. Progress: transform-only scaleX (no reflow), aria-hidden bar
+     fixed just under the 58px site-nav. Back-to-top: hidden until
+     .is-visible (past ~1 viewport). */
+  .reading-progress {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 40;
+    pointer-events: none;
+  }
+  .reading-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: var(--bg-deep);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-btn);
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    /* visibility (không chỉ opacity) — nút ẩn phải ra KHỎI tab order
+       (review P1: opacity:0 vẫn focus được = focus-point vô hình, WCAG 2.4.7).
+       Delay để nút kịp fade-out trước khi biến mất. */
+    visibility: hidden;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
+    z-index: 40;
+  }
+  .reading-top.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0s;
+  }
+  .reading-top:hover {
+    background: color-mix(in srgb, var(--accent) 85%, white);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reading-top {
+      transition: none;
     }
   }
 </style>

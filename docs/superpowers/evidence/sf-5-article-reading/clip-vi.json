@@ -1,0 +1,17 @@
+{
+  "codeCopy": {
+    "expected": "/brainstorm \"idea\"\n    ↓\n[Phase 1] Brainstorming → spec file",
+    "clipboard": "/brainstorm \"idea\"\r\n    ↓\r\n[Phase 1] Brainstorming → spec fi",
+    "feedback": "✓ đã sao chép"
+  },
+  "headingAnchor": {
+    "clipboard": "http://localhost:4400/vi/blog/skill-brainstorm/#trước-câu-hỏi-đầu-tiên-là-việc-đọc",
+    "feedbackText": "✓",
+    "hash": "#tr%C6%B0%E1%BB%9Bc-c%C3%A2u-h%E1%BB%8Fi-%C4%91%E1%BA%A7u-ti%C3%AAn-l%C3%A0-vi%E1%BB%87c-%C4%91%E1%BB%8Dc"
+  },
+  "followCopy": {
+    "clipboard": "https://wakii.xyz/rss.xml",
+    "status": "Đã copy ✓",
+    "btnDisabled": true
+  }
+}
