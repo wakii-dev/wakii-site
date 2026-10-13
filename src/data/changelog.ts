@@ -20,6 +20,29 @@ export interface ChangelogEntry {
 
 export const changelogEntries: ChangelogEntry[] = [
   {
+    version: "1.4.227",
+    title: "Wakii 1.4.227",
+    description:
+      "Kit now spawns claude following Wakii's Agent Permissions setting — the blanket bypass ban is lifted in favor of per-user choice.",
+    releaseNotesUrl:
+      "https://github.com/wakii-dev/wakii/releases/tag/v1.4.227",
+  },
+  {
+    version: "1.4.226",
+    title: "Wakii 1.4.226",
+    description:
+      "Updater changelog fetch now points at wakii.xyz — in-app release notes ride the same domain as the site.",
+    releaseNotesUrl:
+      "https://github.com/wakii-dev/wakii/releases/tag/v1.4.226",
+  },
+  {
+    version: "1.4.225",
+    title: "Wakii 1.4.225",
+    description: "Maintenance cut — release bump, no user-facing changes.",
+    releaseNotesUrl:
+      "https://github.com/wakii-dev/wakii/releases/tag/v1.4.225",
+  },
+  {
     version: "1.4.224",
     title: "Wakii 1.4.224",
     description:
