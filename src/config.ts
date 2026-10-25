@@ -48,6 +48,7 @@ export const DOC_SLUGS = [
   'file-explorer',
   'cli',
   'mobile',
+  'ecosystem',
 ] as const;
 
 export type DocSlug = (typeof DOC_SLUGS)[number];

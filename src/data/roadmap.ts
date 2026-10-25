@@ -1,11 +1,12 @@
 /**
  * Roadmap data — Now / Next / Later for /roadmap (SF-3).
- * FI-294 base list, updated 2026-10-10 per owner instruction ("dựa vào
- * những gì chúng ta đang làm") — reflects what actually shipped and what
- * is in flight: blog live (240+ posts), knowledge base shipped (FI-409),
- * Orchestrated HITL kit 2.22 shipped (pane-watch, BA Layer, --local,
- * driver hardening — PR #129/#134/#135, app 1.4.222), downloads live
- * every platform, ADE knowledge layer next (wakii#38).
+ * FI-294 base list, updated 2026-10-25: npm ecosystem shipped —
+ * @wakii/ui-kit 0.5.0 (dist exports + subpaths), create-wakii-app 0.1.2,
+ * create-wakii-stack 0.1.5 (full-stack scaffold verified E2E; docs:
+ * /docs/ecosystem/). 2026-10-10: blog live (240+ posts), knowledge base
+ * shipped (FI-409), Orchestrated HITL kit 2.22 shipped (pane-watch, BA
+ * Layer, --local, driver hardening — PR #129/#134/#135, app 1.4.222),
+ * downloads live every platform, ADE knowledge layer next (wakii#38).
  *
  * Milestones use vague time frames (quarters/years), never far dates.
  *
@@ -62,6 +63,13 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
       label_en: 'Now',
       label_vi: 'Đang làm',
       items: [
+        {
+          title: 'npm ecosystem',
+          desc_en:
+            'Three packages live on npm: @wakii/ui-kit 0.5.0 (dist exports, subpaths, Experience3D), create-wakii-app 0.1.2 and create-wakii-stack 0.1.5 — full-stack scaffold verified end-to-end from the real registry. See /docs/ecosystem/.',
+          desc_vi:
+            'Ba package live trên npm: @wakii/ui-kit 0.5.0 (dist exports, subpath, Experience3D), create-wakii-app 0.1.2 và create-wakii-stack 0.1.5 — scaffold full-stack đã verify end-to-end từ registry thật. Xem /vi/docs/ecosystem/.',
+        },
         {
           title: 'Blog & field notes',
           desc_en:

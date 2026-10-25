@@ -41,6 +41,12 @@ export const changelogEntries: ChangelogEntry[] = [
     description: "Maintenance cut — release bump, no user-facing changes.",
     releaseNotesUrl:
       "https://github.com/wakii-dev/wakii/releases/tag/v1.4.225",
+    version: "0.5.0",
+    title: "npm ecosystem — ui-kit 0.5.0 + create-wakii-app / stack",
+    description:
+      "Ecosystem ships on npm: @wakii/ui-kit 0.5.0 (dist exports, subpaths, Experience3D), create-wakii-app 0.1.2 (CRA-style starter) and create-wakii-stack 0.1.5 (full-stack scaffold, verified end-to-end).",
+    releaseNotesUrl:
+      "https://www.npmjs.com/package/@wakii/ui-kit",
   },
   {
     version: "1.4.224",
