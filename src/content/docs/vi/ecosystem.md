@@ -7,9 +7,9 @@ order: 19
 Wakii đóng gói design system và bộ scaffold thành **ba package npm công
 khai**. Mọi thứ dưới đây đã live trên registry và được verify end-to-end.
 
-## @wakii/ui-kit — 0.5.0
+## @wakii/ui-kit — 0.7.1
 
-Design system React đứng sau mọi mặt của Wakii: hơn 60 component kiểu antd
+Design system React đứng sau mọi mặt của Wakii: 113 component kiểu antd
 cho công việc admin/dashboard — Button (ripple + classNames slots), cả họ
 Input, Table, Tree, Form (InputOTP…), data display (Carousel, Avatar,
 Timeline, Statistic…), feedback (Alert, Message, Notification), overlay —
@@ -19,6 +19,8 @@ Scene3D / ShipModel / ScrollFlythrough).
 
 - **Theming** — `UiKitProvider` dark/light + override accent qua
   `data-bp-theme`; CSS tokens cascade toàn cây.
+- **Tùy biến** — mọi component nhận `classNames` slots và `style`
+  passthrough, override chạm tới từng phần mà không cần component bọc.
 - **Peer deps giảm nội bộ** — chart.js / swiper / tiptap / three /
   fullcalendar đều optional: thiếu engine thì fallback về node thường,
   không bao giờ crash.
@@ -31,19 +33,22 @@ npm install @wakii/ui-kit
 Xem mọi component sống động: [Storybook](https://storybook-static-khaki-two.vercel.app)
 · [npm](https://www.npmjs.com/package/@wakii/ui-kit)
 
-## create-wakii-app — 0.1.2
+## create-wakii-app — 0.2.4
 
 ```bash
 npm create wakii-app@latest my-app
 ```
 
-Starter React kiểu CRA: TypeScript hoặc JavaScript, react-router v7, demo
-route cho extras (chart / carousel / schedule / editor), dark toggle chạy
-thật, dogfood `@wakii/ui-kit` ^0.5.0. Đầy đủ flag non-interactive.
+Starter React kiểu CRA với preset theo từng mặt — demo (mặc định), minimal,
+product (TanStack Query + zod + MSW), admin, landing — preset demo có biến
+thể vite, next (App Router) hoặc astro (React island). TypeScript hoặc
+JavaScript, react-router v7, demo route cho extras (chart / carousel /
+schedule / editor), dark toggle chạy thật, dogfood `@wakii/ui-kit` ^0.7.1.
+Đầy đủ flag non-interactive.
 
 [npm](https://www.npmjs.com/package/create-wakii-app)
 
-## create-wakii-stack — 0.1.5
+## create-wakii-stack — 0.1.11
 
 ```bash
 npm create wakii-stack@latest my-stack
@@ -54,7 +59,8 @@ Kafka KRaft, auth-svc JWT, gateway nginx, node-svc / spring-svc / go-svc,
 MF shell + remote tasks & activity, admin) và CLI prune compose, lockfile,
 workspace theo đúng lựa chọn — `docker compose up` là stack chạy ngay sau
 cửa vào duy nhất gateway (`:8080`; README sinh kèm cảnh báo). Tarball
-chmod-safe. Đã verify end-to-end từ registry thật: register/login JWT,
-tasks CRUD, activity feed qua Kafka.
+chmod-safe. Các bản gần đây gia cố kafka-init chống race khi tạo topic,
+README sinh kèm tài khoản demo seeded. Đã verify end-to-end từ registry
+thật: register/login JWT, tasks CRUD, activity feed qua Kafka.
 
 [npm](https://www.npmjs.com/package/create-wakii-stack)

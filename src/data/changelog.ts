@@ -20,6 +20,14 @@ export interface ChangelogEntry {
 
 export const changelogEntries: ChangelogEntry[] = [
   {
+    version: "0.7.1",
+    title: "npm ecosystem wave — starter renamed, slots everywhere, presets",
+    description:
+      "The starter repo is now wakii-dev/microservice_microfrontend_starter. @wakii/ui-kit 0.7.1 brings classNames slots + style passthrough to all 113 components (870+ Storybook stories, animated npm README); create-wakii-app adds a preset system — demo/minimal/product/admin/landing with vite/next/astro variants; create-wakii-stack 0.1.11 hardens kafka-init topic creation and documents the seeded demo accounts. VU-53 UI redesign epic is done: 3D landing, kanban, realtime activity.",
+    releaseNotesUrl:
+      "https://www.npmjs.com/package/@wakii/ui-kit",
+  },
+  {
     version: "1.4.227",
     title: "Wakii 1.4.227",
     description:
@@ -41,6 +49,8 @@ export const changelogEntries: ChangelogEntry[] = [
     description: "Maintenance cut — release bump, no user-facing changes.",
     releaseNotesUrl:
       "https://github.com/wakii-dev/wakii/releases/tag/v1.4.225",
+  },
+  {
     version: "0.5.0",
     title: "npm ecosystem — ui-kit 0.5.0 + create-wakii-app / stack",
     description:

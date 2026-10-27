@@ -1,6 +1,12 @@
 /**
  * Roadmap data — Now / Next / Later for /roadmap (SF-3).
- * FI-294 base list, updated 2026-10-25: npm ecosystem shipped —
+ * FI-294 base list, updated 2026-10-27: ecosystem wave — starter repo
+ * renamed wakii-dev/microservice_microfrontend_starter, @wakii/ui-kit 0.7.1
+ * (classNames slots + style passthrough across the library, 113 components),
+ * create-wakii-app 0.2.4 (preset system: demo/minimal/product/admin/landing
+ * × vite/next/astro), create-wakii-stack 0.1.11 (kafka-init topic-race
+ * hardening, seeded accounts), VU-53 UI redesign epic done (3D landing +
+ * kanban + realtime activity). 2026-10-25: npm ecosystem first shipped —
  * @wakii/ui-kit 0.5.0 (dist exports + subpaths), create-wakii-app 0.1.2,
  * create-wakii-stack 0.1.5 (full-stack scaffold verified E2E; docs:
  * /docs/ecosystem/). 2026-10-10: blog live (240+ posts), knowledge base
@@ -66,9 +72,16 @@ export function buildRoadmap(downloadsLive: boolean): RoadmapBucket[] {
         {
           title: 'npm ecosystem',
           desc_en:
-            'Three packages live on npm: @wakii/ui-kit 0.5.0 (dist exports, subpaths, Experience3D), create-wakii-app 0.1.2 and create-wakii-stack 0.1.5 — full-stack scaffold verified end-to-end from the real registry. See /docs/ecosystem/.',
+            'Three packages live on npm: @wakii/ui-kit 0.7.1 (classNames slots + style passthrough across all 113 components, 870+ Storybook stories), create-wakii-app 0.2.4 (preset system — demo/minimal/product/admin/landing, vite/next/astro variants) and create-wakii-stack 0.1.11 — the starter repo is now wakii-dev/microservice_microfrontend_starter. See /docs/ecosystem/.',
           desc_vi:
-            'Ba package live trên npm: @wakii/ui-kit 0.5.0 (dist exports, subpath, Experience3D), create-wakii-app 0.1.2 và create-wakii-stack 0.1.5 — scaffold full-stack đã verify end-to-end từ registry thật. Xem /vi/docs/ecosystem/.',
+            'Ba package live trên npm: @wakii/ui-kit 0.7.1 (classNames slots + style passthrough toàn bộ 113 component, 870+ story Storybook), create-wakii-app 0.2.4 (hệ preset — demo/minimal/product/admin/landing, biến thể vite/next/astro) và create-wakii-stack 0.1.11 — repo starter giờ là wakii-dev/microservice_microfrontend_starter. Xem /vi/docs/ecosystem/.',
+        },
+        {
+          title: 'Starter UI redesign (VU-53)',
+          desc_en:
+            'The redesign epic is done: 3D landing, kanban board and realtime activity feed rebuilt on the shipped stack — walkthrough-verified end to end on a rebuilt demo, saga recovery and remote fallback included.',
+          desc_vi:
+            'Epic redesign đã xong: landing 3D, bảng kanban và activity feed realtime được làm lại trên stack đã ship — walkthrough verify end-to-end trên demo dựng lại, gồm cả saga recovery và fallback remote.',
         },
         {
           title: 'Blog & field notes',
