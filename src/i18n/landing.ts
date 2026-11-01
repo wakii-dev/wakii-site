@@ -33,9 +33,11 @@ export interface BentoEdge {
 export interface LandingStrings {
   lang: 'en' | 'vi';
   hero: {
-    termTitle: string;
-    boot: string[];
-    lastCmd: string;
+    windowTitle: string;
+    liveBadge: string;
+    imgAlt: string;
+    captionChip: string;
+    shotMeta: string;
     kicker: string;
     headlineBefore: string;
     headlineHighlight: string;
@@ -67,8 +69,7 @@ export interface LandingStrings {
     q2Label: string;
     q2Meta: string;
     q2Body: string;
-    q2SlotName: string;
-    q2SlotHint: string;
+    q2ImgAlt: string;
     q2Foot: string;
     q3Label: string;
     q3Meta: string;
@@ -201,14 +202,11 @@ const BRACKET_GEOMETRY = {
 export const en: LandingStrings = {
   lang: 'en',
   hero: {
-    termTitle: 'wakii — zsh',
-    boot: [
-      '› resolving project context … done',
-      '› bundled plugin loaded · kit → ~/.claude · team enabled',
-      '› 9 agents online · superpowers panel ready',
-      '› memory restored: 47 verdicts, 12 learned patterns',
-    ],
-    lastCmd: '/superpowers "ship the next feature while I get coffee"',
+    windowTitle: 'Wakii — team workspace · session 3',
+    liveBadge: 'live',
+    imgAlt: 'Wakii IDE running a live team session — captain coordinating workers in team chat while agents build in parallel terminals',
+    captionChip: 'live session — captain + team chat · #launching',
+    shotMeta: 'your IDE, right now',
     kicker: 'agentic ide // open source // fork of orca',
     headlineBefore: 'Your IDE just hired ',
     headlineHighlight: 'a team',
@@ -238,8 +236,7 @@ export const en: LandingStrings = {
     q2Meta: 'team = online',
     q2Body:
       'The superpowers panel. All nine agents are already in there, marked online — each with a distinct role in one pipeline, and a watchdog on the floor. No wizard, no config file, nothing to toggle.',
-    q2SlotName: '⚡ superpowers panel',
-    q2SlotHint: '9 agents online · watchdog active · zero-setup state',
+    q2ImgAlt: 'Wakii app overview — workspace, agent terminals and team chat panel',
     q2Foot: '0 setup steps — the panel is live before your first click',
     q3Label: 'q3 — who is wakii for?',
     q3Meta: "delegate, don't drive",
@@ -434,14 +431,11 @@ export const en: LandingStrings = {
 export const vi: LandingStrings = {
   lang: 'vi',
   hero: {
-    termTitle: 'wakii — zsh',
-    boot: [
-      '› đang đọc ngữ cảnh dự án … xong',
-      '› plugin đóng gói sẵn đã load · kit → ~/.claude · team đã bật',
-      '› 9 agents online · superpowers panel sẵn sàng',
-      '› đã khôi phục memory: 47 verdicts, 12 pattern đã học',
-    ],
-    lastCmd: '/superpowers "ship tính năng tiếp theo trong lúc tôi pha cà phê"',
+    windowTitle: 'Wakii — team workspace · session 3',
+    liveBadge: 'live',
+    imgAlt: 'IDE Wakii đang chạy session team thật — captain điều phối workers qua team chat trong lúc các agent build song song',
+    captionChip: 'session thật — captain + team chat · #launching',
+    shotMeta: 'IDE của bạn, ngay lúc này',
     kicker: 'agentic ide // mã nguồn mở // fork của orca',
     headlineBefore: 'IDE của bạn vừa có ',
     headlineHighlight: 'một team',
@@ -471,8 +465,7 @@ export const vi: LandingStrings = {
     q2Meta: 'team = online',
     q2Body:
       'Superpowers panel. Cả chín agent đã ở đó, đánh dấu online — mỗi agent một vai trò riêng trong cùng một pipeline, và một watchdog luôn trực. Không wizard, không file config, không gì phải bật.',
-    q2SlotName: '⚡ superpowers panel',
-    q2SlotHint: '9 agents online · watchdog hoạt động · trạng thái zero-setup',
+    q2ImgAlt: 'Toàn cảnh app Wakii — workspace, các terminal agent và panel team chat',
     q2Foot: '0 bước cài đặt — panel sống trước cả cú click đầu tiên của bạn',
     q3Label: 'q3 — wakii dành cho ai?',
     q3Meta: 'giao việc, không lái',

@@ -1,0 +1,28 @@
+# wakii-mindmap v1
+Hero team workflow — wakii-site (room #launching, run_55503e0fc93c)
+  CEO đã chốt (stage 2 · 01/11)
+    1a ảnh NGUYÊN BẢN cả khung app — chat thật lên site (CEO chấp nhận public)
+    2a giữ headline "Your IDE just hired a team" (EN/VI không đổi)
+    3c số phận TerminalBoot: designer đề xuất trong mockup
+    4a bento slot '⚡ superpowers panel' thay shot thật — làm luôn
+  CÓ trong scope
+    Hero: thay TerminalBoot bằng img shot thật (Hero.astro:48-52) — giữ khung + tilt tuỳ hướng design
+    i18n: alt/caption mới EN+VI (landing.ts) — headline KHÔNG đổi
+    Asset 1: screenshot CEO (1920×1016) → public/ — resize + pngquant ≤100KB, width/height chống CLS
+    Asset 2 bento q2: shot thật thay placeholder (Understand.astro:84-86)
+    Stage 3: designer mockup 3 hướng (gồm đề xuất TerminalBoot fate)
+  KHÔNG trong scope
+    Đổi OG/meta — og-default giữ nguyên (Base.astro:42)
+    Mở rộng check-og gate sang ảnh hero — hậu kỳ
+    Đổi copy headline/subtitle
+    Đụng blog/docs/downloads
+  Luồng stage kế
+    3 DESIGN — designer 3 hướng, CEO chọn (G1.5)
+    4 SPEC+TEST — mason acceptance tests từ DoD, worker code đỏ→xanh
+    5 THI CÔNG — worker → reviewer độc lập → e2e browser → verify DoD
+  Thực thể đụng
+    Hero.astro · landing.ts EN/VI · Understand.astro · public/ ×2 asset · motion.ts (tilt)
+  Rủi ro canh
+    LCP đo warm trước/sau (chuẩn ≥90, noise ±8-17)
+    CLS — width/height + aspect-ratio bắt buộc
+    Orphan keys TerminalBoot nếu designer chọn bỏ (dọn EN :204-211 · VI :437-443)
