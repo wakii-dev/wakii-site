@@ -48,6 +48,10 @@ const cmdQuote = t.understand.q4Cmd.indexOf('"');
 const cmdHead = cmdQuote === -1 ? t.understand.q4Cmd : t.understand.q4Cmd.slice(0, cmdQuote);
 const cmdStr = cmdQuote === -1 ? '' : t.understand.q4Cmd.slice(cmdQuote);
 
+// q2 real-shot caption — hand-off signature string absent from the store
+// (spec pins the copy, not a key) → inline EN+VI (G-D idiom, as `iso`).
+const q2FigCap = t.lang === 'vi' ? 'shot — session thật' : 'shot — real session';
+
 /** "lead — rest" → <b>lead</b> — rest (bx-foot bold-lead idiom, FI-303) */
 function splitFoot(s: string): [string, string] {
   const i = s.indexOf(' — ');
@@ -81,10 +85,10 @@ function splitFoot(s: string): [string, string] {
           </div>
           <div class="bx-body">
             <p class="cell-copy">{t.understand.q2Body}</p>
-            <div class="slot slot-lg">
-              <span class="slot-name">{t.understand.q2SlotName}</span>
-              <span class="slot-hint">{t.understand.q2SlotHint}</span>
-            </div>
+            <figure class="shot">
+              <img src="/hero-team-workflow.png" width="1120" height="592" alt={t.understand.q2ImgAlt} />
+              <figcaption>{q2FigCap}</figcaption>
+            </figure>
           </div>
           <div class="bx-foot">
             {(() => { const [b, rest] = splitFoot(t.understand.q2Foot); return rest ? <Fragment><b>{b}</b> — {rest}</Fragment> : <b>{b}</b>; })()}
@@ -475,11 +479,37 @@ function splitFoot(s: string): [string, string] {
     max-width: 300px;
     line-height: 1.6;
   }
-  .slot-lg {
-    min-height: 200px;
-  }
   .slot-sm {
     min-height: 118px;
+  }
+
+  /* real shot (handoff-spec-a.md "Bento q2" — chốt 4a): q2 placeholder slot
+     became this figure; .slot/.slot-sm above stay for q3. Caption is a
+     hand-off signature string (inline, as `iso`) — not a store key. */
+  .shot {
+    position: relative;
+    margin: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .shot figcaption {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    background: rgba(4, 20, 13, 0.82);
+    border-radius: var(--radius);
+    padding: 3px 8px;
   }
 
   /* terminal chrome (Q4) — traffic dots in brand tokens */

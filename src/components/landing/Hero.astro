@@ -5,7 +5,6 @@
  */
 import type { LandingStrings } from '../../i18n/landing';
 import { REPO_URL } from '../../config';
-import TerminalBoot from '../mockups/TerminalBoot.astro';
 
 interface Props {
   strings: LandingStrings;
@@ -46,8 +45,25 @@ const downloadHref = `${prefix}/download`;
       </div>
     </div>
     <div>
-      <div data-hero-term>
-        <TerminalBoot title={t.hero.termTitle} cmd="wakii ./my-project" lines={t.hero.boot} lastCmd={t.hero.lastCmd} />
+      <div class="hero-visual" data-hero-term>
+        <figure class="app-frame">
+          <div class="app-titlebar" aria-hidden="true">
+            <span class="tl"></span><span class="tl"></span><span class="tl"></span>
+            <span class="t">{t.hero.windowTitle}</span>
+            <span class="live">{t.hero.liveBadge}</span>
+          </div>
+          <img
+            src="/hero-team-workflow.png"
+            width="1120"
+            height="592"
+            alt={t.hero.imgAlt}
+            decoding="async"
+          />
+        </figure>
+        <div class="hero-caption">
+          <span class="chip">{t.hero.captionChip}</span>
+          <span class="meta">{t.hero.shotMeta}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -196,6 +212,94 @@ const downloadHref = `${prefix}/download`;
     font-size: 11px;
     color: var(--text-faint);
     margin-top: 2px;
+  }
+
+  /* hero visual — design A "The Window" (docs/mockups/handoff-spec-a.md):
+     app-frame chrome around the real shot; motion.ts mouse-tilt still binds
+     the .hero-visual[data-hero-term] wrapper. Tokens only — no new values. */
+  .app-frame {
+    margin: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    background: var(--bg-raised);
+    box-shadow:
+      0 32px 90px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(69, 224, 168, 0.05);
+    overflow: hidden;
+  }
+  .app-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    font-family: var(--font-mono);
+  }
+  .app-titlebar .tl {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+  .app-titlebar .tl:nth-child(1) {
+    background: var(--red);
+  }
+  .app-titlebar .tl:nth-child(2) {
+    background: var(--warn);
+  }
+  .app-titlebar .tl:nth-child(3) {
+    background: var(--accent);
+  }
+  .app-titlebar .t {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-left: 12px;
+  }
+  .app-titlebar .live {
+    margin-left: auto;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    border-radius: 999px;
+    padding: 2px 10px;
+  }
+  .app-titlebar .live::before {
+    content: '● ';
+  }
+  .app-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hero-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+  }
+  .hero-caption .chip {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+  .hero-caption .chip::before {
+    content: '● ';
+    color: var(--accent);
+    font-size: 8px;
+  }
+  .hero-caption .meta {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 
   @media (max-width: 1020px) {
