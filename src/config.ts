@@ -88,14 +88,15 @@ export const DOWNLOADS_LIVE = true;
 
 /**
  * Fallback pin (D5) — used when the build-time GitHub fetch fails or a
- * release asset is missing/renamed. v1.4.227 is the current hand-pinned
- * cut (2026-10-13; verified all four pinned asset names exist on the
- * release before bumping).
+ * release asset is missing/renamed. v2.1.0 is the current hand-pinned
+ * cut (2026-11-01; verified the pinned mac/win asset names exist on the
+ * release before bumping). Android keeps the v1.4.227 pin — the v2.1.0
+ * release ships no APK.
  */
 export const LATEST_RELEASE = {
-  tag: 'v1.4.227',
-  version: '1.4.227',
-  publishedAt: '2026-10-13',
+  tag: 'v2.1.0',
+  version: '2.1.0',
+  publishedAt: '2026-11-01',
 } as const;
 
 /**
@@ -117,9 +118,9 @@ export type ReleaseAssetKey = keyof typeof RELEASE_ASSET_FILES;
 
 /** Pinned download URL — the per-target fallback (D5). */
 export const RELEASE_PIN_URLS: Record<ReleaseAssetKey, string> = {
-  macosArm64: `${REPO_URL}/releases/download/v1.4.227/Wakii-1.4.227-arm64.dmg`,
-  macosX64: `${REPO_URL}/releases/download/v1.4.227/Wakii-1.4.227-x64.dmg`,
-  windows: `${REPO_URL}/releases/download/v1.4.227/orca-windows-setup.exe`,
+  macosArm64: `${REPO_URL}/releases/download/v2.1.0/Wakii-2.1.0-arm64.dmg`,
+  macosX64: `${REPO_URL}/releases/download/v2.1.0/Wakii-2.1.0-x64.dmg`,
+  windows: `${REPO_URL}/releases/download/v2.1.0/orca-windows-setup.exe`,
   androidApk: `${REPO_URL}/releases/download/v1.4.227/app-release.apk`,
 };
 
