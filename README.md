@@ -26,7 +26,7 @@ This repository holds the source of the official website — built with
   content lives in typed data modules and markdown collections.
 - **Bilingual by design** — every page ships in English and Tiếng Việt
   (`/vi/*` mirror), strings sourced from `src/i18n/`.
-- **The kit, in the open** — 20 built-in skills, 13 documented in the public
+- **The kit, in the open** — 21 built-in skills, 14 documented in the public
   [skills catalog](https://wakii.xyz/skills/) with commands and internals.
 - **Dark bento design system** — custom design tokens (`src/styles/tokens.css`)
   and a shared motion layer, no UI framework.
@@ -64,7 +64,7 @@ src/
   config.ts        # single source of truth: REPO_URL, SITE_URL, SITE_NAME,
                    # SITE_TAGLINE, DOC_SLUGS (locked contract), download flags
   content/docs/    # markdown docs (content collections)
-  data/            # skills.ts (20-skill catalog), roadmap.ts (Now/Next/Later)
+  data/            # skills.ts (21-skill catalog), roadmap.ts (Now/Next/Later)
   i18n/            # EN + VI strings (landing, download, …)
   components/      # Astro components
   layouts/         # page layouts
