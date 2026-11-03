@@ -26,13 +26,13 @@ This repository holds the source of the official website — built with
   content lives in typed data modules and markdown collections.
 - **Bilingual by design** — every page ships in English and Tiếng Việt
   (`/vi/*` mirror), strings sourced from `src/i18n/`.
-- **The kit, in the open** — 21 built-in skills, 13 documented in the public
+- **The kit, in the open** — 20 built-in skills, 14 documented in the public
   [skills catalog](https://wakii.xyz/skills/) with commands and internals.
 - **Dark bento design system** — custom design tokens (`src/styles/tokens.css`)
   and a shared motion layer, no UI framework.
 
 <div align="center">
-<img src=".github/assets/skills.png" alt="Wakii skills page — “The kit, cell by cell. 13 skills, fully explained” with install command and skill stats" width="72%">
+<img src=".github/assets/skills.png" alt="Wakii skills page — “The kit, cell by cell. 14 skills, fully explained” with install command and skill stats" width="72%">
 </div>
 
 ## Pages
