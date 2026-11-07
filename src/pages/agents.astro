@@ -1,0 +1,354 @@
+---
+/**
+ * /agents — Showcase Agents + Skills (CEO request 2026-11-07).
+ * Data: src/data/agents-skills.ts — auto-generated from the orca repo kit
+ * (READ-ONLY cross-read), never hand-edited. Static showcase, no API.
+ * Design language mirrors /skills (Bento Catalog, SF-2 direction B):
+ * token-driven dark theme, pill/inline bg → --accent-soft, radius → --radius-cell,
+ * motion via shared initMotion() only.
+ */
+import Base from '../layouts/Base.astro';
+import { agents, kitSkills, repoSkills, stats } from '../data/agents-skills';
+
+/** Agent category grouping — order fixed for the page narrative. */
+const catMeta: Record<string, { label: string; blurb: string }> = {
+  execution: { label: 'execution', blurb: 'The builders — every write to the codebase goes through one of these.' },
+  review: { label: 'review', blurb: 'The adversarial layer — spec, plan, diff, and gate review before anything lands.' },
+  ops: { label: 'ops', blurb: 'The operators — running the stack, the loops, and the rescues when they stall.' },
+  knowledge: { label: 'knowledge', blurb: 'The memory — confirmed business rules and the project knowledge base.' },
+  infra: { label: 'infra', blurb: 'The platform — CI, compose, nginx, and everything under the services.' },
+};
+const catOrder = ['execution', 'review', 'ops', 'knowledge', 'infra'];
+
+const skillSources = [
+  { key: 'kit', label: 'kit skills', list: kitSkills, blurb: 'Shipped inside the Wakii kit — installed with the plugin, on by default.' },
+  { key: 'repo', label: 'repo skills', list: repoSkills, blurb: 'Live in the open-source repo — build from source and read along.' },
+] as const;
+---
+
+<Base title="agents" description={`The Wakii team in the open: ${stats.agents} agents, ${stats.totalSkills} skills, ${stats.provides} kit provides, ${stats.eccRules} ECC coding rules. Meet the captain, the builders, the reviewers, and every skill they can draw on.`}>
+  <header class="ag-hero">
+    <div class="wrap">
+      <div class="kicker">the team</div>
+      <h1>Agents + skills,<br /><span class="hl">in the open.</span></h1>
+      <p class="sub">
+        Wakii ships a full agent team, not a model in a terminal. Every agent,
+        every skill, every rule — generated straight from the kit source. No
+        black boxes.
+      </p>
+      <div class="hero-stats">
+        <div class="hs"><div class="v">{stats.agents}</div><div class="k">agents</div></div>
+        <div class="hs"><div class="v">{stats.totalSkills}</div><div class="k">skills</div></div>
+        <div class="hs"><div class="v">{stats.provides}</div><div class="k">kit provides</div></div>
+        <div class="hs"><div class="v">{stats.eccRules}</div><div class="k">ECC rules</div></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="agents">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>agents</h2>
+        <p>{stats.agents} agents, grouped by what they owe the team. Captain takes the CEO's order; everyone else builds, reviews, or keeps the lights on.</p>
+      </div>
+      {
+        catOrder.map((cat) => {
+          const meta = catMeta[cat];
+          const list = agents.filter((a) => a.category === cat);
+          if (!meta || list.length === 0) return null;
+          return (
+            <div class="cat-block">
+              <div class="cat-head" data-reveal>
+                <h3>
+                  {meta.label} <span class="count">({list.length})</span>
+                </h3>
+                <p>{meta.blurb}</p>
+              </div>
+              <div class="grid">
+                {list.map((a) => (
+                  <div class="card agent-card" data-reveal>
+                    <div class="card-top">
+                      <span class="display">{a.display || a.name}</span>
+                      <span class="pill">{a.id}</span>
+                    </div>
+                    <p class="desc">{a.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>skills</h2>
+        <p>{stats.totalSkills} skills across two homes: {stats.kitSkills} ship inside the kit, {stats.repoSkills} live in the repo. Same format — a SKILL.md that says when to reach for it.</p>
+      </div>
+      {
+        skillSources.map((src) => (
+          <div class="cat-block">
+            <div class="cat-head" data-reveal>
+              <h3>
+                {src.label} <span class="count">({src.list.length})</span>
+              </h3>
+              <p>{src.blurb}</p>
+            </div>
+            <div class="grid skill-grid">
+              {src.list.map((s) => (
+                <div class="card skill-card" data-reveal>
+                  <div class="card-top">
+                    <span class="display sm">{s.name}</span>
+                  </div>
+                  <p class="desc clamp">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- hero (same DNA as /skills) ---- */
+  .ag-hero {
+    padding: 76px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ag-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(69, 224, 168, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(69, 224, 168, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 10%, black 20%, transparent 75%);
+  }
+  .ag-hero .wrap {
+    position: relative;
+  }
+  .kicker {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+  }
+  .kicker::before {
+    content: '// ';
+    color: var(--text-faint);
+  }
+  h1 {
+    margin-top: 14px;
+    font-size: clamp(30px, 4.4vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    max-width: 760px;
+  }
+  .hl {
+    color: var(--accent);
+  }
+  .sub {
+    margin-top: 20px;
+    color: var(--text-dim);
+    max-width: 620px;
+    font-size: 15px;
+    font-family: var(--font-sans);
+  }
+  .hero-stats {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 640px;
+  }
+  .hs {
+    flex: 1;
+    padding: 14px 20px;
+    border-right: 1px solid var(--border-strong);
+    min-width: 96px;
+  }
+  .hs:last-child {
+    border-right: none;
+  }
+  .hs .v {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .hs .k {
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 2px;
+  }
+
+  /* ---- sections ---- */
+  .section {
+    padding: 64px 0 8px;
+  }
+  .section-head {
+    margin-bottom: 34px;
+  }
+  .section-head h2 {
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2::before {
+    content: '// ';
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .section-head p {
+    margin-top: 10px;
+    color: var(--text-dim);
+    max-width: 620px;
+    font-size: 14.5px;
+    font-family: var(--font-sans);
+  }
+
+  /* ---- category blocks ---- */
+  .cat-block {
+    margin-bottom: 44px;
+  }
+  .cat-head {
+    margin-bottom: 18px;
+  }
+  .cat-head h3 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .cat-head h3::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .cat-head .count {
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+  .cat-head p {
+    margin-top: 6px;
+    color: var(--text-faint);
+    font-size: 13px;
+    font-family: var(--font-sans);
+    max-width: 620px;
+  }
+
+  /* ---- card grid ---- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .skill-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .card {
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    padding: 16px 18px 18px;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+  .card-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .display {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  .display.sm {
+    font-size: 13.5px;
+    overflow-wrap: anywhere;
+  }
+  .pill {
+    font-size: 10.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(69, 224, 168, 0.4);
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  .desc {
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    font-family: var(--font-sans);
+  }
+  .desc.clamp {
+    color: var(--text-faint);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ---- responsive ---- */
+  @media (max-width: 980px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .skill-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 620px) {
+    .wrap {
+      padding: 0 20px;
+    }
+    .grid,
+    .skill-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .hs {
+      min-width: 88px;
+    }
+    .pill {
+      display: none;
+    }
+  }
+
+  /* ---- hover lift (same as /skills, touch excluded) ---- */
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(69, 224, 168, 0.08);
+      transform: translateY(-3px);
+    }
+  }
+</style>
+
+<script>
+  // Shared motion contract, same as /skills — nothing custom.
+  import { initMotion } from '../components/motion';
+  initMotion();
+</script>
