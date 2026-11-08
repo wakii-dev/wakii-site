@@ -25,12 +25,12 @@ export const agentFlows: Record<string, AgentFlow> = {
   captain: {
     category: 'execution',
     tracks: [
-      { lane: 'CEO', label: 'send order' },
+      { lane: 'Wakii', label: 'send order' },
       { lane: 'Captain', label: 'triage + route' },
       { lane: 'Captain', label: 'split task DAG' },
       { lane: 'Execution', label: 'workers run' },
       { lane: 'Review', label: 'gate verify' },
-      { lane: 'Captain', label: 'report to CEO' },
+      { lane: 'Captain', label: 'report to Wakii' },
     ],
   },
   'task-executor': {
