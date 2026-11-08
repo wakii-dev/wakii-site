@@ -203,7 +203,7 @@ const edgePath = (from: { x: number; y: number }, to: { x: number; y: number }) 
                   </>
                 ))}
                 {steps.map((s, i) => (
-                  <>
+                  <g class="sl-step" style={`--step:${i}`}>
                     {i > 0 && <path d={edgePath(pos[i - 1], pos[i])} class="sl-edge" marker-end={`url(#arr-${a.id})`} />}
                     <rect x={pos[i].x} y={pos[i].y} width={NODE_W} height={NODE_H} rx="8" class="sl-node" />
                     <circle cx={pos[i].x + 14} cy={pos[i].y + 14} r="8" class="sl-num-bg" />
@@ -213,7 +213,7 @@ const edgePath = (from: { x: number; y: number }, to: { x: number; y: number }) 
                     <text x={pos[i].x + 28} y={pos[i].y + 26} class="sl-label">
                       {s.label}
                     </text>
-                  </>
+                  </g>
                 ))}
               </svg>
             </div>
@@ -603,6 +603,74 @@ const edgePath = (from: { x: number; y: number }, to: { x: number; y: number }) 
     fill: var(--accent-dim);
   }
 
+  /* ---- modal animation (CEO 08/11) — fade+scale mở/đóng, swimlane stagger ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes lane-modal-in {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes lane-modal-out {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+    }
+    @keyframes lane-fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes lane-fade-out {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @keyframes lane-step-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    dialog.lane-modal[open] {
+      animation: lane-modal-in 0.2s ease-out;
+    }
+    dialog.lane-modal[open]::backdrop {
+      animation: lane-fade-in 0.2s ease-out;
+    }
+    dialog.lane-modal[open].is-closing {
+      animation: lane-modal-out 0.15s ease-in forwards;
+    }
+    dialog.lane-modal[open].is-closing::backdrop {
+      animation: lane-fade-out 0.15s ease-in forwards;
+    }
+    /* swimlane steps hiện dần theo thứ tự — tổng ≤300ms kể cả flow dài */
+    dialog.lane-modal[open] .sl-step {
+      opacity: 0;
+      animation: lane-step-in 0.18s ease-out forwards;
+      animation-delay: min(calc(var(--step, 0) * 40ms), 120ms);
+    }
+  }
+
   /* ---- responsive ---- */
   @media (max-width: 980px) {
     .grid {
@@ -667,9 +735,33 @@ const edgePath = (from: { x: number; y: number }, to: { x: number; y: number }) 
     });
   }
   for (const dlg of document.querySelectorAll<HTMLDialogElement>('dialog.lane-modal')) {
+    // đóng có animation (.is-closing → lane-modal-out 150ms); fallback timeout
+    // phòng animationend bị nuốt; reduced-motion → đóng tức thì.
+    const closeAnimated = () => {
+      if (!dlg.open || dlg.classList.contains('is-closing')) return;
+      const finish = () => {
+        dlg.removeEventListener('animationend', onEnd);
+        dlg.classList.remove('is-closing');
+        if (dlg.open) dlg.close();
+      };
+      const onEnd = (ev: Event) => {
+        if (ev.target === dlg) finish(); // bỏ qua animationend của .sl-step con
+      };
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        finish();
+        return;
+      }
+      dlg.classList.add('is-closing');
+      dlg.addEventListener('animationend', onEnd);
+      setTimeout(finish, 200);
+    };
     dlg.addEventListener('click', (e) => {
-      if (e.target === dlg) dlg.close(); // backdrop click
+      if (e.target === dlg) closeAnimated(); // backdrop click
     });
-    dlg.querySelector('.lm-close')?.addEventListener('click', () => dlg.close());
+    dlg.querySelector('.lm-close')?.addEventListener('click', closeAnimated);
+    dlg.addEventListener('cancel', (e) => {
+      e.preventDefault(); // Esc — chặn close mặc định, chạy animation trước
+      closeAnimated();
+    });
   }
 </script>
