@@ -9,6 +9,9 @@
  */
 import Base from '../layouts/Base.astro';
 import { agents, kitSkills, repoSkills, stats } from '../data/agents-skills';
+import { agentFlows, type AgentFlowStep } from '../data/agent-flows';
+
+/** Agent category grouping — order fixed for the page narrative. */
 
 /** Agent category grouping — order fixed for the page narrative. */
 const catMeta: Record<string, { label: string; blurb: string }> = {
@@ -24,6 +27,62 @@ const skillSources = [
   { key: 'kit', label: 'kit skills', list: kitSkills, blurb: 'Shipped inside the Wakii kit — installed with the plugin, on by default.' },
   { key: 'repo', label: 'repo skills', list: repoSkills, blurb: 'Live in the open-source repo — build from source and read along.' },
 ] as const;
+
+/* ---- modal swimlane (hướng C) — build-time SVG layout ---- */
+const LANE_H = 76;
+const NODE_W = 164;
+const NODE_H = 44;
+const X0 = 100;
+const DX = 190;
+
+/** Generic per-category flow for agents whose entry has no specific tracks. */
+const GENERIC_TRACKS: Record<string, AgentFlowStep[]> = {
+  execution: [
+    { lane: 'Captain', label: 'dispatch task' },
+    { lane: 'Executor', label: 'implement + test' },
+    { lane: 'Review', label: 'gate verify' },
+    { lane: 'Captain', label: 'report back' },
+  ],
+  review: [
+    { lane: 'Trigger', label: 'artifact ready' },
+    { lane: 'Reviewer', label: 'read + grade' },
+    { lane: 'Output', label: 'findings' },
+  ],
+  ops: [
+    { lane: 'Trigger', label: 'ops signal' },
+    { lane: 'Operator', label: 'act + verify' },
+    { lane: 'Output', label: 'status' },
+  ],
+  knowledge: [
+    { lane: 'Captain', label: 'ask' },
+    { lane: 'Analyst', label: 'look up rule' },
+    { lane: 'Output', label: 'confirmed' },
+  ],
+  infra: [
+    { lane: 'Trigger', label: 'infra signal' },
+    { lane: 'Platform', label: 'edit + verify' },
+    { lane: 'Output', label: 'stack green' },
+  ],
+};
+
+const flowOf = (a: (typeof agents)[number]) => agentFlows[a.id];
+const isFallback = (a: (typeof agents)[number]) => !flowOf(a)?.tracks?.length;
+const tracksOf = (a: (typeof agents)[number]): AgentFlowStep[] =>
+  flowOf(a)?.tracks?.length ? flowOf(a)!.tracks! : GENERIC_TRACKS[flowOf(a)?.category ?? a.category];
+const laneNames = (steps: AgentFlowStep[]) => [...new Set(steps.map((s) => s.lane))];
+const laneY = (lane: string, lanes: string[]) => lanes.indexOf(lane) * LANE_H;
+const nodePos = (steps: AgentFlowStep[], lanes: string[]) =>
+  steps.map((s, i) => ({ x: X0 + i * DX, y: laneY(s.lane, lanes) + (LANE_H - NODE_H) / 2 }));
+const svgW = (steps: AgentFlowStep[]) => X0 + steps.length * DX - (DX - NODE_W) + 24;
+const svgH = (lanes: string[]) => lanes.length * LANE_H;
+const edgePath = (from: { x: number; y: number }, to: { x: number; y: number }) => {
+  const x1 = from.x + NODE_W;
+  const y1 = from.y + NODE_H / 2;
+  const x2 = to.x - 4;
+  const y2 = to.y + NODE_H / 2;
+  if (from.y === to.y) return `M${x1},${y1} L${x2},${y2}`;
+  return `M${x1},${y1} C${x1 + 26},${y1} ${x2 - 26},${y2} ${x2},${y2}`;
+};
 ---
 
 <Base title="agents" description={`The Wakii team in the open: ${stats.agents} agents, ${stats.totalSkills} skills, ${stats.provides} kit provides, ${stats.eccRules} ECC coding rules. Meet the captain, the builders, the reviewers, and every skill they can draw on.`}>
@@ -66,13 +125,13 @@ const skillSources = [
               </div>
               <div class="grid">
                 {list.map((a) => (
-                  <div class="card agent-card" data-reveal>
+                  <button type="button" class="card agent-card" role="button" data-reveal data-agent={a.id} aria-haspopup="dialog">
                     <div class="card-top">
                       <span class="display">{a.display || a.name}</span>
                       <span class="pill">{a.id}</span>
                     </div>
                     <p class="desc">{a.desc}</p>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -81,6 +140,94 @@ const skillSources = [
       }
     </div>
   </section>
+
+  {/* 28 native dialogs — one per agent, opened via showModal() (hướng C swimlane) */}
+  {
+    agents.map((a) => {
+      const fb = isFallback(a);
+      const cat = flowOf(a)?.category ?? a.category;
+      const steps = tracksOf(a);
+      const lanes = laneNames(steps);
+      const pos = nodePos(steps, lanes);
+      const w = svgW(steps);
+      const h = svgH(lanes);
+      const name = a.display || a.name;
+      return (
+        <dialog class="lane-modal" id={`agent-modal-${a.id}`} aria-label={`Agent flow: ${name}`}>
+          <div class="lm-head">
+            <div class="lm-title">
+              <h3 class="lm-name">{name}</h3>
+              <span class="pill">{a.id}</span>
+            </div>
+            <button type="button" class="lm-close" aria-label="Close dialog">
+              esc ✕
+            </button>
+          </div>
+          <div class="lm-body">
+            <p class="lm-caption">
+              {fb ? (
+                <>
+                  Generic <b>{cat}</b> flow — steps read left to right, lanes group the actors.
+                </>
+              ) : (
+                <>
+                  Flow of <b>{name}</b> — steps read left to right, lanes group the actors.
+                </>
+              )}
+            </p>
+            <div class="lm-svg-wrap" data-flow-fallback={fb ? cat : undefined}>
+              <svg
+                class="sl-svg swimlane"
+                viewBox={`0 0 ${w} ${h}`}
+                role="img"
+                aria-label={`Swimlane diagram: ${name} flow across ${lanes.length} lanes`}
+              >
+                <defs>
+                  <marker id={`arr-${a.id}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" class="sl-arrow" />
+                  </marker>
+                </defs>
+                {lanes.map((lane, li) => (
+                  <>
+                    <rect
+                      x="0"
+                      y={li * LANE_H}
+                      width={w}
+                      height={LANE_H}
+                      class={li % 2 ? 'lane-bg alt' : 'lane-bg'}
+                      data-track={lane}
+                    />
+                    <text x="12" y={li * LANE_H + LANE_H / 2 + 4} class="lane-label">
+                      {lane}
+                    </text>
+                  </>
+                ))}
+                {steps.map((s, i) => (
+                  <>
+                    {i > 0 && <path d={edgePath(pos[i - 1], pos[i])} class="sl-edge" marker-end={`url(#arr-${a.id})`} />}
+                    <rect x={pos[i].x} y={pos[i].y} width={NODE_W} height={NODE_H} rx="8" class="sl-node" />
+                    <circle cx={pos[i].x + 14} cy={pos[i].y + 14} r="8" class="sl-num-bg" />
+                    <text x={pos[i].x + 14} y={pos[i].y + 17} text-anchor="middle" class="sl-num">
+                      {i + 1}
+                    </text>
+                    <text x={pos[i].x + 28} y={pos[i].y + 26} class="sl-label">
+                      {s.label}
+                    </text>
+                  </>
+                ))}
+              </svg>
+            </div>
+          </div>
+          <div class="lm-foot">
+            <span>mobile: the swimlane keeps its viewBox and scrolls sideways</span>
+            <span>
+              <kbd>Esc</kbd> closes
+            </span>
+          </div>
+        </dialog>
+      );
+    })
+  }
 
   <section class="section" id="skills">
     <div class="wrap">
@@ -308,6 +455,152 @@ const skillSources = [
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  button.agent-card {
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+  }
+  button.agent-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---- agent flow modal (hướng C — swimlane) ---- */
+  dialog.lane-modal {
+    width: min(900px, calc(100vw - 32px));
+    max-height: min(86vh, 820px);
+    background: var(--bg-raised);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-cell);
+    padding: 0;
+    box-shadow:
+      0 40px 120px rgba(0, 0, 0, 0.6),
+      0 0 80px rgba(69, 224, 168, 0.06);
+  }
+  dialog.lane-modal[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  dialog.lane-modal::backdrop {
+    background: rgba(4, 20, 13, 0.72);
+    backdrop-filter: blur(4px);
+  }
+  .lm-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .lm-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .lm-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .lm-close {
+    background: none;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-btn);
+    color: var(--text-dim);
+    font: 700 11px var(--font-display);
+    padding: 5px 12px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+  .lm-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .lm-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .lm-body {
+    padding: 20px;
+    overflow: auto;
+  }
+  .lm-caption {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    font-family: var(--font-sans);
+    margin-bottom: 16px;
+  }
+  .lm-caption b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .lm-foot {
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    font-family: var(--font-sans);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .lm-foot kbd {
+    font: 700 10px var(--font-display);
+    color: var(--accent);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+  .lm-svg-wrap {
+    overflow-x: auto;
+  }
+  .sl-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-width: 640px;
+  }
+  .lane-bg {
+    fill: var(--panel);
+  }
+  .lane-bg.alt {
+    fill: var(--panel-2);
+  }
+  .lane-label {
+    font: 700 10px var(--font-display);
+    fill: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+  .sl-node {
+    fill: var(--bg-card);
+    stroke: var(--border-strong);
+  }
+  .sl-num-bg {
+    fill: var(--accent);
+  }
+  .sl-num {
+    font: 700 8px var(--font-display);
+    fill: var(--bg-deep);
+  }
+  .sl-label {
+    font: 700 10px var(--font-display);
+    fill: var(--text);
+  }
+  .sl-edge {
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+    fill: none;
+  }
+  .sl-arrow {
+    fill: var(--accent-dim);
+  }
 
   /* ---- responsive ---- */
   @media (max-width: 980px) {
@@ -333,6 +626,17 @@ const skillSources = [
     .pill {
       display: none;
     }
+    dialog.lane-modal {
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      max-height: none;
+      border: none;
+      border-radius: 0;
+    }
+    .lm-svg-wrap {
+      overflow-x: auto;
+    }
   }
 
   /* ---- hover lift (same as /skills, touch excluded) ---- */
@@ -351,4 +655,19 @@ const skillSources = [
   // Shared motion contract, same as /skills — nothing custom.
   import { initMotion } from '../components/motion';
   initMotion();
+
+  // Agent flow modal (hướng C) — native <dialog>, mở đúng dialog theo data-agent.
+  const agentCards = document.querySelectorAll<HTMLButtonElement>('button.agent-card');
+  for (const card of agentCards) {
+    card.addEventListener('click', () => {
+      const dlg = document.getElementById(`agent-modal-${card.dataset.agent}`);
+      if (dlg instanceof HTMLDialogElement) dlg.showModal();
+    });
+  }
+  for (const dlg of document.querySelectorAll<HTMLDialogElement>('dialog.lane-modal')) {
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close(); // backdrop click
+    });
+    dlg.querySelector('.lm-close')?.addEventListener('click', () => dlg.close());
+  }
 </script>

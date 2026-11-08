@@ -8,11 +8,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/check-blog-slug-parity.mjs && node scripts/check-blog-utils.mjs && node scripts/check-blog-content.mjs && astro build && node scripts/check-og.mjs",
+    "build": "node scripts/check-blog-slug-parity.mjs && node scripts/check-blog-utils.mjs && node scripts/check-blog-content.mjs && node scripts/check-agent-modal.mjs && astro build && node scripts/check-og.mjs",
     "check:blog-utils": "node scripts/check-blog-utils.mjs",
     "check:blog-parity:dist": "node scripts/check-blog-slug-parity.mjs --dist",
     "check:jsonld": "node scripts/check-jsonld.mjs",
     "check:og": "node scripts/check-og.mjs",
+    "check:agent-modal": "node scripts/check-agent-modal.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
